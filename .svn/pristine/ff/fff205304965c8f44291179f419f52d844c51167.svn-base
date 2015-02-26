@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="Stylesheet" type="text/css" href="~/Styles/main.css" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div id="top_bar">
+        <div class="logo">
+            <a href="list.html">Instant</a>
+        </div>
+        <div class="status">
+            <!--login => logged in-->
+            <!--
+                    <% if (Context.User.IsInRole("admin"))
+                    { %>
+                    &nbsp;&nbsp;<a href="admin/Default.aspx"><asp:Literal runat="server" ID="litSettings" Text="<%$ Resources:StringResource, admin_Settings %>" /></a>
+                    <%} %>
+                    &nbsp;&nbsp;<asp:LoginStatus ID="LoginStatus1" runat="server" LogoutText="<%$ Resources:StringResource, Logout%>" />
+            -->
+            <!--login-->
+        </div>
+    </div>
+    <div id="container">
+        <div id="leftCol">
+            @Html.Action("Menu", "NavCategory")
+        </div>
+        <div id="rightCol">
+            @RenderBody()
+            <!--Login form => anonymous -->
+            @*<uc:Login runat="server" ID="ucLogin" />*@
+            <!--login form-->
+        </div>
+        
+    </div>
+</body>
+</html>

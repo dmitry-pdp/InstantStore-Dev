@@ -1,0 +1,30 @@
+﻿using InstantStore.Domain.Abstract;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace InstantStore.WebUI.Controllers
+{
+    public class ProductController : Controller
+    {
+        IRepository repository;
+        public int PageSize = 25;
+
+        public ProductController(IRepository productRepository)
+        {
+            this.repository = productRepository;
+            Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["ProductPageSize"], out this.PageSize);
+        }
+
+        public ViewResult List(int page=1)
+        {
+            return View(repository.Products
+                .OrderBy(p => p.SortOrder)
+                .Skip((page-1)*PageSize)
+                .Take(PageSize));
+        }
+
+    }
+}

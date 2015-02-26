@@ -1,0 +1,39 @@
+﻿using InstantStore.Domain.Abstract;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace InstantStore.Domain.Concrete
+{
+    class LinqRepository : IRepository
+    {
+        private InstantStoreDataContext context = new InstantStoreDataContext();
+
+        public IEnumerable<Entities.Product> Products
+        {
+            get {
+                return (from p in context.Products
+                        join c in context.ProductsCategories on p.ProductId equals c.ProductId
+                        join cat in context.ProductCategories on c.ProductCategoryID equals cat.ProductCategoryId
+                        select new Entities.Product
+                        {
+                            ProductID = p.ProductId,
+                            Name = p.Name,
+                            Category = new Entities.ProductCategory
+                            {
+                                ProductCategoryID = cat.ProductCategoryId,
+                                ParentCategory = (cat.ParentCategory.HasValue ? new Entities.ProductCategory { ProductCategoryID = cat.ParentCategory.Value } : null),
+                                Name = cat.Name,
+                                Type = (Entities.CategoryDisplayType)cat.DisplayType,
+                                IsVisibleInMenu = cat.IsVisibleInMenu,
+                                URLAlias = cat.URLAlias
+                            },
+                            Description = p.Description,
+                            PriceCash = p.PriceCash,
+                            PriceСashless = p.PriceCashless                            
+                        });
+            }
+        }
+
+    }
+}

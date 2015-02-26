@@ -1,0 +1,25 @@
+﻿@using InstantStore.Domain.Entities;
+@model InstantStore.WebUI.Models.ProductListViewModel
+
+@{
+    ViewBag.Title = @Resources.StringResource.Page_title_ProductsList;
+}
+
+@if (Model.Products != null) { 
+    foreach (var p in Model.Products)
+    {
+        <div>
+            <h3>@p.Name</h3>
+            @p.Description
+            <h4>@p.PriceCash.ToString("c")</h4>
+        </div>
+    }
+}
+else
+{
+    <div><h3>@Resources.StringResource.ProductList_NoProducts</h3></div>
+}
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))
+</div>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InstantStore" Class="InstantStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=np:\\.\pipe\LOCALDB#E11EB064\tsql\query;Initial Catalog=InstantStore;Integrated Security=True" SettingsObjectName="InstantStore.Domain.Properties.Settings" SettingsPropertyName="InstantStoreConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ProductSize" Member="ProductSizes">
+    <Type Name="ProductSize">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="ProductSize_Product" Member="Products" ThisKey="Id" OtherKey="ProductSizeID" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductsCategories" Member="ProductsCategories">
+    <Type Name="ProductsCategory">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ProductsCategory" Member="Product" ThisKey="ProductId" OtherKey="ProductId" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ProductCategory_ProductsCategory" Member="ProductCategory" ThisKey="ProductCategoryID" OtherKey="ProductCategoryId" Type="ProductCategory" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Product">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="PriceCash" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PriceCashless" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductSizeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ProductsCategory" Member="ProductsCategories" ThisKey="ProductId" OtherKey="ProductId" Type="ProductsCategory" />
+      <Association Name="ProductSize_Product" Member="ProductSize" ThisKey="ProductSizeID" OtherKey="Id" Type="ProductSize" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductCategories" Member="ProductCategories">
+    <Type Name="ProductCategory">
+      <Column Name="ProductCategoryId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentCategory" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DisplayType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsVisibleInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="URLAlias" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ProductCategory_ProductsCategory" Member="ProductsCategories" ThisKey="ProductCategoryId" OtherKey="ProductCategoryID" Type="ProductsCategory" />
+    </Type>
+  </Table>
+</Database>

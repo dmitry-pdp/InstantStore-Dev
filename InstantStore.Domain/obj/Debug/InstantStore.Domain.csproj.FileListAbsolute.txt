@@ -1,0 +1,5 @@
+D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.dll.config
+D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.dll
+D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.pdb
+D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.dll
+D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.pdb
