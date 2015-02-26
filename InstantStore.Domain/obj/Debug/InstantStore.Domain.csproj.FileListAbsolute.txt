@@ -3,3 +3,9 @@ D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Dom
 D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.pdb
 D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.dll
 D:\Work\Sakharau\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.pdb
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.dll.config
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.dll
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.pdb
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.csprojResolveAssemblyReference.cache
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.dll
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.pdb
