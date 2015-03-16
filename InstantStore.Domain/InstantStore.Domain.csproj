@@ -42,12 +42,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Concrete\InstantStore.cs">
+      <DependentUpon>InstantStore.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Concrete\InstantStore.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>InstantStore.dbml</DependentUpon>
     </Compile>
     <Compile Include="Concrete\LinqRepository.cs" />
+    <Compile Include="Concrete\LinqRepository.Feedback.cs" />
+    <Compile Include="Concrete\LinqRepository.Settings.cs" />
+    <Compile Include="Concrete\LinqRepository.User.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductSize.cs" />

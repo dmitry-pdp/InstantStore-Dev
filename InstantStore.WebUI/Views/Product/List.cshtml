@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-@if (Model.Products != null || Model.Products.Count() > 0) { 
+@if (Model.Products != null && Model.Products.Count() > 0) { 
     foreach (var p in Model.Products)
     {
         <div class="well"></div>

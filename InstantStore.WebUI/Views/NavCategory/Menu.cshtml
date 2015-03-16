@@ -2,25 +2,35 @@
 
 <h3>@Html.ActionLink("All", "List", "Product", null, new { @class = "" })</h3>
 
-@foreach (var category in Model)
+@if (Model != null)
 {
-    <h3>@if (category.URLAlias == ViewBag.SelectedCategory)
-        {
-            @category.Name
-        }
+    foreach (var category in Model)
+    {
+        <h3>@if (category.URLAlias == ViewBag.SelectedCategory)
+            {
+                @category.Name
+            }
             else
-        {
-            @Html.RouteLink(category.Name,
-                    new
-                    {
-                        controller = "Product",
-                        action = "List",
-                        category = category.URLAlias,
-                        page = 1
-                    },
-                    new
-                    {
-                        @class = ""
-                    })
-        }</h3>
+            {
+                @Html.RouteLink(category.Name,
+                        new
+                        {
+                            controller = "Product",
+                            action = "List",
+                            category = category.URLAlias,
+                            page = 1
+                        },
+                        new
+                        {
+                            @class = ""
+                        })
+            }</h3>
+    }
 }
+else
+{
+    <span>No category.</span>
+}
+
+
+

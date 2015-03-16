@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace InstantStore.Domain.Concrete
 {
-    public class LinqRepository : IRepository
+    public partial class LinqRepository : IRepository
     {
         //private InstantStoreDataContext context = new InstantStoreDataContext();
 

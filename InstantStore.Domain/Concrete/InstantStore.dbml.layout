@@ -27,7 +27,7 @@
         <classShapeMoniker Id="c4a76805-83db-42ff-b441-5c440465be5a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2 : 3.5); (2 : 2.5881982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2 : 3.5); (2 : 2.5881982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/InstantStoreDataContext/ProductSize/ProductSize_Product" />
       <nodes>
         <classShapeMoniker Id="fe8a4939-7bad-4d86-9288-0c0c00592f4e" />
@@ -47,5 +47,23 @@
         <classShapeMoniker Id="c4a76805-83db-42ff-b441-5c440465be5a" />
       </nodes>
     </associationConnector>
+    <classShape Id="f59ca2c3-da99-475d-bf00-a20f89d6d7d3" absoluteBounds="3.25, 5.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/InstantStoreDataContext/Setting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="23fc7845-a63a-4e4e-982b-2849d80195ad" absoluteBounds="3.2649999999999997, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cdc1ab32-da15-4b8f-bd93-a80eb0399950" absoluteBounds="0.875, 5.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/InstantStoreDataContext/Feedback" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6cb168e7-bdb7-47f7-9481-9e118573729c" absoluteBounds="0.88999999999999968, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="46529248-bcb6-49ad-9281-4af64e4d2f34" absoluteBounds="6.5, 4.5, 2, 3.1170068359375">
+      <DataClassMoniker Name="/InstantStoreDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="60684ec0-5814-40d2-a49d-c164b78631c5" absoluteBounds="6.515, 4.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

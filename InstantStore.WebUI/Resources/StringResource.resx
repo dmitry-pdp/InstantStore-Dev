@@ -577,4 +577,28 @@
   <data name="ProductList_NoProducts_Error" xml:space="preserve">
     <value>Пользователь увидел страницу без товаров</value>
   </data>
+  <data name="Header_Error" xml:space="preserve">
+    <value>[Ошибка]: Заголовок не установлен.</value>
+  </data>
+  <data name="Header_Empty" xml:space="preserve">
+    <value>[Пустой заголовок]</value>
+  </data>
+  <data name="Settings_FooterLabel" xml:space="preserve">
+    <value>Нижний заголовок</value>
+  </data>
+  <data name="Settings_HeaderLabel" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="Settings_MainTextLabel" xml:space="preserve">
+    <value>Основной текст</value>
+  </data>
+  <data name="Settings_SubmitButtonText" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Feedback_Submit" xml:space="preserve">
+    <value>Оставить сообщение</value>
+  </data>
+  <data name="form_Reg_Message" xml:space="preserve">
+    <value>Для того чтобы зарегестрироваться заполните пожалуйста все поля формы и нажмите кнопку "зарегестрироваться".</value>
+  </data>
 </root>

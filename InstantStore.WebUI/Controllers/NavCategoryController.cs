@@ -21,11 +21,11 @@ namespace InstantStore.WebUI.Controllers
         {
             ViewBag.SelectedCategory = category;
 
-            ProductCategory[] categories =
+            ProductCategory[] categories = repository.Products != null ?
                 repository.Products
                         .Select(x => x.Category)
                         .DistinctBy(x => x.Name)
-                        .OrderBy(x => x.Name).ToArray();
+                        .OrderBy(x => x.Name).ToArray() : null;
 
             return PartialView(categories);
         }

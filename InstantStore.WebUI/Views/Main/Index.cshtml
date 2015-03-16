@@ -1,0 +1,14 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
+}
+
+
+<div class="container-fluid">
+    @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.MainDocumentHtml))
+    {
+        @Html.Raw(settingsViewModel.MainDocumentHtml);
+    }
+</div>

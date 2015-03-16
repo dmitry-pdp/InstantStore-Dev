@@ -1,0 +1,45 @@
+﻿@using InstantStore.WebUI.Resources;
+@{
+    ViewBag.Title = StringResource.link_registration;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="container-fluid col-md-6 col-md-offset-3">
+    <h2>@ViewBag.Title</h2>
+    <form action="/main/newuser" method="post">
+        <div class="form-group">
+            @StringResource.form_Reg_Message
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Contact_Name</div>
+            <input type="text" name="name" id="name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_Email</div>
+            <input type="text" name="email" id="email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_CompanyName</div>
+            <input type="text" name="companyname" id="companyname" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_TelNum</div>
+            <input type="text" name="phone" id="phone" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_Region</div>
+            <input type="text" name="city" id="city" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_Pwd</div>
+            <input type="text" name="password" id="password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div>@StringResource.form_Reg_ConfirmPwd</div>
+            <input type="text" name="passwordc" id="passwordc" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="@StringResource.form_Reg_Submit" class="btn btn-primary btn-lg" />
+        </div>
+</form>
+</div>

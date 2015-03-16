@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using InstantStore.Domain.Concrete;
+@using InstantStore.WebUI.ViewModels;
+@{
+    var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
+    var categoryListViewModel = ViewBag.CategoryListViewModel;
+}
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8"> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.js"></script>
@@ -11,6 +18,12 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    <header class="container-fluid">
+        @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.HeaderHtml))
+        {
+            @Html.Raw(settingsViewModel.HeaderHtml);
+        }
+    </header>
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -47,18 +60,28 @@
     </nav>    
     <div class="container-fluid">
         <div class="row panel">
-            <div id="sidebar" role="navigation" class="col-xs-3">
-                @Html.Action("Menu", "NavCategory")
-            </div>
-            <div class="col-xs-9">
-                @RenderBody()
-            </div>
+            @if (categoryListViewModel != null) 
+            { 
+                <div id="sidebar" role="navigation" class="col-xs-3">
+                    @Html.Action("Menu", "NavCategory")
+                </div>
+                <div class="col-xs-9">
+                    @RenderBody()
+                </div>
+            }
+            else
+            {
+                <div class="col-md-10 col-md-offset-1">
+                    @RenderBody()
+                </div>
+            }
         </div>        
     </div> 
     <footer class="footer">
-        <div class="container-fluid">
-            <p class="text-muted">Instant</p>
-        </div>
+        @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.FooterHtml))
+        {
+            @Html.Raw(settingsViewModel.FooterHtml);
+        }
     </footer>
 </body>
 </html>
