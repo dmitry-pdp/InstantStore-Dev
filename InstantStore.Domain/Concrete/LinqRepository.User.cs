@@ -17,5 +17,25 @@ namespace InstantStore.Domain.Concrete
                 context.SubmitChanges();
             }
         }
+
+        public User Login(string userName, string password)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var query = userName.Contains('@') 
+                    ? (Func<User, bool>)((User user) => string.Equals(user.Email, userName, StringComparison.OrdinalIgnoreCase))
+                    : (Func<User, bool>)((User user) => string.Equals(user.Name, userName, StringComparison.OrdinalIgnoreCase));
+                
+                return context.Users.FirstOrDefault(query);
+            }
+        }
+
+        public User GetUser(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Users.FirstOrDefault(user => user.Id == id);
+            }
+        }
     }
 }

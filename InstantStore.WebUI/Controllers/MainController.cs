@@ -7,13 +7,17 @@ using System.Web.Mvc;
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
+using InstantStore.WebUI.Models;
 
 namespace InstantStore.WebUI.Controllers
 {
-    public class MainController : Controller
+    public partial class MainController : Controller
     {
         private readonly IRepository repository;
         private readonly SettingsViewModel settingsViewModel;
+
+        // Logged in users.
+        // TODO: Replace with asp.net authentication.
 
         public MainController(IRepository repository)
         {
@@ -33,45 +37,19 @@ namespace InstantStore.WebUI.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult NewUser()
+        public ActionResult SomeWiredStuff()
         {
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult NewUser(string name, string email, string company, string phonenumber, string city, string password, string passwordc)
-        {
-            // TODO: DDoS vulnerability. Throttling needs to be added here.
-
-            if (!string.IsNullOrWhiteSpace(name) &&
-                !string.IsNullOrWhiteSpace(password) &&
-                string.Equals(password, passwordc, StringComparison.Ordinal))
-            {
-                this.repository.AddUser(new User
-                {
-                    Name = name, 
-                    Email = email,
-                    Company = company,
-                    Phonenumber = phonenumber,
-                    City = city,
-                    Password = PasswordHash.PasswordHash.CreateHash(password),
-                    IsAdmin = false,
-                    IsActivated = false,
-                    IsBlocked = false,
-                    IsPaymentCash = true,
-                    DefaultCurrencyId = null
-                });
-            
-                // TODO: Add session for the user.
-            }
-
-            return new RedirectResult("/");
+            return this.View();
         }
 
         public ActionResult Settings()
         {
+            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
+            if (user == null || !user.IsAdmin)
+            {
+                return this.HttpNotFound();
+            }
+
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             return View();
         }
@@ -80,6 +58,12 @@ namespace InstantStore.WebUI.Controllers
         [ValidateInput(false)]
         public ActionResult SettingsUpdate(string headerHtml, string mainDocumentHtml, string footerHtml)
         {
+            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
+            if (user == null || !user.IsAdmin)
+            {
+                return this.HttpNotFound();
+            }
+
             if (settingsViewModel != null)
             {
                 this.settingsViewModel.HeaderHtml = headerHtml;
@@ -88,7 +72,7 @@ namespace InstantStore.WebUI.Controllers
 
                 this.settingsViewModel.ValidateAndSave();
             }
-            
+
             return new RedirectResult("/");
         }
 
@@ -118,7 +102,23 @@ namespace InstantStore.WebUI.Controllers
         {
             // TODO: DDoS vulnerability. Throttling needs to be added here.
 
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(password))
+            {
+                return this.HttpNotFound();
+            }
+
+            UserIdentityManager.ResetUser(this.Request, this.Response);
+
+            var user = this.repository.Login(name, password);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            UserIdentityManager.AddUserSession(this.Response, user);
+
             return new RedirectResult("/");
         }
+
     }
 }

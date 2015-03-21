@@ -205,6 +205,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Контрольная панель.
+        /// </summary>
+        public static string admin_Dashbard {
+            get {
+                return ResourceManager.GetString("admin_Dashbard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Удалить.
         /// </summary>
         public static string admin_Delete {
@@ -1456,6 +1465,42 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Имя города должно быть от 3 до 100 символов.
+        /// </summary>
+        public static string user_CityErrorLength {
+            get {
+                return ResourceManager.GetString("user_CityErrorLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя города должно быть заполнено.
+        /// </summary>
+        public static string user_CityErrorRequired {
+            get {
+                return ResourceManager.GetString("user_CityErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя компании должно быть от 1 до 250 символов.
+        /// </summary>
+        public static string user_CompanyErrorLength {
+            get {
+                return ResourceManager.GetString("user_CompanyErrorLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя компании должно быть заполнено.
+        /// </summary>
+        public static string user_CompanyErrorRequired {
+            get {
+                return ResourceManager.GetString("user_CompanyErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Удалить.
         /// </summary>
         public static string user_DeleteAd {
@@ -1488,6 +1533,69 @@ namespace InstantStore.WebUI.Resources {
         public static string User_exists {
             get {
                 return ResourceManager.GetString("User_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя должно быть от 3 до 100 символов.
+        /// </summary>
+        public static string user_NameErrorLength {
+            get {
+                return ResourceManager.GetString("user_NameErrorLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя пользователя должно быть заполнено.
+        /// </summary>
+        public static string user_NameErrorRequired {
+            get {
+                return ResourceManager.GetString("user_NameErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя города должно быть больше 3-х символов.
+        /// </summary>
+        public static string user_PasswordErrorLength {
+            get {
+                return ResourceManager.GetString("user_PasswordErrorLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароли должны совпадать.
+        /// </summary>
+        public static string user_PasswordErrorMismatch {
+            get {
+                return ResourceManager.GetString("user_PasswordErrorMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароль должен быть заполнен.
+        /// </summary>
+        public static string user_PasswordErrorRequired {
+            get {
+                return ResourceManager.GetString("user_PasswordErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Номер телефона не должен содержать символы кроме цифр 0-9 и -, (, ).
+        /// </summary>
+        public static string user_PhoneNumberInvalid {
+            get {
+                return ResourceManager.GetString("user_PhoneNumberInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Номер телефона должен быть от 1 до 50 символов.
+        /// </summary>
+        public static string user_PhoneNumberLength {
+            get {
+                return ResourceManager.GetString("user_PhoneNumberLength", resourceCulture);
             }
         }
         

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="InstantStore">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10.375" name="InstantStore">
   <DataContextMoniker Name="/InstantStoreDataContext" />
   <nestedChildShapes>
-    <classShape Id="fe8a4939-7bad-4d86-9288-0c0c00592f4e" absoluteBounds="0.75, 3.5, 2, 1.3862939453125">
+    <classShape Id="fe8a4939-7bad-4d86-9288-0c0c00592f4e" absoluteBounds="1, 3.25, 2, 1.3862939453125">
       <DataClassMoniker Name="/InstantStoreDataContext/ProductSize" />
       <nestedChildShapes>
-        <elementListCompartment Id="83f013fc-c55d-4444-8856-5fdab7f21a96" absoluteBounds="0.765, 3.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="83f013fc-c55d-4444-8856-5fdab7f21a96" absoluteBounds="1.0150000000000001, 3.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="c4a76805-83db-42ff-b441-5c440465be5a" absoluteBounds="3.5, 3.25, 2, 1.3862939453125">
@@ -27,7 +27,7 @@
         <classShapeMoniker Id="c4a76805-83db-42ff-b441-5c440465be5a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2 : 3.5); (2 : 2.5881982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.125 : 3.25); (2.125 : 2.5881982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/InstantStoreDataContext/ProductSize/ProductSize_Product" />
       <nodes>
         <classShapeMoniker Id="fe8a4939-7bad-4d86-9288-0c0c00592f4e" />
@@ -40,29 +40,41 @@
         <elementListCompartment Id="48bea287-9253-4b28-b3cb-13ec9a408a3a" absoluteBounds="4.765, 0.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.125 : 2.65549967447917); (5.125 : 3.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.125 : 2.65549967447917); (5.125 : 3.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/InstantStoreDataContext/ProductCategory/ProductCategory_ProductsCategory" />
       <nodes>
         <classShapeMoniker Id="1edda292-8315-4250-9ea9-5836df919466" />
         <classShapeMoniker Id="c4a76805-83db-42ff-b441-5c440465be5a" />
       </nodes>
     </associationConnector>
-    <classShape Id="f59ca2c3-da99-475d-bf00-a20f89d6d7d3" absoluteBounds="3.25, 5.25, 2, 1.5785953776041666">
+    <classShape Id="f59ca2c3-da99-475d-bf00-a20f89d6d7d3" absoluteBounds="3.5, 5.25, 2, 1.5785953776041666">
       <DataClassMoniker Name="/InstantStoreDataContext/Setting" />
       <nestedChildShapes>
-        <elementListCompartment Id="23fc7845-a63a-4e4e-982b-2849d80195ad" absoluteBounds="3.2649999999999997, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="23fc7845-a63a-4e4e-982b-2849d80195ad" absoluteBounds="3.5149999999999997, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="cdc1ab32-da15-4b8f-bd93-a80eb0399950" absoluteBounds="0.875, 5.25, 2, 1.5785953776041666">
+    <classShape Id="cdc1ab32-da15-4b8f-bd93-a80eb0399950" absoluteBounds="1, 5.25, 2, 1.5785953776041666">
       <DataClassMoniker Name="/InstantStoreDataContext/Feedback" />
       <nestedChildShapes>
-        <elementListCompartment Id="6cb168e7-bdb7-47f7-9481-9e118573729c" absoluteBounds="0.88999999999999968, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6cb168e7-bdb7-47f7-9481-9e118573729c" absoluteBounds="1.0149999999999997, 5.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="46529248-bcb6-49ad-9281-4af64e4d2f34" absoluteBounds="6.5, 4.5, 2, 3.1170068359375">
+    <classShape Id="46529248-bcb6-49ad-9281-4af64e4d2f34" absoluteBounds="5.875, 3.75, 2, 3.1170068359375">
       <DataClassMoniker Name="/InstantStoreDataContext/User" />
       <nestedChildShapes>
-        <elementListCompartment Id="60684ec0-5814-40d2-a49d-c164b78631c5" absoluteBounds="6.515, 4.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="60684ec0-5814-40d2-a49d-c164b78631c5" absoluteBounds="5.89, 4.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="100e81e1-e584-408f-bccd-b0bcae3618ae" absoluteBounds="3.25, 7.25, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/InstantStoreDataContext/ErrorLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fcb3605a-e739-4da1-be04-2c9304260305" absoluteBounds="3.2649999999999997, 7.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3700e64f-fc21-4de9-85c5-2032e9b35ef1" absoluteBounds="6.5, 7.75, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/InstantStoreDataContext/Category" />
+      <nestedChildShapes>
+        <elementListCompartment Id="22de7835-45c2-46b0-9c14-d6ef24b167a0" absoluteBounds="6.515, 8.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

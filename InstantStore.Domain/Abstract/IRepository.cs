@@ -1,5 +1,6 @@
 ﻿using InstantStore.Domain.Concrete;
 using InstantStore.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace InstantStore.Domain.Abstract
@@ -15,5 +16,9 @@ namespace InstantStore.Domain.Abstract
         void AddFeedback(Feedback feedback);
 
         void AddUser(User user);
+
+        User Login(string userName, string password);
+
+        User GetUser(Guid id);
     }
 }

@@ -1,0 +1,9 @@
+﻿.border
+{
+    border: 1px solid #ddd;
+}
+
+.error-label
+{
+    color:red;
+}

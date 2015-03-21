@@ -1,0 +1,23 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@{
+    ViewBag.Title = StringResource.admin_Dashbard;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<h2>@ViewBag.Title</h2>
+<div class="container-fluid col-md-10 col-md-offset-2">
+    <div class="row">
+        <div class="col-md-3 tile">
+            @Html.ActionLink(StringResource.admin_Users, "Users")
+        </div>
+        <div class="col-md-3 tile">
+            @Html.ActionLink(StringResource.admin_Users, "Users")
+        </div>
+        <div class="col-md-3 tile">
+            @Html.ActionLink(StringResource.admin_Users, "Users")
+        </div>
+    </div>
+</div>

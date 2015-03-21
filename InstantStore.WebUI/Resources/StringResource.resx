@@ -601,4 +601,40 @@
   <data name="form_Reg_Message" xml:space="preserve">
     <value>Для того чтобы зарегестрироваться заполните пожалуйста все поля формы и нажмите кнопку "зарегестрироваться".</value>
   </data>
+  <data name="admin_Dashbard" xml:space="preserve">
+    <value>Контрольная панель</value>
+  </data>
+  <data name="user_CityErrorLength" xml:space="preserve">
+    <value>Имя города должно быть от 3 до 100 символов</value>
+  </data>
+  <data name="user_CityErrorRequired" xml:space="preserve">
+    <value>Имя города должно быть заполнено</value>
+  </data>
+  <data name="user_CompanyErrorLength" xml:space="preserve">
+    <value>Имя компании должно быть от 1 до 250 символов</value>
+  </data>
+  <data name="user_CompanyErrorRequired" xml:space="preserve">
+    <value>Имя компании должно быть заполнено</value>
+  </data>
+  <data name="user_NameErrorLength" xml:space="preserve">
+    <value>Имя должно быть от 3 до 100 символов</value>
+  </data>
+  <data name="user_NameErrorRequired" xml:space="preserve">
+    <value>Имя пользователя должно быть заполнено</value>
+  </data>
+  <data name="user_PasswordErrorLength" xml:space="preserve">
+    <value>Имя города должно быть больше 3-х символов</value>
+  </data>
+  <data name="user_PasswordErrorMismatch" xml:space="preserve">
+    <value>Пароли должны совпадать</value>
+  </data>
+  <data name="user_PasswordErrorRequired" xml:space="preserve">
+    <value>Пароль должен быть заполнен</value>
+  </data>
+  <data name="user_PhoneNumberInvalid" xml:space="preserve">
+    <value>Номер телефона не должен содержать символы кроме цифр 0-9 и -, (, )</value>
+  </data>
+  <data name="user_PhoneNumberLength" xml:space="preserve">
+    <value>Номер телефона должен быть от 1 до 50 символов</value>
+  </data>
 </root>
