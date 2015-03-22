@@ -7,3 +7,18 @@
 {
     color:red;
 }
+
+.c_pointer:hover{
+    cursor:pointer;
+}
+
+.f_right
+{
+    float: right;
+}
+
+.form-group .f_right
+{
+    margin-right: 0;
+    float: right;
+}

@@ -19,7 +19,7 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <header class="container-fluid">
+    <header>
         @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.HeaderHtml))
         {
             @Html.Raw(settingsViewModel.HeaderHtml);
@@ -59,7 +59,7 @@
             </ul>
         </div>
     </nav>    
-    <div class="container-fluid">
+    <div>
         <div class="row panel">
             @if (categoryListViewModel != null) 
             { 
@@ -72,7 +72,7 @@
             }
             else
             {
-                <div class="col-md-10 col-md-offset-1">
+                <div class="">
                     @RenderBody()
                 </div>
             }

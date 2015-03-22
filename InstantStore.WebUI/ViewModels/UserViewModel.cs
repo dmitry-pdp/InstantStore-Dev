@@ -1,14 +1,33 @@
-﻿using InstantStore.WebUI.Resources;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
+using InstantStore.Domain.Abstract;
+using InstantStore.WebUI.Resources;
+
 namespace InstantStore.WebUI.ViewModels
 {
     public class UserViewModel
     {
+        public UserViewModel()
+        {
+        }
+
+        public UserViewModel(IRepository repository, Guid id)
+        {
+            var user = repository.GetUser(id);
+            if (user != null)
+            {
+                this.Name = user.Name;
+                this.Email = user.Email;
+                this.Company = user.Company;
+                this.Phonenumber = user.Phonenumber;
+                this.City = user.City;
+            }
+        }
+
         [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorRequired")]
         [StringLength(100, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]

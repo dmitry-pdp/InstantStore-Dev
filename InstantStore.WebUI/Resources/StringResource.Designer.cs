@@ -214,6 +214,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Панель управления.
+        /// </summary>
+        public static string admin_Dashboard {
+            get {
+                return ResourceManager.GetString("admin_Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Удалить.
         /// </summary>
         public static string admin_Delete {
@@ -493,11 +502,74 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Активировать.
+        /// </summary>
+        public static string admin_UserActivateAction {
+            get {
+                return ResourceManager.GetString("admin_UserActivateAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сбросить пароль.
+        /// </summary>
+        public static string admin_UserResetPassword {
+            get {
+                return ResourceManager.GetString("admin_UserResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пользователи.
         /// </summary>
         public static string admin_Users {
             get {
                 return ResourceManager.GetString("admin_Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Активные.
+        /// </summary>
+        public static string admin_Users_ActiveTab {
+            get {
+                return ResourceManager.GetString("admin_Users_ActiveTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заблокирванные.
+        /// </summary>
+        public static string admin_Users_BlockedTab {
+            get {
+                return ResourceManager.GetString("admin_Users_BlockedTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новые.
+        /// </summary>
+        public static string admin_Users_NewTab {
+            get {
+                return ResourceManager.GetString("admin_Users_NewTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заказы.
+        /// </summary>
+        public static string admin_UsersOrdersAction {
+            get {
+                return ResourceManager.GetString("admin_UsersOrdersAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Разблокировать.
+        /// </summary>
+        public static string admin_UserUnblockAction {
+            get {
+                return ResourceManager.GetString("admin_UserUnblockAction", resourceCulture);
             }
         }
         
@@ -615,6 +687,24 @@ namespace InstantStore.WebUI.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заказы (новых: {0}, активных: {1}).
+        /// </summary>
+        public static string controlPanel_OrdersTemplate {
+            get {
+                return ResourceManager.GetString("controlPanel_OrdersTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователи.
+        /// </summary>
+        public static string controlPanel_UsersTemplate {
+            get {
+                return ResourceManager.GetString("controlPanel_UsersTemplate", resourceCulture);
             }
         }
         
@@ -768,6 +858,15 @@ namespace InstantStore.WebUI.Resources {
         public static string form_Contact_us {
             get {
                 return ResourceManager.GetString("form_Contact_us", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Детали.
+        /// </summary>
+        public static string form_Details {
+            get {
+                return ResourceManager.GetString("form_Details", resourceCulture);
             }
         }
         
@@ -1416,6 +1515,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Settings_SubmitButtonText {
             get {
                 return ResourceManager.GetString("Settings_SubmitButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заблокировать.
+        /// </summary>
+        public static string user_ActionsBlock {
+            get {
+                return ResourceManager.GetString("user_ActionsBlock", resourceCulture);
             }
         }
         

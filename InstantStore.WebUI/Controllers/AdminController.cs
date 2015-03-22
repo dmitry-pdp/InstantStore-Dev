@@ -24,7 +24,30 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Users()
         {
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository);
+            this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository);
             return this.Authorize() ?? View();
+        }
+
+        public ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
+        {
+            this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, id);
+            if (activate != null && activate.Value)
+            {
+                this.repository.ActivateUser(id);
+                return this.RedirectToAction("Users");
+            }
+            if (unblock != null && unblock.Value)
+            {
+                this.repository.UnblockUser(id);
+                return this.RedirectToAction("Users");
+            }
+            if (block != null && block.Value)
+            {
+                this.repository.BlockUser(id);
+                return this.RedirectToAction("Users");
+            }
+            return this.Authorize() ?? this.View(new UserViewModel(this.repository, id));
         }
 
         public ActionResult Dashboard()
@@ -37,7 +60,7 @@ namespace InstantStore.WebUI.Controllers
             var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
             if (user == null || !user.IsAdmin)
             {
-                return this.HttpNotFound();
+                //return this.HttpNotFound();
             }
 
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;

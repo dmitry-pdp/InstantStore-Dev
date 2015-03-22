@@ -37,5 +37,43 @@ namespace InstantStore.Domain.Concrete
                 return context.Users.FirstOrDefault(user => user.Id == id);
             }
         }
+
+        public IList<User> GetUsers(Func<User, bool> condition)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Users.Where(condition).ToList();
+            }
+        }
+
+        public void ActivateUser(Guid userId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.IsActivated = true;
+                context.SubmitChanges();
+            }
+        }
+
+        public void UnblockUser(Guid userId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.IsBlocked = false;
+                context.SubmitChanges();
+            }
+        }
+
+        public void BlockUser(Guid userId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.IsBlocked = true;
+                context.SubmitChanges();
+            }
+        }
     }
 }

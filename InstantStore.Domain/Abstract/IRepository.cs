@@ -20,5 +20,13 @@ namespace InstantStore.Domain.Abstract
         User Login(string userName, string password);
 
         User GetUser(Guid id);
+
+        IList<User> GetUsers(Func<User, bool> condition);
+
+        void ActivateUser(Guid userId);
+
+        void UnblockUser(Guid userId);
+
+        void BlockUser(Guid userId);
     }
 }

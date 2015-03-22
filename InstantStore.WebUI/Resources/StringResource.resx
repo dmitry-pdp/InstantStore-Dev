@@ -637,4 +637,40 @@
   <data name="user_PhoneNumberLength" xml:space="preserve">
     <value>Номер телефона должен быть от 1 до 50 символов</value>
   </data>
+  <data name="admin_Dashboard" xml:space="preserve">
+    <value>Панель управления</value>
+  </data>
+  <data name="admin_UserActivateAction" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="admin_UsersOrdersAction" xml:space="preserve">
+    <value>Заказы</value>
+  </data>
+  <data name="admin_Users_ActiveTab" xml:space="preserve">
+    <value>Активные</value>
+  </data>
+  <data name="admin_Users_BlockedTab" xml:space="preserve">
+    <value>Заблокирванные</value>
+  </data>
+  <data name="admin_Users_NewTab" xml:space="preserve">
+    <value>Новые</value>
+  </data>
+  <data name="admin_UserUnblockAction" xml:space="preserve">
+    <value>Разблокировать</value>
+  </data>
+  <data name="controlPanel_OrdersTemplate" xml:space="preserve">
+    <value>Заказы (новых: {0}, активных: {1})</value>
+  </data>
+  <data name="controlPanel_UsersTemplate" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="form_Details" xml:space="preserve">
+    <value>Детали</value>
+  </data>
+  <data name="user_ActionsBlock" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
+  <data name="admin_UserResetPassword" xml:space="preserve">
+    <value>Сбросить пароль</value>
+  </data>
 </root>
