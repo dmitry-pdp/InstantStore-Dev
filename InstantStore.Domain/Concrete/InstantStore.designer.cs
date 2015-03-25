@@ -54,6 +54,12 @@ namespace InstantStore.Domain.Concrete
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
+    partial void InsertCurrency(Currency instance);
+    partial void UpdateCurrency(Currency instance);
+    partial void DeleteCurrency(Currency instance);
+    partial void InsertExchangeRate(ExchangeRate instance);
+    partial void UpdateExchangeRate(ExchangeRate instance);
+    partial void DeleteExchangeRate(ExchangeRate instance);
     #endregion
 		
 		public InstantStoreDataContext() : 
@@ -155,6 +161,22 @@ namespace InstantStore.Domain.Concrete
 			get
 			{
 				return this.GetTable<Category>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Currency> Currencies
+		{
+			get
+			{
+				return this.GetTable<Currency>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ExchangeRate> ExchangeRates
+		{
+			get
+			{
+				return this.GetTable<ExchangeRate>();
 			}
 		}
 	}
@@ -1722,7 +1744,7 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Image
 		{
 			get
@@ -1802,7 +1824,7 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attachment", DbType="VarBinary(MAX)", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Attachment
 		{
 			get
@@ -1818,6 +1840,300 @@ namespace InstantStore.Domain.Concrete
 					this._Attachment = value;
 					this.SendPropertyChanged("Attachment");
 					this.OnAttachmentChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Currency")]
+	public partial class Currency : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private string _Text;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnTextChanging(string value);
+    partial void OnTextChanged();
+    #endregion
+		
+		public Currency()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Text", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Text
+		{
+			get
+			{
+				return this._Text;
+			}
+			set
+			{
+				if ((this._Text != value))
+				{
+					this.OnTextChanging(value);
+					this.SendPropertyChanging();
+					this._Text = value;
+					this.SendPropertyChanged("Text");
+					this.OnTextChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ExchangeRate")]
+	public partial class ExchangeRate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Guid _FromCurrencyId;
+		
+		private System.Guid _ToCurrencyId;
+		
+		private System.Nullable<double> _ConversionRate;
+		
+		private System.Nullable<double> _ReverseConversionRate;
+		
+		private EntityRef<Currency> _Currency;
+		
+		private EntityRef<Currency> _Currency1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnFromCurrencyIdChanging(System.Guid value);
+    partial void OnFromCurrencyIdChanged();
+    partial void OnToCurrencyIdChanging(System.Guid value);
+    partial void OnToCurrencyIdChanged();
+    partial void OnConversionRateChanging(System.Nullable<double> value);
+    partial void OnConversionRateChanged();
+    partial void OnReverseConversionRateChanging(System.Nullable<double> value);
+    partial void OnReverseConversionRateChanged();
+    #endregion
+		
+		public ExchangeRate()
+		{
+			this._Currency = default(EntityRef<Currency>);
+			this._Currency1 = default(EntityRef<Currency>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FromCurrencyId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid FromCurrencyId
+		{
+			get
+			{
+				return this._FromCurrencyId;
+			}
+			set
+			{
+				if ((this._FromCurrencyId != value))
+				{
+					if (this._Currency.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFromCurrencyIdChanging(value);
+					this.SendPropertyChanging();
+					this._FromCurrencyId = value;
+					this.SendPropertyChanged("FromCurrencyId");
+					this.OnFromCurrencyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ToCurrencyId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid ToCurrencyId
+		{
+			get
+			{
+				return this._ToCurrencyId;
+			}
+			set
+			{
+				if ((this._ToCurrencyId != value))
+				{
+					if (this._Currency1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnToCurrencyIdChanging(value);
+					this.SendPropertyChanging();
+					this._ToCurrencyId = value;
+					this.SendPropertyChanged("ToCurrencyId");
+					this.OnToCurrencyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConversionRate", DbType="Float")]
+		public System.Nullable<double> ConversionRate
+		{
+			get
+			{
+				return this._ConversionRate;
+			}
+			set
+			{
+				if ((this._ConversionRate != value))
+				{
+					this.OnConversionRateChanging(value);
+					this.SendPropertyChanging();
+					this._ConversionRate = value;
+					this.SendPropertyChanged("ConversionRate");
+					this.OnConversionRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReverseConversionRate", DbType="Float")]
+		public System.Nullable<double> ReverseConversionRate
+		{
+			get
+			{
+				return this._ReverseConversionRate;
+			}
+			set
+			{
+				if ((this._ReverseConversionRate != value))
+				{
+					this.OnReverseConversionRateChanging(value);
+					this.SendPropertyChanging();
+					this._ReverseConversionRate = value;
+					this.SendPropertyChanged("ReverseConversionRate");
+					this.OnReverseConversionRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Currency_ExchangeRate", Storage="_Currency", ThisKey="FromCurrencyId", OtherKey="Id", IsForeignKey=true)]
+		public Currency Currency
+		{
+			get
+			{
+				return this._Currency.Entity;
+			}
+			set
+			{
+				if ((this._Currency.Entity != value))
+				{
+					this.SendPropertyChanging();
+					this._Currency.Entity = value;
+					this.SendPropertyChanged("Currency");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Currency_ExchangeRate1", Storage="_Currency1", ThisKey="ToCurrencyId", OtherKey="Id", IsForeignKey=true)]
+		public Currency Currency1
+		{
+			get
+			{
+				return this._Currency1.Entity;
+			}
+			set
+			{
+				if ((this._Currency1.Entity != value))
+				{
+					this.SendPropertyChanging();
+					this._Currency1.Entity = value;
+					this.SendPropertyChanged("Currency1");
 				}
 			}
 		}

@@ -75,5 +75,31 @@ namespace InstantStore.Domain.Concrete
                 context.SubmitChanges();
             }
         }
+
+        public void UpdateUser(User user)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var userUpdated = context.Users.FirstOrDefault(u => u.Id == user.Id);
+                userUpdated.Name = user.Name;
+                userUpdated.City = user.City;
+                userUpdated.Company = user.Company;
+                userUpdated.DefaultCurrencyId = user.DefaultCurrencyId != Guid.Empty ? user.DefaultCurrencyId : null;
+                userUpdated.Email = user.Email;
+                userUpdated.IsPaymentCash = user.IsPaymentCash;
+                userUpdated.Phonenumber = user.Phonenumber;
+                context.SubmitChanges();
+            }
+        }
+
+        public void ResetPassword(Guid userId, string newPassword)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                user.Password = newPassword;
+                context.SubmitChanges();
+            }
+        }
     }
 }

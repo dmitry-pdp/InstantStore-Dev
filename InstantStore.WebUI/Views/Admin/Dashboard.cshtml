@@ -7,17 +7,22 @@
 
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<h2>@ViewBag.Title</h2>
-<div class="container-fluid col-md-10 col-md-offset-2">
-    <div class="row">
-        <div class="col-md-3 tile">
-            @Html.ActionLink(StringResource.admin_Users, "Users")
-        </div>
-        <div class="col-md-3 tile">
-            @Html.ActionLink(StringResource.admin_Users, "Users")
-        </div>
-        <div class="col-md-3 tile">
-            @Html.ActionLink(StringResource.admin_Users, "Users")
+<div class="border col-sm-4">
+    @Html.Partial("ControlPanel", controlPanel)
+</div>
+<div class="border col-sm-8">
+    <h2>@ViewBag.Title</h2>
+    <div class="container-fluid col-md-10 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-3 tile">
+                @Html.ActionLink(StringResource.admin_Users, "Users")
+            </div>
+            <div class="col-md-3 tile">
+                @Html.ActionLink(StringResource.admin_Users, "Users")
+            </div>
+            <div class="col-md-3 tile">
+                @Html.ActionLink(StringResource.admin_Users, "Users")
+            </div>
         </div>
     </div>
 </div>

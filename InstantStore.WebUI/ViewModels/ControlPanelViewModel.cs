@@ -12,21 +12,23 @@ namespace InstantStore.WebUI.ViewModels
     {
         private readonly IRepository repository;
 
-        public ControlPanelViewModel(IRepository repository)
+        public ControlPanelViewModel(IRepository repository, ControlPanelPage page)
         {
             this.repository = repository;
             this.Items = new List<ControlPanelItemViewModel>();
 
-            this.Initialize();
+            this.Initialize(page);
         }
 
         public List<ControlPanelItemViewModel> Items { get; private set; }
 
-        private void Initialize()
+        private void Initialize(ControlPanelPage page)
         {
             this.Items.Add(new ControlPanelItemViewModel 
             { 
-                Title = string.Format(StringResource.controlPanel_OrdersTemplate, 2, 100)
+                Title = string.Format(StringResource.controlPanel_OrdersTemplate, 2, 100),
+                ActionName = "Orders",
+                IsActive = page == ControlPanelPage.Orders
             });
 
             var newUsersCount = this.repository.GetUsers(x => !x.IsActivated).Count;
@@ -34,32 +36,43 @@ namespace InstantStore.WebUI.ViewModels
             {
                 Title = StringResource.controlPanel_UsersTemplate,
                 Badge = newUsersCount > 0 ? newUsersCount.ToString() : null,
-                IsActive = true
+                ActionName = "Users",
+                IsActive = page == ControlPanelPage.Users
             });
 
             this.Items.Add(new ControlPanelItemViewModel
             {
-                Title = "Скидки"
+                ActionName = "Offers",
+                Title = "Скидки",
+                IsActive = page == ControlPanelPage.Offers
             });
 
             this.Items.Add(new ControlPanelItemViewModel
             {
-                Title = "Страницы"
+                ActionName = "Pages",
+                Title = "Страницы",
+                IsActive = page == ControlPanelPage.Pages
             });
 
             this.Items.Add(new ControlPanelItemViewModel
             {
-                Title = "Валюта"
+                Title = StringResource.admin_CurrencyPage,
+                ActionName = "Currency",
+                IsActive = page == ControlPanelPage.Currency
             });
 
             this.Items.Add(new ControlPanelItemViewModel
             {
-                Title = "Шаблоны"
+                Title = "Шаблоны",
+                ActionName = "Templates",
+                IsActive = page == ControlPanelPage.Templates
             });
 
             this.Items.Add(new ControlPanelItemViewModel
             {
-                Title = "Настройки"
+                Title = "Настройки",
+                ActionName = "Settings",
+                IsActive = page == ControlPanelPage.Settings
             });
         }
     }
@@ -70,6 +83,19 @@ namespace InstantStore.WebUI.ViewModels
 
         public string Badge { get; set; }
 
+        public string ActionName { get; set; }
+
         public bool IsActive { get; set; }
+    }
+
+    public enum ControlPanelPage
+    {
+        Orders,
+        Users,
+        Currency,
+        Settings,
+        Offers,
+        Pages,
+        Templates
     }
 }

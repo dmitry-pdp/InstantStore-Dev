@@ -97,4 +97,21 @@
       <Column Name="Attachment" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
     </Type>
   </Table>
+  <Table Name="dbo.Currency" Member="Currencies">
+    <Type Name="Currency">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExchangeRate" Member="ExchangeRates">
+    <Type Name="ExchangeRate">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FromCurrencyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ToCurrencyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ConversionRate" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ReverseConversionRate" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Currency_ExchangeRate" Member="Currency" ThisKey="FromCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+      <Association Name="Currency_ExchangeRate1" Member="Currency1" ThisKey="ToCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+    </Type>
+  </Table>
 </Database>

@@ -51,7 +51,9 @@
       <DependentUpon>InstantStore.dbml</DependentUpon>
     </Compile>
     <Compile Include="Concrete\LinqRepository.cs" />
+    <Compile Include="Concrete\LinqRepository.Currency.cs" />
     <Compile Include="Concrete\LinqRepository.Error.cs" />
+    <Compile Include="Concrete\LinqRepository.ExchangeRate.cs" />
     <Compile Include="Concrete\LinqRepository.Feedback.cs" />
     <Compile Include="Concrete\LinqRepository.Settings.cs" />
     <Compile Include="Concrete\LinqRepository.User.cs" />

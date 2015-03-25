@@ -42,40 +42,6 @@ namespace InstantStore.WebUI.Controllers
             return this.View();
         }
 
-        public ActionResult Settings()
-        {
-            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
-            if (user == null || !user.IsAdmin)
-            {
-                return this.HttpNotFound();
-            }
-
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult SettingsUpdate(string headerHtml, string mainDocumentHtml, string footerHtml)
-        {
-            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
-            if (user == null || !user.IsAdmin)
-            {
-                return this.HttpNotFound();
-            }
-
-            if (settingsViewModel != null)
-            {
-                this.settingsViewModel.HeaderHtml = headerHtml;
-                this.settingsViewModel.FooterHtml = footerHtml;
-                this.settingsViewModel.MainDocumentHtml = mainDocumentHtml;
-
-                this.settingsViewModel.ValidateAndSave();
-            }
-
-            return new RedirectResult("/");
-        }
-
         public ActionResult Feedback()
         {
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;

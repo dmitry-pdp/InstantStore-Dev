@@ -673,4 +673,33 @@
   <data name="admin_UserResetPassword" xml:space="preserve">
     <value>Сбросить пароль</value>
   </data>
+  <data name="admin_UserPaymentCurrency" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="admin_UserPaymentType" xml:space="preserve">
+    <value>Тип платежа</value>
+  </data>
+  <data name="admin_Currency" xml:space="preserve">
+    <value>Список валют</value>
+  </data>
+  <data name="admin_CurrencyPage" xml:space="preserve">
+    <value>Настройки вылюты</value>
+  </data>
+  <data name="admin_ExchangeRate" xml:space="preserve">
+    <value>Обменный курс</value>
+  </data>
+  <data name="Currency_New" xml:space="preserve">
+    <value>Новая валюта</value>
+  </data>
+  <data name="ExchangeRate_New" xml:space="preserve">
+    <value>Новый курс</value>
+  </data>
+  <data name="PaymentType_Cash" xml:space="preserve">
+    <value>Наличные</value>
+    <comment>Форма оплаты назначенная пользователю.</comment>
+  </data>
+  <data name="PaymentType_Cashless" xml:space="preserve">
+    <value>Безналичные</value>
+    <comment>Форма оплаты назначенная пользователю.</comment>
+  </data>
 </root>

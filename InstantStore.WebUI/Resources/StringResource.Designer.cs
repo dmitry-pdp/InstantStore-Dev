@@ -205,6 +205,24 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Список валют.
+        /// </summary>
+        public static string admin_Currency {
+            get {
+                return ResourceManager.GetString("admin_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Настройки вылюты.
+        /// </summary>
+        public static string admin_CurrencyPage {
+            get {
+                return ResourceManager.GetString("admin_CurrencyPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Контрольная панель.
         /// </summary>
         public static string admin_Dashbard {
@@ -282,6 +300,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_editUser {
             get {
                 return ResourceManager.GetString("admin_editUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обменный курс.
+        /// </summary>
+        public static string admin_ExchangeRate {
+            get {
+                return ResourceManager.GetString("admin_ExchangeRate", resourceCulture);
             }
         }
         
@@ -511,6 +538,24 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Валюта.
+        /// </summary>
+        public static string admin_UserPaymentCurrency {
+            get {
+                return ResourceManager.GetString("admin_UserPaymentCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тип платежа.
+        /// </summary>
+        public static string admin_UserPaymentType {
+            get {
+                return ResourceManager.GetString("admin_UserPaymentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сбросить пароль.
         /// </summary>
         public static string admin_UserResetPassword {
@@ -718,6 +763,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Новая валюта.
+        /// </summary>
+        public static string Currency_New {
+            get {
+                return ResourceManager.GetString("Currency_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Разработка сайта -.
         /// </summary>
         public static string Developed_by {
@@ -750,6 +804,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Error_General {
             get {
                 return ResourceManager.GetString("Error_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новый курс.
+        /// </summary>
+        public static string ExchangeRate_New {
+            get {
+                return ResourceManager.GetString("ExchangeRate_New", resourceCulture);
             }
         }
         
@@ -1182,6 +1245,24 @@ namespace InstantStore.WebUI.Resources {
         public static string Page_title_ProductsList {
             get {
                 return ResourceManager.GetString("Page_title_ProductsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Наличные.
+        /// </summary>
+        public static string PaymentType_Cash {
+            get {
+                return ResourceManager.GetString("PaymentType_Cash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Безналичные.
+        /// </summary>
+        public static string PaymentType_Cashless {
+            get {
+                return ResourceManager.GetString("PaymentType_Cashless", resourceCulture);
             }
         }
         

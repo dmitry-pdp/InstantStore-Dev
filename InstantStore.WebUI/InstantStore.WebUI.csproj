@@ -128,6 +128,9 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminController.Currency.cs" />
+    <Compile Include="Controllers\AdminController.Settings.cs" />
+    <Compile Include="Controllers\AdminController.User.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\MainController.User.cs" />
     <Compile Include="Controllers\NavCategoryController.cs" />
@@ -149,7 +152,9 @@
     </Compile>
     <Compile Include="Utilities\Compare.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
+    <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
@@ -191,7 +196,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Main\Index.cshtml" />
-    <Content Include="Views\Main\Settings.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Main\Feedback.cshtml" />
     <Content Include="Views\Main\Login.cshtml" />
     <Content Include="Views\Main\NewUser.cshtml" />
@@ -199,6 +204,12 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Main\NewUserConfirmation.cshtml" />
     <Content Include="Views\Admin\User.cshtml" />
+    <Content Include="Views\Admin\Currency.cshtml" />
+    <Content Include="Views\Admin\ControlPanel.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\Offers.cshtml" />
+    <Content Include="Views\Admin\Pages.cshtml" />
+    <Content Include="Views\Admin\Templates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

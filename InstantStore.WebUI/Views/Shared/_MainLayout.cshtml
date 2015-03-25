@@ -3,6 +3,7 @@
 @{
     var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
     var categoryListViewModel = ViewBag.CategoryListViewModel;
+    var controlPanel = ViewBag.ControlPanelViewModel as ControlPanelViewModel;
 }
 <!DOCTYPE html>
 
@@ -59,8 +60,8 @@
             </ul>
         </div>
     </nav>    
-    <div>
-        <div class="row panel">
+    <div class="container-fluid">
+        <div class="row">
             @if (categoryListViewModel != null) 
             { 
                 <div id="sidebar" role="navigation" class="col-xs-3">
@@ -70,13 +71,22 @@
                     @RenderBody()
                 </div>
             }
-            else
+            else if(controlPanel != null)
             {
-                <div class="">
+                <div class="border col-sm-3">
+                    @Html.Partial("ControlPanel", controlPanel)
+                </div>
+                <div class="border col-sm-9">
                     @RenderBody()
                 </div>
             }
-        </div>        
+            else
+            {
+            <div>
+                @RenderBody()
+            </div>
+            }
+        </div>
     </div> 
     <footer class="footer">
         @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.FooterHtml))

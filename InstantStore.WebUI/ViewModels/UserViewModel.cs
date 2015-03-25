@@ -4,33 +4,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-using InstantStore.Domain.Abstract;
 using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class UserViewModel
+    public class UserViewModel : UserViewModelBase
     {
-        public UserViewModel()
-        {
-        }
+        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Pwd")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
+        [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorLength")]
+        public string Password { get; set; }
 
-        public UserViewModel(IRepository repository, Guid id)
-        {
-            var user = repository.GetUser(id);
-            if (user != null)
-            {
-                this.Name = user.Name;
-                this.Email = user.Email;
-                this.Company = user.Company;
-                this.Phonenumber = user.Phonenumber;
-                this.City = user.City;
-            }
-        }
+        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_ConfirmPwd")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
+        [Compare("Password", ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorMismatch")]
+        [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorLength")]
+        public string ConfirmPassword { get; set; }
+    }
 
+    public class UserViewModelBase
+    {
         [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorRequired")]
-        [StringLength(100, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
+        [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
         public string Name { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Email")]
@@ -50,20 +48,7 @@ namespace InstantStore.WebUI.ViewModels
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Region")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorRequired")]
-        [StringLength(100, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
+        [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
         public string City { get; set; }
-
-        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Pwd")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
-        [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorLength")]
-        public string Password { get; set; }
-
-        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_ConfirmPwd")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
-        [Compare("Password", ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorMismatch")]
-        [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorLength")]
-        public string ConfirmPassword { get; set; }
     }
 }

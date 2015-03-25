@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+using InstantStore.Domain.Abstract;
+using InstantStore.Domain.Concrete;
+using InstantStore.WebUI.ViewModels;
+using InstantStore.WebUI.Models;
+
+namespace InstantStore.WebUI.Controllers
+{
+    public partial class AdminController
+    {
+        public ActionResult Currency(string tab, ExchangeRateViewModel exchangeRateViewModel)
+        {
+            var currencies = this.repository.GetCurrencies();
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Currency);
+            this.ViewData["Currencies"] = currencies;
+            this.ViewData["Tab"] = tab;
+            this.ViewData["CurrenciesSelectList"] = 
+                currencies.Select(c => new SelectListItem {
+                    Text = c.Text,
+                    Value = c.Id.ToString()
+                }).ToList();
+
+            return this.View(new ExchangeRateViewModel(this.repository));
+        }
+
+        [HttpGet]
+        public ActionResult CurrencyUpdate(string a, Guid? id)
+        {
+            if (string.Equals(a, "delete") && id != null)
+            {
+                this.repository.DeleteCurrency(id.Value);
+            }
+
+            return this.RedirectToAction("Currency", new { tab = "currency" });
+        }
+
+        [HttpPost]
+        public ActionResult CurrencyUpdate(Currency currency)
+        {
+            if (!string.IsNullOrWhiteSpace(currency.Text))
+            {
+                this.repository.AddCurrency(currency.Text);
+            }
+
+            return this.RedirectToAction("Currency", new { tab = "currency" });
+        }
+
+        [HttpGet]
+        public ActionResult ExchangeRateUpdate(Guid? id, string a)
+        {
+            if (string.Equals(a, "delete") && id != null)
+            {
+                this.repository.DeleteExchangeRate(id.Value);
+            }
+
+            return this.RedirectToAction("Currency");
+        }
+
+        [HttpPost]
+        public ActionResult ExchangeRateUpdate(string action, string rate, string rate_r, Guid? id)
+        {
+            // ajax update
+            if (string.Equals(action, "update", StringComparison.OrdinalIgnoreCase) &&  id != null)
+            {
+                this.repository.UpdateExchangeRate(new ExchangeRate
+                {
+                    Id = id.Value,
+                    ConversionRate = this.TryConvertDouble(rate),
+                    ReverseConversionRate = this.TryConvertDouble(rate_r)
+                });
+
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                /*
+                this.repository.AddExchangeRate(new ExchangeRate
+                {
+                    FromCurrencyId = newRate.FromId,
+                    ToCurrencyId = newRate.ToId,
+                    ConversionRate = newRate.Rate
+                });
+                 */
+            }
+
+            return this.RedirectToAction("Currency");
+        }
+
+        private double? TryConvertDouble(string input)
+        {
+            double result;
+            return double.TryParse(input, out result) ? (double?)result : (double?)null;
+        }
+    }
+}

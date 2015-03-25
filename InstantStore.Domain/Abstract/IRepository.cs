@@ -28,5 +28,21 @@ namespace InstantStore.Domain.Abstract
         void UnblockUser(Guid userId);
 
         void BlockUser(Guid userId);
+
+        void UpdateUser(User user);
+
+        IList<Currency> GetCurrencies();
+
+        void AddCurrency(string text);
+
+        void DeleteCurrency(Guid id);
+
+        IList<ExchangeRate> GetExchangeRates();
+
+        void AddExchangeRate(ExchangeRate exchangeRate);
+
+        void UpdateExchangeRate(ExchangeRate exchangeRate);
+
+        void DeleteExchangeRate(Guid id);
     }
 }

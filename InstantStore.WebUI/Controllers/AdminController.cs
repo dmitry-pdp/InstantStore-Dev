@@ -11,7 +11,7 @@ using InstantStore.WebUI.Models;
 
 namespace InstantStore.WebUI.Controllers
 {
-    public class AdminController : Controller
+    public partial class AdminController : Controller
     {
         private readonly IRepository repository;
         private readonly SettingsViewModel settingsViewModel;
@@ -20,34 +20,6 @@ namespace InstantStore.WebUI.Controllers
         {
             this.repository = repository;
             this.settingsViewModel = new SettingsViewModel(this.repository);
-        }
-
-        public ActionResult Users()
-        {
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository);
-            this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository);
-            return this.Authorize() ?? View();
-        }
-
-        public ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
-        {
-            this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, id);
-            if (activate != null && activate.Value)
-            {
-                this.repository.ActivateUser(id);
-                return this.RedirectToAction("Users");
-            }
-            if (unblock != null && unblock.Value)
-            {
-                this.repository.UnblockUser(id);
-                return this.RedirectToAction("Users");
-            }
-            if (block != null && block.Value)
-            {
-                this.repository.BlockUser(id);
-                return this.RedirectToAction("Users");
-            }
-            return this.Authorize() ?? this.View(new UserViewModel(this.repository, id));
         }
 
         public ActionResult Dashboard()
@@ -65,6 +37,30 @@ namespace InstantStore.WebUI.Controllers
 
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             return null;
+        }
+
+        public ActionResult Orders()
+        {
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Orders);
+            return this.Authorize() ?? this.View();
+        }
+
+        public ActionResult Offers()
+        {
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Offers);
+            return this.Authorize() ?? this.View();
+        }
+
+        public ActionResult Pages()
+        {
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
+            return this.Authorize() ?? this.View();
+        }
+
+        public ActionResult Templates()
+        {
+            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Templates);
+            return this.Authorize() ?? this.View();
         }
     }
 }
