@@ -702,4 +702,13 @@
     <value>Безналичные</value>
     <comment>Форма оплаты назначенная пользователю.</comment>
   </data>
+  <data name="error_ErrorsLabel" xml:space="preserve">
+    <value>Ошибки при добавлении данных:</value>
+  </data>
+  <data name="error_ExchangeRateAlreadyExists" xml:space="preserve">
+    <value>Данный обменный курс уже существует.</value>
+  </data>
+  <data name="error_ExchangeRateSameCurrency" xml:space="preserve">
+    <value>Валюта для конвертации не должна быть одна и та же.</value>
+  </data>
 </root>

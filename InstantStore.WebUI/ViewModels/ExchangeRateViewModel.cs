@@ -31,6 +31,9 @@ namespace InstantStore.WebUI.ViewModels
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
         public double Rate { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
+        public double ReverseRate { get; set; }
+
         public IList<ExchangeRateItem> ExchangeRateItems { get; private set; }
 
         public IDictionary<Guid, Currency> Currencies { get; private set; }

@@ -53,26 +53,32 @@
                 </tr>
             }
         </table>
-                        <!--
-                    <tr>
-                    @using (Html.BeginForm("ExchangeRateUpdate", "Admin", FormMethod.Post))
-                    {
-                        @Html.ValidationSummary()
-                        <td class="">
-                            @Html.DropDownListFor(model => model.FromId, currencySelectList, new { @class = "form-control" })
-                        </td>
-                        <td class="">
-                            @Html.DropDownListFor(model => model.ToId, currencySelectList, new { @class = "form-control" })
-                        </td>
-                        <td class="">
-                            @Html.TextBoxFor(model => model.Rate, new { @class = "form-control" })
-                        </td>
-                        <td>
-                            <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
-                        </td>
-                    }
-                    </tr>
-                            -->
+        
+        @using (Html.BeginForm("ExchangeRateUpdate", "Admin", FormMethod.Post))
+        {
+            if (!this.ViewData.ModelState.IsValid)
+            {
+                <div class="text-danger">
+                    <span>@StringResource.error_ErrorsLabel</span>
+                    @Html.ValidationSummary(false)
+                </div>
+            }
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.FromId, currencySelectList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.ToId, currencySelectList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Rate, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.ReverseRate, new { @class = "form-control" })
+            </div>
+            <div>
+                <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
+            </div>
+        }
     </div>
     <div role="tabpanel" class="tab-pane table-responsive @(isCurrencyTab ? "active" : "")" id="currency_list">
         @using (Html.BeginForm("CurrencyUpdate", "Admin", FormMethod.Post))

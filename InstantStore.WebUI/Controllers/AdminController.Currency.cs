@@ -8,11 +8,13 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using InstantStore.Domain.Exceptions;
 
 namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
+        [HttpGet]
         public ActionResult Currency(string tab, ExchangeRateViewModel exchangeRateViewModel)
         {
             var currencies = this.repository.GetCurrencies();
@@ -26,7 +28,16 @@ namespace InstantStore.WebUI.Controllers
                     Value = c.Id.ToString()
                 }).ToList();
 
-            return this.View(new ExchangeRateViewModel(this.repository));
+            if (exchangeRateViewModel == null)
+            {
+                exchangeRateViewModel = new ExchangeRateViewModel(this.repository);
+            }
+            else
+            {
+                exchangeRateViewModel.Initialize(this.repository);
+            }
+
+            return this.View("Currency", exchangeRateViewModel);
         }
 
         [HttpGet]
@@ -63,7 +74,7 @@ namespace InstantStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExchangeRateUpdate(string action, string rate, string rate_r, Guid? id)
+        public ActionResult ExchangeRateUpdate(string action, string rate, string rate_r, Guid? id, ExchangeRateViewModel newRate)
         {
             // ajax update
             if (string.Equals(action, "update", StringComparison.OrdinalIgnoreCase) &&  id != null)
@@ -78,19 +89,26 @@ namespace InstantStore.WebUI.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
             }
 
-            if (this.ModelState.IsValid)
+            // new exchange rate post
+            if (newRate != null && this.ModelState.IsValid)
             {
-                /*
-                this.repository.AddExchangeRate(new ExchangeRate
+                try
                 {
-                    FromCurrencyId = newRate.FromId,
-                    ToCurrencyId = newRate.ToId,
-                    ConversionRate = newRate.Rate
-                });
-                 */
+                    this.repository.AddExchangeRate(new ExchangeRate
+                    {
+                        FromCurrencyId = newRate.FromId,
+                        ToCurrencyId = newRate.ToId,
+                        ConversionRate = newRate.Rate,
+                        ReverseConversionRate = newRate.ReverseRate
+                    });
+                }
+                catch(ModelValidationException e)
+                {
+                    this.ModelState.AddModelError(string.Empty, ErrorCodeMap.GetStringForError(e.Message));
+                }
             }
 
-            return this.RedirectToAction("Currency");
+            return this.Currency(null, newRate);
         }
 
         private double? TryConvertDouble(string input)

@@ -152,6 +152,7 @@
     </Compile>
     <Compile Include="Utilities\Compare.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
+    <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />

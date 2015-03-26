@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InstantStore.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,21 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
+                // check if conversion rate points to the same currency
+                if (exchangeRate.FromCurrencyId == exchangeRate.ToCurrencyId)
+                {
+                    throw new ModelValidationException("Model.ExchangeRate.SameCurrencyError");
+                }
+                
+                // check if such conversion already exists
+                if (context.ExchangeRates.Any(r => 
+                    (r.FromCurrencyId == exchangeRate.FromCurrencyId && r.ToCurrencyId == exchangeRate.ToCurrencyId) ||
+                    (r.ToCurrencyId == exchangeRate.FromCurrencyId && r.FromCurrencyId == exchangeRate.ToCurrencyId)
+                ))
+                {
+                    throw new ModelValidationException("Model.ExchangeRate.AlreadyExists");
+                }
+
                 exchangeRate.Id = Guid.NewGuid();
                 context.ExchangeRates.InsertOnSubmit(exchangeRate);
                 context.SubmitChanges();

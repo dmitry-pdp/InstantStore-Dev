@@ -799,6 +799,33 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибки при добавлении данных:.
+        /// </summary>
+        public static string error_ErrorsLabel {
+            get {
+                return ResourceManager.GetString("error_ErrorsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Данный обменный курс уже существует..
+        /// </summary>
+        public static string error_ExchangeRateAlreadyExists {
+            get {
+                return ResourceManager.GetString("error_ExchangeRateAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Валюта для конвертации не должна быть одна и та же..
+        /// </summary>
+        public static string error_ExchangeRateSameCurrency {
+            get {
+                return ResourceManager.GetString("error_ExchangeRateSameCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Произошла ошибка. Попробуйте действие позже..
         /// </summary>
         public static string Error_General {
