@@ -43,6 +43,7 @@ namespace InstantStore.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult User(UserProfileViewModel userProfileViewModel)
         {
             var nonAuthorizedResult = this.Authorize();
@@ -61,6 +62,7 @@ namespace InstantStore.WebUI.Controllers
                 user.Phonenumber = userProfileViewModel.Phonenumber;
                 user.IsPaymentCash = string.Equals(userProfileViewModel.PaymentType, "cash", StringComparison.OrdinalIgnoreCase);
                 user.DefaultCurrencyId = userProfileViewModel.Currency;
+                user.Comments = userProfileViewModel.Comments;
                 this.repository.UpdateUser(user);
             }
 

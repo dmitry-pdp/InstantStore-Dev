@@ -129,7 +129,9 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminController.Currency.cs" />
+    <Compile Include="Controllers\AdminController.Pages.cs" />
     <Compile Include="Controllers\AdminController.Settings.cs" />
+    <Compile Include="Controllers\AdminController.Templates.cs" />
     <Compile Include="Controllers\AdminController.User.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\MainController.User.cs" />
@@ -140,6 +142,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\HtmlPrefixScopeExtensions.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\PasswordHash.cs" />
     <Compile Include="Models\ProductListViewModel.cs" />
@@ -155,6 +158,7 @@
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -211,6 +215,8 @@
     <Content Include="Views\Admin\Offers.cshtml" />
     <Content Include="Views\Admin\Pages.cshtml" />
     <Content Include="Views\Admin\Templates.cshtml" />
+    <Content Include="Views\Admin\Template.cshtml" />
+    <Content Include="Views\Admin\EditorTemplates\CustomProperty.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

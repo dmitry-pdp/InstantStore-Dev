@@ -7,7 +7,7 @@ namespace InstantStore.Domain.Abstract
 {
     public interface IRepository
     {
-        IEnumerable<InstantStore.Domain.Entities.Product> Products { get; }
+        //IEnumerable<InstantStore.Domain.Entities.Product> Products { get; }
 
         Setting Settings { get; }
 
@@ -44,5 +44,21 @@ namespace InstantStore.Domain.Abstract
         void UpdateExchangeRate(ExchangeRate exchangeRate);
 
         void DeleteExchangeRate(Guid id);
+
+        IList<PropertyTemplate> GetTemplates();
+
+        Guid AddNewTemplate(PropertyTemplate propertyTemplate);
+
+        PropertyTemplate GetTemplateById(Guid id);
+
+        void DeleteTemplate(Guid id);
+
+        IList<CustomProperty> GetPropertiesForTemplate(Guid id);
+
+        void UpdateTemplate(PropertyTemplate propertyTemplate, IList<CustomProperty> customProperties, bool forceUpdate);
+
+        Guid AddNewCustomProperty(CustomProperty customProperty);
+
+        void DeleteCustomProperty(Guid id);
     }
 }

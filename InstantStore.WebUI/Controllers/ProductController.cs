@@ -19,6 +19,7 @@ namespace InstantStore.WebUI.Controllers
 
         public ViewResult List(string category, int page = 1)
         {
+            /*
             var products = repository.Products;
 
             //if No Products, Uuupsie!
@@ -42,6 +43,9 @@ namespace InstantStore.WebUI.Controllers
                 CurrentCategory = category
             };
             return View(model);
+            */
+
+            return null;
         }
 
     }

@@ -50,7 +50,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Items.Add(new ControlPanelItemViewModel
             {
                 ActionName = "Pages",
-                Title = "Страницы",
+                Title = StringResource.admin_Pages,
                 IsActive = page == ControlPanelPage.Pages
             });
 

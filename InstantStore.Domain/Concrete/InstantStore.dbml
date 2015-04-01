@@ -1,46 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InstantStore" Class="InstantStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\Projects;Initial Catalog=InstantStore;Integrated Security=True;Connect Timeout=30" SettingsObjectName="InstantStore.Domain.Properties.Settings" SettingsPropertyName="InstantStoreConnectionString1" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.ProductSize" Member="ProductSizes">
-    <Type Name="ProductSize">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="SortOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="ProductSize_Product" Member="Products" ThisKey="Id" OtherKey="ProductSizeID" Type="Product" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProductsCategories" Member="ProductsCategories">
-    <Type Name="ProductsCategory">
-      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProductCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SortOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_ProductsCategory" Member="Product" ThisKey="ProductId" OtherKey="ProductId" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="ProductCategory_ProductsCategory" Member="ProductCategory" ThisKey="ProductCategoryID" OtherKey="ProductCategoryId" Type="ProductCategory" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Products" Member="Products">
-    <Type Name="Product">
-      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="PriceCash" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
-      <Column Name="PriceCashless" Type="System.Decimal" DbType="Decimal(16,2) NOT NULL" CanBeNull="false" />
-      <Column Name="ProductSizeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_ProductsCategory" Member="ProductsCategories" ThisKey="ProductId" OtherKey="ProductId" Type="ProductsCategory" />
-      <Association Name="ProductSize_Product" Member="ProductSize" ThisKey="ProductSizeID" OtherKey="Id" Type="ProductSize" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProductCategories" Member="ProductCategories">
-    <Type Name="ProductCategory">
-      <Column Name="ProductCategoryId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="ParentCategory" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="DisplayType" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="IsVisibleInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="URLAlias" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="SortOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="ProductCategory_ProductsCategory" Member="ProductsCategories" ThisKey="ProductCategoryId" OtherKey="ProductCategoryID" Type="ProductsCategory" />
-    </Type>
-  </Table>
   <Table Name="dbo.Settings" Member="Settings">
     <Type Name="Setting">
       <Column Name="MainDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
@@ -57,22 +16,6 @@
       <Column Name="Message" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.[User]" Member="Users">
-    <Type Name="User">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Company" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
-      <Column Name="Phonenumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="City" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsActivated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsBlocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsPaymentCash" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="DefaultCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.ErrorLog" Member="ErrorLogs">
     <Type Name="ErrorLog">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -85,22 +28,11 @@
       <Column Name="UserAgent" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Category" Member="Categories">
-    <Type Name="Category">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="ParentCategoryId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="Image" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="ShowInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ListType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="Text" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Attachment" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
-    </Type>
-  </Table>
   <Table Name="dbo.Currency" Member="Currencies">
     <Type Name="Currency">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Text" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Currency_Product" Member="Products" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Product" />
     </Type>
   </Table>
   <Table Name="dbo.ExchangeRate" Member="ExchangeRates">
@@ -112,6 +44,98 @@
       <Column Name="ReverseConversionRate" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Association Name="Currency_ExchangeRate" Member="Currency" ThisKey="FromCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
       <Association Name="Currency_ExchangeRate1" Member="Currency1" ThisKey="ToCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Company" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Phonenumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsActivated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsBlocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPaymentCash" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="VersionId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShowInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ListType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShowPrices" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Category_ContentPage" Member="ContentPages" ThisKey="VersionId" OtherKey="CategoryId" Type="ContentPage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContentPage" Member="ContentPages">
+    <Type Name="ContentPage">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Attachment" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ContentType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="ContentPage_ContentPage" Member="ContentPages" ThisKey="Id" OtherKey="ParentId" Type="ContentPage" />
+      <Association Name="Category_ContentPage" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
+      <Association Name="ContentPage_ContentPage" Member="ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="Product_ContentPage" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomProperty" Member="CustomProperties">
+    <Type Name="CustomProperty">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TemplateId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="PropertyTemplate_CustomProperty" Member="PropertyTemplate" ThisKey="TemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Product" Member="Products">
+    <Type Name="Product">
+      <Column Name="VersionId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MainImage" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CashAccepted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAvailable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="PriceValueCash" Type="System.Decimal" DbType="Decimal(19,4)" CanBeNull="true" />
+      <Column Name="PriceValueCashless" Type="System.Decimal" DbType="Decimal(19,4)" CanBeNull="true" />
+      <Column Name="CustomAttributesTemplateId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ContentPage" Member="ContentPages" ThisKey="VersionId" OtherKey="ProductId" Type="ContentPage" />
+      <Association Name="Currency_Product" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+      <Association Name="PropertyTemplate_Product" Member="PropertyTemplate" ThisKey="CustomAttributesTemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Image" Member="Images">
+    <Type Name="Image">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Member="Image1" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PropertyTemplate" Member="PropertyTemplates">
+    <Type Name="PropertyTemplate">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPrototype" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="PropertyTemplate_CustomProperty" Member="CustomProperties" ThisKey="Id" OtherKey="TemplateId" Type="CustomProperty" />
+      <Association Name="PropertyTemplate_Product" Member="Products" ThisKey="Id" OtherKey="CustomAttributesTemplateId" Type="Product" />
     </Type>
   </Table>
 </Database>

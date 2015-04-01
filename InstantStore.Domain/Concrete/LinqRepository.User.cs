@@ -88,6 +88,7 @@ namespace InstantStore.Domain.Concrete
                 userUpdated.Email = user.Email;
                 userUpdated.IsPaymentCash = user.IsPaymentCash;
                 userUpdated.Phonenumber = user.Phonenumber;
+                userUpdated.Comments = user.Comments;
                 context.SubmitChanges();
             }
         }

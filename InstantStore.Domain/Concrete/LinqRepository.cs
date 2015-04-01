@@ -9,7 +9,7 @@ namespace InstantStore.Domain.Concrete
     public partial class LinqRepository : IRepository
     {
         //private InstantStoreDataContext context = new InstantStoreDataContext();
-
+        /*
         public IEnumerable<Entities.Product> Products
         {
             get {
@@ -54,6 +54,6 @@ namespace InstantStore.Domain.Concrete
                 return result;                
             }
         }
-
+        */
     }
 }

@@ -1,0 +1,101 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model TemplateViewModel
+
+@{
+    ViewBag.Title = StringResource.admin_Template_New;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var templateList = ViewBag.TemplatesList as IList<TemplateViewModel>;
+}
+
+<div class="border col-sm-3">
+    <div class="row" style="vertical-align:bottom">
+        <div class="col-sm-offset-1 col-sm-5">
+            <h4>@StringResource.admin_Templates</h4>
+        </div>
+        <div class="col-sm-6">
+            @Html.ActionLink(StringResource.admin_Back, "Templates", null, new { @class = "btn btn-primary pull-right" })
+        </div>
+    </div>
+
+    <ul class="nav nav-pills nav-stacked">
+        @foreach (var template in templateList)
+        {
+            <li role="presentation" class="@(template.Id == this.Model.Id ? "active" : "")">
+                <a href="/admin/template?id=@template.Id"><span>@template.Name</span></a>
+            </li>
+        }
+    </ul>
+</div>
+<div class="border col-sm-8 container-fluid">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm("Template", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    </div>
+                    @Html.ActionLink(StringResource.admin_Delete, "Template", new { a = "delete", id = this.Model.Id }, new { @class = "btn btn-primary btn-sm pull-right delete-property" })
+                </div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2 error-label">
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+        <div id="templateProperties">
+            @for (int propertyIndex = 0; propertyIndex < this.Model.Properties.Count; propertyIndex++)
+            {
+                @Html.EditorFor(model => model.Properties[propertyIndex], "CustomProperty", new { PropertyIndex = propertyIndex });
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <div class="template-property row">
+                    <div class="col-sm-10">
+                        <input type="text" id="CustomProperty-New" class="form-control" />
+                    </div>
+                    @Html.ActionLink(StringResource.admin_Add, "NewTemplateProperty", null, new { id = "addProperty", @class = "btn btn-primary btn-sm pull-right delete-property", click = "false;" })
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Id);
+        }
+    </div>
+<script>
+    $(function () {
+
+        var deleteFunc = function () {
+            var that = this;
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) {
+                    $(that).parents("div.form-group").remove();
+                }
+            });
+            return false;
+        };
+
+        $("#addProperty").click(function () {
+            var url = this.href + "?templateId=@this.Model.Id&text=" + $("#CustomProperty-New").val();
+            $.ajax({
+                url: url,
+                cache: false,
+                success: function (html)
+                {
+                    $("#templateProperties").append(html);
+                    $("#CustomProperty-New").val('');
+                    $("a.delete-button").click(deleteFunc);
+                }
+            });
+            return false;
+        });
+
+        $("a.delete-button").click(deleteFunc);
+    });
+</script>

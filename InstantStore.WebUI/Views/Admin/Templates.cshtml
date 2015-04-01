@@ -1,7 +1,47 @@
 ﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model IList<TemplateViewModel>
 @{
-    ViewBag.Title = "Templates";
+    ViewBag.Title = StringResource.admin_Template;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>Templates</h2>
+<h2>@ViewBag.Title</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@StringResource.admin_Templates_Name</th>
+            </tr>
+        </thead>
+        @foreach (var template in this.Model)
+        {
+            <tr id="@template.Id" class="c_pointer">
+                <td class="col-sm-3">@template.Name</td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="table-responsive">
+    @using (Html.BeginForm("Template", "Admin", FormMethod.Post))
+    {
+        <table class="table table-hover">
+            <tr>
+                <td class="col-sm-3">
+                    <input type="text" class="form-control" id="TemplateViewModel.Name" name="TemplateViewModel.Name" placeholder="@StringResource.Template_New" />
+                </td>
+                <td>
+                    <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+<script>
+    $("tr.c_pointer").click(function () {
+        window.location.href = '/admin/template?id=' + this.getAttribute('id');
+    });
+</script>
+

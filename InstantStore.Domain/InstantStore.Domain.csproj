@@ -56,6 +56,7 @@
     <Compile Include="Concrete\LinqRepository.ExchangeRate.cs" />
     <Compile Include="Concrete\LinqRepository.Feedback.cs" />
     <Compile Include="Concrete\LinqRepository.Settings.cs" />
+    <Compile Include="Concrete\LinqRepository.Templates.cs" />
     <Compile Include="Concrete\LinqRepository.User.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Product.cs" />

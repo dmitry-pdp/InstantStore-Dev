@@ -10,6 +10,7 @@ namespace InstantStore.WebUI.Tests.Controllers.NavCategoryController
     [TestClass]
     public class NavCategory
     {
+        /*
         [TestMethod]
         public void Can_Create_Categories()
         {
@@ -105,7 +106,7 @@ namespace InstantStore.WebUI.Tests.Controllers.NavCategoryController
             //Assert
             Assert.AreEqual(categoryToSelect, result);
         }
-
+        */
 
     }
 }

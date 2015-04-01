@@ -50,17 +50,5 @@ namespace InstantStore.WebUI.Controllers
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Offers);
             return this.Authorize() ?? this.View();
         }
-
-        public ActionResult Pages()
-        {
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
-            return this.Authorize() ?? this.View();
-        }
-
-        public ActionResult Templates()
-        {
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Templates);
-            return this.Authorize() ?? this.View();
-        }
     }
 }

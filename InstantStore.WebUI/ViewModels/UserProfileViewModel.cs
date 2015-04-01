@@ -30,6 +30,9 @@ namespace InstantStore.WebUI.ViewModels
                 this.Company = user.Company;
                 this.Phonenumber = user.Phonenumber;
                 this.City = user.City;
+                this.PaymentType = user.IsPaymentCash ? "cash" : "cashless";
+                this.Currency = user.DefaultCurrencyId ?? Guid.Empty;
+                this.Comments = user.Comments;
 
                 this.PaymentTypes = new List<SelectListItem>
                 {
@@ -69,6 +72,9 @@ namespace InstantStore.WebUI.ViewModels
 
         [Required(ErrorMessage = "Id is empty.")]
         public Guid Id { get; set; }
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_Comment")]
+        public string Comments { get; set; }
 
         public IList<SelectListItem> PaymentTypes { get; private set; }
 

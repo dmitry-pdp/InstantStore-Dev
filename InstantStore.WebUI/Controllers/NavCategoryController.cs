@@ -20,7 +20,7 @@ namespace InstantStore.WebUI.Controllers
         public PartialViewResult Menu(string category = null)
         {
             ViewBag.SelectedCategory = category;
-
+            /*
             ProductCategory[] categories = repository.Products != null ?
                 repository.Products
                         .Select(x => x.Category)
@@ -28,6 +28,8 @@ namespace InstantStore.WebUI.Controllers
                         .OrderBy(x => x.Name).ToArray() : null;
 
             return PartialView(categories);
+            */
+            return null;
         }
     }
 }

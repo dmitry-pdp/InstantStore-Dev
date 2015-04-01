@@ -711,4 +711,22 @@
   <data name="error_ExchangeRateSameCurrency" xml:space="preserve">
     <value>Валюта для конвертации не должна быть одна и та же.</value>
   </data>
+  <data name="admin_Templates" xml:space="preserve">
+    <value>Шаблоны</value>
+  </data>
+  <data name="admin_Templates_Name" xml:space="preserve">
+    <value>Название шаблона</value>
+  </data>
+  <data name="admin_Template_New" xml:space="preserve">
+    <value>Новый шаблон</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="Template_New" xml:space="preserve">
+    <value>Имя нового шаблона</value>
+  </data>
+  <data name="admin_Pages" xml:space="preserve">
+    <value>Страницы</value>
+  </data>
 </root>

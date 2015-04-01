@@ -394,6 +394,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Страницы.
+        /// </summary>
+        public static string admin_Pages {
+            get {
+                return ResourceManager.GetString("admin_Pages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string admin_Pas {
@@ -489,6 +498,33 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Template {
             get {
                 return ResourceManager.GetString("admin_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новый шаблон.
+        /// </summary>
+        public static string admin_Template_New {
+            get {
+                return ResourceManager.GetString("admin_Template_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Шаблоны.
+        /// </summary>
+        public static string admin_Templates {
+            get {
+                return ResourceManager.GetString("admin_Templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название шаблона.
+        /// </summary>
+        public static string admin_Templates_Name {
+            get {
+                return ResourceManager.GetString("admin_Templates_Name", resourceCulture);
             }
         }
         
@@ -1447,6 +1483,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Свойства.
+        /// </summary>
+        public static string Properties {
+            get {
+                return ResourceManager.GetString("Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Здравствуйте.&lt;br /&gt;&lt;br /&gt;Мы получили запрос на восстановление вашего пароля.&lt;b/&gt;Ваш пароль на сайте: {0}.
         /// </summary>
         public static string PwdRecovery_Mail_Body {
@@ -1623,6 +1668,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Settings_SubmitButtonText {
             get {
                 return ResourceManager.GetString("Settings_SubmitButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя нового шаблона.
+        /// </summary>
+        public static string Template_New {
+            get {
+                return ResourceManager.GetString("Template_New", resourceCulture);
             }
         }
         
