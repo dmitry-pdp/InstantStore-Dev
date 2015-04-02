@@ -729,4 +729,19 @@
   <data name="admin_Pages" xml:space="preserve">
     <value>Страницы</value>
   </data>
+  <data name="admin_PageChoose" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
+  <data name="admin_PageContainerDialogLabel" xml:space="preserve">
+    <value>Выберите каталог в котором разместить страницу</value>
+  </data>
+  <data name="admin_PageContent" xml:space="preserve">
+    <value>Содержание</value>
+  </data>
+  <data name="admin_PageParent" xml:space="preserve">
+    <value>Содержится в меню</value>
+  </data>
+  <data name="admin_PageTreeRoot" xml:space="preserve">
+    <value>Главное меню</value>
+  </data>
 </root>

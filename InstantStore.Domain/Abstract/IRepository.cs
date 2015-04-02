@@ -60,5 +60,11 @@ namespace InstantStore.Domain.Abstract
         Guid AddNewCustomProperty(CustomProperty customProperty);
 
         void DeleteCustomProperty(Guid id);
+
+        IList<ContentPage> GetPages(Guid? parentId);
+
+        ContentPage GetPageById(Guid id);
+
+        Guid NewPage(ContentPage contentPage);
     }
 }

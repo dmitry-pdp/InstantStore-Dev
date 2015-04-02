@@ -157,6 +157,7 @@
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
@@ -169,6 +170,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-treenav.css" />
+    <Content Include="Content\bootstrap-treenav.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Common.css" />
@@ -181,6 +184,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap-treenav.js" />
+    <Content Include="Scripts\bootstrap-treenav.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -217,6 +222,9 @@
     <Content Include="Views\Admin\Templates.cshtml" />
     <Content Include="Views\Admin\Template.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\CustomProperty.cshtml" />
+    <Content Include="Views\Admin\NewPage.cshtml" />
+    <Content Include="Views\Admin\CategoryTreeItem.cshtml" />
+    <Content Include="Views\Admin\Page.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,10 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model PageViewModel
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+@Html.Raw(this.Model.Text)

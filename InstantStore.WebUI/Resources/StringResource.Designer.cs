@@ -394,11 +394,56 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выбрать.
+        /// </summary>
+        public static string admin_PageChoose {
+            get {
+                return ResourceManager.GetString("admin_PageChoose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выберите каталог в котором разместить страницу.
+        /// </summary>
+        public static string admin_PageContainerDialogLabel {
+            get {
+                return ResourceManager.GetString("admin_PageContainerDialogLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Содержание.
+        /// </summary>
+        public static string admin_PageContent {
+            get {
+                return ResourceManager.GetString("admin_PageContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Содержится в меню.
+        /// </summary>
+        public static string admin_PageParent {
+            get {
+                return ResourceManager.GetString("admin_PageParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Страницы.
         /// </summary>
         public static string admin_Pages {
             get {
                 return ResourceManager.GetString("admin_Pages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Главное меню.
+        /// </summary>
+        public static string admin_PageTreeRoot {
+            get {
+                return ResourceManager.GetString("admin_PageTreeRoot", resourceCulture);
             }
         }
         

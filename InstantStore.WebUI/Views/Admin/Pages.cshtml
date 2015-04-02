@@ -1,5 +1,7 @@
-﻿@using InstantStore.WebUI.ViewModels;
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
 @using InstantStore.WebUI.Resources;
+@model List<PageViewModel>
 @{
     ViewBag.Title = StringResource.admin_Pages;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -7,3 +9,20 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.ActionLink("New page", "NewPage", null, new { @class="btn btn-primary btn-lg" })
+
+<table class="table table-hover">
+    @foreach(var page in this.Model)
+    {
+    <tr id="@page.Id" class="c_pointer">
+        <td>
+            @page.Name
+        </td>
+    </tr>
+    }
+</table>
+<script>
+    $("tr.c_pointer").click(function () {
+        window.location.href = '/admin/page?id=' + this.getAttribute('id');
+    });
+</script>
