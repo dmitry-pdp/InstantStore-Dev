@@ -1,7 +1,7 @@
 ﻿using InstantStore.Domain.Concrete;
-using InstantStore.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 
 namespace InstantStore.Domain.Abstract
 {
@@ -66,5 +66,11 @@ namespace InstantStore.Domain.Abstract
         ContentPage GetPageById(Guid id);
 
         Guid NewPage(ContentPage contentPage);
+
+        Guid NewCategory(Category category);
+
+        Guid NewProduct(Product product);
+
+        Image GetImageById(Guid id);
     }
 }

@@ -1,0 +1,10 @@
+﻿CREATE LOGIN [InstantStoreAppLogin] WITH PASSWORD = '629A74D9-BE58-4EEB-8406-BAABDF8C5A47';
+GO
+
+USE [InstantStore];
+
+CREATE USER [InstantStoreAppUser] FOR LOGIN [InstantStoreAppLogin];
+GO
+
+GRANT CONNECT, INSERT, SELECT, UPDATE, VIEW DEFINITION TO [InstantStoreAppUser];
+GO

@@ -1,28 +1,33 @@
 ﻿@using System.Collections;
 @using InstantStore.WebUI.ViewModels;
 @using InstantStore.WebUI.Resources;
-@model List<PageViewModel>
+@model PageViewModel
 @{
     ViewBag.Title = StringResource.admin_Pages;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
+<script src="~/Scripts/bootstrap-treenav.js"></script>
+<link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
+
 <h2>@ViewBag.Title</h2>
 
-@Html.ActionLink("New page", "NewPage", null, new { @class="btn btn-primary btn-lg" })
+<div class="row">
+    <div class="col-sm-12 form-group">
+        @Html.ActionLink(StringResource.admin_NewPage, "NewPage", null, new { @class = "btn btn-default" })
+        @Html.ActionLink(StringResource.admin_PageNewCategory, "NewCategory", null, new { @class = "btn btn-default" })
+        @Html.ActionLink(StringResource.admin_ProductNew, "NewProduct", null, new { @class = "btn btn-default" })
+    </div>
+</div>
 
-<table class="table table-hover">
-    @foreach(var page in this.Model)
-    {
-    <tr id="@page.Id" class="c_pointer">
-        <td>
-            @page.Name
-        </td>
-    </tr>
-    }
-</table>
-<script>
-    $("tr.c_pointer").click(function () {
-        window.location.href = '/admin/page?id=' + this.getAttribute('id');
-    });
-</script>
+<div class="row form-group">
+    <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree">
+        @Html.Partial("CategoryTreeItem", this.Model.RootCategory)
+    </ul>
+    <script>
+        var pageUrl = '@Url.Action("Page", "Main", new { Id = "-page-id-" })';
+        $("a.category-tree-item").click(function () {
+            window.location.href = pageUrl.replace("-page-id-", this.getAttribute('item-id'));
+        });
+    </script>
+</div>

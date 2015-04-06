@@ -9,14 +9,13 @@
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
 <script src="~/Scripts/bootstrap-treenav.js"></script>
 <link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
 
     <h2>@ViewBag.Title</h2>
 
         <div class="col-sm-10 col-sm-offset-1">
-            @using (Html.BeginForm("NewPage", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+            @using (Html.BeginForm("NewPage", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
         {
             <div class="form-group">
                     @Html.LabelFor(model => model.Name, new { @class = "control-label" })
@@ -36,9 +35,13 @@
                     @Html.ValidationMessageFor(model => model.ParentCategory)
                 </div>
             <div class="form-group">
-                    @Html.LabelFor(model => model.Text, new { @class = "control-label" })
-                    @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
-                </div>
+                @Html.LabelFor(model => model.Text, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
+            </div>
+            <div class="form-group">
+                <label>@StringResource.admin_PageAttachment</label>
+                <input type="file" id="attachment" name="attachment" class="form-control" value="@StringResource.admin_PageChooseFile" />
+            </div>
             @Html.HiddenFor(model => model.ParentCategoryId, new { @class="parent-category-id" })    
             <div class="form-group">
                     <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
@@ -46,11 +49,11 @@
         }
 
         </div>
-        <div id="choose-parent-form"class="">
+        <div id="choose-parent-form">
             <h3>@StringResource.admin_PageContainerDialogLabel</h3>
             <div id="choose-parent-form-container" class="row">
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree">
-                    @Html.Partial("CategoryTreeItem", this.Model.RootCategory);
+                    @Html.Partial("CategoryTreeItem", this.Model.RootCategory)
                 </ul>
             </div>
         </div>
@@ -83,6 +86,10 @@ $(function () {
     });
 
     $("#btn-choose-parent").click(function () {
+        dialog.dialog("open");
+        return false;
+    });
+    $("#ParentCategory").click(function () {
         dialog.dialog("open");
         return false;
     });

@@ -744,4 +744,58 @@
   <data name="admin_PageTreeRoot" xml:space="preserve">
     <value>Главное меню</value>
   </data>
+  <data name="admin_CategoryImageLabel" xml:space="preserve">
+    <value>Картинка</value>
+  </data>
+  <data name="admin_CategoryImageUpload" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="admin_CategoryListTypeLabel" xml:space="preserve">
+    <value>Показывать продукты как</value>
+  </data>
+  <data name="admin_CategoryShowInMenuLabel" xml:space="preserve">
+    <value>Добавить в меню</value>
+  </data>
+  <data name="admin_CategoryTypeList" xml:space="preserve">
+    <value>Список</value>
+  </data>
+  <data name="admin_CategoryTypeTiles" xml:space="preserve">
+    <value>Плитка</value>
+  </data>
+  <data name="admin_NewPage" xml:space="preserve">
+    <value>Новая страница</value>
+  </data>
+  <data name="admin_PageAttachment" xml:space="preserve">
+    <value>Приложить файл</value>
+  </data>
+  <data name="admin_PageChooseFile" xml:space="preserve">
+    <value>Выбрать файл</value>
+  </data>
+  <data name="admin_PageNewCategory" xml:space="preserve">
+    <value>Новая категория</value>
+  </data>
+  <data name="admin_ProductNew" xml:space="preserve">
+    <value>Новый продукт</value>
+  </data>
+  <data name="admin_ProductAddImage" xml:space="preserve">
+    <value>Добавить картинку</value>
+  </data>
+  <data name="admin_ProductDescriptionLabel" xml:space="preserve">
+    <value>Описание продукта</value>
+  </data>
+  <data name="admin_ProductImagesLabel" xml:space="preserve">
+    <value>Картинки</value>
+  </data>
+  <data name="admin_ProductIsAvailable" xml:space="preserve">
+    <value>В наличии</value>
+  </data>
+  <data name="admin_ProductPrice" xml:space="preserve">
+    <value>Цена в валюте</value>
+  </data>
+  <data name="admin_ProductPriceCash" xml:space="preserve">
+    <value>Цена наличными</value>
+  </data>
+  <data name="admin_ProductPriceCashless" xml:space="preserve">
+    <value>Цена безналичными</value>
+  </data>
 </root>

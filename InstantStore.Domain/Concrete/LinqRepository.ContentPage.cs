@@ -34,5 +34,29 @@ namespace InstantStore.Domain.Concrete
                 return context.ContentPages.FirstOrDefault(x => x.Id == id);
             }
         }
+
+        public Guid NewCategory(Category category)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                category.Id = Guid.NewGuid();
+                category.VersionId = Guid.NewGuid();
+                context.Categories.InsertOnSubmit(category);
+                context.SubmitChanges();
+                return category.VersionId;
+            }
+        }
+
+        public Guid NewProduct(Product product)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                product.Id = Guid.NewGuid();
+                product.VersionId = Guid.NewGuid();
+                context.Products.InsertOnSubmit(product);
+                context.SubmitChanges();
+                return product.VersionId;
+            }
+        }
     }
 }

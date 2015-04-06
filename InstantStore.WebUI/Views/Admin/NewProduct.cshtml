@@ -1,0 +1,159 @@
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model InstantStore.WebUI.ViewModels.ProductViewModel
+@{
+    ViewBag.Title = StringResource.admin_ProductNew;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.9.2.custom.min.js"></script>
+<link rel="stylesheet" href="~/Content/jquery-ui-1.10.0.custom.css">
+<script src="~/Scripts/bootstrap-treenav.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
+
+
+<div class="col-sm-10 col-sm-offset-1">
+    @using (Html.BeginForm("NewProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentCategory, new { @class = "control-label" })
+            <div class="row">
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.ParentCategory, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="btn btn-default" id="btn-choose-parent">@StringResource.admin_PageChoose</a>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.ParentCategory)
+        </div>
+        <div class="">
+            <div class="form-group">
+                <div class="form-inline checkbox-inline">
+                    @Html.CheckBoxFor(model => model.IsAvailable)
+                    @Html.LabelFor(model => model.IsAvailable)
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="">
+                <div class="form-inline">
+                    @Html.LabelFor(model => model.CurrencyId)
+                    @Html.DropDownListFor(model => model.CurrencyId, this.Model.Currencies, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Images)
+            <div style="height:100px">
+            @if (!this.Model.Images.Any())
+            {
+                <span>No images. Press add image button to add new image.</span>
+            }
+            else
+            {
+                foreach(var image in this.Model.Images)
+                {
+                    <div class="image-container">
+                        <img src="~/Main/GetImage?id=@image" />
+                    </div>
+                }
+            }
+            </div>
+            <input type="button" id="upload-image-btn" value="@StringResource.admin_ProductAddImage" class="btn btn-default" />
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control parent-category-name" })
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
+            <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
+        </div>
+        <input type="file" id="upload-image" />
+    }
+</div>
+
+<div id="choose-parent-form">
+    <h3>@StringResource.admin_PageContainerDialogLabel</h3>
+    <div id="choose-parent-form-container" class="row">
+        <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree">
+            @Html.Partial("CategoryTreeItem", this.Model.RootCategory)
+        </ul>
+    </div>
+</div>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars",
+            "insertdatetime nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
+    });
+
+    $(function () {
+        var height = $(window).height();
+        var width = $(window).width();
+
+        var dialog = $("#choose-parent-form").dialog({
+            autoOpen: false,
+            modal: true,
+            width: width * 0.8,
+            height: height * 0.8,
+            buttons: {
+                Cancel: function () {
+                    dialog.dialog("close");
+                }
+            }
+        });
+
+        $("#btn-choose-parent").click(function () {
+            dialog.dialog("open");
+            return false;
+        });
+
+        $("#ParentCategory").click(function () {
+            dialog.dialog("open");
+            return false;
+        });
+
+        $("a.category-tree-item").click(function () {
+            var itemId = $(this).attr('item-id');
+            $("#ParentCategoryId").val(itemId);
+            $("#ParentCategory").val($(this).text());
+            dialog.dialog("close");
+            return false;
+        });
+
+        $("#upload-image").fileupload({
+            url: '/admin/saveimage',
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    alert(file);
+                });
+            }
+        })
+        .prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        $("#upload-image-btn").click(function () {
+            $("#upload-image").click();
+        })
+    });
+</script>
+
+

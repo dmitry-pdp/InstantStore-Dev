@@ -32,8 +32,8 @@ namespace InstantStore.WebUI.ViewModels
         public string Name { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Email")]
-        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid")]
-        [EmailAddress(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid")]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage=null)]
+        [EmailAddress(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage=null)]
         public string Email { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_CompanyName")]

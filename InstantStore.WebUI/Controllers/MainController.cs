@@ -8,6 +8,7 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using System.IO;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -86,5 +87,27 @@ namespace InstantStore.WebUI.Controllers
             return new RedirectResult("/");
         }
 
+        public ActionResult Page(Guid? id)
+        {
+            if (id == null || id == Guid.Empty)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var page = this.repository.GetPageById(id.Value);
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            return this.View(new PageViewModel(page));
+        }
+
+        public ActionResult GetImage(Guid id)
+        {
+            var image = this.repository.GetImageById(id);
+            if (image == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return null;
+        }
     }
 }

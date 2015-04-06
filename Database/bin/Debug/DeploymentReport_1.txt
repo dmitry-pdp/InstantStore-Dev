@@ -1,0 +1,36 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[Category] (Table)
+       [dbo].[ContentPage] (Table)
+       [dbo].[Currency] (Table)
+       [dbo].[CustomProperty] (Table)
+       [dbo].[ExchangeRate] (Table)
+       [dbo].[Feedback] (Table)
+       [dbo].[Image] (Table)
+       [dbo].[Product] (Table)
+       [dbo].[PropertyTemplate] (Table)
+       [dbo].[Settings] (Table)
+       [dbo].[Table] (Table)
+       [dbo].[FK_ContentPage_ToTableContentPage] (Foreign Key)
+       [dbo].[FK_ContentPage_ToTableProduct] (Foreign Key)
+       [dbo].[FK_ContentPage_ToTableCategory] (Foreign Key)
+       [dbo].[FK_CustomProperty_ToTablePropertyTemplateTable] (Foreign Key)
+       [dbo].[FK_ExchangeRate_FromCurrency] (Foreign Key)
+       [dbo].[FK_ExchangeRate_ToCurrency] (Foreign Key)
+       [dbo].[FK_Product_ToTableCurrency] (Foreign Key)
+       [dbo].[FK_Product_ToTablePropertyTemplate] (Foreign Key)
+
+** Supporting actions
+
+The project and target databases have different collation settings. Deployment errors might occur.
+

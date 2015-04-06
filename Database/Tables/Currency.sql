@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Currency]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Text] NVARCHAR(50) NOT NULL
+)

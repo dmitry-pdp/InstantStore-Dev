@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -129,6 +130,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminController.Currency.cs" />
+    <Compile Include="Controllers\AdminController.Images.cs" />
     <Compile Include="Controllers\AdminController.Pages.cs" />
     <Compile Include="Controllers\AdminController.Settings.cs" />
     <Compile Include="Controllers\AdminController.Templates.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\ControllerHelpers.cs" />
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\HtmlPrefixScopeExtensions.cs" />
@@ -154,10 +157,12 @@
       <DependentUpon>StringResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Compare.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
@@ -176,6 +181,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Common.css" />
     <Content Include="Content\dashboard.css" />
+    <Content Include="Content\jquery-ui-1.10.0.custom.css" />
+    <Content Include="Content\jquery-ui-1.9.2.custom.css" />
+    <Content Include="Content\jquery.ui.1.10.0.ie.css" />
+    <Content Include="Content\jquery.ui.1.9.2.ie.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -184,12 +193,15 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Image\NoImage.png" />
     <Content Include="Scripts\bootstrap-treenav.js" />
     <Content Include="Scripts\bootstrap-treenav.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.custom.min.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Styles\main.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -224,7 +236,9 @@
     <Content Include="Views\Admin\EditorTemplates\CustomProperty.cshtml" />
     <Content Include="Views\Admin\NewPage.cshtml" />
     <Content Include="Views\Admin\CategoryTreeItem.cshtml" />
-    <Content Include="Views\Admin\Page.cshtml" />
+    <Content Include="Views\Main\Page.cshtml" />
+    <Content Include="Views\Admin\NewCategory.cshtml" />
+    <Content Include="Views\Admin\NewProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

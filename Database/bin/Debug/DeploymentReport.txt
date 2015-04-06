@@ -1,0 +1,33 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[ProductCategories] (Table)
+       [dbo].[Products] (Table)
+       [dbo].[ProductsCategories] (Table)
+       [dbo].[ProductSize] (Table)
+       [dbo].[User] (Table)
+       Default Constraint on [dbo].[ProductCategories].[IsVisibleInMenu] (Default Constraint)
+       Default Constraint on [dbo].[ProductCategories].[SortOrder] (Default Constraint)
+       Default Constraint on [dbo].[Products].[Description] (Default Constraint)
+       Default Constraint on [dbo].[Products].[PriceCash] (Default Constraint)
+       Default Constraint on [dbo].[Products].[PriceCashless] (Default Constraint)
+       Default Constraint on [dbo].[Products].[ProductSizeID] (Default Constraint)
+       Default Constraint on [dbo].[ProductsCategories].[SortOrder] (Default Constraint)
+       Default Constraint on [dbo].[ProductSize].[SortOrder] (Default Constraint)
+       [dbo].[FK_productSize] (Foreign Key)
+       [dbo].[FK_category_productsCategories] (Foreign Key)
+       [dbo].[FK_product_productsCategories] (Foreign Key)
+
+** Supporting actions
+
+The project and target databases have different collation settings. Deployment errors might occur.
+

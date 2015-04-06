@@ -28,7 +28,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Text = page.Text;
         }
 
-        public void InitializeRootCategory(IRepository repository)
+        public virtual void InitializeRootCategory(IRepository repository)
         {
             this.RootCategory = new CategoryTreeItemViewModel { Name = StringResource.admin_PageTreeRoot, Id = Guid.Empty };
             this.RootCategory.Items.AddRange(this.GetCategoryListForParentId(repository, null));
@@ -49,7 +49,7 @@ namespace InstantStore.WebUI.ViewModels
 
         [Required]
         public Guid ParentCategoryId { get; set; }
-
+        
         public CategoryTreeItemViewModel RootCategory { get; private set; }
     
         private List<CategoryTreeItemViewModel> GetCategoryListForParentId(IRepository repository, Guid? parentId)
