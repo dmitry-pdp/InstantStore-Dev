@@ -81,6 +81,19 @@
             return false;
         };
 
+        var updateFunc = function () {
+            var that = this;
+            var inputVal = $("#" + $(that).attr('id').replace("btn-", "input-")).val();
+            $.ajax({
+                url: this.href + "&data=" + inputVal,
+                cache: false,
+                success: function (html) {
+                    $(that).parent().addClass('has-success');
+                }
+            });
+            return false;
+        };
+
         $("#addProperty").click(function () {
             var url = this.href + "?templateId=@this.Model.Id&text=" + $("#CustomProperty-New").val();
             $.ajax({
@@ -91,11 +104,13 @@
                     $("#templateProperties").append(html);
                     $("#CustomProperty-New").val('');
                     $("a.delete-button").click(deleteFunc);
+                    $("a.update-button").click(updateFunc);
                 }
             });
             return false;
         });
 
         $("a.delete-button").click(deleteFunc);
+        $("a.update-button").click(updateFunc);
     });
 </script>

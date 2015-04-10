@@ -798,4 +798,7 @@
   <data name="admin_ProductPriceCashless" xml:space="preserve">
     <value>Цена безналичными</value>
   </data>
+  <data name="admin_CustomPropertyUpdate" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
 </root>

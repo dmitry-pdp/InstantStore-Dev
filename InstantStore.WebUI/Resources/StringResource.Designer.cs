@@ -277,6 +277,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Обновить.
+        /// </summary>
+        public static string admin_CustomPropertyUpdate {
+            get {
+                return ResourceManager.GetString("admin_CustomPropertyUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Контрольная панель.
         /// </summary>
         public static string admin_Dashbard {

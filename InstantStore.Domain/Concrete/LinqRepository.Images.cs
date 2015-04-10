@@ -15,5 +15,16 @@ namespace InstantStore.Domain.Concrete
                 return context.Images.FirstOrDefault(x => x.Id == id);
             }
         }
+
+        public Guid AddImage(Image image)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                image.Id = Guid.NewGuid();
+                context.Images.InsertOnSubmit(image);
+                context.SubmitChanges();
+                return image.Id;
+            }
+        }
     }
 }

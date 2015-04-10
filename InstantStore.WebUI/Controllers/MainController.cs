@@ -107,7 +107,8 @@ namespace InstantStore.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            return null;
+            var stream = new MemoryStream(image.Image1.ToArray());
+            return new FileStreamResult(stream, image.ImageContentType);
         }
     }
 }

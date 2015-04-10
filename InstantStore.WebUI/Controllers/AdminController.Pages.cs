@@ -136,5 +136,11 @@ namespace InstantStore.WebUI.Controllers
             viewModel.InitializeRootCategory(this.repository);
             return this.Authorize() ?? this.View(viewModel);
         }
+
+        public ActionResult ProductImage(Guid imageId)
+        {
+            this.ViewData["ImageId"] = imageId.ToString();
+            return this.View("ProductImage");
+        }
     }
 }

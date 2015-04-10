@@ -52,6 +52,17 @@ namespace InstantStore.WebUI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        public ActionResult UpdateProperty(Guid? id, string data)
+        {
+            if (id == null || id == Guid.Empty || string.IsNullOrEmpty(data))
+            {
+                return this.HttpNotFound();
+            }
+
+            this.repository.UpdateCustomProperty(id.Value, data);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
         [HttpGet]
         public ActionResult Template(string a, Guid? id)
         {

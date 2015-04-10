@@ -61,6 +61,8 @@ namespace InstantStore.Domain.Abstract
 
         void DeleteCustomProperty(Guid id);
 
+        void UpdateCustomProperty(Guid id, string data);
+
         IList<ContentPage> GetPages(Guid? parentId);
 
         ContentPage GetPageById(Guid id);
@@ -72,5 +74,7 @@ namespace InstantStore.Domain.Abstract
         Guid NewProduct(Product product);
 
         Image GetImageById(Guid id);
+
+        Guid AddImage(Image image);
     }
 }

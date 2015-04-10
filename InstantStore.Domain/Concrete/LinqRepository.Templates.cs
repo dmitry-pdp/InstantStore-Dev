@@ -46,8 +46,8 @@ namespace InstantStore.Domain.Concrete
                 context.PropertyTemplates.DeleteOnSubmit(template);
                 context.SubmitChanges();
             }
-        }  
-      
+        }
+     
         public IList<CustomProperty> GetPropertiesForTemplate(Guid id)
         {
             using (var context = new InstantStoreDataContext())
@@ -75,6 +75,8 @@ namespace InstantStore.Domain.Concrete
 
         public void DeleteCustomProperty(Guid id)
         {
+            // TODO: Check in the model if this property can be upated / deleted.
+
             using (var context = new InstantStoreDataContext())
             {
                 var property = context.CustomProperties.FirstOrDefault(x => x.Id == id);
@@ -86,9 +88,25 @@ namespace InstantStore.Domain.Concrete
                 context.CustomProperties.DeleteOnSubmit(property);
                 context.SubmitChanges();
             }
-
         }
 
+        public void UpdateCustomProperty(Guid id, string data)
+        {
+            // TODO: Check in the model if this property can be upated / deleted.
+
+            using (var context = new InstantStoreDataContext())
+            {
+                var property = context.CustomProperties.FirstOrDefault(x => x.Id == id);
+                if (property == null)
+                {
+                    throw new ModelValidationException("Model.CustomProperty.TemplateNotFound");
+                }
+
+                property.Name = data;
+                context.SubmitChanges();
+            }
+        }
+        
         public void UpdateTemplate(PropertyTemplate propertyTemplate, IList<CustomProperty> customProperties, bool forceUpdate)
         {
             using (var context = new InstantStoreDataContext())
