@@ -8,11 +8,11 @@ namespace InstantStore.Domain.Concrete
 {
     public partial class LinqRepository
     {
-        public IList<ContentPage> GetPages(Guid? parentId)
+        public IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter)
         {
             using (var context = new InstantStoreDataContext())
             {
-                return context.ContentPages.Where(x => parentId != null ? x.ParentId == parentId : x.ParentId == null).ToList();
+                return context.ContentPages.Where(x => (parentId != null ? x.ParentId == parentId : x.ParentId == null)).Where(filter).ToList();
             }
         }
 

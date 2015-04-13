@@ -10,6 +10,14 @@ using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.ViewModels
 {
+    public enum ContentType
+    {
+        RootPage = 0,
+        Page = 1,
+        Category = 2,
+        Product = 3
+    }
+
     public class PageViewModel
     {
         public PageViewModel()
@@ -30,8 +38,7 @@ namespace InstantStore.WebUI.ViewModels
 
         public virtual void InitializeRootCategory(IRepository repository)
         {
-            this.RootCategory = new CategoryTreeItemViewModel { Name = StringResource.admin_PageTreeRoot, Id = Guid.Empty };
-            this.RootCategory.Items.AddRange(this.GetCategoryListForParentId(repository, null));
+            this.RootCategory = CategoryTreeItemViewModel.CreateNavigationTree(repository);
         }
 
         public Guid Id { get; set; } 
@@ -43,22 +50,18 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
         public string Text { get; set; }
 
-        [Display(ResourceType = typeof(StringResource), Name = "admin_PageParent")]
-        [Required]
-        public string ParentCategory { get; set; }
-
         [Required]
         public Guid ParentCategoryId { get; set; }
         
         public CategoryTreeItemViewModel RootCategory { get; private set; }
-    
-        private List<CategoryTreeItemViewModel> GetCategoryListForParentId(IRepository repository, Guid? parentId)
+
+        public static dynamic CreateTreeNode(CategoryTreeItemViewModel node)
         {
-            var categories = repository.GetPages(parentId).Select(p => new CategoryTreeItemViewModel(p)).OrderBy(y => y.Position).ToList();
-            categories.ForEach(x => x.InitializeSubCategories(repository));
-            return categories;
+            var icon = node.Type == ContentType.RootPage ? "glyphicon glyphicon-home" : (node.Type == ContentType.Category ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
+            var subItems = node.Items.Select(i => CreateTreeNode(i)).ToArray();
+            return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
         }
-    }
+     }
 
     public class CategoryTreeItemViewModel
     {
@@ -72,12 +75,26 @@ namespace InstantStore.WebUI.ViewModels
             this.Id = page.Id;
             this.Name = page.Name;
             this.Position = (uint)page.Position;
+            this.Type = (ContentType)page.ContentType;
         }
 
-        public void InitializeSubCategories(IRepository repository)
+        public static CategoryTreeItemViewModel CreateNavigationTree(IRepository repository, bool excludeProducts = true)
         {
-            this.Items = repository.GetPages(this.Id).Select(x => new CategoryTreeItemViewModel(x)).OrderBy(y => y.Position).ToList();
-            this.Items.ForEach(x => x.InitializeSubCategories(repository));
+            var root = new CategoryTreeItemViewModel { Name = StringResource.admin_PageTreeRoot, Id = Guid.Empty };
+            root.InitializeSubCategories(repository, excludeProducts);
+            return root;
+        }
+
+        private void InitializeSubCategories(IRepository repository, bool excludeProducts = true)
+        {
+            Func<ContentPage, bool> filter = excludeProducts ? p => p.ContentType != (int)ContentType.Product : (Func<ContentPage, bool>)null;
+            this.Items = GetPages(repository, this.Id == Guid.Empty ? (Guid?)null : this.Id, filter);
+            this.Items.ForEach(x => x.InitializeSubCategories(repository, excludeProducts));
+        }
+
+        private static List<CategoryTreeItemViewModel> GetPages(IRepository repository, Guid? parentId, Func<ContentPage, bool> filter)
+        {
+            return repository.GetPages(parentId, filter).Select(p => new CategoryTreeItemViewModel(p)).OrderBy(y => y.Position).ToList();
         }
 
         public string Name { get; set; }
@@ -85,6 +102,8 @@ namespace InstantStore.WebUI.ViewModels
         public Guid Id { get; set; }
 
         public uint Position { get; set; }
+
+        public ContentType Type { get; set; }
 
         public List<CategoryTreeItemViewModel> Items { get; private set; }
     }

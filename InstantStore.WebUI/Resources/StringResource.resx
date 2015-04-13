@@ -801,4 +801,46 @@
   <data name="admin_CustomPropertyUpdate" xml:space="preserve">
     <value>Обновить</value>
   </data>
+  <data name="admin_AddToParent" xml:space="preserve">
+    <value>Добавить в </value>
+  </data>
+  <data name="admin_PagesPageType_Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="admin_PagesPageType_Page" xml:space="preserve">
+    <value>Текстовая страница</value>
+  </data>
+  <data name="admin_PagesPageType_Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="admin_PagesPageType_RootPage" xml:space="preserve">
+    <value>Главная страница</value>
+  </data>
+  <data name="admin_PagesProperties" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="admin_PagesPropertiesActionEditProducts" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="admin_PagesPropertiesActionMoveDown" xml:space="preserve">
+    <value>Переместить вниз</value>
+  </data>
+  <data name="admin_PagesPropertiesActionMoveUp" xml:space="preserve">
+    <value>Переместить вверх</value>
+  </data>
+  <data name="admin_PagesPropertiesDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="admin_PagesPropertiesEdit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="admin_PagesPropertiesName" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="admin_PagesPropertiesPreview" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
+  <data name="admin_PagesPropertiesType" xml:space="preserve">
+    <value>Тип страницы</value>
+  </data>
 </root>

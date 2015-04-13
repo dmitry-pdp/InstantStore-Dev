@@ -9,25 +9,37 @@
 
 <script src="~/Scripts/bootstrap-treenav.js"></script>
 <link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
-
-<h2>@ViewBag.Title</h2>
-
 <div class="row">
-    <div class="col-sm-12 form-group">
-        @Html.ActionLink(StringResource.admin_NewPage, "NewPage", null, new { @class = "btn btn-default" })
-        @Html.ActionLink(StringResource.admin_PageNewCategory, "NewCategory", null, new { @class = "btn btn-default" })
-        @Html.ActionLink(StringResource.admin_ProductNew, "NewProduct", null, new { @class = "btn btn-default" })
+    <div class="col-sm-12">
+        <h2>@ViewBag.Title</h2>
     </div>
 </div>
-
-<div class="row form-group">
-    <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree">
-        @Html.Partial("CategoryTreeItem", this.Model.RootCategory)
-    </ul>
-    <script>
-        var pageUrl = '@Url.Action("Page", "Main", new { Id = "-page-id-" })';
-        $("a.category-tree-item").click(function () {
-            window.location.href = pageUrl.replace("-page-id-", this.getAttribute('item-id'));
-        });
-    </script>
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            @Html.ActionLink(StringResource.admin_NewPage, "NewPage", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(StringResource.admin_PageNewCategory, "NewCategory", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(StringResource.admin_ProductNew, "NewProduct", null, new { @class = "btn btn-default" })
+        </p>
+    </div>
 </div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+    </div>
+    <div class="col-sm-8 form-group" id="content-summary">
+        <span>No summary.</span>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(document).on("category-tree:selected", function (event, id) {
+            $.ajax({
+                url: "/Admin/ContentSummary?id=" + id,
+            })
+            .done(function (html) {
+                $("#content-summary").html(html);
+            });
+        });
+    });
+</script>

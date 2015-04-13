@@ -5,6 +5,7 @@
     [Name] NVARCHAR(250) NOT NULL, 
     [ShowInMenu] BIT NOT NULL, 
     [Image] IMAGE NULL, 
+	[ImageId] UNIQUEIDENTIFIER NULL,
     [ListType] INT NOT NULL, 
     [ShowPrices] BIT NOT NULL, 
     [Description] NVARCHAR(MAX) NULL, 

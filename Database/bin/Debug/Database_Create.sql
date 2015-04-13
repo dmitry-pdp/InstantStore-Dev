@@ -282,24 +282,6 @@ CREATE TABLE [dbo].[ExchangeRate] (
 
 
 GO
-PRINT N'Creating [dbo].[Table]...';
-
-
-GO
-CREATE TABLE [dbo].[Table] (
-    [Id]            UNIQUEIDENTIFIER NOT NULL,
-    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
-    [DateTime]      DATETIME         NOT NULL,
-    [UserId]        UNIQUEIDENTIFIER NULL,
-    [SessionId]     NVARCHAR (MAX)   NULL,
-    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
-    [ClientIP]      NVARCHAR (50)    NULL,
-    [UserAgent]     NVARCHAR (250)   NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[CustomProperty]...';
 
 
@@ -314,25 +296,6 @@ CREATE TABLE [dbo].[CustomProperty] (
 
 
 GO
-PRINT N'Creating [dbo].[Category]...';
-
-
-GO
-CREATE TABLE [dbo].[Category] (
-    [VersionId]   UNIQUEIDENTIFIER NOT NULL,
-    [Id]          UNIQUEIDENTIFIER NOT NULL,
-    [Name]        NVARCHAR (250)   NOT NULL,
-    [ShowInMenu]  BIT              NOT NULL,
-    [Image]       IMAGE            NULL,
-    [ListType]    INT              NOT NULL,
-    [ShowPrices]  BIT              NOT NULL,
-    [Description] NVARCHAR (MAX)   NULL,
-    [Version]     INT              NOT NULL,
-    PRIMARY KEY CLUSTERED ([VersionId] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[Currency]...';
 
 
@@ -340,19 +303,6 @@ GO
 CREATE TABLE [dbo].[Currency] (
     [Id]   UNIQUEIDENTIFIER NOT NULL,
     [Text] NVARCHAR (50)    NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[Image]...';
-
-
-GO
-CREATE TABLE [dbo].[Image] (
-    [Id]        UNIQUEIDENTIFIER NOT NULL,
-    [Image]     IMAGE            NOT NULL,
-    [ProductId] UNIQUEIDENTIFIER NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -373,6 +323,58 @@ CREATE TABLE [dbo].[ContentPage] (
     [CategoryId]     UNIQUEIDENTIFIER NULL,
     [Position]       INT              NOT NULL,
     [AttachmentType] NVARCHAR (150)   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Image]...';
+
+
+GO
+CREATE TABLE [dbo].[Image] (
+    [Id]               UNIQUEIDENTIFIER NOT NULL,
+    [Image]            IMAGE            NOT NULL,
+    [ImageContentType] NVARCHAR (250)   NOT NULL,
+    [ProductId]        UNIQUEIDENTIFIER NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Category]...';
+
+
+GO
+CREATE TABLE [dbo].[Category] (
+    [VersionId]   UNIQUEIDENTIFIER NOT NULL,
+    [Id]          UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (250)   NOT NULL,
+    [ShowInMenu]  BIT              NOT NULL,
+    [Image]       IMAGE            NULL,
+    [ImageId]     UNIQUEIDENTIFIER NULL,
+    [ListType]    INT              NOT NULL,
+    [ShowPrices]  BIT              NOT NULL,
+    [Description] NVARCHAR (MAX)   NULL,
+    [Version]     INT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([VersionId] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ErrorLog]...';
+
+
+GO
+CREATE TABLE [dbo].[ErrorLog] (
+    [Id]            UNIQUEIDENTIFIER NOT NULL,
+    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
+    [DateTime]      DATETIME         NOT NULL,
+    [UserId]        UNIQUEIDENTIFIER NULL,
+    [SessionId]     NVARCHAR (MAX)   NULL,
+    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
+    [ClientIP]      NVARCHAR (50)    NULL,
+    [UserAgent]     NVARCHAR (250)   NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

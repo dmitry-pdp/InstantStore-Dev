@@ -115,6 +115,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить в .
+        /// </summary>
+        public static string admin_AddToParent {
+            get {
+                return ResourceManager.GetString("admin_AddToParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Назад.
         /// </summary>
         public static string admin_Back {
@@ -534,6 +543,123 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Pages {
             get {
                 return ResourceManager.GetString("admin_Pages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Категория.
+        /// </summary>
+        public static string admin_PagesPageType_Category {
+            get {
+                return ResourceManager.GetString("admin_PagesPageType_Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Текстовая страница.
+        /// </summary>
+        public static string admin_PagesPageType_Page {
+            get {
+                return ResourceManager.GetString("admin_PagesPageType_Page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Продукт.
+        /// </summary>
+        public static string admin_PagesPageType_Product {
+            get {
+                return ResourceManager.GetString("admin_PagesPageType_Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Главная страница.
+        /// </summary>
+        public static string admin_PagesPageType_RootPage {
+            get {
+                return ResourceManager.GetString("admin_PagesPageType_RootPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Свойства.
+        /// </summary>
+        public static string admin_PagesProperties {
+            get {
+                return ResourceManager.GetString("admin_PagesProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Продукты.
+        /// </summary>
+        public static string admin_PagesPropertiesActionEditProducts {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesActionEditProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Переместить вниз.
+        /// </summary>
+        public static string admin_PagesPropertiesActionMoveDown {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesActionMoveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Переместить вверх.
+        /// </summary>
+        public static string admin_PagesPropertiesActionMoveUp {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesActionMoveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить.
+        /// </summary>
+        public static string admin_PagesPropertiesDelete {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать.
+        /// </summary>
+        public static string admin_PagesPropertiesEdit {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заголовок.
+        /// </summary>
+        public static string admin_PagesPropertiesName {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Посмотреть.
+        /// </summary>
+        public static string admin_PagesPropertiesPreview {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тип страницы.
+        /// </summary>
+        public static string admin_PagesPropertiesType {
+            get {
+                return ResourceManager.GetString("admin_PagesPropertiesType", resourceCulture);
             }
         }
         

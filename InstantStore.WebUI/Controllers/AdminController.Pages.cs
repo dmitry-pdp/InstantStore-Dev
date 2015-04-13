@@ -10,6 +10,7 @@ using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using InstantStore.WebUI.HtmlHelpers;
 using System.Data.Linq;
+using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -17,14 +18,31 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Pages()
         {
+            this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
             return this.Authorize() ?? this.View(new PageViewModel(this.repository));
         }
 
         public ActionResult NewPage()
         {
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
-            return this.Authorize() ?? this.View(new PageViewModel(this.repository));
+            this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+            var pageViewModel = new PageViewModel(this.repository);
+            return this.Authorize() ?? this.View(pageViewModel);
+        }
+
+        public ActionResult NewCategory()
+        {
+            this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+            var categoryViewModel = new CategoryViewModel();
+            return this.Authorize() ?? this.View(categoryViewModel);
+        }
+
+        public ActionResult NewProduct()
+        {
+            var viewModel = new ProductViewModel();
+            viewModel.InitializeRootCategory(this.repository);
+            this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+            return this.Authorize() ?? this.View(viewModel);
         }
 
         [HttpPost]
@@ -39,30 +57,24 @@ namespace InstantStore.WebUI.Controllers
                     Name = pageViewModel.Name,
                     Text = pageViewModel.Text,
                     ParentId = parentId,
-                    ContentType = 1,
-                    Position = repository.GetPages(parentId).Count + 1,
+                    ContentType = (int)ContentType.Page,
+                    Position = repository.GetPages(parentId, null).Count + 1,
                     Attachment = pageAttachment,
                     AttachmentType = pageAttachment != null ? attachment.ContentType : null
                 });
 
                 return this.RedirectToAction("Pages");
             }
-
-            pageViewModel.InitializeRootCategory(this.repository);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
-            return this.Authorize() ?? this.View(pageViewModel);
-        }
-
-        public ActionResult NewCategory(CategoryViewModel categoryViewModel)
-        {
-            var viewModel = categoryViewModel ?? new CategoryViewModel();
-            viewModel.InitializeRootCategory(this.repository);
-            return this.Authorize() ?? this.View(viewModel);
+            else
+            {
+                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                return this.Authorize() ?? this.View(pageViewModel ?? new PageViewModel(this.repository));
+            }
         }
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult NewCategory(CategoryViewModel categoryViewModel, HttpPostedFileBase image)
+        public ActionResult NewCategory(CategoryViewModel categoryViewModel)
         {
             if (this.ModelState.IsValid)
             {
@@ -72,7 +84,7 @@ namespace InstantStore.WebUI.Controllers
                     ShowInMenu = categoryViewModel.ShowInMenu,
                     ListType = categoryViewModel.ListType,
                     Description = categoryViewModel.Text,
-                    Image = image.GetFileBinary()
+                    ImageId = categoryViewModel.CategoryImage
                 });
 
                 Guid? parentId = categoryViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.ParentCategoryId;
@@ -81,25 +93,18 @@ namespace InstantStore.WebUI.Controllers
                     Name = categoryViewModel.Name,
                     Text = categoryViewModel.Text,
                     ParentId = parentId,
-                    ContentType = 2,
-                    Position = repository.GetPages(parentId).Count + 1,
+                    ContentType = (int)ContentType.Category,
+                    Position = repository.GetPages(parentId, null).Count + 1,
                     CategoryId = categoryId,
                 });
 
                 return this.RedirectToAction("Pages");
             }
-
-            var viewModel = categoryViewModel ?? new CategoryViewModel();
-            viewModel.InitializeRootCategory(this.repository);
-            return this.Authorize() ?? this.View(viewModel);
-
-        }
-
-        public ActionResult NewProduct()
-        {
-            var viewModel = new ProductViewModel();
-            viewModel.InitializeRootCategory(this.repository);
-            return this.Authorize() ?? this.View(viewModel);
+            else
+            {
+                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                return this.Authorize() ?? this.View(categoryViewModel ?? new CategoryViewModel());
+            }
         }
 
         [HttpPost]
@@ -124,23 +129,34 @@ namespace InstantStore.WebUI.Controllers
                     Name = productViewModel.Name,
                     Text = productViewModel.Description,
                     ParentId = parentId,
-                    ContentType = 2,
-                    Position = repository.GetPages(parentId).Count + 1,
+                    ContentType = (int)ContentType.Product,
+                    Position = repository.GetPages(parentId, null).Count + 1,
                     ProductId = productId,
                 });
 
                 return this.RedirectToAction("Pages");
             }
-
-            var viewModel = productViewModel ?? new ProductViewModel();
-            viewModel.InitializeRootCategory(this.repository);
-            return this.Authorize() ?? this.View(viewModel);
+            else
+            {
+                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                return this.Authorize() ?? this.View(productViewModel ?? new ProductViewModel());
+            }
         }
 
         public ActionResult ProductImage(Guid imageId)
         {
             this.ViewData["ImageId"] = imageId.ToString();
             return this.View("ProductImage");
+        }
+
+        public ActionResult ContentSummary(Guid? id)
+        {
+            if (id == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return this.View(new ContentSummaryViewModel(repository, id.Value));
         }
     }
 }

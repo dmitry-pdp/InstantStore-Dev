@@ -63,7 +63,7 @@ namespace InstantStore.Domain.Abstract
 
         void UpdateCustomProperty(Guid id, string data);
 
-        IList<ContentPage> GetPages(Guid? parentId);
+        IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter);
 
         ContentPage GetPageById(Guid id);
 

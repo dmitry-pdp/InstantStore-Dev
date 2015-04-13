@@ -24,6 +24,8 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryShowInMenuLabel")]
         public bool ShowInMenu { get; set; }
 
+        public Guid? CategoryImage { get; set; }
+
         public List<SelectListItem> ListTypes { get; private set; }
 
         public void Initialize()

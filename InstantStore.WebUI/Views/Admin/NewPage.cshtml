@@ -7,33 +7,22 @@
 }
 
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="~/Scripts/bootstrap-treenav.js"></script>
-<link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
 
+<div class="border col-sm-3">
+    @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
+    <h3>@StringResource.admin_AddToParent </h3>
+    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+</div>
+<div class="border col-sm-9">
     <h2>@ViewBag.Title</h2>
-
-        <div class="col-sm-10 col-sm-offset-1">
-            @using (Html.BeginForm("NewPage", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+    <div class="col-sm-10 col-sm-offset-1">
+        @using (Html.BeginForm("NewPage", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
         {
             <div class="form-group">
-                    @Html.LabelFor(model => model.Name, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Name)
-                </div>
-            <div class="form-group">
-                    @Html.LabelFor(model => model.ParentCategory, new { @class = "control-label" })
-                    <div class="row">
-                        <div class="col-sm-8">
-                            @Html.TextBoxFor(model => model.ParentCategory, new { @class = "form-control" })
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="#" class="btn btn-default" id="btn-choose-parent">@StringResource.admin_PageChoose</a>
-                        </div>
-                    </div>
-                    @Html.ValidationMessageFor(model => model.ParentCategory)
-                </div>
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Text, new { @class = "control-label" })
                 @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
@@ -42,64 +31,28 @@
                 <label>@StringResource.admin_PageAttachment</label>
                 <input type="file" id="attachment" name="attachment" class="form-control" value="@StringResource.admin_PageChooseFile" />
             </div>
-            @Html.HiddenFor(model => model.ParentCategoryId, new { @class="parent-category-id" })    
+            @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
             <div class="form-group">
-                    <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
-                </div>
-        }
-
-        </div>
-        <div id="choose-parent-form">
-            <h3>@StringResource.admin_PageContainerDialogLabel</h3>
-            <div id="choose-parent-form-container" class="row">
-                <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree">
-                    @Html.Partial("CategoryTreeItem", this.Model.RootCategory)
-                </ul>
+                <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
             </div>
-        </div>
-    <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: [
-                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount visualblocks visualchars",
-                "insertdatetime nonbreaking save table contextmenu directionality",
-                "emoticons paste textcolor colorpicker textpattern"
-            ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
-        });
-
-$(function () {
-    var height = $(window).height();
-    var width = $(window).width();
-
-    var dialog = $("#choose-parent-form").dialog({
-        autoOpen: false,
-        modal: true,
-        width: width * 0.8,
-        height: height * 0.8,
-        buttons: {
-            Cancel: function () {
-                dialog.dialog("close");
-            }
         }
+    </div>
+</div>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars",
+            "insertdatetime nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
     });
 
-    $("#btn-choose-parent").click(function () {
-        dialog.dialog("open");
-        return false;
+    $(function () {
+        $(document).on("category-tree:selected", function (event, id) {
+            $("#ParentCategoryId").val(id);
+        });
     });
-    $("#ParentCategory").click(function () {
-        dialog.dialog("open");
-        return false;
-    });
-
-    $("a.category-tree-item").click(function () {
-        var itemId = $(this).attr('item-id');
-        $("#ParentCategoryId").val(itemId);
-        $("#ParentCategory").val($(this).text());
-        dialog.dialog("close");
-        return false;
-    });
-});
 </script>
