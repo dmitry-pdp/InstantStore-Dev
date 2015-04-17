@@ -38,9 +38,8 @@ namespace InstantStore.WebUI.ViewModels
 
         public List<SelectListItem> Currencies { get; private set; }
 
-        public override void InitializeRootCategory(IRepository repository)
+        public void InitializeRootCategory(IRepository repository)
         {
-            base.InitializeRootCategory(repository);
             this.Currencies = repository.GetCurrencies().Select(currency => new SelectListItem() 
             { 
                 Text = currency.Text,

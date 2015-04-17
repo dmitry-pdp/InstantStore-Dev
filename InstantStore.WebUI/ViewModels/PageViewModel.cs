@@ -24,21 +24,18 @@ namespace InstantStore.WebUI.ViewModels
         {
         }
 
-        public PageViewModel(IRepository repository)
+        public PageViewModel(IRepository repository, Guid id)
         {
-            this.InitializeRootCategory(repository);
+            var contentPage = repository.GetPageById(id);
+            if (contentPage != null)
+            {
+                this.Init(contentPage);
+            }
         }
 
-        public PageViewModel(ContentPage page)
+        public PageViewModel(ContentPage contentPage)
         {
-            this.Id = page.Id;
-            this.Name = page.Name;
-            this.Text = page.Text;
-        }
-
-        public virtual void InitializeRootCategory(IRepository repository)
-        {
-            this.RootCategory = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+            this.Init(contentPage);
         }
 
         public Guid Id { get; set; } 
@@ -52,14 +49,29 @@ namespace InstantStore.WebUI.ViewModels
 
         [Required]
         public Guid ParentCategoryId { get; set; }
-        
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
+        public AttachmentViewModel Attachment { get; set; }
+
         public CategoryTreeItemViewModel RootCategory { get; private set; }
+
+        protected ContentPage ContentPage { get; set; }
 
         public static dynamic CreateTreeNode(CategoryTreeItemViewModel node)
         {
             var icon = node.Type == ContentType.RootPage ? "glyphicon glyphicon-home" : (node.Type == ContentType.Category ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
             var subItems = node.Items.Select(i => CreateTreeNode(i)).ToArray();
             return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
+        }
+
+        private void Init(ContentPage contentPage)
+        {
+            this.Id = contentPage.Id;
+            this.Name = contentPage.Name;
+            this.Text = contentPage.Text;
+            this.ParentCategoryId = contentPage.ParentId ?? Guid.Empty;
+            this.Attachment = contentPage.AttachmentId != null ? new AttachmentViewModel(contentPage) : null;
+            this.ContentPage = contentPage;
         }
      }
 

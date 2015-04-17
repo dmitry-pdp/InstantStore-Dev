@@ -1,0 +1,119 @@
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model CategoryViewModel
+@{
+    ViewBag.Title = this.Model.Id == Guid.Empty ? StringResource.admin_PageNewCategory : StringResource.admin_EditCategory;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+
+<div class="border col-sm-3">
+    @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
+    <h3>@StringResource.admin_AddToParent </h3>
+    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+</div>
+<div class="border col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    <div class="col-sm-10 col-sm-offset-1">
+        @using (Html.BeginForm("Category", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                    <div class="form-group">
+                        <div class="">
+                            <div class="form-inline">
+                                @Html.LabelFor(model => model.ListType)
+                                @Html.DropDownListFor(model => model.ListType, this.Model.ListTypes, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="">
+                            <div class="form-inline checkbox-inline">
+                                @Html.CheckBoxFor(model => model.ShowInMenu)
+                                @Html.LabelFor(model => model.ShowInMenu)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <p class="">
+                        <img src="@(this.Model.CategoryImage == null ? "/Image/NoImage.png" : "/Main/GetImage?id=" + this.Model.CategoryImage.Value)" class="img-responsive img-thumbnail" id="category-image" />
+                        @Html.HiddenFor(model => model.CategoryImage)
+                    </p>
+                    <p>
+                        <a href="#" class="btn btn-default btn-sm" id="upload-image-btn">@StringResource.admin_CategoryImageLabel</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Text, new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
+                    </div>
+                    <div class="form-group">
+                        @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
+                        @Html.HiddenFor(model => model.Id)
+                        <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="hide">
+        @using (Html.BeginForm("SaveImage", "Admin"))
+        {
+            <input type="file" id="upload-image" name="image" />
+        }
+    </div>
+</div>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars",
+            "insertdatetime nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
+    });
+
+    $(function () {
+        $("#upload-image").fileupload({
+            url: '/admin/saveimage',
+            dataType: 'json',
+            add: function (e, data) {
+                data.submit()
+                    .done(function (data) {
+                        $("#category-image").attr("src", '/Main/GetImage?id=' + data.ImageId);
+                        $("#CategoryImage").val(data.ImageId);
+                    })
+                    .fail(function (jqXHR, result, textStatus) {
+                        alert("Error:" + textStatus);
+                    });
+            }
+        })
+        .prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        $("#upload-image-btn").click(function () {
+            $("#upload-image").click();
+        })
+
+        $(document).on("category-tree:selected", function (event, id) {
+            $("#ParentCategoryId").val(id);
+        });
+    });
+</script>

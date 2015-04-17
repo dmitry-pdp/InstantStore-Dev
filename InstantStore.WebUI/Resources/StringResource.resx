@@ -683,7 +683,7 @@
     <value>Список валют</value>
   </data>
   <data name="admin_CurrencyPage" xml:space="preserve">
-    <value>Настройки вылюты</value>
+    <value>Настройки валюты</value>
   </data>
   <data name="admin_ExchangeRate" xml:space="preserve">
     <value>Обменный курс</value>
@@ -766,7 +766,7 @@
     <value>Новая страница</value>
   </data>
   <data name="admin_PageAttachment" xml:space="preserve">
-    <value>Приложить файл</value>
+    <value>Файлы приложенные к странице</value>
   </data>
   <data name="admin_PageChooseFile" xml:space="preserve">
     <value>Выбрать файл</value>
@@ -823,10 +823,10 @@
     <value>Продукты</value>
   </data>
   <data name="admin_PagesPropertiesActionMoveDown" xml:space="preserve">
-    <value>Переместить вниз</value>
+    <value>Вниз</value>
   </data>
   <data name="admin_PagesPropertiesActionMoveUp" xml:space="preserve">
-    <value>Переместить вверх</value>
+    <value>Вверх</value>
   </data>
   <data name="admin_PagesPropertiesDelete" xml:space="preserve">
     <value>Удалить</value>
@@ -842,5 +842,20 @@
   </data>
   <data name="admin_PagesPropertiesType" xml:space="preserve">
     <value>Тип страницы</value>
+  </data>
+  <data name="admin_PagePropertiesPagePosition" xml:space="preserve">
+    <value>Приоритет в списке</value>
+  </data>
+  <data name="admin_UploadError" xml:space="preserve">
+    <value>Ошибка загрузки файла</value>
+  </data>
+  <data name="admin_PagePropertiesPageAttachment" xml:space="preserve">
+    <value>Приложение</value>
+  </data>
+  <data name="admin_PagePropertiesPageNone" xml:space="preserve">
+    <value>Отсутствует</value>
+  </data>
+  <data name="admin_UpdatePage" xml:space="preserve">
+    <value>Редактировать страницу</value>
   </data>
 </root>

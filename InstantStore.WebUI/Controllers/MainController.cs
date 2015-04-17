@@ -96,7 +96,12 @@ namespace InstantStore.WebUI.Controllers
 
             var page = this.repository.GetPageById(id.Value);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            return this.View(new PageViewModel(page));
+            var viewModel = new PageViewModel(page);
+            if (viewModel.Attachment != null)
+            {
+                viewModel.Attachment.CanEdit = false;
+            }
+            return this.View(viewModel);
         }
 
         public ActionResult GetImage(Guid id)
@@ -109,6 +114,18 @@ namespace InstantStore.WebUI.Controllers
 
             var stream = new MemoryStream(image.Image1.ToArray());
             return new FileStreamResult(stream, image.ImageContentType);
+        }
+
+        public ActionResult Download(Guid id)
+        {
+            var attachment = this.repository.GetAttachmentById(id);
+            if (attachment == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var stream = new MemoryStream(attachment.Content.ToArray());
+            return new FileStreamResult(stream, attachment.ContentType);
         }
     }
 }

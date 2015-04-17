@@ -3,17 +3,17 @@
 
 @model CategoryTreeItemViewModel
 
-<script src="~/Scripts/bootstrap-treeview.min.js"></script>
+<script src="~/Scripts/bootstrap-treeview.js"></script>
 <link href="~/Content/bootstrap-treeview.min.css" rel="stylesheet" />
 
 <div id="page-tree"></div>
 <script>
-    var tree = function () {
+    var categoryTree = function () {
         return @Html.Raw(Json.Encode(new []{ PageViewModel.CreateTreeNode(this.Model)}))
     }();
 
     $("#page-tree").treeview({
-        data: tree,
+        data: categoryTree,
         onNodeSelected: function (event, node) {
             if (node && node.id) {
                 $(document).trigger("category-tree:selected", node.id);
@@ -21,8 +21,40 @@
         }
     });
 
-    window.setTimeout(function () {
-        $("#page-tree").treeview('selectNode', 0);
-    },
-    100);
+    function SelectCategoryTreeNodeById(id, node) {
+        node = node || categoryTree[0];
+        if (node.id == id) {
+            return node;
+        }
+
+        if (!node.nodes || node.nodes.length == 0) {
+            return null;
+        }
+
+        for (var i = 0; i < node.nodes.length; i++) {
+            var r = SelectCategoryTreeNodeById(id, node.nodes[i]);
+            if (r) {
+                return r;
+            }
+        }
+
+        return null;
+    };
+
+    function InitializeTreeView(id) {
+        window.setTimeout(function () {
+            var treeView = $("#page-tree").treeview(true);
+            var rootNode = treeView.getNode(0);
+            var node = SelectCategoryTreeNodeById(id, rootNode);
+            if (node) {
+                treeView.selectNode(node);
+                while (node != rootNode) {
+                    node = treeView.getParent(node);
+                    treeView.expandNode(node);
+                }
+            }
+        },
+        100);
+    }
+
 </script>

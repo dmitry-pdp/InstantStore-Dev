@@ -67,14 +67,24 @@ namespace InstantStore.Domain.Abstract
 
         ContentPage GetPageById(Guid id);
 
+        void ChangePagePosition(Guid id, bool movedown);
+
         Guid NewPage(ContentPage contentPage);
 
+        void UpdateContentPage(ContentPage contentPage);
+
         Guid NewCategory(Category category);
+
+        Category GetCategoryById(Guid id);
 
         Guid NewProduct(Product product);
 
         Image GetImageById(Guid id);
 
         Guid AddImage(Image image);
+
+        Attachment GetAttachmentById(Guid id);
+
+        Guid AddAttachment(Attachment attachment);
     }
 }

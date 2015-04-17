@@ -1,7 +1,6 @@
 ﻿@using System.Collections;
 @using InstantStore.WebUI.ViewModels;
 @using InstantStore.WebUI.Resources;
-@model PageViewModel
 @{
     ViewBag.Title = StringResource.admin_Pages;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -15,10 +14,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12" id="new-pages-row">
         <p>
-            @Html.ActionLink(StringResource.admin_NewPage, "NewPage", null, new { @class = "btn btn-default" })
-            @Html.ActionLink(StringResource.admin_PageNewCategory, "NewCategory", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default" })
+            @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default" })
             @Html.ActionLink(StringResource.admin_ProductNew, "NewProduct", null, new { @class = "btn btn-default" })
         </p>
     </div>
@@ -30,16 +29,29 @@
     <div class="col-sm-8 form-group" id="content-summary">
         <span>No summary.</span>
     </div>
+    <input type="hidden" value="@Guid.Empty" id="current-selection"/>
 </div>
 <script>
     $(function () {
+
+        InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
+
         $(document).on("category-tree:selected", function (event, id) {
+            $("#current-selection").val(id);
             $.ajax({
                 url: "/Admin/ContentSummary?id=" + id,
             })
             .done(function (html) {
                 $("#content-summary").html(html);
             });
+        });
+
+        var e = $("#new-pages-row").find(".btn");
+        e.click(function () {
+            var href = $(this).attr('href');
+            var selectedCat = $("#current-selection").val();
+            window.location.href = href + '?parentId=' + selectedCat;
+            return false;
         });
     });
 </script>

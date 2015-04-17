@@ -50,6 +50,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InstantStore.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Concrete\LinqRepository.Attachment.cs" />
     <Compile Include="Concrete\LinqRepository.ContentPage.cs" />
     <Compile Include="Concrete\LinqRepository.cs" />
     <Compile Include="Concrete\LinqRepository.Currency.cs" />

@@ -277,7 +277,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Настройки вылюты.
+        ///   Looks up a localized string similar to Настройки валюты.
         /// </summary>
         public static string admin_CurrencyPage {
             get {
@@ -475,7 +475,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Приложить файл.
+        ///   Looks up a localized string similar to Файлы приложенные к странице.
         /// </summary>
         public static string admin_PageAttachment {
             get {
@@ -534,6 +534,33 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_PageParent {
             get {
                 return ResourceManager.GetString("admin_PageParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Приложение.
+        /// </summary>
+        public static string admin_PagePropertiesPageAttachment {
+            get {
+                return ResourceManager.GetString("admin_PagePropertiesPageAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отсутствует.
+        /// </summary>
+        public static string admin_PagePropertiesPageNone {
+            get {
+                return ResourceManager.GetString("admin_PagePropertiesPageNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Приоритет в списке.
+        /// </summary>
+        public static string admin_PagePropertiesPagePosition {
+            get {
+                return ResourceManager.GetString("admin_PagePropertiesPagePosition", resourceCulture);
             }
         }
         
@@ -601,7 +628,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Переместить вниз.
+        ///   Looks up a localized string similar to Вниз.
         /// </summary>
         public static string admin_PagesPropertiesActionMoveDown {
             get {
@@ -610,7 +637,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Переместить вверх.
+        ///   Looks up a localized string similar to Вверх.
         /// </summary>
         public static string admin_PagesPropertiesActionMoveUp {
             get {
@@ -885,6 +912,24 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Type {
             get {
                 return ResourceManager.GetString("admin_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать страницу.
+        /// </summary>
+        public static string admin_UpdatePage {
+            get {
+                return ResourceManager.GetString("admin_UpdatePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка загрузки файла.
+        /// </summary>
+        public static string admin_UploadError {
+            get {
+                return ResourceManager.GetString("admin_UploadError", resourceCulture);
             }
         }
         

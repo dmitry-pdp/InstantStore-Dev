@@ -157,6 +157,7 @@
       <DependentUpon>StringResource.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Compare.cs" />
+    <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ContentSummaryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
+    <Compile Include="ViewModels\UploadControlViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -194,9 +196,15 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Image\FileExtension-Excel.png" />
+    <Content Include="Image\FileExtension-pdf.png" />
+    <Content Include="Image\FileExtension-Txt.png" />
+    <Content Include="Image\FileExtension-Word.png" />
     <Content Include="Image\NoImage.png" />
     <Content Include="Scripts\bootstrap-treenav.js" />
     <Content Include="Scripts\bootstrap-treenav.min.js" />
+    <Content Include="Scripts\bootstrap-treeview.js" />
+    <Content Include="Scripts\bootstrap-treeview.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -235,14 +243,16 @@
     <Content Include="Views\Admin\Templates.cshtml" />
     <Content Include="Views\Admin\Template.cshtml" />
     <Content Include="Views\Admin\EditorTemplates\CustomProperty.cshtml" />
-    <Content Include="Views\Admin\NewPage.cshtml" />
+    <Content Include="Views\Admin\Page.cshtml" />
     <Content Include="Views\Admin\CategoryTreeItem.cshtml" />
     <Content Include="Views\Main\Page.cshtml" />
-    <Content Include="Views\Admin\NewCategory.cshtml" />
+    <Content Include="Views\Admin\Category.cshtml" />
     <Content Include="Views\Admin\NewProduct.cshtml" />
     <Content Include="Views\Admin\ProductImage.cshtml" />
     <Content Include="Views\Admin\CategoryTree.cshtml" />
     <Content Include="Views\Admin\ContentSummary.cshtml" />
+    <Content Include="Views\Admin\UploadControl.cshtml" />
+    <Content Include="Views\Shared\Attachment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

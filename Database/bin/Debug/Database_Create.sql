@@ -181,29 +181,6 @@ IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
 
 
 GO
-PRINT N'Creating [dbo].[User]...';
-
-
-GO
-CREATE TABLE [dbo].[User] (
-    [Id]                UNIQUEIDENTIFIER NOT NULL,
-    [Name]              NVARCHAR (300)   NOT NULL,
-    [Email]             NVARCHAR (100)   NULL,
-    [Company]           NVARCHAR (250)   NULL,
-    [Phonenumber]       NVARCHAR (50)    NULL,
-    [City]              NVARCHAR (300)   NULL,
-    [Password]          NVARCHAR (MAX)   NOT NULL,
-    [IsAdmin]           BIT              NOT NULL,
-    [IsActivated]       BIT              NOT NULL,
-    [IsBlocked]         BIT              NOT NULL,
-    [IsPaymentCash]     BIT              NOT NULL,
-    [DefaultCurrencyId] UNIQUEIDENTIFIER NULL,
-    [Comments]          NVARCHAR (MAX)   NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[Settings]...';
 
 
@@ -253,6 +230,20 @@ CREATE TABLE [dbo].[Product] (
 
 
 GO
+PRINT N'Creating [dbo].[Image]...';
+
+
+GO
+CREATE TABLE [dbo].[Image] (
+    [Id]               UNIQUEIDENTIFIER NOT NULL,
+    [Image]            IMAGE            NOT NULL,
+    [ImageContentType] NVARCHAR (250)   NOT NULL,
+    [ProductId]        UNIQUEIDENTIFIER NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating [dbo].[Feedback]...';
 
 
@@ -277,6 +268,24 @@ CREATE TABLE [dbo].[ExchangeRate] (
     [ToCurrencyId]          UNIQUEIDENTIFIER NOT NULL,
     [ConversionRate]        FLOAT (53)       NULL,
     [ReverseConversionRate] FLOAT (53)       NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ErrorLog]...';
+
+
+GO
+CREATE TABLE [dbo].[ErrorLog] (
+    [Id]            UNIQUEIDENTIFIER NOT NULL,
+    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
+    [DateTime]      DATETIME         NOT NULL,
+    [UserId]        UNIQUEIDENTIFIER NULL,
+    [SessionId]     NVARCHAR (MAX)   NULL,
+    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
+    [ClientIP]      NVARCHAR (50)    NULL,
+    [UserAgent]     NVARCHAR (250)   NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -328,20 +337,6 @@ CREATE TABLE [dbo].[ContentPage] (
 
 
 GO
-PRINT N'Creating [dbo].[Image]...';
-
-
-GO
-CREATE TABLE [dbo].[Image] (
-    [Id]               UNIQUEIDENTIFIER NOT NULL,
-    [Image]            IMAGE            NOT NULL,
-    [ImageContentType] NVARCHAR (250)   NOT NULL,
-    [ProductId]        UNIQUEIDENTIFIER NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[Category]...';
 
 
@@ -362,19 +357,35 @@ CREATE TABLE [dbo].[Category] (
 
 
 GO
-PRINT N'Creating [dbo].[ErrorLog]...';
+PRINT N'Creating [dbo].[User]...';
 
 
 GO
-CREATE TABLE [dbo].[ErrorLog] (
-    [Id]            UNIQUEIDENTIFIER NOT NULL,
-    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
-    [DateTime]      DATETIME         NOT NULL,
-    [UserId]        UNIQUEIDENTIFIER NULL,
-    [SessionId]     NVARCHAR (MAX)   NULL,
-    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
-    [ClientIP]      NVARCHAR (50)    NULL,
-    [UserAgent]     NVARCHAR (250)   NULL,
+CREATE TABLE [dbo].[User] (
+    [Id]                UNIQUEIDENTIFIER NOT NULL,
+    [Name]              NVARCHAR (300)   NOT NULL,
+    [Email]             NVARCHAR (100)   NULL,
+    [Company]           NVARCHAR (250)   NULL,
+    [Phonenumber]       NVARCHAR (50)    NULL,
+    [City]              NVARCHAR (300)   NULL,
+    [Password]          NVARCHAR (MAX)   NOT NULL,
+    [IsAdmin]           BIT              NOT NULL,
+    [IsActivated]       BIT              NOT NULL,
+    [IsBlocked]         BIT              NOT NULL,
+    [IsPaymentCash]     BIT              NOT NULL,
+    [DefaultCurrencyId] UNIQUEIDENTIFIER NULL,
+    [Comments]          NVARCHAR (MAX)   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Attachment]...';
+
+
+GO
+CREATE TABLE [dbo].[Attachment] (
+    [Id] INT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

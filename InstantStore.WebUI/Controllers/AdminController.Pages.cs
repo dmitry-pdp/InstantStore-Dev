@@ -16,28 +16,104 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        public ActionResult Pages()
+        public ActionResult Pages(Guid? treeSelection)
         {
+            this.ViewData["TreeSelection"] = treeSelection;
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Pages);
-            return this.Authorize() ?? this.View(new PageViewModel(this.repository));
+            return this.Authorize() ?? this.View(new PageViewModel());
         }
 
-        public ActionResult NewPage()
+        public ActionResult Page(Guid? id, Guid? parentId, string a)
         {
+            if (!string.IsNullOrEmpty(a) && id != null && id != Guid.Empty)
+            {
+                if (string.Equals("moveup", a, StringComparison.OrdinalIgnoreCase))
+                {
+                    this.repository.ChangePagePosition(id.Value, false);
+                    return this.RedirectToAction("Pages", new { treeSelection = id.Value });
+                }
+                if (string.Equals("movedown", a, StringComparison.OrdinalIgnoreCase))
+                {
+                    this.repository.ChangePagePosition(id.Value, true);
+                    return this.RedirectToAction("Pages", new { treeSelection = id.Value });
+                }
+            }
+
+            var pageViewModel = id != null ? new PageViewModel(this.repository, id.Value) : new PageViewModel() { ParentCategoryId = parentId ?? Guid.Empty };
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-            var pageViewModel = new PageViewModel(this.repository);
             return this.Authorize() ?? this.View(pageViewModel);
         }
 
-        public ActionResult NewCategory()
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult AddAttachment(HttpPostedFileBase attachment)
+        {
+            Binary pageAttachment = attachment.GetFileBinary();
+            if (attachment != null)
+            {
+                var id = this.repository.AddAttachment(new Attachment
+                {
+                    Content = pageAttachment,
+                    ContentLength = attachment.ContentLength,
+                    ContentType = attachment.ContentType,
+                    Name = attachment.FileName,
+                    UploadedAt = DateTime.Now
+                });
+
+                return this.Json(new { Id = id });
+            }
+
+            return this.HttpNotFound();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Page(PageViewModel pageViewModel, Guid? attachmentId)
+        {
+            if (this.ModelState.IsValid)
+            {
+                Guid? parentId = pageViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : pageViewModel.ParentCategoryId;
+                var contentPage = this.repository.GetPageById(pageViewModel.Id);
+                if (contentPage == null)
+                {
+                    repository.NewPage(new ContentPage
+                    {
+                        Name = pageViewModel.Name,
+                        Text = pageViewModel.Text,
+                        ParentId = parentId,
+                        ContentType = (int)ContentType.Page,
+                        Position = repository.GetPages(parentId, null).Count,
+                        AttachmentId = attachmentId,
+                    });
+                }
+                else
+                {
+                    contentPage.Name = pageViewModel.Name;
+                    contentPage.Text = pageViewModel.Text;
+                    contentPage.ParentId = parentId;
+                    contentPage.AttachmentId = attachmentId;
+
+                    this.repository.UpdateContentPage(contentPage);
+                }
+
+                return this.RedirectToAction("Pages");
+            }
+            else
+            {
+                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                return this.Authorize() ?? this.View(pageViewModel ?? new PageViewModel());
+            }
+        }
+
+        public ActionResult Category(Guid? id)
         {
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-            var categoryViewModel = new CategoryViewModel();
+            var categoryViewModel = id != null ? new CategoryViewModel(this.repository, id.Value) : new CategoryViewModel();
             return this.Authorize() ?? this.View(categoryViewModel);
         }
 
-        public ActionResult NewProduct()
+        public ActionResult NewProduct(Guid? guid)
         {
             var viewModel = new ProductViewModel();
             viewModel.InitializeRootCategory(this.repository);
@@ -47,34 +123,7 @@ namespace InstantStore.WebUI.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult NewPage(PageViewModel pageViewModel, HttpPostedFileBase attachment)
-        {
-            if (this.ModelState.IsValid)
-            {
-                Binary pageAttachment = attachment.GetFileBinary();
-                Guid? parentId = pageViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : pageViewModel.ParentCategoryId;
-                repository.NewPage(new ContentPage {
-                    Name = pageViewModel.Name,
-                    Text = pageViewModel.Text,
-                    ParentId = parentId,
-                    ContentType = (int)ContentType.Page,
-                    Position = repository.GetPages(parentId, null).Count + 1,
-                    Attachment = pageAttachment,
-                    AttachmentType = pageAttachment != null ? attachment.ContentType : null
-                });
-
-                return this.RedirectToAction("Pages");
-            }
-            else
-            {
-                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-                return this.Authorize() ?? this.View(pageViewModel ?? new PageViewModel(this.repository));
-            }
-        }
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult NewCategory(CategoryViewModel categoryViewModel)
+        public ActionResult Category(CategoryViewModel categoryViewModel)
         {
             if (this.ModelState.IsValid)
             {
@@ -157,6 +206,17 @@ namespace InstantStore.WebUI.Controllers
             }
 
             return this.View(new ContentSummaryViewModel(repository, id.Value));
+        }
+
+        public ActionResult AttachmentView(Guid id)
+        {
+            var attachment = this.repository.GetAttachmentById(id);
+            if (attachment == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return this.View("Attachment", new AttachmentViewModel(attachment));
         }
     }
 }

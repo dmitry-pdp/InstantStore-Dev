@@ -100,24 +100,6 @@
       <Association Name="PropertyTemplate_Product" Member="Products" ThisKey="Id" OtherKey="CustomAttributesTemplateId" Type="Product" />
     </Type>
   </Table>
-  <Table Name="dbo.ContentPage" Member="ContentPages">
-    <Type Name="ContentPage">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Attachment" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="ContentType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ParentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="AttachmentType" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
-      <Association Name="ContentPage_ContentPage" Member="ContentPages" ThisKey="Id" OtherKey="ParentId" Type="ContentPage" />
-      <Association Name="ContentPage_ContentPage" Member="ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
-      <Association Name="Product_ContentPage" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
-      <Association Name="Category_ContentPage" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Image" Member="Images">
     <Type Name="Image">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -139,6 +121,36 @@
       <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Category_ContentPage" Member="ContentPages" ThisKey="VersionId" OtherKey="CategoryId" Type="ContentPage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Attachment" Member="Attachments">
+    <Type Name="Attachment">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ContentType" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ContentLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UploadedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Attachment_ContentPage" Member="ContentPages" ThisKey="Id" OtherKey="AttachmentId" Type="ContentPage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContentPage" Member="ContentPages">
+    <Type Name="ContentPage">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ContentType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AttachmentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="AttachmentName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="ContentPage_ContentPage" Member="ContentPages" ThisKey="Id" OtherKey="ParentId" Type="ContentPage" />
+      <Association Name="Attachment_ContentPage" Member="Attachment" ThisKey="AttachmentId" OtherKey="Id" Type="Attachment" IsForeignKey="true" />
+      <Association Name="Category_ContentPage" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
+      <Association Name="ContentPage_ContentPage" Member="ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="Product_ContentPage" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

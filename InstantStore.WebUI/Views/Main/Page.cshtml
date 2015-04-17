@@ -8,3 +8,10 @@
 
 <h2>@ViewBag.Title</h2>
 @Html.Raw(this.Model.Text)
+<div>
+    <label>@StringResource.admin_PageAttachment</label>
+    @if (this.Model.Attachment != null)
+    {
+        @Html.Partial("Attachment", this.Model.Attachment);
+    }
+</div>

@@ -18,6 +18,24 @@ namespace InstantStore.WebUI.ViewModels
             this.Initialize();
         }
 
+        public CategoryViewModel(IRepository repository, Guid id)
+            : base(repository, id)
+        {
+            if (this.ContentPage.CategoryId != null)
+            {
+                var category = repository.GetCategoryById(this.ContentPage.CategoryId.Value);
+                if (category == null)
+                {
+                    throw new Exception("Data is not consistent.");
+                }
+
+                this.ListType = category.ListType;
+                this.Initialize(this.ListType == 2);
+                this.CategoryImage = category.ImageId;
+                this.ShowInMenu = category.ShowInMenu;
+            }
+        }
+
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryListTypeLabel")]
         public int ListType { get; set; }
 
@@ -28,19 +46,19 @@ namespace InstantStore.WebUI.ViewModels
 
         public List<SelectListItem> ListTypes { get; private set; }
 
-        public void Initialize()
+        public void Initialize(bool isTiles = true)
         {
             this.ListTypes = new List<SelectListItem>
             {
                 new SelectListItem{
                     Text = StringResource.admin_CategoryTypeList,
                     Value = "1",
-                    Selected = false
+                    Selected = !isTiles
                 },
                 new SelectListItem{
                     Text = StringResource.admin_CategoryTypeTiles,
                     Value = "2",
-                    Selected = true
+                    Selected = isTiles
                 }
             };
         }
