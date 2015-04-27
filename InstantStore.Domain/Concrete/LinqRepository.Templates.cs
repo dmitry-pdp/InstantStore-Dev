@@ -22,7 +22,7 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 var id = Guid.NewGuid();
-                propertyTemplate.Id = Guid.NewGuid();
+                propertyTemplate.Id = id;
                 propertyTemplate.IsPrototype = true;
                 context.PropertyTemplates.InsertOnSubmit(propertyTemplate);
                 context.SubmitChanges();

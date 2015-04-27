@@ -858,4 +858,22 @@
   <data name="admin_UpdatePage" xml:space="preserve">
     <value>Редактировать страницу</value>
   </data>
+  <data name="admin_EditProducts" xml:space="preserve">
+    <value>Редактировать продукты в категории</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="admin_PageAttributesChoose" xml:space="preserve">
+    <value>Выбрать ...</value>
+  </data>
+  <data name="admin_PageAttributesNone" xml:space="preserve">
+    <value>Без атрибутов</value>
+  </data>
+  <data name="admin_ProductTemplate" xml:space="preserve">
+    <value>Аттрибуты</value>
+  </data>
 </root>

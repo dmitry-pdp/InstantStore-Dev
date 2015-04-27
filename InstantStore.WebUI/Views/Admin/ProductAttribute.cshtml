@@ -1,0 +1,20 @@
+﻿@using InstantStore.Domain.Concrete;
+@using InstantStore.WebUI.Models;
+
+@model CustomProperty
+
+<p class="form-inline row">
+    @using (Html.BeginCollectionItem("Attributes"))
+    {
+        <label class="ontrol-label col-sm-2">@this.Model.Name</label>
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Id)
+        <span class="col-sm-10">
+            @Html.TextBoxFor(m => m.Value, new { @class = "form-control full-width", id = this.Model.Id.ToString() })
+        </span>
+    }
+</p>
+
+
+
+

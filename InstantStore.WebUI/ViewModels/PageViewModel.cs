@@ -7,16 +7,10 @@ using System.Web;
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.Resources;
+using InstantStore.Domain.Entities;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public enum ContentType
-    {
-        RootPage = 0,
-        Page = 1,
-        Category = 2,
-        Product = 3
-    }
 
     public class PageViewModel
     {
@@ -36,6 +30,15 @@ namespace InstantStore.WebUI.ViewModels
         public PageViewModel(ContentPage contentPage)
         {
             this.Init(contentPage);
+        }
+
+        public PageViewModel(ContentPage contentPage, bool canEdit)
+        {
+            this.Init(contentPage);
+            if (this.Attachment != null)
+            {
+                this.Attachment.CanEdit = false;
+            }            
         }
 
         public Guid Id { get; set; } 
@@ -64,7 +67,7 @@ namespace InstantStore.WebUI.ViewModels
             return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
         }
 
-        private void Init(ContentPage contentPage)
+        protected void Init(ContentPage contentPage)
         {
             this.Id = contentPage.Id;
             this.Name = contentPage.Name;

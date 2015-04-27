@@ -54,9 +54,6 @@ namespace InstantStore.Domain.Concrete
     partial void InsertProduct(Product instance);
     partial void UpdateProduct(Product instance);
     partial void DeleteProduct(Product instance);
-    partial void InsertPropertyTemplate(PropertyTemplate instance);
-    partial void UpdatePropertyTemplate(PropertyTemplate instance);
-    partial void DeletePropertyTemplate(PropertyTemplate instance);
     partial void InsertImage(Image instance);
     partial void UpdateImage(Image instance);
     partial void DeleteImage(Image instance);
@@ -69,6 +66,9 @@ namespace InstantStore.Domain.Concrete
     partial void InsertContentPage(ContentPage instance);
     partial void UpdateContentPage(ContentPage instance);
     partial void DeleteContentPage(ContentPage instance);
+    partial void InsertPropertyTemplate(PropertyTemplate instance);
+    partial void UpdatePropertyTemplate(PropertyTemplate instance);
+    partial void DeletePropertyTemplate(PropertyTemplate instance);
     #endregion
 		
 		public InstantStoreDataContext() : 
@@ -165,14 +165,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		public System.Data.Linq.Table<PropertyTemplate> PropertyTemplates
-		{
-			get
-			{
-				return this.GetTable<PropertyTemplate>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Image> Images
 		{
 			get
@@ -202,6 +194,14 @@ namespace InstantStore.Domain.Concrete
 			get
 			{
 				return this.GetTable<ContentPage>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PropertyTemplate> PropertyTemplates
+		{
+			get
+			{
+				return this.GetTable<PropertyTemplate>();
 			}
 		}
 	}
@@ -1987,172 +1987,6 @@ namespace InstantStore.Domain.Concrete
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PropertyTemplate")]
-	public partial class PropertyTemplate : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _Id;
-		
-		private string _Name;
-		
-		private bool _IsPrototype;
-		
-		private EntitySet<CustomProperty> _CustomProperties;
-		
-		private EntitySet<Product> _Products;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(System.Guid value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnIsPrototypeChanging(bool value);
-    partial void OnIsPrototypeChanged();
-    #endregion
-		
-		public PropertyTemplate()
-		{
-			this._CustomProperties = new EntitySet<CustomProperty>(new Action<CustomProperty>(this.attach_CustomProperties), new Action<CustomProperty>(this.detach_CustomProperties));
-			this._Products = new EntitySet<Product>(new Action<Product>(this.attach_Products), new Action<Product>(this.detach_Products));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPrototype", DbType="Bit NOT NULL")]
-		public bool IsPrototype
-		{
-			get
-			{
-				return this._IsPrototype;
-			}
-			set
-			{
-				if ((this._IsPrototype != value))
-				{
-					this.OnIsPrototypeChanging(value);
-					this.SendPropertyChanging();
-					this._IsPrototype = value;
-					this.SendPropertyChanged("IsPrototype");
-					this.OnIsPrototypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PropertyTemplate_CustomProperty", Storage="_CustomProperties", ThisKey="Id", OtherKey="TemplateId")]
-		public EntitySet<CustomProperty> CustomProperties
-		{
-			get
-			{
-				return this._CustomProperties;
-			}
-			set
-			{
-				this._CustomProperties.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PropertyTemplate_Product", Storage="_Products", ThisKey="Id", OtherKey="CustomAttributesTemplateId")]
-		public EntitySet<Product> Products
-		{
-			get
-			{
-				return this._Products;
-			}
-			set
-			{
-				this._Products.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_CustomProperties(CustomProperty entity)
-		{
-			this.SendPropertyChanging();
-			entity.PropertyTemplate = this;
-		}
-		
-		private void detach_CustomProperties(CustomProperty entity)
-		{
-			this.SendPropertyChanging();
-			entity.PropertyTemplate = null;
-		}
-		
-		private void attach_Products(Product entity)
-		{
-			this.SendPropertyChanging();
-			entity.PropertyTemplate = this;
-		}
-		
-		private void detach_Products(Product entity)
-		{
-			this.SendPropertyChanging();
-			entity.PropertyTemplate = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Image")]
 	public partial class Image : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3270,6 +3104,196 @@ namespace InstantStore.Domain.Concrete
 		{
 			this.SendPropertyChanging();
 			entity.ContentPage1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PropertyTemplate")]
+	public partial class PropertyTemplate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private string _Name;
+		
+		private bool _IsPrototype;
+		
+		private System.Nullable<System.Guid> _PrototypeId;
+		
+		private EntitySet<CustomProperty> _CustomProperties;
+		
+		private EntitySet<Product> _Products;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIsPrototypeChanging(bool value);
+    partial void OnIsPrototypeChanged();
+    partial void OnPrototypeIdChanging(System.Nullable<System.Guid> value);
+    partial void OnPrototypeIdChanged();
+    #endregion
+		
+		public PropertyTemplate()
+		{
+			this._CustomProperties = new EntitySet<CustomProperty>(new Action<CustomProperty>(this.attach_CustomProperties), new Action<CustomProperty>(this.detach_CustomProperties));
+			this._Products = new EntitySet<Product>(new Action<Product>(this.attach_Products), new Action<Product>(this.detach_Products));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(250) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPrototype", DbType="Bit NOT NULL")]
+		public bool IsPrototype
+		{
+			get
+			{
+				return this._IsPrototype;
+			}
+			set
+			{
+				if ((this._IsPrototype != value))
+				{
+					this.OnIsPrototypeChanging(value);
+					this.SendPropertyChanging();
+					this._IsPrototype = value;
+					this.SendPropertyChanged("IsPrototype");
+					this.OnIsPrototypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrototypeId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> PrototypeId
+		{
+			get
+			{
+				return this._PrototypeId;
+			}
+			set
+			{
+				if ((this._PrototypeId != value))
+				{
+					this.OnPrototypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._PrototypeId = value;
+					this.SendPropertyChanged("PrototypeId");
+					this.OnPrototypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PropertyTemplate_CustomProperty", Storage="_CustomProperties", ThisKey="Id", OtherKey="TemplateId")]
+		public EntitySet<CustomProperty> CustomProperties
+		{
+			get
+			{
+				return this._CustomProperties;
+			}
+			set
+			{
+				this._CustomProperties.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PropertyTemplate_Product", Storage="_Products", ThisKey="Id", OtherKey="CustomAttributesTemplateId")]
+		public EntitySet<Product> Products
+		{
+			get
+			{
+				return this._Products;
+			}
+			set
+			{
+				this._Products.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CustomProperties(CustomProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.PropertyTemplate = this;
+		}
+		
+		private void detach_CustomProperties(CustomProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.PropertyTemplate = null;
+		}
+		
+		private void attach_Products(Product entity)
+		{
+			this.SendPropertyChanging();
+			entity.PropertyTemplate = this;
+		}
+		
+		private void detach_Products(Product entity)
+		{
+			this.SendPropertyChanging();
+			entity.PropertyTemplate = null;
 		}
 	}
 }

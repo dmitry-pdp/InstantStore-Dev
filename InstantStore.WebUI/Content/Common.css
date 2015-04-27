@@ -27,3 +27,13 @@
 {
     margin-right:15px;
 }
+
+.full-width
+{
+    width: 100% !important;
+}
+
+.top-space
+{
+    margin-top: 10px;
+}

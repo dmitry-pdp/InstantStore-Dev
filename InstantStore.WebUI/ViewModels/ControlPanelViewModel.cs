@@ -90,6 +90,7 @@ namespace InstantStore.WebUI.ViewModels
 
     public enum ControlPanelPage
     {
+        Dashboard,
         Orders,
         Users,
         Currency,

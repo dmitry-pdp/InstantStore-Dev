@@ -2,7 +2,7 @@
 namespace InstantStore.Domain.Entities
 {
 
-    public class Product
+    public class Product1
     {
         //All products should be also be added to some general category without parent category by default
 

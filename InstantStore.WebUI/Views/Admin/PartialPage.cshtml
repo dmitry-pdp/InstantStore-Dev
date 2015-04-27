@@ -1,0 +1,21 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model PageViewModel
+@{
+    ViewBag.Title = Model.Name;
+    var cateogoryProducts = this.ViewData["CategoryProducts"] as CategoryProductsViewModel;
+}
+
+<h2>@ViewBag.Title</h2>
+@Html.Raw(this.Model.Text)
+@if (this.Model.Attachment != null)
+{
+    <div>
+        <label>@StringResource.admin_PageAttachment</label>
+            @Html.Partial("Attachment", this.Model.Attachment)
+    </div>
+}
+@if (cateogoryProducts != null)
+{
+    Html.RenderPartial("EditProductDetails", cateogoryProducts);
+}

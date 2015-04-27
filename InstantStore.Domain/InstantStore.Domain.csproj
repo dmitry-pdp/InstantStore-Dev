@@ -58,9 +58,11 @@
     <Compile Include="Concrete\LinqRepository.ExchangeRate.cs" />
     <Compile Include="Concrete\LinqRepository.Feedback.cs" />
     <Compile Include="Concrete\LinqRepository.Images.cs" />
+    <Compile Include="Concrete\LinqRepository.Product.cs" />
     <Compile Include="Concrete\LinqRepository.Settings.cs" />
     <Compile Include="Concrete\LinqRepository.Templates.cs" />
     <Compile Include="Concrete\LinqRepository.User.cs" />
+    <Compile Include="Entities\ContentType.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductSize.cs" />
@@ -92,6 +94,9 @@
     <None Include="Concrete\InstantStore.dbml.layout">
       <DependentUpon>InstantStore.dbml</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

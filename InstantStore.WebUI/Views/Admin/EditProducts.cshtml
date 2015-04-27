@@ -1,0 +1,40 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model CategoryProductsViewModel
+@{
+    ViewBag.Title = StringResource.admin_EditProducts;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="border col-sm-3">
+    @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
+    <h3>@StringResource.admin_AddToParent</h3>
+    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+</div>
+<div class="border col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    <div class="col-sm-10 col-sm-offset-1" id="details-container">
+        @Html.Partial("EditProductDetails", this.Model);
+    </div>
+</div>
+<script>
+    $(function () {
+        InitializeTreeView('@this.Model.ParentCategoryId');
+
+        var clickFunc = function () {
+            window.location.href = '/admin/product?id=' + this.getAttribute('id');
+        };
+
+        $(document).on("category-tree:selected", function (event, id) {
+            $.ajax({
+                url: "/admin/EditProductsPartial?id=" + id,
+                cached : false
+            })
+            .done(function (html) {
+                $("#details-container").html(html);
+                $("tr.product-row").click(clickFunc);
+            });
+        });
+
+    });
+</script>

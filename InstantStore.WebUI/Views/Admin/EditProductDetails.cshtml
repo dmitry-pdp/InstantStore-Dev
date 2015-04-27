@@ -1,0 +1,29 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model CategoryProductsViewModel
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>@StringResource.admin_Name</th>
+            <th>Основная категория</th>
+            <th>@StringResource.admin_ProductIsAvailable</th>
+            <th>@StringResource.admin_ProductPrice</th>
+            <th>@StringResource.admin_ProductPriceCashless</th>
+            <th>@StringResource.admin_ProductPriceCash</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var productInfo in this.Model.Products)
+        {
+            <tr class="product-row" id="@productInfo.Id">
+                <td>@productInfo.Name</td>
+                <td>- nodata -</td>
+                <td>@productInfo.IsAvailable</td>
+                <td>@productInfo.Currency</td>
+                <td>@productInfo.PriceCash</td>
+                <td>@productInfo.PriceCashless</td>
+            </tr>
+        }
+    </tbody>
+</table>

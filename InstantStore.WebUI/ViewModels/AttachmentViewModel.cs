@@ -39,6 +39,7 @@ namespace InstantStore.WebUI.ViewModels
                 this.AttachmentName = attachment != null ? attachment.Name : null;
                 string extension = this.AttachmentName != null ? this.AttachmentName.Substring(this.AttachmentName.LastIndexOf('.') + 1) : null;
                 this.AttachmentIcon = extension != null && attachmentExtensionToIconMap.ContainsKey(extension) ? attachmentExtensionToIconMap[extension] : null;
+                this.CanEdit = true;
             }
         }
 

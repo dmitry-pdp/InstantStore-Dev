@@ -31,6 +31,24 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
+        public void DeletePage(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var page = context.ContentPages.FirstOrDefault(x => x.Id == id);
+                if (page != null)
+                {
+                    if (page.AttachmentId != null)
+                    {
+                        context.Attachments.DeleteAllOnSubmit(context.Attachments.Where(a => a.Id == page.AttachmentId));
+                    }
+
+                    context.ContentPages.DeleteOnSubmit(page);
+                    context.SubmitChanges();
+                }
+            }
+        }
+
         private static void UpdateAttachmentName(ContentPage contentPage, InstantStoreDataContext context)
         {
             if (contentPage.AttachmentId != null)
@@ -106,6 +124,22 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
+        public ContentPage GetPageByCategoryId(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.ContentPages.FirstOrDefault(x => x.CategoryId != null && x.CategoryId == id);
+            }
+        }
+
+        public ContentPage GetPageByProductId(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.ContentPages.FirstOrDefault(x => x.ProductId != null && x.ProductId == id);
+            }
+        }
+
         public Guid NewCategory(Category category)
         {
             using (var context = new InstantStoreDataContext())
@@ -126,6 +160,26 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
+        public void UpdateCategory(Category category)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var categoryOriginal = context.Categories.FirstOrDefault(x => x.Id == category.Id);
+                if (categoryOriginal == null)
+                {
+                    throw new ModelValidationException("UpdateContentPage.OriginalPageDoesNotExists");
+                }
+
+                categoryOriginal.Name = category.Name;
+                categoryOriginal.Description = category.Description;
+                categoryOriginal.ImageId = category.ImageId;
+                categoryOriginal.ListType = category.ListType;
+                categoryOriginal.ShowInMenu = category.ShowInMenu;
+                context.SubmitChanges();
+            }
+
+        }
+
         public Guid NewProduct(Product product)
         {
             using (var context = new InstantStoreDataContext())
@@ -135,6 +189,53 @@ namespace InstantStore.Domain.Concrete
                 context.Products.InsertOnSubmit(product);
                 context.SubmitChanges();
                 return product.VersionId;
+            }
+        }
+
+        public Product GetProductById(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Products.FirstOrDefault(x => x.VersionId == id);
+            }
+        }
+
+        public IList<Guid> GetImagesForProduct(Guid productId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Images.Where(x => x.ProductId == productId).Select(x => x.Id).ToList();
+            }
+        }
+
+        public void AssignImagesToProduct(Guid productId, IEnumerable<Guid> images)
+        {
+            if (images == null)
+            {
+                throw new ArgumentNullException("images");
+            }
+
+            using (var context = new InstantStoreDataContext())
+            {
+                foreach(var imageId in images)
+                {
+                    var image = context.Images.FirstOrDefault(x => x.Id == imageId);
+                    if (image != null)
+                    {
+                        image.ProductId = productId;
+                    }
+                }
+
+                context.SubmitChanges();
+            }
+        }
+
+        public IList<Product> GetProductsForCategory(Guid categoryId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var products = context.ContentPages.Where(x => x.ProductId != null && x.ContentType == 3 && x.ParentId != null && x.ParentId == categoryId);
+                return context.Products.Where(x => products.Any(y => x.VersionId == y.ProductId)).ToList();
             }
         }
     }

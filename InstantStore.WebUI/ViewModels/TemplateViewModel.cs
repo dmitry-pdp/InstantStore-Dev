@@ -16,6 +16,10 @@ namespace InstantStore.WebUI.ViewModels
         {
             this.Properties = new List<CustomProperty>();
         }
+        public TemplateViewModel(IEnumerable<CustomProperty> properties)
+        {
+            this.Properties = properties.ToList();
+        }
 
         public TemplateViewModel(PropertyTemplate template, IRepository repository)
         {

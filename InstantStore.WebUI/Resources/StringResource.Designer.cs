@@ -358,6 +358,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Редактировать продукты в категории.
+        /// </summary>
+        public static string admin_EditProducts {
+            get {
+                return ResourceManager.GetString("admin_EditProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактировать текст.
         /// </summary>
         public static string admin_editText {
@@ -480,6 +489,24 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_PageAttachment {
             get {
                 return ResourceManager.GetString("admin_PageAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выбрать ....
+        /// </summary>
+        public static string admin_PageAttributesChoose {
+            get {
+                return ResourceManager.GetString("admin_PageAttributesChoose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Без атрибутов.
+        /// </summary>
+        public static string admin_PageAttributesNone {
+            get {
+                return ResourceManager.GetString("admin_PageAttributesNone", resourceCulture);
             }
         }
         
@@ -777,6 +804,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_ProductPriceCashless {
             get {
                 return ResourceManager.GetString("admin_ProductPriceCashless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Аттрибуты.
+        /// </summary>
+        public static string admin_ProductTemplate {
+            get {
+                return ResourceManager.GetString("admin_ProductTemplate", resourceCulture);
             }
         }
         
@@ -1681,6 +1717,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нет.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Мои данные.
         /// </summary>
         public static string Page_Title_MyData {
@@ -2271,6 +2316,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Uslovia {
             get {
                 return ResourceManager.GetString("Uslovia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Да.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

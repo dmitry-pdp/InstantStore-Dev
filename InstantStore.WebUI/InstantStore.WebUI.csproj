@@ -130,6 +130,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminController.Currency.cs" />
+    <Compile Include="Controllers\AdminController.Dashboard.cs" />
     <Compile Include="Controllers\AdminController.Images.cs" />
     <Compile Include="Controllers\AdminController.Pages.cs" />
     <Compile Include="Controllers\AdminController.Settings.cs" />
@@ -158,6 +159,7 @@
     </Compile>
     <Compile Include="Utilities\Compare.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
+    <Compile Include="ViewModels\CategoryProductsViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ContentSummaryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
@@ -247,12 +249,17 @@
     <Content Include="Views\Admin\CategoryTreeItem.cshtml" />
     <Content Include="Views\Main\Page.cshtml" />
     <Content Include="Views\Admin\Category.cshtml" />
-    <Content Include="Views\Admin\NewProduct.cshtml" />
+    <Content Include="Views\Admin\Product.cshtml" />
     <Content Include="Views\Admin\ProductImage.cshtml" />
     <Content Include="Views\Admin\CategoryTree.cshtml" />
     <Content Include="Views\Admin\ContentSummary.cshtml" />
     <Content Include="Views\Admin\UploadControl.cshtml" />
     <Content Include="Views\Shared\Attachment.cshtml" />
+    <Content Include="Views\Admin\EditProducts.cshtml" />
+    <Content Include="Views\Admin\EditProductDetails.cshtml" />
+    <Content Include="Views\Admin\ProductAttributes.cshtml" />
+    <Content Include="Views\Admin\ProductAttribute.cshtml" />
+    <Content Include="Views\Admin\PartialPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

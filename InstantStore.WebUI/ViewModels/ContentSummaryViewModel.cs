@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.Resources;
+using InstantStore.Domain.Entities;
 
 namespace InstantStore.WebUI.ViewModels
 {

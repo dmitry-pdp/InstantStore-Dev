@@ -1,7 +1,11 @@
-﻿@{
-    string imageId = this.ViewBag.ImageId;
-}
+﻿@using InstantStore.WebUI.Models;
+@using InstantStore.WebUI.Resources;
+@model Guid
 
 <div class="image-container img-thumbnail">
-    <img src="~/Main/GetImage?id=@imageId" />
+    @using (Html.BeginCollectionItem("Images"))
+    {
+        <img src="~/Main/GetImage?id=@this.Model.ToString()" />
+        @Html.HiddenFor(model => model)    
+    }    
 </div>

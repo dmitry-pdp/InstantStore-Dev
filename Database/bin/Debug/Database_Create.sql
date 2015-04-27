@@ -181,6 +181,29 @@ IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
 
 
 GO
+PRINT N'Creating [dbo].[User]...';
+
+
+GO
+CREATE TABLE [dbo].[User] (
+    [Id]                UNIQUEIDENTIFIER NOT NULL,
+    [Name]              NVARCHAR (300)   NOT NULL,
+    [Email]             NVARCHAR (100)   NULL,
+    [Company]           NVARCHAR (250)   NULL,
+    [Phonenumber]       NVARCHAR (50)    NULL,
+    [City]              NVARCHAR (300)   NULL,
+    [Password]          NVARCHAR (MAX)   NOT NULL,
+    [IsAdmin]           BIT              NOT NULL,
+    [IsActivated]       BIT              NOT NULL,
+    [IsBlocked]         BIT              NOT NULL,
+    [IsPaymentCash]     BIT              NOT NULL,
+    [DefaultCurrencyId] UNIQUEIDENTIFIER NULL,
+    [Comments]          NVARCHAR (MAX)   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating [dbo].[Settings]...';
 
 
@@ -191,19 +214,6 @@ CREATE TABLE [dbo].[Settings] (
     [FooterHtml]      NVARCHAR (MAX)   NULL,
     [Id]              UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Settings] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[PropertyTemplate]...';
-
-
-GO
-CREATE TABLE [dbo].[PropertyTemplate] (
-    [Id]          UNIQUEIDENTIFIER NOT NULL,
-    [Name]        NVARCHAR (250)   NOT NULL,
-    [IsPrototype] BIT              NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
@@ -226,20 +236,6 @@ CREATE TABLE [dbo].[Product] (
     [CustomAttributesTemplateId] UNIQUEIDENTIFIER NULL,
     [Version]                    INT              NOT NULL,
     PRIMARY KEY CLUSTERED ([VersionId] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[Image]...';
-
-
-GO
-CREATE TABLE [dbo].[Image] (
-    [Id]               UNIQUEIDENTIFIER NOT NULL,
-    [Image]            IMAGE            NOT NULL,
-    [ImageContentType] NVARCHAR (250)   NOT NULL,
-    [ProductId]        UNIQUEIDENTIFIER NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
@@ -273,24 +269,6 @@ CREATE TABLE [dbo].[ExchangeRate] (
 
 
 GO
-PRINT N'Creating [dbo].[ErrorLog]...';
-
-
-GO
-CREATE TABLE [dbo].[ErrorLog] (
-    [Id]            UNIQUEIDENTIFIER NOT NULL,
-    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
-    [DateTime]      DATETIME         NOT NULL,
-    [UserId]        UNIQUEIDENTIFIER NULL,
-    [SessionId]     NVARCHAR (MAX)   NULL,
-    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
-    [ClientIP]      NVARCHAR (50)    NULL,
-    [UserAgent]     NVARCHAR (250)   NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[CustomProperty]...';
 
 
@@ -317,21 +295,15 @@ CREATE TABLE [dbo].[Currency] (
 
 
 GO
-PRINT N'Creating [dbo].[ContentPage]...';
+PRINT N'Creating [dbo].[Image]...';
 
 
 GO
-CREATE TABLE [dbo].[ContentPage] (
-    [Id]             UNIQUEIDENTIFIER NOT NULL,
-    [Name]           NVARCHAR (250)   NOT NULL,
-    [Text]           NVARCHAR (MAX)   NULL,
-    [Attachment]     VARBINARY (MAX)  NULL,
-    [ContentType]    INT              NOT NULL,
-    [ParentId]       UNIQUEIDENTIFIER NULL,
-    [ProductId]      UNIQUEIDENTIFIER NULL,
-    [CategoryId]     UNIQUEIDENTIFIER NULL,
-    [Position]       INT              NOT NULL,
-    [AttachmentType] NVARCHAR (150)   NULL,
+CREATE TABLE [dbo].[Image] (
+    [Id]               UNIQUEIDENTIFIER NOT NULL,
+    [Image]            IMAGE            NOT NULL,
+    [ImageContentType] NVARCHAR (250)   NOT NULL,
+    [ProductId]        UNIQUEIDENTIFIER NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -357,24 +329,19 @@ CREATE TABLE [dbo].[Category] (
 
 
 GO
-PRINT N'Creating [dbo].[User]...';
+PRINT N'Creating [dbo].[ErrorLog]...';
 
 
 GO
-CREATE TABLE [dbo].[User] (
-    [Id]                UNIQUEIDENTIFIER NOT NULL,
-    [Name]              NVARCHAR (300)   NOT NULL,
-    [Email]             NVARCHAR (100)   NULL,
-    [Company]           NVARCHAR (250)   NULL,
-    [Phonenumber]       NVARCHAR (50)    NULL,
-    [City]              NVARCHAR (300)   NULL,
-    [Password]          NVARCHAR (MAX)   NOT NULL,
-    [IsAdmin]           BIT              NOT NULL,
-    [IsActivated]       BIT              NOT NULL,
-    [IsBlocked]         BIT              NOT NULL,
-    [IsPaymentCash]     BIT              NOT NULL,
-    [DefaultCurrencyId] UNIQUEIDENTIFIER NULL,
-    [Comments]          NVARCHAR (MAX)   NULL,
+CREATE TABLE [dbo].[ErrorLog] (
+    [Id]            UNIQUEIDENTIFIER NOT NULL,
+    [ExceptionText] NVARCHAR (MAX)   NOT NULL,
+    [DateTime]      DATETIME         NOT NULL,
+    [UserId]        UNIQUEIDENTIFIER NULL,
+    [SessionId]     NVARCHAR (MAX)   NULL,
+    [RequestUrl]    NVARCHAR (MAX)   NOT NULL,
+    [ClientIP]      NVARCHAR (50)    NULL,
+    [UserAgent]     NVARCHAR (250)   NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -385,7 +352,46 @@ PRINT N'Creating [dbo].[Attachment]...';
 
 GO
 CREATE TABLE [dbo].[Attachment] (
-    [Id] INT NOT NULL,
+    [Id]            UNIQUEIDENTIFIER NOT NULL,
+    [Name]          NVARCHAR (250)   NOT NULL,
+    [Content]       VARBINARY (MAX)  NOT NULL,
+    [ContentType]   NVARCHAR (250)   NOT NULL,
+    [ContentLength] INT              NOT NULL,
+    [UploadedAt]    DATETIME         NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ContentPage]...';
+
+
+GO
+CREATE TABLE [dbo].[ContentPage] (
+    [Id]             UNIQUEIDENTIFIER NOT NULL,
+    [Name]           NVARCHAR (250)   NOT NULL,
+    [Text]           NVARCHAR (MAX)   NULL,
+    [ContentType]    INT              NOT NULL,
+    [ParentId]       UNIQUEIDENTIFIER NULL,
+    [ProductId]      UNIQUEIDENTIFIER NULL,
+    [CategoryId]     UNIQUEIDENTIFIER NULL,
+    [Position]       INT              NOT NULL,
+    [AttachmentId]   UNIQUEIDENTIFIER NULL,
+    [AttachmentName] NVARCHAR (250)   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[PropertyTemplate]...';
+
+
+GO
+CREATE TABLE [dbo].[PropertyTemplate] (
+    [Id]          UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (250)   NOT NULL,
+    [IsPrototype] BIT              NOT NULL,
+    [PrototypeId] UNIQUEIDENTIFIER NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -463,6 +469,15 @@ ALTER TABLE [dbo].[ContentPage]
 
 
 GO
+PRINT N'Creating FK_ContentPage_ToTableAttachment (Id...';
+
+
+GO
+ALTER TABLE [dbo].[ContentPage]
+    ADD CONSTRAINT [FK_ContentPage_ToTableAttachment (Id] FOREIGN KEY ([AttachmentId]) REFERENCES [dbo].[Attachment] ([Id]);
+
+
+GO
 -- Refactoring step to update target server with deployed transaction logs
 
 IF OBJECT_ID(N'dbo.__RefactorLog') IS NULL
@@ -473,6 +488,8 @@ END
 GO
 IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = '5cf1951d-83b7-4904-ac05-126fb77309c5')
 INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('5cf1951d-83b7-4904-ac05-126fb77309c5')
+IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = '341a99d9-5676-4fe9-b1e6-f1a4b3ce0202')
+INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('341a99d9-5676-4fe9-b1e6-f1a4b3ce0202')
 
 GO
 

@@ -91,15 +91,6 @@
       <Association Name="PropertyTemplate_Product" Member="PropertyTemplate" ThisKey="CustomAttributesTemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.PropertyTemplate" Member="PropertyTemplates">
-    <Type Name="PropertyTemplate">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="IsPrototype" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="PropertyTemplate_CustomProperty" Member="CustomProperties" ThisKey="Id" OtherKey="TemplateId" Type="CustomProperty" />
-      <Association Name="PropertyTemplate_Product" Member="Products" ThisKey="Id" OtherKey="CustomAttributesTemplateId" Type="Product" />
-    </Type>
-  </Table>
   <Table Name="dbo.Image" Member="Images">
     <Type Name="Image">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -151,6 +142,16 @@
       <Association Name="Category_ContentPage" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
       <Association Name="ContentPage_ContentPage" Member="ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
       <Association Name="Product_ContentPage" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PropertyTemplate" Member="PropertyTemplates">
+    <Type Name="PropertyTemplate">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPrototype" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PrototypeId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="PropertyTemplate_CustomProperty" Member="CustomProperties" ThisKey="Id" OtherKey="TemplateId" Type="CustomProperty" />
+      <Association Name="PropertyTemplate_Product" Member="Products" ThisKey="Id" OtherKey="CustomAttributesTemplateId" Type="Product" />
     </Type>
   </Table>
 </Database>

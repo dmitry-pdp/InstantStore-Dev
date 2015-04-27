@@ -63,9 +63,17 @@ namespace InstantStore.Domain.Abstract
 
         void UpdateCustomProperty(Guid id, string data);
 
+        IList<CustomProperty> CreateAttributesForProduct(Guid productId, Guid templateId);
+
         IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter);
 
         ContentPage GetPageById(Guid id);
+
+        ContentPage GetPageByCategoryId(Guid id);
+
+        ContentPage GetPageByProductId(Guid id);
+
+        void DeletePage(Guid id);
 
         void ChangePagePosition(Guid id, bool movedown);
 
@@ -77,7 +85,13 @@ namespace InstantStore.Domain.Abstract
 
         Category GetCategoryById(Guid id);
 
+        void UpdateCategory(Category category);
+
         Guid NewProduct(Product product);
+
+        Product GetProductById(Guid id);
+
+        IList<Product> GetProductsForCategory(Guid categoryId);
 
         Image GetImageById(Guid id);
 
@@ -86,5 +100,11 @@ namespace InstantStore.Domain.Abstract
         Attachment GetAttachmentById(Guid id);
 
         Guid AddAttachment(Attachment attachment);
+
+        void AssignImagesToProduct(Guid productId, IEnumerable<Guid> images);
+
+        IList<Guid> GetImagesForProduct(Guid productId);
+
+        void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes);
     }
 }

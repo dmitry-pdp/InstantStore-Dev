@@ -22,11 +22,6 @@ namespace InstantStore.WebUI.Controllers
             this.settingsViewModel = new SettingsViewModel(this.repository);
         }
 
-        public ActionResult Dashboard()
-        {
-            return this.Authorize() ?? this.View();
-        }
-
         private ActionResult Authorize()
         {
             var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);

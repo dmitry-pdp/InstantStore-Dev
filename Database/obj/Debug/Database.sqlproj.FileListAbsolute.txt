@@ -8,7 +8,3 @@ C:\Work\src\InstantStore-Dev\Database\bin\Debug\Database.dll
 C:\Work\src\InstantStore-Dev\Database\bin\Debug\Database.pdb
 C:\Work\src\InstantStore-Dev\Database\obj\Debug\Database.dll
 C:\Work\src\InstantStore-Dev\Database\obj\Debug\Database.pdb
-C:\Work\src\InstantStore-Dev\Database\obj\Debug\Model.xml
-C:\Work\src\InstantStore-Dev\Database\obj\Debug\refactor.xml
-C:\Work\src\InstantStore-Dev\Database\obj\Debug\postdeploy.sql
-C:\Work\src\InstantStore-Dev\Database\obj\Debug\predeploy.sql

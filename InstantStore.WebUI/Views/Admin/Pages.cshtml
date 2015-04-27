@@ -4,54 +4,85 @@
 @{
     ViewBag.Title = StringResource.admin_Pages;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var treeViewItem = (Guid)(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"]);
+    var isRoot = treeViewItem == Guid.Empty;
 }
 
 <script src="~/Scripts/bootstrap-treenav.js"></script>
 <link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
-<div class="row">
-    <div class="col-sm-12">
-        <h2>@ViewBag.Title</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12" id="new-pages-row">
-        <p>
-            @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default" })
-            @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default" })
-            @Html.ActionLink(StringResource.admin_ProductNew, "NewProduct", null, new { @class = "btn btn-default" })
-        </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-4 form-group">
-        @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
-    </div>
-    <div class="col-sm-8 form-group" id="content-summary">
-        <span>No summary.</span>
-    </div>
-    <input type="hidden" value="@Guid.Empty" id="current-selection"/>
-</div>
-<script>
-    $(function () {
 
-        InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
+<div class="border col-sm-3">
+    <input type="hidden" value="@Guid.Empty" id="current-selection" />
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            @Html.ActionLink(StringResource.admin_Back, "Index", null, new { @class = "btn btn-primary" })
+        </div>
+        <div class="btn-group pull-right" id="tree-buttons">
+            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+</div>
+<div class="border col-sm-9">
+    <div class="row">
+        <div class="col-sm-12" id="new-pages-row">
+            <p>
+                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg" })
+                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg" })
+                @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg" })
+            </p>
+        </div>
+    </div>
+    <div id="content">
+    </div>
+</div>
+    <script>
+        $(function () {
 
-        $(document).on("category-tree:selected", function (event, id) {
-            $("#current-selection").val(id);
-            $.ajax({
-                url: "/Admin/ContentSummary?id=" + id,
-            })
-            .done(function (html) {
-                $("#content-summary").html(html);
+            InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
+
+            $(document).on("category-tree:selected", function (event, id) {
+                $("#current-selection").val(id);
+                if (id == '@Guid.Empty')
+                {
+                    $(".tree-btn").addClass("disabled");
+                }
+                else 
+                {
+                    $(".tree-btn").removeClass("disabled");
+                }
+                $.ajax({
+                    url: "/Admin/PartialPage?id=" + id,
+                })
+                .done(function (html) {
+                    $("#content").html(html);
+                });
+            });
+            
+            var e = $("#new-pages-row").find(".btn");
+            e.click(function () {
+                var href = $(this).attr('href');
+                var selectedCat = $("#current-selection").val();
+                window.location.href = href + '?parentId=' + selectedCat;
+                return false;
+            });
+
+            $("#tree-buttons a").click(function () {
+                var href = $(this).attr('href');
+                var selectedCat = $("#current-selection").val();
+                window.location.href = href + '&id=' + selectedCat;
+                return false;
             });
         });
-
-        var e = $("#new-pages-row").find(".btn");
-        e.click(function () {
-            var href = $(this).attr('href');
-            var selectedCat = $("#current-selection").val();
-            window.location.href = href + '?parentId=' + selectedCat;
-            return false;
-        });
-    });
-</script>
+    </script>

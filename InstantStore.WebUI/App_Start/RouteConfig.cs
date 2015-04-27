@@ -15,49 +15,9 @@ namespace InstantStore.WebUI
 
             routes.MapRoute(
                 null,
-                "",
-                new { controller = "Main", action = "Index", category = (string)null, page = 1  }
+                "{controller}/{action}",
+                new { controller = "Main", action = "Index" }
             );
-
-            routes.MapRoute(
-                null,
-                "Page{page}",
-                new { controller = "Product", actoin = "List", category = (string)null },
-                new { page = @"\d+" }
-            );
-
-            routes.MapRoute(
-                null,
-                "page{page}",
-                new { controller = "Product", action = "List", category = (string)null },
-                new { page = @"\d+" }
-            );
-
-            routes.MapRoute(
-                null,
-                "{category}",
-                new { controller = "Product", action = "List", page = 1 }
-            );
-
-            routes.MapRoute(
-                null,
-                "{category}/Page{page}",
-                new { controller = "Product", action = "List"},
-                new { page = @"\d+" }
-            );
-
-            routes.MapRoute(
-                null,
-                "{category}/page{page}",
-                new { controller = "Product", action = "List" },
-                new { page = @"\d+" }
-            );
-
-            routes.MapRoute(
-                null,
-                "{controller}/{action}"
-            );
-
         }
     }
 }
