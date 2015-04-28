@@ -1,0 +1,43 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model PageViewModel
+@{
+    ViewBag.Title = Model.Name;
+    var cateogoryProducts = this.ViewData["CategoryProducts"] as CategoryProductsViewModel;
+}
+
+<div class="row">
+    <div class="col-sm-12" id="new-pages-row">
+        <p>
+            @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg" })
+            @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg" })
+            @if (cateogoryProducts != null)
+            {
+                @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg" })
+            }
+        </p>
+    </div>
+</div>
+
+<h2>@ViewBag.Title</h2>
+@Html.Raw(this.Model.Text)
+@if (this.Model.Attachment != null)
+{
+    <div>
+        <label>@StringResource.admin_PageAttachment</label>
+            @Html.Partial("Attachment", this.Model.Attachment)
+    </div>
+}
+@if (cateogoryProducts != null)
+{
+    Html.RenderPartial("EditProductDetails", cateogoryProducts);
+}
+<script>
+    var e = $("#new-pages-row").find(".btn");
+    e.on("click", function () {
+        var href = $(this).attr('href');
+        var selectedCat = $("#current-selection").val();
+        window.location.href = href + '?parentId=' + selectedCat;
+        return false;
+    });
+</script>

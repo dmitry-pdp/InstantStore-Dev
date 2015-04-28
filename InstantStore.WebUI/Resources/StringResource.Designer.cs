@@ -547,6 +547,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Действительно удалить страницу?.
+        /// </summary>
+        public static string admin_PageDeleteConfirm {
+            get {
+                return ResourceManager.GetString("admin_PageDeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Новая категория.
         /// </summary>
         public static string admin_PageNewCategory {
@@ -1191,6 +1200,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Подтверждение опреации..
+        /// </summary>
+        public static string ConfirmationTitle {
+            get {
+                return ResourceManager.GetString("ConfirmationTitle", resourceCulture);
             }
         }
         
@@ -1893,6 +1911,15 @@ namespace InstantStore.WebUI.Resources {
         public static string Place {
             get {
                 return ResourceManager.GetString("Place", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Цена.
+        /// </summary>
+        public static string Price {
+            get {
+                return ResourceManager.GetString("Price", resourceCulture);
             }
         }
         

@@ -18,16 +18,16 @@
             @Html.ActionLink(StringResource.admin_Back, "Index", null, new { @class = "btn btn-primary" })
         </div>
         <div class="btn-group pull-right" id="tree-buttons">
-            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button">
+            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button" id="btn-item-edit">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-delete">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-moveup">
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button">
+            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-movedown">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
             </a>
         </div>
@@ -35,54 +35,67 @@
     @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
 </div>
 <div class="border col-sm-9">
-    <div class="row">
-        <div class="col-sm-12" id="new-pages-row">
-            <p>
-                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg" })
-                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg" })
-                @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg" })
-            </p>
-        </div>
-    </div>
     <div id="content">
     </div>
 </div>
-    <script>
-        $(function () {
+<div class="modal fade" id="delete-confirmation-dlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">@StringResource.ConfirmationTitle</h4>
+            </div>
+            <div class="modal-body">
+                <p>@StringResource.admin_PageDeleteConfirm</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="href-to-delete" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-confirm-delete">@StringResource.admin_Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
 
-            InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
+        InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
 
-            $(document).on("category-tree:selected", function (event, id) {
-                $("#current-selection").val(id);
-                if (id == '@Guid.Empty')
-                {
-                    $(".tree-btn").addClass("disabled");
-                }
-                else 
-                {
-                    $(".tree-btn").removeClass("disabled");
-                }
-                $.ajax({
-                    url: "/Admin/PartialPage?id=" + id,
-                })
-                .done(function (html) {
-                    $("#content").html(html);
-                });
-            });
-            
-            var e = $("#new-pages-row").find(".btn");
-            e.click(function () {
-                var href = $(this).attr('href');
-                var selectedCat = $("#current-selection").val();
-                window.location.href = href + '?parentId=' + selectedCat;
-                return false;
-            });
-
-            $("#tree-buttons a").click(function () {
-                var href = $(this).attr('href');
-                var selectedCat = $("#current-selection").val();
-                window.location.href = href + '&id=' + selectedCat;
-                return false;
+        $(document).on("category-tree:selected", function (event, id) {
+            $("#current-selection").val(id);
+            if (id == '@Guid.Empty')
+            {
+                $(".tree-btn").addClass("disabled");
+            }
+            else 
+            {
+                $(".tree-btn").removeClass("disabled");
+            }
+            $.ajax({
+                url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + id,
+            })
+            .done(function (html) {
+                $("#content").html(html);
             });
         });
-    </script>
+        
+        $("#tree-buttons a").click(function () {
+            var selectedCat = $("#current-selection").val();
+            var btn = $(this);
+            var href = btn.attr('href') + '&id=' + selectedCat;
+            var item = btn.attr('id');
+            if (item == 'btn-item-delete') {
+                $("#href-to-delete").val(href); 
+                $('#delete-confirmation-dlg').modal();
+            }
+            else {
+                window.location.href = href;
+            }
+            return false;
+        });
+
+        $("#btn-confirm-delete").click(function () {
+            window.location.href = $("#href-to-delete").val();
+        });
+    });
+</script>

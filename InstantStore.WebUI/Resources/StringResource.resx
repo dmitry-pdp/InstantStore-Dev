@@ -876,4 +876,13 @@
   <data name="admin_ProductTemplate" xml:space="preserve">
     <value>Аттрибуты</value>
   </data>
+  <data name="admin_PageDeleteConfirm" xml:space="preserve">
+    <value>Действительно удалить страницу?</value>
+  </data>
+  <data name="ConfirmationTitle" xml:space="preserve">
+    <value>Подтверждение опреации.</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
 </root>

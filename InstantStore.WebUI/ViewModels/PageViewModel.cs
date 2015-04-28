@@ -19,26 +19,32 @@ namespace InstantStore.WebUI.ViewModels
         }
 
         public PageViewModel(IRepository repository, Guid id)
+            : this(repository.GetPageById(id))
         {
-            var contentPage = repository.GetPageById(id);
-            if (contentPage != null)
+        }
+
+        public PageViewModel(ContentPage contentPage, bool canEdit)
+            : this(contentPage)
+        {
+            if (this.Attachment != null)
             {
-                this.Init(contentPage);
-            }
+                this.Attachment.CanEdit = canEdit;
+            }            
         }
 
         public PageViewModel(ContentPage contentPage)
         {
-            this.Init(contentPage);
-        }
-
-        public PageViewModel(ContentPage contentPage, bool canEdit)
-        {
-            this.Init(contentPage);
-            if (this.Attachment != null)
+            if (contentPage == null)
             {
-                this.Attachment.CanEdit = false;
-            }            
+                throw new ArgumentNullException("contentPage");
+            }
+
+            this.Id = contentPage.Id;
+            this.Name = contentPage.Name;
+            this.Text = contentPage.Text;
+            this.ParentCategoryId = contentPage.ParentId ?? Guid.Empty;
+            this.Attachment = contentPage.AttachmentId != null ? new AttachmentViewModel(contentPage) : null;
+            this.ContentPage = contentPage;
         }
 
         public Guid Id { get; set; } 
@@ -58,23 +64,13 @@ namespace InstantStore.WebUI.ViewModels
 
         public CategoryTreeItemViewModel RootCategory { get; private set; }
 
-        protected ContentPage ContentPage { get; set; }
+        public ContentPage ContentPage { get; private set; }
 
         public static dynamic CreateTreeNode(CategoryTreeItemViewModel node)
         {
             var icon = node.Type == ContentType.RootPage ? "glyphicon glyphicon-home" : (node.Type == ContentType.Category ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
             var subItems = node.Items.Select(i => CreateTreeNode(i)).ToArray();
             return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
-        }
-
-        protected void Init(ContentPage contentPage)
-        {
-            this.Id = contentPage.Id;
-            this.Name = contentPage.Name;
-            this.Text = contentPage.Text;
-            this.ParentCategoryId = contentPage.ParentId ?? Guid.Empty;
-            this.Attachment = contentPage.AttachmentId != null ? new AttachmentViewModel(contentPage) : null;
-            this.ContentPage = contentPage;
         }
      }
 

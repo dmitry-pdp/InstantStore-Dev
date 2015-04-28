@@ -25,12 +25,15 @@ namespace InstantStore.WebUI.ViewModels
 
         public Guid ParentCategoryId { get; private set; }
 
+        public bool IsTiles { get; set; }
+        
         public CategoryProductViewModel CreateItemViewModel(Product product)
         {
             return new CategoryProductViewModel
             {
                 Id = product.VersionId,
                 Name = product.Name,
+                Image = repository.GetImagesForProduct(product.Id).FirstOrDefault(),
                 Currency = repository.GetCurrencies().First(x => x.Id == product.PriceCurrencyId).Text,
                 PriceCash = (product.PriceValueCash != null ? (float)product.PriceValueCash : 0.0f).ToString(),
                 PriceCashless = (product.PriceValueCashless != null ? (float)product.PriceValueCashless : 0.0f).ToString(),
@@ -52,5 +55,7 @@ namespace InstantStore.WebUI.ViewModels
         public string PriceCash { get; set; }
 
         public string PriceCashless { get; set; }
+
+        public Guid Image { get; set; }
     }
 }

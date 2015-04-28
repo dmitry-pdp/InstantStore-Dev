@@ -24,12 +24,13 @@ namespace InstantStore.WebUI.Controllers
             return this.Authorize() ?? this.View(new PageViewModel());
         }
 
-        public ActionResult PartialPage(Guid id)
+        public ActionResult PreviewPage(Guid id)
         {
             var page = this.repository.GetPageById(id);
             if ((ContentType)page.ContentType == ContentType.Category && page.CategoryId != null)
             {
-                this.ViewData["CategoryProducts"] = new CategoryProductsViewModel(this.repository, page.Id);
+                var category = repository.GetCategoryById(page.CategoryId.Value);
+                this.ViewData["CategoryProducts"] = new CategoryProductsViewModel(this.repository, page.Id) { IsTiles = category.ListType == 2 };
             }
             return this.View(new PageViewModel(page, false));
         }
@@ -56,8 +57,15 @@ namespace InstantStore.WebUI.Controllers
             }
 
             var pageViewModel = id != null ? new PageViewModel(this.repository, id.Value) : new PageViewModel() { ParentCategoryId = parentId ?? Guid.Empty };
-            this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-            return this.Authorize() ?? this.View(pageViewModel);
+            if (pageViewModel.ContentPage.ContentType == (int)(ContentType.Category))
+            {
+                return this.Category(id, parentId);
+            }
+            else
+            {
+                this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                return this.Authorize() ?? this.View(pageViewModel);
+            }
         }
 
         [HttpPost]
@@ -121,11 +129,12 @@ namespace InstantStore.WebUI.Controllers
             }
         }
 
-        public ActionResult Category(Guid? id)
+        public ActionResult Category(Guid? id, Guid? parentId)
         {
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             var categoryViewModel = id != null ? new CategoryViewModel(this.repository, id.Value) : new CategoryViewModel();
-            return this.Authorize() ?? this.View(categoryViewModel);
+            categoryViewModel.Content.ParentCategoryId = parentId ?? Guid.Empty;
+            return this.Authorize() ?? this.View("Category", categoryViewModel);
         }
 
         [HttpPost]
@@ -134,26 +143,26 @@ namespace InstantStore.WebUI.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                Guid? parentId = categoryViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.ParentCategoryId;
+                Guid? parentId = categoryViewModel.Content.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.Content.ParentCategoryId;
 
-                if (categoryViewModel.Id != Guid.Empty)
+                if (categoryViewModel.Content.Id != Guid.Empty)
                 {
-                    var contentPage = repository.GetPageById(categoryViewModel.Id);
+                    var contentPage = repository.GetPageById(categoryViewModel.Content.Id);
                     if (contentPage == null || contentPage.CategoryId == null)
                     {
-                        throw new InvalidOperationException(string.Format("Model is invalid state. Category for guid {0} has not been found.", categoryViewModel.Id));
+                        throw new InvalidOperationException(string.Format("Model is invalid state. Category for guid {0} has not been found.", categoryViewModel.Content.Id));
                     }
 
-                    contentPage.Name = categoryViewModel.Name;
-                    contentPage.Text = categoryViewModel.Text;
+                    contentPage.Name = categoryViewModel.Content.Name;
+                    contentPage.Text = categoryViewModel.Content.Text;
                     contentPage.ParentId = parentId;
                     repository.UpdateContentPage(contentPage);
 
                     var category = repository.GetCategoryById(contentPage.CategoryId.Value);
-                    category.Name = categoryViewModel.Name;
+                    category.Name = categoryViewModel.Content.Name;
                     category.ShowInMenu = categoryViewModel.ShowInMenu;
                     category.ListType = categoryViewModel.ListType;
-                    category.Description = categoryViewModel.Text;
+                    category.Description = categoryViewModel.Content.Text;
                     category.ImageId = categoryViewModel.CategoryImage;
                     repository.UpdateCategory(category);
                 }
@@ -161,25 +170,23 @@ namespace InstantStore.WebUI.Controllers
                 {
                     var categoryId = repository.NewCategory(new Category()
                     {
-                        Name = categoryViewModel.Name,
+                        Name = categoryViewModel.Content.Name,
                         ShowInMenu = categoryViewModel.ShowInMenu,
                         ListType = categoryViewModel.ListType,
-                        Description = categoryViewModel.Text,
+                        Description = categoryViewModel.Content.Text,
                         ImageId = categoryViewModel.CategoryImage,
                     });
 
                     repository.NewPage(new ContentPage
                     {
-                        Name = categoryViewModel.Name,
-                        Text = categoryViewModel.Text,
+                        Name = categoryViewModel.Content.Name,
+                        Text = categoryViewModel.Content.Text,
                         ParentId = parentId,
                         ContentType = (int)ContentType.Category,
                         Position = repository.GetPages(parentId, null).Count + 1,
                         CategoryId = categoryId,
                     });
                 }
-
-
 
                 return this.RedirectToAction("Pages");
             }

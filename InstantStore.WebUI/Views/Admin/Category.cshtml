@@ -4,7 +4,7 @@
 
 @model CategoryViewModel
 @{
-    ViewBag.Title = this.Model.Id == Guid.Empty ? StringResource.admin_PageNewCategory : StringResource.admin_EditCategory;
+    ViewBag.Title = this.Model.Content.Id == Guid.Empty ? StringResource.admin_PageNewCategory : StringResource.admin_EditCategory;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -23,9 +23,9 @@
             <div class="row">
                 <div class="col-sm-8">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Name)
+                        @Html.LabelFor(model => model.Content.Name, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Content.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Content.Name)
                     </div>
                     <div class="form-group">
                         <div class="">
@@ -57,12 +57,12 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Text, new { @class = "control-label" })
-                        @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
+                        @Html.LabelFor(model => model.Content.Text, new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Content.Text, new { @class = "form-control parent-category-name" })
                     </div>
                     <div class="form-group">
-                        @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
-                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.Content.ParentCategoryId, new { @class = "parent-category-id" })
+                        @Html.HiddenFor(model => model.Content.Id)
                         <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
                     </div>
                 </div>
@@ -85,7 +85,7 @@
 
     $(function () {
 
-        InitializeTreeView('@this.Model.ParentCategoryId');
+        InitializeTreeView('@this.Model.Content.ParentCategoryId');
         
         $(document).on("upload-control:done", function (event, data) {
             $("#category-image").attr("src", '/Main/GetImage?id=' + data.ImageId);
@@ -93,7 +93,7 @@
         });
 
         $(document).on("category-tree:selected", function (event, id) {
-            $("#ParentCategoryId").val(id);
+            $("#Content_ParentCategoryId").val(id);
         });
     });
 </script>

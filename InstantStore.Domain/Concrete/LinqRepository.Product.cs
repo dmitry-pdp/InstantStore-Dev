@@ -23,6 +23,7 @@ namespace InstantStore.Domain.Concrete
 
                     context.ContentPages.InsertOnSubmit(new ContentPage
                     {
+                        Id = Guid.NewGuid(),
                         Name = productToUpdate.Name,
                         Text = productToUpdate.Description,
                         ParentId = parentId,

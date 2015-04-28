@@ -25,14 +25,8 @@ namespace InstantStore.WebUI.ViewModels
         }
 
         public ProductViewModel(IRepository repository, Guid id)
-            : base(repository, id)
+            : base(repository.GetPageByProductId(id))
         {
-            var contentPage = repository.GetPageByProductId(id);
-            if (contentPage != null)
-            {
-                this.Init(contentPage);
-            }
-
             this.Initialize(repository);
         }
 

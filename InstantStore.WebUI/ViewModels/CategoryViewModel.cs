@@ -8,32 +8,42 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.Resources;
 using System.ComponentModel.DataAnnotations;
+using InstantStore.Domain.Entities;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class CategoryViewModel : PageViewModel
+    public class CategoryViewModel
     {
         public CategoryViewModel()
         {
+            this.Content = new PageViewModel();
             this.Initialize();
         }
 
         public CategoryViewModel(IRepository repository, Guid id)
-            : base(repository, id)
+            : this(new PageViewModel(repository, id), repository)
         {
-            if (this.ContentPage.CategoryId != null)
-            {
-                var category = repository.GetCategoryById(this.ContentPage.CategoryId.Value);
-                if (category == null)
-                {
-                    throw new Exception("Data is not consistent.");
-                }
+        }
 
-                this.ListType = category.ListType;
-                this.Initialize(this.ListType == 2);
-                this.CategoryImage = category.ImageId;
-                this.ShowInMenu = category.ShowInMenu;
+        public CategoryViewModel(PageViewModel pageViewModel, IRepository repository)
+        {
+            this.Content = pageViewModel;
+
+            if (this.Content.ContentPage == null || this.Content.ContentPage.ContentType != (int)(ContentType.Category) || this.Content.ContentPage.CategoryId == null)
+            {
+                throw new InvalidOperationException("The entity is not category.");
             }
+
+            var category = repository.GetCategoryById(this.Content.ContentPage.CategoryId.Value);
+            if (category == null)
+            {
+                throw new Exception("Data is not consistent.");
+            }
+
+            this.ListType = category.ListType;
+            this.Initialize(this.ListType == 2);
+            this.CategoryImage = category.ImageId;
+            this.ShowInMenu = category.ShowInMenu;
         }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryListTypeLabel")]
@@ -41,6 +51,8 @@ namespace InstantStore.WebUI.ViewModels
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryShowInMenuLabel")]
         public bool ShowInMenu { get; set; }
+
+        public PageViewModel Content { get; set; }
 
         public Guid? CategoryImage { get; set; }
 
