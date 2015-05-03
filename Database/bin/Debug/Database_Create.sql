@@ -363,6 +363,20 @@ CREATE TABLE [dbo].[Attachment] (
 
 
 GO
+PRINT N'Creating [dbo].[PropertyTemplate]...';
+
+
+GO
+CREATE TABLE [dbo].[PropertyTemplate] (
+    [Id]          UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (250)   NOT NULL,
+    [IsPrototype] BIT              NOT NULL,
+    [PrototypeId] UNIQUEIDENTIFIER NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating [dbo].[ContentPage]...';
 
 
@@ -373,7 +387,6 @@ CREATE TABLE [dbo].[ContentPage] (
     [Text]           NVARCHAR (MAX)   NULL,
     [ContentType]    INT              NOT NULL,
     [ParentId]       UNIQUEIDENTIFIER NULL,
-    [ProductId]      UNIQUEIDENTIFIER NULL,
     [CategoryId]     UNIQUEIDENTIFIER NULL,
     [Position]       INT              NOT NULL,
     [AttachmentId]   UNIQUEIDENTIFIER NULL,
@@ -383,15 +396,15 @@ CREATE TABLE [dbo].[ContentPage] (
 
 
 GO
-PRINT N'Creating [dbo].[PropertyTemplate]...';
+PRINT N'Creating [dbo].[ProductToCategory]...';
 
 
 GO
-CREATE TABLE [dbo].[PropertyTemplate] (
-    [Id]          UNIQUEIDENTIFIER NOT NULL,
-    [Name]        NVARCHAR (250)   NOT NULL,
-    [IsPrototype] BIT              NOT NULL,
-    [PrototypeId] UNIQUEIDENTIFIER NULL,
+CREATE TABLE [dbo].[ProductToCategory] (
+    [Id]         UNIQUEIDENTIFIER NOT NULL,
+    [ProductId]  UNIQUEIDENTIFIER NOT NULL,
+    [CategoryId] UNIQUEIDENTIFIER NOT NULL,
+    [UpdateTime] DATETIME         NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -448,15 +461,6 @@ PRINT N'Creating FK_ContentPage_ToTableContentPage...';
 GO
 ALTER TABLE [dbo].[ContentPage]
     ADD CONSTRAINT [FK_ContentPage_ToTableContentPage] FOREIGN KEY ([ParentId]) REFERENCES [dbo].[ContentPage] ([Id]);
-
-
-GO
-PRINT N'Creating FK_ContentPage_ToTableProduct...';
-
-
-GO
-ALTER TABLE [dbo].[ContentPage]
-    ADD CONSTRAINT [FK_ContentPage_ToTableProduct] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([VersionId]);
 
 
 GO

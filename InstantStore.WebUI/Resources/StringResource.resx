@@ -885,4 +885,25 @@
   <data name="Price" xml:space="preserve">
     <value>Цена</value>
   </data>
+  <data name="admin_ImportProductErrorNoItemChecked" xml:space="preserve">
+    <value>Не выбрано ни одного продукта.</value>
+  </data>
+  <data name="admin_ImportProductErrorSameCategory" xml:space="preserve">
+    <value>Продукты из одной категории. Выберите другую категорию.</value>
+  </data>
+  <data name="admin_ImportProductSelect" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
+  <data name="admin_ProductsFromOtherCategory" xml:space="preserve">
+    <value>Добавить продукты из другой категории</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Импортировать</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
 </root>

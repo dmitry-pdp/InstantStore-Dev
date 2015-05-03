@@ -4,6 +4,11 @@
 @{
     ViewBag.Title = this.Model.Id == Guid.Empty ? StringResource.admin_NewPage : StringResource.admin_UpdatePage;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var pagesTreeViewModel = new TreeViewModel
+    {
+        TreeId = Guid.NewGuid().ToString(),
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel
+    };
 }
 
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
@@ -11,7 +16,7 @@
 <div class="border col-sm-3">
     @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
     <h3>@StringResource.admin_AddToParent </h3>
-    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
 </div>
 <div class="border col-sm-9">
     <h2>@ViewBag.Title</h2>
@@ -63,7 +68,8 @@
 
     $(function () {
 
-        InitializeTreeView('@this.Model.ParentCategoryId');
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView('@this.Model.ParentCategoryId', pagesTreeId);
 
         $(document).on("category-tree:selected", function (event, id) {
             $("#ParentCategoryId").val(id);

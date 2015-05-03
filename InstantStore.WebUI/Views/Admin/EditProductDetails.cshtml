@@ -9,13 +9,17 @@
         @foreach(var productInfo in this.Model.Products)
         {
         <div class="thumbnail" style="width:245px;display:inline-block">
-            <a href="@Url.Action("Page", "Main", new { id = productInfo.Id })" class="thumbnail">
+            <a href="@Url.Action("Page", "Admin", new { id = productInfo.Id, c="p" })" class="thumbnail">
                 <img src="@(productInfo.Image == Guid.Empty ? "/Image/NoImage.png" : "/Main/GetImage?id=" + productInfo.Image)" style="width:242px;height:200px" />
                 <div class="caption" style="height:120px">
-                    <h3>@productInfo.Name</h3>
-                    <label>@StringResource.Price</label>
-                    <span>@productInfo.PriceCash</span>
-                    <span>@productInfo.Currency</span>
+                    <div>
+                        <span class="title">@productInfo.Name</span>
+                    </div>
+                    <div>
+                        <label>@StringResource.Price</label>
+                        <span>@productInfo.PriceCash</span>
+                        <span>@productInfo.Currency</span>
+                    </div>
                 </div>
             </a>
         </div>

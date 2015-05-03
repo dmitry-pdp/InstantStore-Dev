@@ -91,7 +91,9 @@ namespace InstantStore.Domain.Abstract
 
         Product GetProductById(Guid id);
 
-        IList<Product> GetProductsForCategory(Guid categoryId);
+        IList<Product> GetProductsForCategory(Guid categoryId, int page, int count);
+
+        int GetProductsCountForCategory(Guid id);
 
         Image GetImageById(Guid id);
 
@@ -106,5 +108,7 @@ namespace InstantStore.Domain.Abstract
         IList<Guid> GetImagesForProduct(Guid productId);
 
         void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes);
+
+        void AssignProductsToCategory(IList<Guid> products, Guid categoryId);
     }
 }

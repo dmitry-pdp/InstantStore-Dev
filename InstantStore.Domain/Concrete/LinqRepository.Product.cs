@@ -150,5 +150,20 @@ namespace InstantStore.Domain.Concrete
                 return properties.ToList();                
             }
         }
+
+        public void AssignProductsToCategory(IList<Guid> products, Guid contentPageId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                context.ProductToCategories.InsertAllOnSubmit(products.Select(x => new ProductToCategory
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = x,
+                    CategoryId = contentPageId,
+                    UpdateTime = DateTime.Now
+                }));
+                context.SubmitChanges();
+            }
+        }
     }
 }

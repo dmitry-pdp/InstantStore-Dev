@@ -230,13 +230,28 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public IList<Product> GetProductsForCategory(Guid categoryId)
+        public IList<Product> GetProductsForCategory(Guid categoryId, int page, int count)
         {
             using (var context = new InstantStoreDataContext())
             {
-                var products = context.ContentPages.Where(x => x.ProductId != null && x.ContentType == 3 && x.ParentId != null && x.ParentId == categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y.ProductId)).ToList();
+                var products = this.GetProducts(context, categoryId);
+                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Skip(count * page).Take(count).ToList();
             }
+        }
+
+        public int GetProductsCountForCategory(Guid categoryId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var products = this.GetProducts(context, categoryId);
+                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Count();
+            }
+        }
+
+        private IQueryable<Guid> GetProducts(InstantStoreDataContext context, Guid categoryId)
+        {
+            var products = context.ContentPages.Where(x => x.ProductId != null && x.ContentType == 3 && x.ParentId != null && x.ParentId == categoryId && x.ProductId != null).Select(x => x.ProductId.Value);
+            return products.Union(context.ProductToCategories.Where(x => x.CategoryId == categoryId).Select(x => x.ProductId));
         }
     }
 }

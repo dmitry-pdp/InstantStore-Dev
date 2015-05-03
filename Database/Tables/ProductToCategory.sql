@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[ProductToCategory]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [ProductId] UNIQUEIDENTIFIER NOT NULL, 
+    [CategoryId] UNIQUEIDENTIFIER NOT NULL, 
+    [UpdateTime] DATETIME NOT NULL	
+)

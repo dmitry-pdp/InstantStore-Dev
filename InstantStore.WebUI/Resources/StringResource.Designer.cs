@@ -412,6 +412,33 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не выбрано ни одного продукта..
+        /// </summary>
+        public static string admin_ImportProductErrorNoItemChecked {
+            get {
+                return ResourceManager.GetString("admin_ImportProductErrorNoItemChecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Продукты из одной категории. Выберите другую категорию..
+        /// </summary>
+        public static string admin_ImportProductErrorSameCategory {
+            get {
+                return ResourceManager.GetString("admin_ImportProductErrorSameCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выбрать.
+        /// </summary>
+        public static string admin_ImportProductSelect {
+            get {
+                return ResourceManager.GetString("admin_ImportProductSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Списки.
         /// </summary>
         public static string admin_Lists {
@@ -813,6 +840,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_ProductPriceCashless {
             get {
                 return ResourceManager.GetString("admin_ProductPriceCashless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить продукты из другой категории.
+        /// </summary>
+        public static string admin_ProductsFromOtherCategory {
+            get {
+                return ResourceManager.GetString("admin_ProductsFromOtherCategory", resourceCulture);
             }
         }
         
@@ -1267,6 +1303,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не верны почта/пароль или ваша учетная запить не прошела активацию администратором..
         /// </summary>
         public static string Error_AuthorizationFailed {
@@ -1636,6 +1681,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Импортировать.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Регистрация.
         /// </summary>
         public static string link_registration {
@@ -1740,6 +1794,15 @@ namespace InstantStore.WebUI.Resources {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         

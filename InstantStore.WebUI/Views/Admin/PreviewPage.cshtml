@@ -4,40 +4,122 @@
 @{
     ViewBag.Title = Model.Name;
     var cateogoryProducts = this.ViewData["CategoryProducts"] as CategoryProductsViewModel;
+    bool isImportMode = (bool)this.ViewData["IsImportMode"];
 }
 
-<div class="row">
-    <div class="col-sm-12" id="new-pages-row">
-        <p>
-            @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg" })
-            @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg" })
-            @if (cateogoryProducts != null)
-            {
-                @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg" })
-            }
-        </p>
-    </div>
-</div>
-
-<h2>@ViewBag.Title</h2>
-@Html.Raw(this.Model.Text)
-@if (this.Model.Attachment != null)
+@if (!isImportMode)
 {
-    <div>
-        <label>@StringResource.admin_PageAttachment</label>
-            @Html.Partial("Attachment", this.Model.Attachment)
+    <div class="row">
+        <div class="col-sm-12" id="new-pages-row">
+            <p>
+                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
+                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
+                @if (cateogoryProducts != null)
+                {
+                    @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
+                    @Html.ActionLink(StringResource.admin_ProductsFromOtherCategory, "Import", null, new { @class = "btn btn-default btn-lg", id = "btn-import-products"})
+                }
+            </p>
+        </div>
     </div>
+
+    <h2>@ViewBag.Title</h2>
+    @Html.Raw(this.Model.Text)
+    if (this.Model.Attachment != null)
+    {
+        <div>
+            <label>@StringResource.admin_PageAttachment</label>
+                @Html.Partial("Attachment", this.Model.Attachment)
+        </div>
+    }
 }
 @if (cateogoryProducts != null)
 {
-    Html.RenderPartial("EditProductDetails", cateogoryProducts);
+    <div class="row">
+        <div class="pull-right" style="margin-right: 15px">
+            @Html.Partial("Pagination", cateogoryProducts.Pagination)
+        </div>
+    </div>
+    <div>
+        @Html.Partial(isImportMode ? "EditProductDetailsImport" : "EditProductDetails", cateogoryProducts);
+        <div class="modal fade" id="import-products-dlg" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:90%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@StringResource.admin_ProductsFromOtherCategory</h4>
+                    </div>
+                    <div class="modal-body" id="import-products-dlg-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
+                        <input type="button" class="btn btn-primary" id="btn-confirm-import" value="@StringResource.Import" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="import-error-dlg" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@StringResource.Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="error-holder"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">@StringResource.Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
 }
-<script>
-    var e = $("#new-pages-row").find(".btn");
-    e.on("click", function () {
-        var href = $(this).attr('href');
-        var selectedCat = $("#current-selection").val();
-        window.location.href = href + '?parentId=' + selectedCat;
-        return false;
-    });
-</script>
+@if (!isImportMode)
+{ 
+    <script>
+        var e = $("#new-pages-row").find(".btn-withparentid").on("click", function () {
+            var href = $(this).attr('href');
+            var selectedCat = $("#current-selection").val();
+            window.location.href = href + '?parentId=' + selectedCat;
+            return false;
+        });
+
+        $("#btn-import-products").on("click", function () {
+            var selectedCat = $("#current-selection").val();
+            $.ajax({
+                url: '@Url.Action("ImportProducts")' + "?parentId=" + selectedCat
+            })
+            .done(function (html) {
+                $("#import-products-dlg-body").html(html);
+                $('#import-products-dlg').modal();
+            });
+            return false;
+        });
+
+        $("#btn-confirm-import").click(function () {
+            var frm = $('#import-products-form');
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data: frm.serialize(),
+            })
+            .done(function (data) {
+                if (data.status == "success")
+                {
+                    $('#import-products-dlg').modal('hide');
+                    $(document).trigger("category-tree:refresh");
+                }
+                else 
+                {
+                    $("#error-holder").html(data.message);
+                    $("#import-error-dlg").modal('show');
+                }
+            })
+            .fail(function (data) {
+                alert('Ошибка');
+            });
+        });
+    </script>
+}

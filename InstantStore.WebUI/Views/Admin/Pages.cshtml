@@ -6,6 +6,13 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     var treeViewItem = (Guid)(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"]);
     var isRoot = treeViewItem == Guid.Empty;
+    
+    var pagesTreeViewModel = new TreeViewModel { 
+        TreeId = Guid.NewGuid().ToString(), 
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel 
+    };
+    
+    var treeSelectedId = this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"];
 }
 
 <script src="~/Scripts/bootstrap-treenav.js"></script>
@@ -32,13 +39,13 @@
             </a>
         </div>
     </div>
-    @Html.Partial("CategoryTree", this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel)
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
 </div>
 <div class="border col-sm-9">
     <div id="content">
     </div>
 </div>
-<div class="modal fade" id="delete-confirmation-dlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete-confirmation-dlg" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,17 +65,19 @@
 </div>
 <script>
     $(function () {
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView('@treeSelectedId', pagesTreeId);
 
-        InitializeTreeView('@(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"])');
+        $(document).on("category-tree:selected", function (event, id, treeId) {
+            if (treeId != pagesTreeId) {
+                return;
+            }
 
-        $(document).on("category-tree:selected", function (event, id) {
             $("#current-selection").val(id);
-            if (id == '@Guid.Empty')
-            {
+            if (id == '@Guid.Empty') {
                 $(".tree-btn").addClass("disabled");
             }
-            else 
-            {
+            else {
                 $(".tree-btn").removeClass("disabled");
             }
             $.ajax({
@@ -78,14 +87,14 @@
                 $("#content").html(html);
             });
         });
-        
+
         $("#tree-buttons a").click(function () {
             var selectedCat = $("#current-selection").val();
             var btn = $(this);
             var href = btn.attr('href') + '&id=' + selectedCat;
             var item = btn.attr('id');
             if (item == 'btn-item-delete') {
-                $("#href-to-delete").val(href); 
+                $("#href-to-delete").val(href);
                 $('#delete-confirmation-dlg').modal();
             }
             else {
@@ -97,5 +106,27 @@
         $("#btn-confirm-delete").click(function () {
             window.location.href = $("#href-to-delete").val();
         });
+
+        function updatePreview(page)
+        {
+            var selectedCat = $("#current-selection").val();
+            $.ajax({
+                url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + selectedCat + (page != null ? "&p=" + page : ""),
+            })
+            .done(function (html) {
+                $("#content").html(html);
+            });
+        }
+
+        $(document).on("category-tree:refresh", function () {
+            updatePreview(0);
+        });
+
+        $(document).on("pagination:click", function (event, id, p) {
+            if (id == "0") {
+                updatePreview(p);
+            }
+        });
+
     });
 </script>

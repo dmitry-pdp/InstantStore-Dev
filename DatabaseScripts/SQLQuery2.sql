@@ -1,0 +1,1 @@
+﻿select * from category where versionid = 'b7fdc5e5-d45f-4063-9412-54e329551fa1';

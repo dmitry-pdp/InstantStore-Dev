@@ -14,19 +14,32 @@ namespace InstantStore.WebUI.ViewModels
     {
         private IRepository repository;
 
-        public CategoryProductsViewModel(IRepository repository, Guid id)
+        public CategoryProductsViewModel()
+        {
+
+        }
+
+        public CategoryProductsViewModel(IRepository repository, Guid id, int page, int count)
         {
             this.repository = repository;
             this.ParentCategoryId = id;
-            this.Products = repository.GetProductsForCategory(id).Select(CreateItemViewModel).ToList();
+            this.Pagination = new PaginationViewModel() {
+                MaxPages = (repository.GetProductsCountForCategory(id) / count) + 1,
+                CurrentPage = page,
+                Count = count,
+                Id = "0"
+            };
+            this.Products = repository.GetProductsForCategory(id, page - 1, count).Select(CreateItemViewModel).ToList();
         }
 
-        public List<CategoryProductViewModel> Products { get; private set; }
+        public List<CategoryProductViewModel> Products { get; set; }
 
-        public Guid ParentCategoryId { get; private set; }
+        public Guid ParentCategoryId { get; set; }
 
         public bool IsTiles { get; set; }
-        
+
+        public PaginationViewModel Pagination { get; set; }
+    
         public CategoryProductViewModel CreateItemViewModel(Product product)
         {
             return new CategoryProductViewModel
@@ -57,5 +70,7 @@ namespace InstantStore.WebUI.ViewModels
         public string PriceCashless { get; set; }
 
         public Guid Image { get; set; }
+
+        public bool Checked { get; set; }
     }
 }
