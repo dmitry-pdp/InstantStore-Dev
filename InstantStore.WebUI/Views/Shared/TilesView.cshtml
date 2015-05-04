@@ -1,0 +1,16 @@
+﻿@model InstantStore.WebUI.ViewModels.TilesViewModel
+
+<link href="~/Content/Tiles.css" rel="stylesheet" />
+
+@foreach(var tileViewModel in this.Model.Tiles)
+{
+    <div class="thumbnail tile">
+        <a href="@Url.Action("Page", "Main", new { id = tileViewModel.Id })" class="thumbnail">
+            <img src="@(tileViewModel.ImageId == Guid.Empty ? "/Image/NoImage.png" : "/Main/GetImage?id=" + tileViewModel.ImageId)" class="tile-image" />
+            <div class="caption tile-caption">
+                <span class="title">@tileViewModel.Name</span>
+            </div>
+        </a>
+    </div>
+}
+

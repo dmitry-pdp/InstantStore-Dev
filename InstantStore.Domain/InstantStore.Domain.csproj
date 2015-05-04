@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Concrete\Extensions.cs" />
     <Compile Include="Concrete\InstantStore.cs">
       <DependentUpon>InstantStore.dbml</DependentUpon>
     </Compile>
@@ -62,7 +63,6 @@
     <Compile Include="Concrete\LinqRepository.Settings.cs" />
     <Compile Include="Concrete\LinqRepository.Templates.cs" />
     <Compile Include="Concrete\LinqRepository.User.cs" />
-    <Compile Include="Entities\ContentType.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductSize.cs" />

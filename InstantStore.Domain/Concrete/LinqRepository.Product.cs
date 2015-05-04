@@ -19,18 +19,26 @@ namespace InstantStore.Domain.Concrete
                 {
                     productToUpdate.Id = Guid.NewGuid();
                     productToUpdate.VersionId = Guid.NewGuid();
-                    context.Products.InsertOnSubmit(productToUpdate);
+                    productToUpdate.MainImageId = images.Any() ? images.First() : (Guid?)null;
 
-                    context.ContentPages.InsertOnSubmit(new ContentPage
+                    context.Products.InsertOnSubmit(productToUpdate);
+                                        
+                    while(parentId != Guid.Empty)
                     {
-                        Id = Guid.NewGuid(),
-                        Name = productToUpdate.Name,
-                        Text = productToUpdate.Description,
-                        ParentId = parentId,
-                        ContentType = (int)ContentType.Product,
-                        Position = context.ContentPages.Count(p => p.ParentId == parentId) + 1,
-                        ProductId = productToUpdate.VersionId
-                    });
+                        var parent = context.ContentPages.First(x => x.Id == parentId);
+                        if (parent.CategoryId != null)
+                        {
+                            context.ProductToCategories.InsertOnSubmit(new ProductToCategory
+                            {
+                                Id = Guid.NewGuid(),
+                                CategoryId = parentId,
+                                ProductId = productToUpdate.VersionId,
+                                UpdateTime = DateTime.Now
+                            });
+                        }
+
+                        parentId = parent.ParentId ?? Guid.Empty;
+                    }
 
                     if (images != null)
                     {
@@ -55,16 +63,6 @@ namespace InstantStore.Domain.Concrete
                     product.PriceValueCash = productToUpdate.PriceValueCash;
                     product.PriceValueCashless = productToUpdate.PriceValueCashless;
 
-                    var page = context.ContentPages.FirstOrDefault(x => x.ProductId == productToUpdate.Id);
-                    if (page == null)
-                    {
-                        throw new ModelValidationException("Model.State.Inconsistent");
-                    }
-                    
-                    page.Name = productToUpdate.Name;
-                    page.Text = productToUpdate.Description;
-                    page.ParentId = parentId;
-
                     if (images != null)
                     {
                         var productImages = context.Images.Where(x => x.ProductId == product.Id).ToList();
@@ -80,6 +78,11 @@ namespace InstantStore.Domain.Concrete
                         foreach(var imageToUpdate in imagesToInsert)
                         {
                             imageToUpdate.ProductId = product.Id;
+                        }
+
+                        if (product.MainImageId == null || product.MainImageId == Guid.Empty || imageIdsToDelete.Contains(product.MainImageId.Value))
+                        {
+                            product.MainImageId = imageIdsToInsert.Any() ? imageIdsToInsert.First() : (Guid?)null;
                         }
                     }
 
@@ -162,8 +165,82 @@ namespace InstantStore.Domain.Concrete
                     CategoryId = contentPageId,
                     UpdateTime = DateTime.Now
                 }));
+
                 context.SubmitChanges();
             }
+        }
+
+        public Guid NewProduct(Product product)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                product.Id = Guid.NewGuid();
+                product.VersionId = Guid.NewGuid();
+                context.Products.InsertOnSubmit(product);
+                context.SubmitChanges();
+                return product.VersionId;
+            }
+        }
+
+        public Product GetProductById(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Products.FirstOrDefault(x => x.VersionId == id);
+            }
+        }
+
+        public IList<Guid> GetImagesForProduct(Guid productId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Images.Where(x => x.ProductId == productId).Select(x => x.Id).ToList();
+            }
+        }
+
+        public void AssignImagesToProduct(Guid productId, IEnumerable<Guid> images)
+        {
+            if (images == null)
+            {
+                throw new ArgumentNullException("images");
+            }
+
+            using (var context = new InstantStoreDataContext())
+            {
+                foreach (var imageId in images)
+                {
+                    var image = context.Images.FirstOrDefault(x => x.Id == imageId);
+                    if (image != null)
+                    {
+                        image.ProductId = productId;
+                    }
+                }
+
+                context.SubmitChanges();
+            }
+        }
+
+        public IList<Product> GetProductsForCategory(Guid categoryId, int offset, int count)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var products = this.GetProducts(context, categoryId);
+                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Skip(offset).Take(count).ToList();
+            }
+        }
+
+        public int GetProductsCountForCategory(Guid categoryId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var products = this.GetProducts(context, categoryId);
+                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Count();
+            }
+        }
+
+        private IQueryable<Guid> GetProducts(InstantStoreDataContext context, Guid categoryId)
+        {
+            return context.ProductToCategories.Where(x => x.CategoryId == categoryId).Select(x => x.ProductId);
         }
     }
 }

@@ -412,6 +412,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Главная.
+        /// </summary>
+        public static string admin_HomeShort {
+            get {
+                return ResourceManager.GetString("admin_HomeShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не выбрано ни одного продукта..
         /// </summary>
         public static string admin_ImportProductErrorNoItemChecked {

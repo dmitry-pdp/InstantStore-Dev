@@ -56,6 +56,9 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
         public string Text { get; set; }
 
+        [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryShowInMenuLabel")]
+        public bool ShowInMenu { get; set; }
+
         [Required]
         public Guid ParentCategoryId { get; set; }
 
@@ -68,7 +71,7 @@ namespace InstantStore.WebUI.ViewModels
 
         public static dynamic CreateTreeNode(CategoryTreeItemViewModel node)
         {
-            var icon = node.Type == ContentType.RootPage ? "glyphicon glyphicon-home" : (node.Type == ContentType.Category ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
+            var icon = node.Id == Guid.Empty ? "glyphicon glyphicon-home" : (node.IsCategory ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
             var subItems = node.Items.Select(i => CreateTreeNode(i)).ToArray();
             return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
         }

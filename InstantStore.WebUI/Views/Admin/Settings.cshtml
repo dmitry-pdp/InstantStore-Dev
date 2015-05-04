@@ -4,6 +4,7 @@
     ViewBag.Title = StringResource.admin_Settings;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     var settingsViewModel = ViewBag.SettingsViewModel;
+    var showMain = (bool)ViewBag.ShowMainPage;
 }
 
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
@@ -23,10 +24,10 @@
 <form method="post" action="~/admin/settingsupdate">
     <div role="tabpanel">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
+            <li role="presentation" class="@(!showMain ? "active" : "")">
                 <a href="#header" aria-controls="header" role="tab" data-toggle="tab">@StringResource.Settings_HeaderLabel</a>
             </li>
-            <li role="presentation">
+            <li role="presentation" class="@(showMain ? "active" : "")">
                 <a href="#maintext" aria-controls="maintext" role="tab" data-toggle="tab">@StringResource.Settings_MainTextLabel</a>
             </li>
             <li role="presentation">
@@ -35,11 +36,11 @@
         </ul>
     </div>
     <div class="tab-content form-group">
-        <div role="tabpanel" class="tab-pane active" id="header">
+        <div role="tabpanel" class="tab-pane @(!showMain ? "active" : "")" id="header">
             <h3>@StringResource.Settings_HeaderLabel</h3>
             <textarea id="Settings.Header" name="headerHtml" rows="15">@settingsViewModel.HeaderHtml</textarea>
         </div>
-        <div role="tabpanel" class="tab-pane" id="maintext">
+        <div role="tabpanel" class="tab-pane @(showMain ? "active" : "")" id="maintext">
             <h3>@StringResource.Settings_MainTextLabel</h3>
             <textarea id="Settings.MainDocument" name="mainDocumentHtml" rows="35">@settingsViewModel.MainDocumentHtml</textarea>
         </div>

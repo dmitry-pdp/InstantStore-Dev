@@ -12,23 +12,34 @@ using InstantStore.Domain.Entities;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class ProductViewModel : PageViewModel
+    public class ProductViewModel
     {
         public ProductViewModel()
         {
         }
 
-        public ProductViewModel(IRepository repository)
+        public ProductViewModel(IRepository repository, Guid? parentId)
         {
             this.Images = new List<Guid>();
             this.CreateTemplatesList(repository);
+            this.ParentCategoryId = parentId ?? Guid.Empty;
         }
 
-        public ProductViewModel(IRepository repository, Guid id)
-            : base(repository.GetPageByProductId(id))
+        public ProductViewModel(IRepository repository, Guid id, Guid? parentId)
         {
-            this.Initialize(repository);
+            this.Initialize(repository, id, parentId);
         }
+
+        public Guid Id { get; set; }
+
+        public Guid ParentCategoryId { get; set; }
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_Name")]
+        [Required]
+        public string Name { get; set; }
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
+        public string Text { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_ProductIsAvailable")]
         public bool IsAvailable { get; set; }
@@ -70,14 +81,12 @@ namespace InstantStore.WebUI.ViewModels
             .ToList();
         }
 
-        private void Initialize(IRepository repository)
+        private void Initialize(IRepository repository, Guid id, Guid? parentId)
         {
-            if (this.ContentPage == null || ((ContentType)this.ContentPage.ContentType) != ContentType.Product)
-            {
-                throw new InvalidOperationException("Incorrect type being initialized.");
-            }
-
-            var product = repository.GetProductById(this.ContentPage.ProductId.Value);
+            var product = repository.GetProductById(id);
+            this.Name = product.Name;
+            this.ParentCategoryId = parentId ?? Guid.Empty;
+            this.Text = product.Description;
             this.IsAvailable = product.IsAvailable;
             this.PriceCash = product.PriceValueCash != null ? (float)product.PriceValueCash : 0.0f;
             this.PriceCashless = product.PriceValueCashless != null ? (float)product.PriceValueCashless : 0.0f;

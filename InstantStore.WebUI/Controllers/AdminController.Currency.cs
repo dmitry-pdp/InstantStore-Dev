@@ -9,6 +9,7 @@ using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using InstantStore.Domain.Exceptions;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -18,6 +19,7 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult Currency(string tab, ExchangeRateViewModel exchangeRateViewModel)
         {
             var currencies = this.repository.GetCurrencies();
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Currency);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Currency);
             this.ViewData["Currencies"] = currencies;

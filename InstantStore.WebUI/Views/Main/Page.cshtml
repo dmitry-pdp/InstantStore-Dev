@@ -4,14 +4,19 @@
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var productTiles = this.ViewBag.ProductTilesViewModel as TilesViewModel;
 }
 
 <h2>@ViewBag.Title</h2>
 @Html.Raw(this.Model.Text)
-<div>
-    <label>@StringResource.admin_PageAttachment</label>
-    @if (this.Model.Attachment != null)
-    {
+@if (this.Model.Attachment != null)
+{
+    <div>
+        <label>@StringResource.admin_PageAttachment</label>
         @Html.Partial("Attachment", this.Model.Attachment);
-    }
-</div>
+    </div>
+}
+@if (productTiles != null)
+{
+    Html.RenderPartial("TilesView", productTiles);
+}

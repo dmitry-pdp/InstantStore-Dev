@@ -75,6 +75,7 @@ namespace InstantStore.Domain.Concrete
                 contentPageOriginal.Text = contentPage.Text;
                 contentPageOriginal.ParentId = contentPage.ParentId;
                 contentPageOriginal.AttachmentId = contentPage.AttachmentId;
+                contentPageOriginal.ShowInMenu = contentPage.ShowInMenu;
                 UpdateAttachmentName(contentPageOriginal, context);
 
                 context.SubmitChanges();
@@ -136,7 +137,8 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
-                return context.ContentPages.FirstOrDefault(x => x.ProductId != null && x.ProductId == id);
+                var categoryId = context.ProductToCategories.Where(x => x.ProductId == id).Select(x => x.CategoryId).First();
+                return context.ContentPages.FirstOrDefault(x => x.CategoryId != null && x.CategoryId == categoryId);
             }
         }
 
@@ -174,84 +176,8 @@ namespace InstantStore.Domain.Concrete
                 categoryOriginal.Description = category.Description;
                 categoryOriginal.ImageId = category.ImageId;
                 categoryOriginal.ListType = category.ListType;
-                categoryOriginal.ShowInMenu = category.ShowInMenu;
                 context.SubmitChanges();
             }
-
-        }
-
-        public Guid NewProduct(Product product)
-        {
-            using (var context = new InstantStoreDataContext())
-            {
-                product.Id = Guid.NewGuid();
-                product.VersionId = Guid.NewGuid();
-                context.Products.InsertOnSubmit(product);
-                context.SubmitChanges();
-                return product.VersionId;
-            }
-        }
-
-        public Product GetProductById(Guid id)
-        {
-            using (var context = new InstantStoreDataContext())
-            {
-                return context.Products.FirstOrDefault(x => x.VersionId == id);
-            }
-        }
-
-        public IList<Guid> GetImagesForProduct(Guid productId)
-        {
-            using (var context = new InstantStoreDataContext())
-            {
-                return context.Images.Where(x => x.ProductId == productId).Select(x => x.Id).ToList();
-            }
-        }
-
-        public void AssignImagesToProduct(Guid productId, IEnumerable<Guid> images)
-        {
-            if (images == null)
-            {
-                throw new ArgumentNullException("images");
-            }
-
-            using (var context = new InstantStoreDataContext())
-            {
-                foreach(var imageId in images)
-                {
-                    var image = context.Images.FirstOrDefault(x => x.Id == imageId);
-                    if (image != null)
-                    {
-                        image.ProductId = productId;
-                    }
-                }
-
-                context.SubmitChanges();
-            }
-        }
-
-        public IList<Product> GetProductsForCategory(Guid categoryId, int page, int count)
-        {
-            using (var context = new InstantStoreDataContext())
-            {
-                var products = this.GetProducts(context, categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Skip(count * page).Take(count).ToList();
-            }
-        }
-
-        public int GetProductsCountForCategory(Guid categoryId)
-        {
-            using (var context = new InstantStoreDataContext())
-            {
-                var products = this.GetProducts(context, categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Count();
-            }
-        }
-
-        private IQueryable<Guid> GetProducts(InstantStoreDataContext context, Guid categoryId)
-        {
-            var products = context.ContentPages.Where(x => x.ProductId != null && x.ContentType == 3 && x.ParentId != null && x.ParentId == categoryId && x.ProductId != null).Select(x => x.ProductId.Value);
-            return products.Union(context.ProductToCategories.Where(x => x.CategoryId == categoryId).Select(x => x.ProductId));
         }
     }
 }

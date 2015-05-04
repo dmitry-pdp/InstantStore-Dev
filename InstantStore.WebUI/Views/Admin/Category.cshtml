@@ -43,8 +43,8 @@
                     <div class="form-group">
                         <div class="">
                             <div class="form-inline checkbox-inline">
-                                @Html.CheckBoxFor(model => model.ShowInMenu)
-                                @Html.LabelFor(model => model.ShowInMenu)
+                                @Html.CheckBoxFor(model => model.Content.ShowInMenu)
+                                @Html.LabelFor(model => model.Content.ShowInMenu)
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
             </div>
         }
     </div>
-    @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" });
+    @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" })
 </div>
 <script>
     tinymce.init({

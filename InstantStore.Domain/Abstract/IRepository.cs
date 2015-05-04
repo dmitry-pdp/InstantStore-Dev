@@ -91,7 +91,7 @@ namespace InstantStore.Domain.Abstract
 
         Product GetProductById(Guid id);
 
-        IList<Product> GetProductsForCategory(Guid categoryId, int page, int count);
+        IList<Product> GetProductsForCategory(Guid categoryId, int offset, int count);
 
         int GetProductsCountForCategory(Guid id);
 

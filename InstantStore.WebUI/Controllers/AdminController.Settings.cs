@@ -8,12 +8,13 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        public ActionResult Settings()
+        public ActionResult Settings(string t = null)
         {
             var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
             if (user == null || !user.IsAdmin)
@@ -21,8 +22,10 @@ namespace InstantStore.WebUI.Controllers
                 ////return this.HttpNotFound();
             }
 
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Settings);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Settings);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["ShowMainPage"] = "main" == t;
             return View();
         }
 

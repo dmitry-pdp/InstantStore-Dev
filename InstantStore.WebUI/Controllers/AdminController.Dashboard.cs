@@ -8,6 +8,7 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -15,6 +16,7 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Index()
         {
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Dashboard);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Dashboard);
             return this.Authorize() ?? this.View("Dashboard");
         }

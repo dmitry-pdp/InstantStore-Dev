@@ -1,0 +1,18 @@
+﻿.tile
+{
+    width:245px;
+    display:inline-block;
+}
+
+.tile-image
+{
+    width:242px;
+    height:200px;
+    max-height:200px;
+    min-height:200px;
+}
+
+.tile-caption
+{
+    height:120px;
+}

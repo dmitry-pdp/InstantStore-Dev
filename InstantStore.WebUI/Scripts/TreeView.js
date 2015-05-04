@@ -27,8 +27,8 @@
             if (node) {
                 treeView.selectNode(node);
                 while (node != rootNode) {
-                    node = treeView.getParent(node);
                     treeView.expandNode(node);
+                    node = treeView.getParent(node);
                 }
             }
         },

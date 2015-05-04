@@ -10,6 +10,7 @@ using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using InstantStore.Domain.Exceptions;
 using System.Net;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -17,6 +18,7 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Templates()
         {
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Templates);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Templates);
             var templates = this.repository.GetTemplates().Select(x => new TemplateViewModel() { Id = x.Id, Name = x.Name }).ToList();
             return this.Authorize() ?? this.View(templates);

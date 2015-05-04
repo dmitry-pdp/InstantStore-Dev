@@ -1,0 +1,30 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@model MainMenuViewModel
+
+<link href="~/Content/MultiLevelNavBar.css" rel="stylesheet" />
+<script src="~/Scripts/Menu.js"></script>
+
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div id="mynavbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @foreach (var menuItem in this.Model.Menu)
+                {
+                    Html.RenderPartial("MainMenuItem", menuItem);
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (this.Model.HasExit)
+                {
+                    <li><a href="/"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Выйти</a></li>
+                }
+                else
+                {
+                    <li><a href="/admin"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
+                    <li><a href="/main/newuser"><span class="glyphicon glyphicon-user"></span>User</a></li>
+                    <li><a href="/main/login"><span class="glyphicon glyphicon-log-in"></span>Sign In</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>  

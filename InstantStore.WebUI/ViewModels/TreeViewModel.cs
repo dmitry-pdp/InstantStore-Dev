@@ -29,26 +29,25 @@ namespace InstantStore.WebUI.ViewModels
             this.Id = page.Id;
             this.Name = page.Name;
             this.Position = (uint)page.Position;
-            this.Type = (ContentType)page.ContentType;
+            this.IsCategory = page.IsCategory();
         }
 
-        public static CategoryTreeItemViewModel CreateNavigationTree(IRepository repository, bool excludeProducts = true)
+        public static CategoryTreeItemViewModel CreateNavigationTree(IRepository repository)
         {
             var root = new CategoryTreeItemViewModel { Name = StringResource.admin_PageTreeRoot, Id = Guid.Empty };
-            root.InitializeSubCategories(repository, excludeProducts);
+            root.InitializeSubCategories(repository);
             return root;
         }
 
-        private void InitializeSubCategories(IRepository repository, bool excludeProducts = true)
+        private void InitializeSubCategories(IRepository repository)
         {
-            Func<ContentPage, bool> filter = excludeProducts ? p => p.ContentType != (int)ContentType.Product : (Func<ContentPage, bool>)null;
-            this.Items = GetPages(repository, this.Id == Guid.Empty ? (Guid?)null : this.Id, filter);
-            this.Items.ForEach(x => x.InitializeSubCategories(repository, excludeProducts));
+            this.Items = GetPages(repository, this.Id == Guid.Empty ? (Guid?)null : this.Id);
+            this.Items.ForEach(x => x.InitializeSubCategories(repository));
         }
 
-        private static List<CategoryTreeItemViewModel> GetPages(IRepository repository, Guid? parentId, Func<ContentPage, bool> filter)
+        private static List<CategoryTreeItemViewModel> GetPages(IRepository repository, Guid? parentId)
         {
-            return repository.GetPages(parentId, filter).Select(p => new CategoryTreeItemViewModel(p)).OrderBy(y => y.Position).ToList();
+            return repository.GetPages(parentId, null).Select(p => new CategoryTreeItemViewModel(p)).OrderBy(y => y.Position).ToList();
         }
 
         public string Name { get; set; }
@@ -57,7 +56,7 @@ namespace InstantStore.WebUI.ViewModels
 
         public uint Position { get; set; }
 
-        public ContentType Type { get; set; }
+        public bool IsCategory { get; set; }
 
         public List<CategoryTreeItemViewModel> Items { get; private set; }
     }

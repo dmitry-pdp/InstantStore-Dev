@@ -29,7 +29,7 @@ namespace InstantStore.WebUI.ViewModels
         {
             this.Content = pageViewModel;
 
-            if (this.Content.ContentPage == null || this.Content.ContentPage.ContentType != (int)(ContentType.Category) || this.Content.ContentPage.CategoryId == null)
+            if (this.Content.ContentPage == null || !this.Content.ContentPage.IsCategory())
             {
                 throw new InvalidOperationException("The entity is not category.");
             }
@@ -43,14 +43,10 @@ namespace InstantStore.WebUI.ViewModels
             this.ListType = category.ListType;
             this.Initialize(this.ListType == 2);
             this.CategoryImage = category.ImageId;
-            this.ShowInMenu = category.ShowInMenu;
         }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryListTypeLabel")]
         public int ListType { get; set; }
-
-        [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryShowInMenuLabel")]
-        public bool ShowInMenu { get; set; }
 
         public PageViewModel Content { get; set; }
 

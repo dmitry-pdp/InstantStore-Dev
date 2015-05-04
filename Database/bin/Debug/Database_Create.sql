@@ -218,28 +218,6 @@ CREATE TABLE [dbo].[Settings] (
 
 
 GO
-PRINT N'Creating [dbo].[Product]...';
-
-
-GO
-CREATE TABLE [dbo].[Product] (
-    [VersionId]                  UNIQUEIDENTIFIER NOT NULL,
-    [Id]                         UNIQUEIDENTIFIER NOT NULL,
-    [Name]                       NVARCHAR (250)   NOT NULL,
-    [Description]                NVARCHAR (MAX)   NULL,
-    [MainImage]                  IMAGE            NULL,
-    [CashAccepted]               BIT              NOT NULL,
-    [IsAvailable]                BIT              NOT NULL,
-    [PriceCurrencyId]            UNIQUEIDENTIFIER NULL,
-    [PriceValueCash]             NUMERIC (19, 4)  NULL,
-    [PriceValueCashless]         NUMERIC (19, 4)  NULL,
-    [CustomAttributesTemplateId] UNIQUEIDENTIFIER NULL,
-    [Version]                    INT              NOT NULL,
-    PRIMARY KEY CLUSTERED ([VersionId] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[Feedback]...';
 
 
@@ -309,26 +287,6 @@ CREATE TABLE [dbo].[Image] (
 
 
 GO
-PRINT N'Creating [dbo].[Category]...';
-
-
-GO
-CREATE TABLE [dbo].[Category] (
-    [VersionId]   UNIQUEIDENTIFIER NOT NULL,
-    [Id]          UNIQUEIDENTIFIER NOT NULL,
-    [Name]        NVARCHAR (250)   NOT NULL,
-    [ShowInMenu]  BIT              NOT NULL,
-    [Image]       IMAGE            NULL,
-    [ImageId]     UNIQUEIDENTIFIER NULL,
-    [ListType]    INT              NOT NULL,
-    [ShowPrices]  BIT              NOT NULL,
-    [Description] NVARCHAR (MAX)   NULL,
-    [Version]     INT              NOT NULL,
-    PRIMARY KEY CLUSTERED ([VersionId] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[ErrorLog]...';
 
 
@@ -377,21 +335,21 @@ CREATE TABLE [dbo].[PropertyTemplate] (
 
 
 GO
-PRINT N'Creating [dbo].[ContentPage]...';
+PRINT N'Creating [dbo].[Category]...';
 
 
 GO
-CREATE TABLE [dbo].[ContentPage] (
-    [Id]             UNIQUEIDENTIFIER NOT NULL,
-    [Name]           NVARCHAR (250)   NOT NULL,
-    [Text]           NVARCHAR (MAX)   NULL,
-    [ContentType]    INT              NOT NULL,
-    [ParentId]       UNIQUEIDENTIFIER NULL,
-    [CategoryId]     UNIQUEIDENTIFIER NULL,
-    [Position]       INT              NOT NULL,
-    [AttachmentId]   UNIQUEIDENTIFIER NULL,
-    [AttachmentName] NVARCHAR (250)   NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
+CREATE TABLE [dbo].[Category] (
+    [VersionId]   UNIQUEIDENTIFIER NOT NULL,
+    [Id]          UNIQUEIDENTIFIER NOT NULL,
+    [Name]        NVARCHAR (250)   NOT NULL,
+    [Image]       IMAGE            NULL,
+    [ImageId]     UNIQUEIDENTIFIER NULL,
+    [ListType]    INT              NOT NULL,
+    [ShowPrices]  BIT              NOT NULL,
+    [Description] NVARCHAR (MAX)   NULL,
+    [Version]     INT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([VersionId] ASC)
 );
 
 
@@ -410,21 +368,62 @@ CREATE TABLE [dbo].[ProductToCategory] (
 
 
 GO
-PRINT N'Creating FK_Product_ToTableCurrency...';
+PRINT N'Creating [dbo].[ContentPage]...';
 
 
 GO
-ALTER TABLE [dbo].[Product]
-    ADD CONSTRAINT [FK_Product_ToTableCurrency] FOREIGN KEY ([PriceCurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
+CREATE TABLE [dbo].[ContentPage] (
+    [Id]             UNIQUEIDENTIFIER NOT NULL,
+    [Name]           NVARCHAR (250)   NOT NULL,
+    [Text]           NVARCHAR (MAX)   NULL,
+    [ParentId]       UNIQUEIDENTIFIER NULL,
+    [CategoryId]     UNIQUEIDENTIFIER NULL,
+    [Position]       INT              NOT NULL,
+    [AttachmentId]   UNIQUEIDENTIFIER NULL,
+    [AttachmentName] NVARCHAR (250)   NULL,
+    [ShowInMenu]     BIT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
 
 
 GO
-PRINT N'Creating FK_Product_ToTablePropertyTemplate...';
+PRINT N'Creating [dbo].[Product]...';
 
 
 GO
-ALTER TABLE [dbo].[Product]
-    ADD CONSTRAINT [FK_Product_ToTablePropertyTemplate] FOREIGN KEY ([CustomAttributesTemplateId]) REFERENCES [dbo].[PropertyTemplate] ([Id]);
+CREATE TABLE [dbo].[Product] (
+    [VersionId]                  UNIQUEIDENTIFIER NOT NULL,
+    [Id]                         UNIQUEIDENTIFIER NOT NULL,
+    [Name]                       NVARCHAR (250)   NOT NULL,
+    [Description]                NVARCHAR (MAX)   NULL,
+    [MainImageId]                UNIQUEIDENTIFIER NULL,
+    [CashAccepted]               BIT              NOT NULL,
+    [IsAvailable]                BIT              NOT NULL,
+    [PriceCurrencyId]            UNIQUEIDENTIFIER NULL,
+    [PriceValueCash]             NUMERIC (19, 4)  NULL,
+    [PriceValueCashless]         NUMERIC (19, 4)  NULL,
+    [CustomAttributesTemplateId] UNIQUEIDENTIFIER NULL,
+    [Version]                    INT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([VersionId] ASC)
+);
+
+
+GO
+PRINT N'Creating Default Constraint on [dbo].[ProductToCategory]....';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD DEFAULT GETDATE() FOR [UpdateTime];
+
+
+GO
+PRINT N'Creating Default Constraint on [dbo].[ContentPage]....';
+
+
+GO
+ALTER TABLE [dbo].[ContentPage]
+    ADD DEFAULT 1 FOR [ShowInMenu];
 
 
 GO
@@ -455,6 +454,24 @@ ALTER TABLE [dbo].[CustomProperty]
 
 
 GO
+PRINT N'Creating FK_ProductToCategory_ToCategory...';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD CONSTRAINT [FK_ProductToCategory_ToCategory] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[ContentPage] ([Id]);
+
+
+GO
+PRINT N'Creating FK_ProductToCategory_ToProduct...';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD CONSTRAINT [FK_ProductToCategory_ToProduct] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([VersionId]);
+
+
+GO
 PRINT N'Creating FK_ContentPage_ToTableContentPage...';
 
 
@@ -473,12 +490,39 @@ ALTER TABLE [dbo].[ContentPage]
 
 
 GO
-PRINT N'Creating FK_ContentPage_ToTableAttachment (Id...';
+PRINT N'Creating FK_ContentPage_ToTable...';
 
 
 GO
 ALTER TABLE [dbo].[ContentPage]
-    ADD CONSTRAINT [FK_ContentPage_ToTableAttachment (Id] FOREIGN KEY ([AttachmentId]) REFERENCES [dbo].[Attachment] ([Id]);
+    ADD CONSTRAINT [FK_ContentPage_ToTable] FOREIGN KEY ([AttachmentId]) REFERENCES [dbo].[Attachment] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Product_ToTableCurrency...';
+
+
+GO
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_ToTableCurrency] FOREIGN KEY ([PriceCurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Product_ToTablePropertyTemplate...';
+
+
+GO
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_ToTablePropertyTemplate] FOREIGN KEY ([CustomAttributesTemplateId]) REFERENCES [dbo].[PropertyTemplate] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Product_ToTableImage...';
+
+
+GO
+ALTER TABLE [dbo].[Product]
+    ADD CONSTRAINT [FK_Product_ToTableImage] FOREIGN KEY ([MainImageId]) REFERENCES [dbo].[Image] ([Id]);
 
 
 GO

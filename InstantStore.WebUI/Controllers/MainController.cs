@@ -9,6 +9,7 @@ using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using System.IO;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -29,6 +30,8 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult Index()
         {
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(repository, Guid.Empty);
+            this.ViewData["CategoryTilesViewModel"] = repository.GetTopCategories();
             return View();
         }
 
@@ -87,20 +90,29 @@ namespace InstantStore.WebUI.Controllers
             return new RedirectResult("/");
         }
 
-        public ActionResult Page(Guid? id)
+        public ActionResult Page(Guid? id, int c = 100)
         {
             if (id == null || id == Guid.Empty)
             {
                 return this.RedirectToAction("Index");
             }
 
-            var page = this.repository.GetPageById(id.Value);
+            var contentPage = this.repository.GetPageById(id.Value);
+
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            var viewModel = new PageViewModel(page);
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(repository, id.Value);
+
+            var viewModel = new PageViewModel(contentPage);
             if (viewModel.Attachment != null)
             {
                 viewModel.Attachment.CanEdit = false;
             }
+
+            if (contentPage.IsCategory())
+            {
+                this.ViewData["ProductTilesViewModel"] = CategoryViewModelFactory.GetProductsForCategory(repository, id.Value, c);
+            }
+
             return this.View(viewModel);
         }
 
