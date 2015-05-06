@@ -5,6 +5,7 @@ using System.Web;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.WebUI.Resources;
+using InstantStore.Domain.Concrete;
 
 namespace InstantStore.WebUI.ViewModels.Factories
 {
@@ -21,7 +22,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
         public static MainMenuViewModel CreateAdminMenu(IRepository repository, ControlPanelPage page)
         {
             var newUsersCount = repository.GetUsers(x => !x.IsActivated).Count;
-            var mainMenuViewModel = new MainMenuViewModel { Menu = new List<MenuItemViewModel>(), HasExit = true };
+            var mainMenuViewModel = new MainMenuViewModel { HasExit = true, Menu = new List<MenuItemViewModel>() };
 
             mainMenuViewModel.Menu.Add(new MenuItemViewModel {
                 Name = StringResource.controlPanel_UsersTemplate,
@@ -75,7 +76,140 @@ namespace InstantStore.WebUI.ViewModels.Factories
             return mainMenuViewModel;
         }
 
-        private static IList<MenuItemViewModel> CreateItems(IRepository repository, Guid? parentId, int level, Guid current)
+        public static BreadcrumbViewModel CreateBreadcrumb(this IRepository repository, Guid? pageId)
+        {
+            var viewModel = new BreadcrumbViewModel();
+
+            if (pageId == null || pageId == Guid.Empty)
+            {
+                viewModel.Add(new BreadcrumbItemViewModel { Name = StringResource.admin_HomeShort });
+                return viewModel;
+            }
+
+            Guid pageIdentity = pageId.Value;
+            while (pageIdentity != Guid.Empty)
+            {
+                var contentPage = repository.GetPageById(pageIdentity);
+                if (contentPage == null)
+                {
+                    throw new ApplicationException("Invalid.Database.State");
+                }
+
+                viewModel.Insert(0, new BreadcrumbItemViewModel { 
+                    Name = contentPage.Name,
+                    Link = pageIdentity != pageId.Value 
+                        ? new NavigationLink { PageId = pageIdentity }
+                        : null,
+                    IsActive = pageIdentity == pageId.Value
+                });
+
+                pageIdentity = contentPage.ParentId ?? Guid.Empty;
+            }
+
+            return viewModel;
+        }
+
+        public static NavigationMenuViewModel CreateNavigationMenu(this IRepository repository, Guid? pageId)
+        {
+            var viewModel = new NavigationMenuViewModel();
+
+            if (pageId == null || pageId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var contentPage = repository.GetPageById(pageId.Value);
+            if (contentPage == null)
+            {
+                throw new ApplicationException("Invalid.Database.State");
+            }
+
+            var parentId = contentPage.ParentId;
+
+            viewModel.BackLink = new NavigationLink { ActionName = "Page", PageId = parentId ?? Guid.Empty };
+            viewModel.Items = new List<NavigationItemViewModel>();
+
+            var siblingPages = repository.GetPages(parentId, null).Where(page => page.CategoryId != null).OrderBy(page => page.Position);
+            if (siblingPages == null || !siblingPages.Any())
+            {
+                throw new ApplicationException("Invalid.Database.State");
+            }
+
+            List<NavigationItemViewModel> parentCategoryList = null;
+            List<NavigationItemViewModel> childCategoryList = null;
+            
+            var childContentPages = repository.GetPages(pageId, null).Where(page => page.CategoryId != null);
+            if (childContentPages != null && childContentPages.Any())
+            {
+                childCategoryList = childContentPages.OrderBy(page => page.Position).Select(page => new NavigationItemViewModel
+                {
+                    Name = page.Name,
+                    Glyph = "glyphicon glyphicon-chevron-right",
+                    Link = new NavigationLink { PageId = page.Id }
+                })
+                .ToList();
+            }
+            else if (parentId != null && parentId != Guid.Empty)
+            {
+                var parentContentPage = repository.GetPageById(parentId.Value);
+                if (parentContentPage != null)
+                {
+                    var parentPagesList = repository.GetPages(parentContentPage.ParentId, null).Where(page => page.CategoryId != null);
+                    if (parentPagesList != null && parentPagesList.Any())
+                    {
+                        parentCategoryList = parentPagesList.OrderBy(page => page.Position).Select(page => new NavigationItemViewModel
+                        {
+                            Name = page.Name,
+                            Link = new NavigationLink { PageId = page.Id }
+                        })
+                        .ToList();
+                    }
+                }
+            }
+
+            if (parentCategoryList != null)
+            {
+                foreach (var parentCategory in parentCategoryList)
+                { 
+                    viewModel.Items.Add(parentCategory);
+                    if (parentCategory.Link.PageId == parentId)
+                    {
+                        foreach (var siblingPage in siblingPages)
+                        {
+                            viewModel.Items.Add(new NavigationItemViewModel
+                            {
+                                Name = siblingPage.Name,
+                                Glyph = "glyphicon glyphicon-chevron-right",
+                                Link = new NavigationLink { PageId = siblingPage.Id },
+                                IsActive = siblingPage.Id == contentPage.Id
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var siblingPage in siblingPages)
+                {
+                    bool current = siblingPage.Id == contentPage.Id;
+                    viewModel.Items.Add(new NavigationItemViewModel
+                    {
+                        Name = siblingPage.Name,
+                        Link = new NavigationLink { PageId = siblingPage.Id },
+                        IsActive = current
+                    });
+
+                    if (current && childCategoryList != null)
+                    {
+                        childCategoryList.ForEach(item => viewModel.Items.Add(item));
+                    }
+                }
+            }
+
+            return viewModel;
+        }
+
+        private static List<MenuItemViewModel> CreateItems(IRepository repository, Guid? parentId, int level, Guid current)
         {
             var items = repository
                 .GetPages(parentId, page => page.ShowInMenu)
@@ -88,11 +222,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     IsActive = p.Id == current
                 }).ToList();
 
-            foreach (var item in items)
-            {
-                item.Items = CreateItems(repository, item.Link.PageId, level + 1, current);
-            }
-
+            items.ForEach(item => item.Items = CreateItems(repository, item.Link.PageId, level + 1, current));
             return items;
         }
     }

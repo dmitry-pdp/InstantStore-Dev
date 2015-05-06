@@ -167,9 +167,13 @@
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\Factories\MenuViewModelFactory.cs" />
     <Compile Include="ViewModels\Factories\CategoryViewModelFactory.cs" />
-    <Compile Include="ViewModels\Shared\MainMenuViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\BreadcrumbItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\BreadcrumbViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
-    <Compile Include="ViewModels\Shared\NavigationMenuViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\MediaItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\MediaListViewModel.cs" />
+    <Compile Include="ViewModels\Shared\Navigation\NavigationMenuViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\NavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\NavigationLink.cs" />
@@ -221,6 +225,7 @@
     <Content Include="Image\Admin_ControlPanel_Templates2.png" />
     <Content Include="Image\Admin_ControlPanel_Users.png" />
     <Content Include="Image\Admin_ControlPanel_Users_Panel.png" />
+    <Content Include="Image\close-icon.png" />
     <Content Include="Image\FileExtension-Excel.png" />
     <Content Include="Image\FileExtension-pdf.png" />
     <Content Include="Image\FileExtension-Txt.png" />
@@ -290,6 +295,8 @@
     <Content Include="Views\Shared\MainMenu.cshtml" />
     <Content Include="Views\Shared\MainMenuItem.cshtml" />
     <Content Include="Views\Shared\TilesView.cshtml" />
+    <Content Include="Views\Shared\NavigationBar.cshtml" />
+    <Content Include="Views\Shared\MediaList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

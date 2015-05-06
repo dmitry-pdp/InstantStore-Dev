@@ -1,0 +1,27 @@
+﻿@using InstantStore.WebUI.Resources;
+@using InstantStore.WebUI.ViewModels;
+@model NavigationMenuViewModel
+
+<h3>@this.Model.Title</h3>
+@if (this.Model.Items != null)
+{ 
+    <div class="list-group">
+        @foreach (var item in this.Model.Items)
+        {
+            if (item.Link != null)
+            {
+                <a href="@item.Link.GetUrl(this.Url)" class="list-group-item @(item.IsActive ? "active" : "")">
+                    @if (item.Glyph != null)
+                    {
+                        <span class="@item.Glyph"></span>
+                    }
+                    @if (item.Badge != null)
+                    {
+                        <span class="badge">@item.Badge</span>
+                    }
+                    @item.Name
+                </a>
+            }
+        }
+    </div>
+}

@@ -5,6 +5,7 @@ using System.Web;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
+using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.ViewModels.Factories
 {
@@ -44,8 +45,8 @@ namespace InstantStore.WebUI.ViewModels.Factories
             var maxProducts = repository.GetProductsCountForCategory(categoryId);
             var maxPages = maxProducts / count;
             var pagination = new PaginationViewModel { 
-                MaxPages = maxPages, 
-                CurrentPage = offset * maxPages / maxProducts,
+                MaxPages = maxPages,
+                CurrentPage = maxProducts != 0 ? offset * maxPages / maxProducts : 0,
                 Count = count
             };
 
@@ -61,6 +62,21 @@ namespace InstantStore.WebUI.ViewModels.Factories
             }
 
             return tilesViewModel;
+        }
+
+        public static MediaListViewModel CreatePopularProducts(this IRepository repository, Guid? pageId)
+        {
+            var viewModel = new MediaListViewModel();
+            viewModel.Title = StringResource.NavBar_PopularProducts;
+            viewModel.Items = repository.GetProductsByPopularity(3).Select(product => new MediaItemViewModel
+            {
+                Name = product.Name,
+                Link = new NavigationLink { PageId = product.Id },
+                ImageThumbnailId = product.MainImageId
+            })
+            .ToList();
+
+            return viewModel;
         }
     }
 }

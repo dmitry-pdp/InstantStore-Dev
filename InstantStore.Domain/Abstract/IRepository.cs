@@ -95,7 +95,11 @@ namespace InstantStore.Domain.Abstract
 
         int GetProductsCountForCategory(Guid id);
 
+        IList<Product> GetProductsByPopularity(int count);
+
         Image GetImageById(Guid id);
+
+        ImageThumbnail GetImageThumbnailById(Guid id);
 
         Guid AddImage(Image image);
 

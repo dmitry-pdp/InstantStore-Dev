@@ -79,6 +79,7 @@
       <Column Name="ImageContentType" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
       <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Association Name="Image_Product" Member="Products" ThisKey="Id" OtherKey="MainImageId" Type="Product" />
+      <Association Name="Image_ImageThumbnail" Member="ImageThumbnail" ThisKey="Id" OtherKey="Id" Type="ImageThumbnail" Cardinality="One" />
     </Type>
   </Table>
   <Table Name="dbo.Attachment" Member="Attachments">
@@ -162,6 +163,14 @@
       <Association Name="Currency_Product" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
       <Association Name="Image_Product" Member="Image" ThisKey="MainImageId" OtherKey="Id" Type="Image" IsForeignKey="true" />
       <Association Name="PropertyTemplate_Product" Member="PropertyTemplate" ThisKey="CustomAttributesTemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ImageThumbnails" Member="ImageThumbnails">
+    <Type Name="ImageThumbnail">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LargeThumbnail" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="SmallThumbnail" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Image_ImageThumbnail" Member="Image" ThisKey="Id" OtherKey="Id" Type="Image" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

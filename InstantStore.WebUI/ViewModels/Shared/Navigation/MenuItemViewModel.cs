@@ -9,8 +9,6 @@ namespace InstantStore.WebUI.ViewModels
     {
         public int Level { get; set; }
 
-        public string Glyph { get; set; }
-
         public IList<MenuItemViewModel> Items { get; set; }
     }
 }

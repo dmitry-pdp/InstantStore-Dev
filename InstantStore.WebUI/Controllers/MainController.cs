@@ -31,6 +31,9 @@ namespace InstantStore.WebUI.Controllers
         {
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(repository, Guid.Empty);
+            this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, null);
+            this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, null);
+            this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreatePopularProducts(repository, null);
             this.ViewData["CategoryTilesViewModel"] = repository.GetTopCategories();
             return View();
         }
@@ -101,6 +104,8 @@ namespace InstantStore.WebUI.Controllers
 
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(repository, id.Value);
+            this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, id);
+            this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, id);
 
             var viewModel = new PageViewModel(contentPage);
             if (viewModel.Attachment != null)
@@ -126,6 +131,23 @@ namespace InstantStore.WebUI.Controllers
 
             var stream = new MemoryStream(image.Image1.ToArray());
             return new FileStreamResult(stream, image.ImageContentType);
+        }
+
+        public ActionResult Thumbnail(Guid id, string size)
+        {
+            if (size != "l" && size != "s")
+            {
+                return this.HttpNotFound();
+            }
+
+            var thumbnail = this.repository.GetImageThumbnailById(id);
+            if (thumbnail == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var stream = new MemoryStream((size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray());
+            return new FileStreamResult(stream, "image/png");
         }
 
         public ActionResult Download(Guid id)

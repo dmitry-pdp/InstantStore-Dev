@@ -6,7 +6,10 @@
     display:inline-block;
 }
 
-.menu li
+.img-delete 
 {
-
+    background: url('/Image/close-icon.png');
+    float:right;
+    display:inline-block;
+    position:relative;
 }

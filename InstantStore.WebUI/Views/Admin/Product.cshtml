@@ -16,11 +16,26 @@
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 
 <style>
-    .image-container img{
-        width:100px;
-        height:100px;
-        display:inline-block;
-        float:left;
+    .image-container img.img-thumbnail {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        float: left;
+    }
+
+    .image-container {
+        position: relative;
+        display: block;
+        float: left;
+    }
+
+    .image-delete-overlay {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        filter: alpha(opacity=50);
     }
 </style>
 
@@ -126,6 +141,13 @@
         var pagesTreeId = '@pagesTreeViewModel.TreeId';
         TreeView.InitializeTreeView('@this.Model.ParentCategoryId', pagesTreeId);
 
+        var deleteImage = function(evt)
+        {
+            $(evt.currentTarget).parent().remove();
+        }
+
+        $(".image-delete-overlay").click(deleteImage);
+
         $(document).on("upload-control:done", function (event, data) {
             $.ajax({
                 url: "/admin/productimage?imageId=" + data.ImageId,
@@ -134,6 +156,7 @@
             .done(function (html) {
                 $("#no-image").remove();
                 $("#image_container").append(html);
+                $(".image-delete-overlay").click(deleteImage);
             });
         });
 

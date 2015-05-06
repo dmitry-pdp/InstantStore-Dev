@@ -67,11 +67,14 @@ namespace InstantStore.Domain.Concrete
                     {
                         var productImages = context.Images.Where(x => x.ProductId == product.Id).ToList();
                         var productImageIds = productImages.Select(x => x.Id);
+                        var productThumbnails = context.ImageThumbnails.Where(x => productImageIds.Contains(x.Id)).ToList();
 
                         var imageIdsToDelete = productImageIds.Except(images);
                         var imagesToDelete = productImages.Where(x => imageIdsToDelete.Contains(x.Id));
+                        var thumbnailsToDelete = productThumbnails.Where(x => imageIdsToDelete.Contains(x.Id));
 
                         context.Images.DeleteAllOnSubmit(imagesToDelete);
+                        context.ImageThumbnails.DeleteAllOnSubmit(thumbnailsToDelete);
 
                         var imageIdsToInsert = images.Except(productImageIds);
                         var imagesToInsert = context.Images.Where(x => imageIdsToInsert.Contains(x.Id));
@@ -235,6 +238,15 @@ namespace InstantStore.Domain.Concrete
             {
                 var products = this.GetProducts(context, categoryId);
                 return context.Products.Where(x => products.Any(y => x.VersionId == y)).Count();
+            }
+        }
+
+        public IList<Product> GetProductsByPopularity(int count)
+        {
+            using (var context = new InstantStoreDataContext())
+            { 
+                // TODO: query top products in orders.
+                return context.Products.Where(x => x.MainImageId != null).Take(count).ToList();
             }
         }
 

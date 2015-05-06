@@ -5,14 +5,12 @@ using System.Web;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class NavigationItemViewModel
+    public class NavigationItemViewModel : BreadcrumbItemViewModel
     {
-        public string Name { get; set; }
-
         public string Badge { get; set; }
 
-        public bool IsActive { get; set; }
+        public string Glyph { get; set; }
 
-        public NavigationLink Link { get; set; }
+        public Guid? ImageThumbnailId { get; set; }
     }
 }

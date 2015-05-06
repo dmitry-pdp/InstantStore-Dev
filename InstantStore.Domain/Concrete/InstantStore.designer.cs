@@ -72,6 +72,9 @@ namespace InstantStore.Domain.Concrete
     partial void InsertProduct(Product instance);
     partial void UpdateProduct(Product instance);
     partial void DeleteProduct(Product instance);
+    partial void InsertImageThumbnail(ImageThumbnail instance);
+    partial void UpdateImageThumbnail(ImageThumbnail instance);
+    partial void DeleteImageThumbnail(ImageThumbnail instance);
     #endregion
 		
 		public InstantStoreDataContext() : 
@@ -213,6 +216,14 @@ namespace InstantStore.Domain.Concrete
 			get
 			{
 				return this.GetTable<Product>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ImageThumbnail> ImageThumbnails
+		{
+			get
+			{
+				return this.GetTable<ImageThumbnail>();
 			}
 		}
 	}
@@ -1578,6 +1589,8 @@ namespace InstantStore.Domain.Concrete
 		
 		private EntitySet<Product> _Products;
 		
+		private EntityRef<ImageThumbnail> _ImageThumbnail;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1595,6 +1608,7 @@ namespace InstantStore.Domain.Concrete
 		public Image()
 		{
 			this._Products = new EntitySet<Product>(new Action<Product>(this.attach_Products), new Action<Product>(this.detach_Products));
+			this._ImageThumbnail = default(EntityRef<ImageThumbnail>);
 			OnCreated();
 		}
 		
@@ -1688,6 +1702,35 @@ namespace InstantStore.Domain.Concrete
 			set
 			{
 				this._Products.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Image_ImageThumbnail", Storage="_ImageThumbnail", ThisKey="Id", OtherKey="Id", IsUnique=true, IsForeignKey=false)]
+		public ImageThumbnail ImageThumbnail
+		{
+			get
+			{
+				return this._ImageThumbnail.Entity;
+			}
+			set
+			{
+				ImageThumbnail previousValue = this._ImageThumbnail.Entity;
+				if (((previousValue != value) 
+							|| (this._ImageThumbnail.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ImageThumbnail.Entity = null;
+						previousValue.Image = null;
+					}
+					this._ImageThumbnail.Entity = value;
+					if ((value != null))
+					{
+						value.Image = this;
+					}
+					this.SendPropertyChanged("ImageThumbnail");
+				}
 			}
 		}
 		
@@ -3529,6 +3572,157 @@ namespace InstantStore.Domain.Concrete
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ImageThumbnails")]
+	public partial class ImageThumbnail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Data.Linq.Binary _LargeThumbnail;
+		
+		private System.Data.Linq.Binary _SmallThumbnail;
+		
+		private EntityRef<Image> _Image;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnLargeThumbnailChanging(System.Data.Linq.Binary value);
+    partial void OnLargeThumbnailChanged();
+    partial void OnSmallThumbnailChanging(System.Data.Linq.Binary value);
+    partial void OnSmallThumbnailChanged();
+    #endregion
+		
+		public ImageThumbnail()
+		{
+			this._Image = default(EntityRef<Image>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					if (this._Image.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LargeThumbnail", DbType="Image NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary LargeThumbnail
+		{
+			get
+			{
+				return this._LargeThumbnail;
+			}
+			set
+			{
+				if ((this._LargeThumbnail != value))
+				{
+					this.OnLargeThumbnailChanging(value);
+					this.SendPropertyChanging();
+					this._LargeThumbnail = value;
+					this.SendPropertyChanged("LargeThumbnail");
+					this.OnLargeThumbnailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmallThumbnail", DbType="Image NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary SmallThumbnail
+		{
+			get
+			{
+				return this._SmallThumbnail;
+			}
+			set
+			{
+				if ((this._SmallThumbnail != value))
+				{
+					this.OnSmallThumbnailChanging(value);
+					this.SendPropertyChanging();
+					this._SmallThumbnail = value;
+					this.SendPropertyChanged("SmallThumbnail");
+					this.OnSmallThumbnailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Image_ImageThumbnail", Storage="_Image", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
+		public Image Image
+		{
+			get
+			{
+				return this._Image.Entity;
+			}
+			set
+			{
+				Image previousValue = this._Image.Entity;
+				if (((previousValue != value) 
+							|| (this._Image.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Image.Entity = null;
+						previousValue.ImageThumbnail = null;
+					}
+					this._Image.Entity = value;
+					if ((value != null))
+					{
+						value.ImageThumbnail = this;
+						this._Id = value.Id;
+					}
+					else
+					{
+						this._Id = default(System.Guid);
+					}
+					this.SendPropertyChanged("Image");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

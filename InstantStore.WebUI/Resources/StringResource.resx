@@ -909,4 +909,7 @@
   <data name="admin_HomeShort" xml:space="preserve">
     <value>Главная</value>
   </data>
+  <data name="NavBar_PopularProducts" xml:space="preserve">
+    <value>Популярные продукты</value>
+  </data>
 </root>

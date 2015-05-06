@@ -1771,6 +1771,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Популярные продукты.
+        /// </summary>
+        public static string NavBar_PopularProducts {
+            get {
+                return ResourceManager.GetString("NavBar_PopularProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Новости.
         /// </summary>
         public static string News {

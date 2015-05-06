@@ -2,15 +2,15 @@
 
 <link href="~/Content/Tiles.css" rel="stylesheet" />
 
-@foreach(var tileViewModel in this.Model.Tiles)
+@foreach (var tileViewModel in this.Model.Tiles)
 {
-    <div class="thumbnail tile">
-        <a href="@Url.Action("Page", "Main", new { id = tileViewModel.Id })" class="thumbnail">
-            <img src="@(tileViewModel.ImageId == Guid.Empty ? "/Image/NoImage.png" : "/Main/GetImage?id=" + tileViewModel.ImageId)" class="tile-image" />
-            <div class="caption tile-caption">
-                <span class="title">@tileViewModel.Name</span>
-            </div>
-        </a>
-    </div>
+        <div class="thumbnail tile">
+            <a href="@Url.Action("Page", "Main", new { id = tileViewModel.Id })" class="thumbnail">
+                <img src="@(tileViewModel.ImageId == Guid.Empty ? "/Image/NoImage.png" : "/Main/Thumbnail?size=l&id=" + tileViewModel.ImageId)" class="tile-image" />
+                <div class="caption tile-caption">
+                    <h3 class="title">@tileViewModel.Name</h3>
+                </div>
+            </a>
+</div>
 }
 

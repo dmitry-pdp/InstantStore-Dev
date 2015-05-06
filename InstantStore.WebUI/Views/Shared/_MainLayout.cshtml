@@ -5,6 +5,9 @@
     var categoryListViewModel = ViewBag.CategoryListViewModel;
     var controlPanel = ViewBag.ControlPanelViewModel as ControlPanelViewModel;
     var mainMenuViewModel = ViewBag.MainMenuViewModel as MainMenuViewModel;
+    var navigationBarViewModel = this.ViewBag.NavigationMenuViewModel as NavigationMenuViewModel;
+    var breadcrumbViewModel = this.ViewBag.BreadcrumbViewModel as BreadcrumbViewModel;
+    var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
 }
 
 <!DOCTYPE html>
@@ -50,6 +53,46 @@
                 </div>
                 <div class="border col-sm-9">
                     @RenderBody()
+                </div>
+            }
+            else if (navigationBarViewModel != null || mediaListViewModel != null)
+            {
+                <div class="border col-sm-2">
+                    @if (navigationBarViewModel != null)
+                    { 
+                        @Html.Partial("NavigationBar", navigationBarViewModel)
+                    }
+                    @if (mediaListViewModel != null)
+                    {
+                        @Html.Partial("MediaList", mediaListViewModel)
+                    }
+                </div>
+                <div class="border col-sm-10">
+                    @if (breadcrumbViewModel != null)
+                    {
+                        <div class="row">
+                            <ol class="breadcrumb">
+                                @foreach (var item in breadcrumbViewModel)
+                                {
+                                    <li class="@(item.IsActive ? "active" : "")">
+                                        @if (item.Link != null)
+                                        {
+                                            <a href="@item.Link.GetUrl(this.Url)">
+                                                @item.Name
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            @item.Name
+                                        }
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+                    }
+                    <div class="row">
+                        @RenderBody()
+                    </div>
                 </div>
             }
             else
