@@ -14,7 +14,6 @@ namespace InstantStore.WebUI.ViewModels
     public class MainMenuViewModel
     {
         public IList<MenuItemViewModel> Menu { get; set; }
-
-        public bool HasExit { get; set; }
+        public IList<MenuItemViewModel> MetaMenu { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace InstantStore.WebUI.Models
             if (httpRequest.Cookies.AllKeys.Contains(UserCookie, StringComparer.Ordinal))
             {
                 var sessionId = httpRequest.Cookies[UserCookie].Value;
-                if (string.IsNullOrWhiteSpace(sessionId) && loggedInUsers.ContainsKey(sessionId))
+                if (!string.IsNullOrWhiteSpace(sessionId) && loggedInUsers.ContainsKey(sessionId))
                 {
                     loggedInUsers.Remove(sessionId);
                 }
@@ -45,6 +45,8 @@ namespace InstantStore.WebUI.Models
                     httpResponse.Cookies.Remove(UserCookie);
                 }
             }
+
+            httpResponse.SetCookie(new HttpCookie(UserCookie, string.Empty));
         }
 
         public static void AddUserSession(HttpResponseBase httpResponse, User user)

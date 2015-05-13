@@ -87,6 +87,8 @@ namespace InstantStore.Domain.Abstract
 
         void UpdateCategory(Category category);
 
+        IList<Category> GetPriorityCategories();
+
         Guid NewProduct(Product product);
 
         Product GetProductById(Guid id);
@@ -114,5 +116,11 @@ namespace InstantStore.Domain.Abstract
         void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes);
 
         void AssignProductsToCategory(IList<Guid> products, Guid categoryId);
+
+        // Orders
+
+        int GetOrderItemsCount(User user);
+
+        Order AddItemToCurrentOrder(User user, Guid productId, int count);
     }
 }

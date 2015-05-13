@@ -8,5 +8,7 @@
     [ShowPrices]  BIT              NOT NULL,
     [Description] NVARCHAR (MAX)   NULL,
     [Version]     INT              NOT NULL,
+    [IsImportant] BIT NOT NULL DEFAULT 0, 
     PRIMARY KEY CLUSTERED ([VersionId] ASC)
 );
+

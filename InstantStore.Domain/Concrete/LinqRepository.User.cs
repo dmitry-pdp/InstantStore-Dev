@@ -13,6 +13,7 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 user.Id = Guid.NewGuid();
+                user.Password = PasswordHash.PasswordHash.CreateHash(user.Password);
                 context.Users.InsertOnSubmit(user);
                 context.SubmitChanges();
             }
@@ -23,10 +24,16 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 var query = userName.Contains('@') 
-                    ? (Func<User, bool>)((User user) => string.Equals(user.Email, userName, StringComparison.OrdinalIgnoreCase))
-                    : (Func<User, bool>)((User user) => string.Equals(user.Name, userName, StringComparison.OrdinalIgnoreCase));
-                
-                return context.Users.FirstOrDefault(query);
+                    ? (Func<User, bool>)((User u) => string.Equals(u.Email, userName, StringComparison.OrdinalIgnoreCase))
+                    : (Func<User, bool>)((User u) => string.Equals(u.Name, userName, StringComparison.OrdinalIgnoreCase));
+
+                var user = context.Users.FirstOrDefault(query);
+                if (user == null)
+                {
+                    return null;
+                }
+
+                return PasswordHash.PasswordHash.ValidatePassword(password, user.Password) ? user : null;
             }
         }
 
@@ -98,7 +105,7 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                user.Password = newPassword;
+                user.Password = PasswordHash.PasswordHash.CreateHash(newPassword);
                 context.SubmitChanges();
             }
         }

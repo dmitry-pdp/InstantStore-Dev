@@ -11,7 +11,8 @@
     [IsBlocked]         BIT              NOT NULL,
     [IsPaymentCash]     BIT              NOT NULL,
     [DefaultCurrencyId] UNIQUEIDENTIFIER NULL,
-    [Comments] NVARCHAR(MAX) NULL, 
+    [Comments]          NVARCHAR (MAX)   NULL,
+    [LastLoginTime] DATETIME NULL, 
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

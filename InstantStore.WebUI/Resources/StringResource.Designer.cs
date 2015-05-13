@@ -169,6 +169,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Показывать на заглавной.
+        /// </summary>
+        public static string admin_CategoryIsImportant {
+            get {
+                return ResourceManager.GetString("admin_CategoryIsImportant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Показывать продукты как.
         /// </summary>
         public static string admin_CategoryListTypeLabel {
@@ -489,6 +498,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Name {
             get {
                 return ResourceManager.GetString("admin_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выйти.
+        /// </summary>
+        public static string admin_Nav_Exit {
+            get {
+                return ResourceManager.GetString("admin_Nav_Exit", resourceCulture);
             }
         }
         
@@ -1708,6 +1726,51 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка проверки пользователя. Попробуйте ещё раз. Если повторится свяжитесь с администратором..
+        /// </summary>
+        public static string login_ErrorLoginExchangeError {
+            get {
+                return ResourceManager.GetString("login_ErrorLoginExchangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка проверки пользователя. Попробуйте ещё раз. Если повторится свяжитесь с администратором..
+        /// </summary>
+        public static string login_ErrorLoginMessageError {
+            get {
+                return ResourceManager.GetString("login_ErrorLoginMessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Неверное имя пользователя и / или пароль..
+        /// </summary>
+        public static string login_ErrorUserCredentials {
+            get {
+                return ResourceManager.GetString("login_ErrorUserCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь не активирован..
+        /// </summary>
+        public static string login_ErrorUserNotActivated {
+            get {
+                return ResourceManager.GetString("login_ErrorUserNotActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Авторизироваться.
+        /// </summary>
+        public static string login_LoginAsUser {
+            get {
+                return ResourceManager.GetString("login_LoginAsUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вход.
         /// </summary>
         public static string login_title {
@@ -1767,6 +1830,33 @@ namespace InstantStore.WebUI.Resources {
         public static string Msg_AdAdded {
             get {
                 return ResourceManager.GetString("Msg_AdAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to История заказов.
+        /// </summary>
+        public static string nav_History {
+            get {
+                return ResourceManager.GetString("nav_History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Корзина.
+        /// </summary>
+        public static string nav_Orders {
+            get {
+                return ResourceManager.GetString("nav_Orders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Категории.
+        /// </summary>
+        public static string navbar_CategoriesTitle {
+            get {
+                return ResourceManager.GetString("navbar_CategoriesTitle", resourceCulture);
             }
         }
         
@@ -2019,6 +2109,51 @@ namespace InstantStore.WebUI.Resources {
         public static string ProductList_NoProducts_Error {
             get {
                 return ResourceManager.GetString("ProductList_NoProducts_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Продукт успешно добавлен в корзину..
+        /// </summary>
+        public static string productTile_AddItemConfirmation {
+            get {
+                return ResourceManager.GetString("productTile_AddItemConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка при обработке запроса. Попробуйте еще раз. Если ошибка повтрится свяжитесь с администрацией сайта..
+        /// </summary>
+        public static string productTile_AddItemFailure {
+            get {
+                return ResourceManager.GetString("productTile_AddItemFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить в корзину.
+        /// </summary>
+        public static string productTile_AddToCart {
+            get {
+                return ResourceManager.GetString("productTile_AddToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В наличии.
+        /// </summary>
+        public static string productTile_Available {
+            get {
+                return ResourceManager.GetString("productTile_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Цена:.
+        /// </summary>
+        public static string productTile_Price {
+            get {
+                return ResourceManager.GetString("productTile_Price", resourceCulture);
             }
         }
         
@@ -2415,6 +2550,78 @@ namespace InstantStore.WebUI.Resources {
         public static string user_Profile {
             get {
                 return ResourceManager.GetString("user_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Текущий заказ.
+        /// </summary>
+        public static string userInfo_CurrentCartTitle {
+            get {
+                return ResourceManager.GetString("userInfo_CurrentCartTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка запроса данных. Попробуйте ещё раз. Если повторится свяжитесь с администратором..
+        /// </summary>
+        public static string userInfo_ErrorGettingData {
+            get {
+                return ResourceManager.GetString("userInfo_ErrorGettingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Здравствуйте, {0}.
+        /// </summary>
+        public static string userInfo_HelloUserName {
+            get {
+                return ResourceManager.GetString("userInfo_HelloUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Прошлые заказы.
+        /// </summary>
+        public static string userInfo_RecentCartsTitle {
+            get {
+                return ResourceManager.GetString("userInfo_RecentCartsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статус:.
+        /// </summary>
+        public static string userInfo_Status {
+            get {
+                return ResourceManager.GetString("userInfo_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Активный.
+        /// </summary>
+        public static string userInfo_Status_Active {
+            get {
+                return ResourceManager.GetString("userInfo_Status_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заблокирован.
+        /// </summary>
+        public static string userInfo_Status_Blocked {
+            get {
+                return ResourceManager.GetString("userInfo_Status_Blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В обработке.
+        /// </summary>
+        public static string userInfo_Status_Pending {
+            get {
+                return ResourceManager.GetString("userInfo_Status_Pending", resourceCulture);
             }
         }
         

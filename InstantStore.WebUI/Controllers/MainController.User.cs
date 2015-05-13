@@ -36,7 +36,7 @@ namespace InstantStore.WebUI.Controllers
                 Company = user.Company,
                 Phonenumber = user.Phonenumber,
                 City = user.City,
-                Password = PasswordHash.PasswordHash.CreateHash(user.Password),
+                Password = user.Password,
                 IsAdmin = false,
                 IsActivated = false,
                 IsBlocked = false,

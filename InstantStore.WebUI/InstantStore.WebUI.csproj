@@ -167,6 +167,7 @@
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\Factories\MenuViewModelFactory.cs" />
     <Compile Include="ViewModels\Factories\CategoryViewModelFactory.cs" />
+    <Compile Include="ViewModels\Factories\UserViewModelFactory.cs" />
     <Compile Include="ViewModels\Shared\Navigation\BreadcrumbItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\BreadcrumbViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\MainMenuViewModel.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="ViewModels\Shared\TilesViewModel.cs" />
     <Compile Include="ViewModels\TreeViewModel.cs" />
     <Compile Include="ViewModels\UploadControlViewModel.cs" />
+    <Compile Include="ViewModels\UserPanelViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -241,6 +243,8 @@
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.9.2.custom.min.js" />
     <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.form.js" />
+    <Content Include="Scripts\jquery.form.min.js" />
     <Content Include="Scripts\Menu.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\TreeView.js" />
@@ -297,6 +301,11 @@
     <Content Include="Views\Shared\TilesView.cshtml" />
     <Content Include="Views\Shared\NavigationBar.cshtml" />
     <Content Include="Views\Shared\MediaList.cshtml" />
+    <Content Include="Views\Main\Product.cshtml" />
+    <Content Include="Views\Main\LeftRailLogin.cshtml" />
+    <Content Include="Views\Main\UserLeftPanel.cshtml" />
+    <Content Include="Views\Main\History.cshtml" />
+    <Content Include="Views\Main\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

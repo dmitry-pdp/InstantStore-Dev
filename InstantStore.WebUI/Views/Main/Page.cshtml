@@ -20,3 +20,23 @@
 {
     Html.RenderPartial("TilesView", productTiles);
 }
+
+<script>
+    $(function () {
+        $("a.tile-action").on("click", function () {
+            $.ajax({
+                url: this.href,
+                cached: false,
+                method: "post"
+            })
+            .done(function () {
+                alert("@StringResource.productTile_AddItemConfirmation");
+                location.reload();
+            })
+            .fail(function () {
+                alert("@StringResource.productTile_AddItemFailure");
+            });
+            return false;
+        });
+    });
+</script>

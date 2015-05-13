@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<div class="container-fluid">
+<div class="container-fluid col-md-6 col-md-offset-3 border">
     <h2>@ViewBag.Title</h2>
     <form action="/main/submitfeedback" method="post">
         <div class="form-group">
@@ -20,7 +20,7 @@
             <textarea name="message" id="message" class="form-control" rows="5"></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="@StringResource.Feedback_Submit" class="btn btn-primary btn-lg"/>
+            <input type="submit" value="@StringResource.Feedback_Submit" class="btn btn-primary btn-lg" />
         </div>
     </form>
 </div>

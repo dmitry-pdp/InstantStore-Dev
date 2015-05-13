@@ -912,4 +912,73 @@
   <data name="NavBar_PopularProducts" xml:space="preserve">
     <value>Популярные продукты</value>
   </data>
+  <data name="login_LoginAsUser" xml:space="preserve">
+    <value>Авторизироваться</value>
+  </data>
+  <data name="navbar_CategoriesTitle" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="admin_CategoryIsImportant" xml:space="preserve">
+    <value>Показывать на заглавной</value>
+  </data>
+  <data name="admin_Nav_Exit" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="login_ErrorLoginExchangeError" xml:space="preserve">
+    <value>Произошла ошибка проверки пользователя. Попробуйте ещё раз. Если повторится свяжитесь с администратором.</value>
+  </data>
+  <data name="login_ErrorLoginMessageError" xml:space="preserve">
+    <value>Произошла ошибка проверки пользователя. Попробуйте ещё раз. Если повторится свяжитесь с администратором.</value>
+  </data>
+  <data name="login_ErrorUserCredentials" xml:space="preserve">
+    <value>Неверное имя пользователя и / или пароль.</value>
+  </data>
+  <data name="login_ErrorUserNotActivated" xml:space="preserve">
+    <value>Пользователь не активирован.</value>
+  </data>
+  <data name="nav_History" xml:space="preserve">
+    <value>История заказов</value>
+  </data>
+  <data name="nav_Orders" xml:space="preserve">
+    <value>Корзина</value>
+  </data>
+  <data name="productTile_Available" xml:space="preserve">
+    <value>В наличии</value>
+  </data>
+  <data name="productTile_Price" xml:space="preserve">
+    <value>Цена:</value>
+  </data>
+  <data name="userInfo_CurrentCartTitle" xml:space="preserve">
+    <value>Текущий заказ</value>
+  </data>
+  <data name="userInfo_ErrorGettingData" xml:space="preserve">
+    <value>Произошла ошибка запроса данных. Попробуйте ещё раз. Если повторится свяжитесь с администратором.</value>
+  </data>
+  <data name="userInfo_HelloUserName" xml:space="preserve">
+    <value>Здравствуйте, {0}</value>
+  </data>
+  <data name="userInfo_RecentCartsTitle" xml:space="preserve">
+    <value>Прошлые заказы</value>
+  </data>
+  <data name="userInfo_Status" xml:space="preserve">
+    <value>Статус:</value>
+  </data>
+  <data name="userInfo_Status_Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="userInfo_Status_Blocked" xml:space="preserve">
+    <value>Заблокирован</value>
+  </data>
+  <data name="userInfo_Status_Pending" xml:space="preserve">
+    <value>В обработке</value>
+  </data>
+  <data name="productTile_AddItemConfirmation" xml:space="preserve">
+    <value>Продукт успешно добавлен в корзину.</value>
+  </data>
+  <data name="productTile_AddItemFailure" xml:space="preserve">
+    <value>Произошла ошибка при обработке запроса. Попробуйте еще раз. Если ошибка повтрится свяжитесь с администрацией сайта.</value>
+  </data>
+  <data name="productTile_AddToCart" xml:space="preserve">
+    <value>Добавить в корзину</value>
+  </data>
 </root>

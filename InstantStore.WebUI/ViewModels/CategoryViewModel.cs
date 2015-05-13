@@ -43,6 +43,7 @@ namespace InstantStore.WebUI.ViewModels
             this.ListType = category.ListType;
             this.Initialize(this.ListType == 2);
             this.CategoryImage = category.ImageId;
+            this.IsImportant = category.IsImportant;
         }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryListTypeLabel")]
@@ -51,6 +52,9 @@ namespace InstantStore.WebUI.ViewModels
         public PageViewModel Content { get; set; }
 
         public Guid? CategoryImage { get; set; }
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_CategoryIsImportant")]
+        public bool IsImportant { get; set; }
 
         public List<SelectListItem> ListTypes { get; private set; }
 

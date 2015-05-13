@@ -8,6 +8,15 @@
     var navigationBarViewModel = this.ViewBag.NavigationMenuViewModel as NavigationMenuViewModel;
     var breadcrumbViewModel = this.ViewBag.BreadcrumbViewModel as BreadcrumbViewModel;
     var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
+    bool showLeftRailLogin = (bool?)this.ViewBag.ShowLeftRailLogin ?? false;
+    var userLeftPanel = this.ViewBag.UserLeftPanel as UserPanelViewModel;
+
+    bool renderCustomLeftColumn = (bool?)this.ViewBag.RenderCustomLeftColumn ?? (
+        !showLeftRailLogin &&
+        userLeftPanel == null &&
+        navigationBarViewModel == null &&
+        mediaListViewModel == null
+    );
 }
 
 <!DOCTYPE html>
@@ -21,6 +30,7 @@
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     <link href="~/Content/common.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <title>@ViewBag.Title</title>
 </head>
@@ -55,9 +65,21 @@
                     @RenderBody()
                 </div>
             }
-            else if (navigationBarViewModel != null || mediaListViewModel != null)
+            else if (renderCustomLeftColumn)
             {
-                <div class="border col-sm-2">
+                 @RenderBody()
+            }
+            else
+            {
+                <div class="col-sm-3">
+                    @if (showLeftRailLogin)
+                    {
+                        @Html.Partial("LeftRailLogin")
+                    }
+                    @if (userLeftPanel != null)
+                    {
+                        @Html.Partial("UserLeftPanel", userLeftPanel)
+                    }
                     @if (navigationBarViewModel != null)
                     { 
                         @Html.Partial("NavigationBar", navigationBarViewModel)
@@ -67,39 +89,33 @@
                         @Html.Partial("MediaList", mediaListViewModel)
                     }
                 </div>
-                <div class="border col-sm-10">
-                    @if (breadcrumbViewModel != null)
-                    {
-                        <div class="row">
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body" style="min-height:780px">
+                        @if (breadcrumbViewModel != null)
+                        {
                             <ol class="breadcrumb">
                                 @foreach (var item in breadcrumbViewModel)
-                                {
+                                    {
                                     <li class="@(item.IsActive ? "active" : "")">
                                         @if (item.Link != null)
-                                        {
+                                            {
                                             <a href="@item.Link.GetUrl(this.Url)">
                                                 @item.Name
                                             </a>
-                                        }
-                                        else
-                                        {
+                                            }
+                                            else
+                                            {
                                             @item.Name
-                                        }
+                                            }
                                     </li>
-                                }
+                                    }
                             </ol>
-                        </div>
-                    }
-                    <div class="row">
+                        }
                         @RenderBody()
+                        </div>
                     </div>
                 </div>
-            }
-            else
-            {
-            <div>
-                @RenderBody()
-            </div>
             }
         </div>
     </div> 

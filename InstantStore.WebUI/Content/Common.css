@@ -46,3 +46,14 @@
 .width90{
     width: 90%;
 }
+
+a.carousel-nav.right,
+a.carousel-nav.left
+{
+    background-image: none;
+}
+
+a.tile-item
+{
+    text-decoration: none;
+}

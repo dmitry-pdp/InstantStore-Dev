@@ -197,6 +197,7 @@ namespace InstantStore.WebUI.Controllers
                     category.ListType = categoryViewModel.ListType;
                     category.Description = categoryViewModel.Content.Text;
                     category.ImageId = categoryViewModel.CategoryImage;
+                    category.IsImportant = categoryViewModel.IsImportant;
                     repository.UpdateCategory(category);
                 }
                 else

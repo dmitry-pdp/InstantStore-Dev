@@ -21,6 +21,7 @@ namespace InstantStore.WebUI.Controllers
         {
             this.repository = repository;
             this.settingsViewModel = new SettingsViewModel(this.repository);
+            this.ViewData["RenderCustomLeftColumn"] = true;
         }
 
         private ActionResult Authorize()

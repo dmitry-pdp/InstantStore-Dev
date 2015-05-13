@@ -176,7 +176,16 @@ namespace InstantStore.Domain.Concrete
                 categoryOriginal.Description = category.Description;
                 categoryOriginal.ImageId = category.ImageId;
                 categoryOriginal.ListType = category.ListType;
+                categoryOriginal.IsImportant = category.IsImportant;
                 context.SubmitChanges();
+            }
+        }
+
+        public IList<Category> GetPriorityCategories()
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.Categories.Where(x => x.IsImportant).ToList();
             }
         }
     }

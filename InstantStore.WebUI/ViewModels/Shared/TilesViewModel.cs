@@ -13,12 +13,20 @@ namespace InstantStore.WebUI.ViewModels
         public PaginationViewModel Pagination { get; set; }
     }
 
+    public class AttributeList : List<KeyValuePair<string, string>>
+    {
+    }
+
     public class TileViewModel
     {
         public string Name { get; set; }
 
-        public Guid Id { get; set; }
+        public NavigationLink Link { get; set; }
         
         public Guid ImageId { get; set; }
+
+        public AttributeList Attributes { get; set; }
+
+        public NavigationLink Action { get; set; }
     }
 }

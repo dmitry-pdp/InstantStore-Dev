@@ -44,6 +44,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Text = contentPage.Text;
             this.ParentCategoryId = contentPage.ParentId ?? Guid.Empty;
             this.Attachment = contentPage.AttachmentId != null ? new AttachmentViewModel(contentPage) : null;
+            this.ShowInMenu = contentPage.ShowInMenu;
             this.ContentPage = contentPage;
         }
 

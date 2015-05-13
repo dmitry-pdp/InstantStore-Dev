@@ -13,18 +13,15 @@
                     Html.RenderPartial("MainMenuItem", menuItem);
                 }
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                @if (this.Model.HasExit)
-                {
-                    <li><a href="/"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Выйти</a></li>
-                }
-                else
-                {
-                    <li><a href="/admin"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
-                    <li><a href="/main/newuser"><span class="glyphicon glyphicon-user"></span>User</a></li>
-                    <li><a href="/main/login"><span class="glyphicon glyphicon-log-in"></span>Sign In</a></li>
-                }
-            </ul>
+            @if (this.Model.MetaMenu != null && this.Model.MetaMenu.Any())
+            { 
+                <ul class="nav navbar-nav navbar-right">
+                    @foreach (var menuItem in this.Model.MetaMenu)
+                    {
+                        Html.RenderPartial("MainMenuItem", menuItem);
+                    }
+                </ul>
+            }
         </div>
     </div>
 </nav>  

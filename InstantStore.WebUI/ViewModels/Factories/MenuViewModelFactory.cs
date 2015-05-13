@@ -11,18 +11,74 @@ namespace InstantStore.WebUI.ViewModels.Factories
 {
     public static class MenuViewModelFactory
     {
-        public static MainMenuViewModel CreateDefaultMenu(IRepository repository, Guid current)
+        public static MainMenuViewModel CreateDefaultMenu(IRepository repository, Guid current, User user)
         {
-            var mainMenuViewModel = new MainMenuViewModel();
+            var mainMenuViewModel = new MainMenuViewModel { MetaMenu = new List<MenuItemViewModel>() };
             mainMenuViewModel.Menu = CreateItems(repository, null, 0, current);
             mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel { Name = StringResource.admin_HomeShort, IsActive = current == Guid.Empty, Link = new NavigationLink { ActionName = "Index" } });
+            
+            if (user != null)
+            {
+                if (user.IsAdmin)
+                {
+                    mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                    {
+                        Glyph = "glyphicon glyphicon-cog",
+                        Name = StringResource.admin_Dashboard,
+                        Link = new NavigationLink { ActionName = "Dashboard", ControllerName = "Admin" }
+                    });
+                }
+                else
+                {
+                    mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                    {
+                        Glyph = "glyphicon glyphicon-briefcase",
+                        Name = StringResource.nav_History,
+                        Link = new NavigationLink { ActionName = "History", ControllerName = "Main" }
+                    });
+
+                    var ordersCount = repository.GetOrderItemsCount(user);
+
+                    mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                    {
+                        Glyph = "glyphicon glyphicon-shopping-cart",
+                        Name = StringResource.nav_Orders,
+                        Link = new NavigationLink { ActionName = "Orders", ControllerName = "Main" },
+                        Badge = ordersCount > 0 ? ordersCount.ToString() : null
+                    });
+                }
+            }
+
+            mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+            {
+                Glyph = "glyphicon glyphicon-paperclip",
+                Name = StringResource.form_Contact_us,
+                Link = new NavigationLink { ActionName = "Feedback", ControllerName = "Main" }
+            });
+
+            if (user != null)
+            {
+                mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                {
+                    Glyph = "glyphicon glyphicon-log-out",
+                    Name = StringResource.Logout,
+                    Link = new NavigationLink { ActionName = "Logoff", ControllerName = "Main" }
+                });
+            }
+
             return mainMenuViewModel;
         }
 
         public static MainMenuViewModel CreateAdminMenu(IRepository repository, ControlPanelPage page)
         {
             var newUsersCount = repository.GetUsers(x => !x.IsActivated).Count;
-            var mainMenuViewModel = new MainMenuViewModel { HasExit = true, Menu = new List<MenuItemViewModel>() };
+            var mainMenuViewModel = new MainMenuViewModel { Menu = new List<MenuItemViewModel>(), MetaMenu = new List<MenuItemViewModel>() };
+
+            mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel {
+                Glyph = "glyphicon glyphicon-log-out",
+                Name = StringResource.admin_Nav_Exit,
+                Link = new NavigationLink { ActionName= "Index", ControllerName = "Main" }
+            });
 
             mainMenuViewModel.Menu.Add(new MenuItemViewModel {
                 Name = StringResource.controlPanel_UsersTemplate,
@@ -111,19 +167,13 @@ namespace InstantStore.WebUI.ViewModels.Factories
 
         public static NavigationMenuViewModel CreateNavigationMenu(this IRepository repository, Guid? pageId)
         {
-            var viewModel = new NavigationMenuViewModel();
-
-            if (pageId == null || pageId == Guid.Empty)
-            {
-                return null;
-            }
-
-            var contentPage = repository.GetPageById(pageId.Value);
+            var contentPage = pageId != null ? repository.GetPageById(pageId.Value) : new ContentPage();
             if (contentPage == null)
             {
                 throw new ApplicationException("Invalid.Database.State");
             }
 
+            var viewModel = new NavigationMenuViewModel { Title = StringResource.navbar_CategoriesTitle };
             var parentId = contentPage.ParentId;
 
             viewModel.BackLink = new NavigationLink { ActionName = "Page", PageId = parentId ?? Guid.Empty };

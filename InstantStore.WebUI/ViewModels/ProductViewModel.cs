@@ -64,6 +64,8 @@ namespace InstantStore.WebUI.ViewModels
 
         public Guid? AttributesId { get; set; }
 
+        public Guid? MainImage { get; set; }
+
         public List<SelectListItem> Currencies { get; private set; }
 
         public List<SelectListItem> TemplatesList { get; private set; }
@@ -94,6 +96,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Description = product.Description;
             this.Images = repository.GetImagesForProduct(product.Id);
             this.AttributesId = product.CustomAttributesTemplateId;
+            this.MainImage = product.MainImageId ?? (this.Images != null ? this.Images.FirstOrDefault() : (Guid?)null);
 
             var attributesTemplate = product.CustomAttributesTemplateId != null && product.CustomAttributesTemplateId != Guid.Empty 
                 ? repository.GetTemplateById(product.CustomAttributesTemplateId.Value) : null;
