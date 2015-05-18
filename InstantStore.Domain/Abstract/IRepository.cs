@@ -122,5 +122,25 @@ namespace InstantStore.Domain.Abstract
         int GetOrderItemsCount(User user);
 
         Order AddItemToCurrentOrder(User user, Guid productId, int count);
+
+        Order GetActiveOrder(Guid userId);
+
+        Order GetOrderById(Guid userId);
+
+        IList<KeyValuePair<OrderProduct, Product>> GetProductsForOrder(Guid orderId);
+
+        void DeleteOrderProduct(Guid orderProductId);
+
+        void UpdateOrderProduct(OrderProduct orderProduct);
+
+        void RemoveOrderProduct(Guid orderProductId);
+
+        void SubmitOrder(Guid orderId);
+
+        IList<Order> GetOrdersWithStatus(IEnumerable<OrderStatus> statuses, Guid? userId, int offset, int count);
+
+        IList<OrderUpdate> GetStatusesForOrder(Guid orderId);
+
+        void AddProductsFromOrder(Guid orderId, User user);
     }
 }

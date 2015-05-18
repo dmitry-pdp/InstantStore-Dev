@@ -22,7 +22,7 @@
                 @foreach (var attribute in this.Model.Attributes)
                 {
                     <div>
-                        <label>@attribute.Name</label>
+                        <label>@attribute.Name:&nbsp;</label>
                         <span>@attribute.Value</span>
                     </div>
                 }
@@ -32,6 +32,29 @@
     <p>
         @this.Html.Raw(this.Model.Description)
     </p>
+    @if (this.Model.AddToCart != null)
+    {
+        <a href="@this.Model.AddToCart.GetUrl(this.Url)" class="btn btn-default" id="add-to-cart">@this.Model.AddToCart.Text</a>
+        <script>
+            $(function () {
+                $("#add-to-cart").on("click", function () {
+                    $.ajax({
+                        url: this.href,
+                        cached: false,
+                        method: "post"
+                    })
+                    .done(function () {
+                        alert("@StringResource.productTile_AddItemConfirmation");
+                        location.reload();
+                    })
+                    .fail(function () {
+                        alert("@StringResource.productTile_AddItemFailure");
+                    });
+                    return false;
+                });
+            });
+        </script>
+    }
 
     @if (this.Model.Images != null && this.Model.Images.Any())
     {

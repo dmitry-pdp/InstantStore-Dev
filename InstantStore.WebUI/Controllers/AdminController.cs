@@ -38,9 +38,11 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Orders()
         {
+            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
+
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Orders);
             this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Orders);
-            return this.Authorize() ?? this.View();
+            return this.Authorize() ?? this.View(new OrderHistoryListViewModel(this.repository, user, 0, 100));
         }
 
         public ActionResult Offers()

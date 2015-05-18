@@ -19,7 +19,10 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Product(Guid? id, Guid? parentId)
         {
-            var viewModel = id != null && id != Guid.Empty ? new ProductViewModel(this.repository, id.Value, parentId) : new ProductViewModel(this.repository, parentId);
+            var viewModel = id != null && id != Guid.Empty 
+                ? new ProductViewModel(this.repository, id.Value, parentId, null) 
+                : new ProductViewModel(this.repository, parentId);
+
             viewModel.InitializeRootCategory(this.repository);
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             return this.Authorize() ?? this.View("Product", viewModel);

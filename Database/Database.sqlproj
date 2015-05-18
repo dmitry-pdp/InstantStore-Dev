@@ -63,6 +63,7 @@
     <Folder Include="Data" />
     <Folder Include="Tables" />
     <Folder Include="Security" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\User.sql" />
@@ -92,5 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Security\CreateServerLogin.sql" />
+    <None Include="Snapshots\Database_20150516_14-02-56.dacpac" />
   </ItemGroup>
 </Project>

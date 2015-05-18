@@ -6,9 +6,11 @@ using System.Web.Mvc;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
+using InstantStore.Domain.Helpers;
 using InstantStore.WebUI.Resources;
 using System.ComponentModel.DataAnnotations;
 using InstantStore.Domain.Entities;
+using InstantStore.WebUI.ViewModels.Helpers;
 
 namespace InstantStore.WebUI.ViewModels
 {
@@ -25,9 +27,9 @@ namespace InstantStore.WebUI.ViewModels
             this.ParentCategoryId = parentId ?? Guid.Empty;
         }
 
-        public ProductViewModel(IRepository repository, Guid id, Guid? parentId)
+        public ProductViewModel(IRepository repository, Guid id, Guid? parentId, User user)
         {
-            this.Initialize(repository, id, parentId);
+            this.Initialize(repository, id, parentId, user);
         }
 
         public Guid Id { get; set; }
@@ -72,6 +74,8 @@ namespace InstantStore.WebUI.ViewModels
 
         public IList<CustomProperty> Attributes { get; set; }
 
+        public NavigationLink AddToCart { get; set; }
+
         public void InitializeRootCategory(IRepository repository)
         {
             this.Currencies = repository.GetCurrencies().Select(currency => new SelectListItem() 
@@ -83,8 +87,9 @@ namespace InstantStore.WebUI.ViewModels
             .ToList();
         }
 
-        private void Initialize(IRepository repository, Guid id, Guid? parentId)
+        private void Initialize(IRepository repository, Guid id, Guid? parentId, User user)
         {
+            this.Id = id;
             var product = repository.GetProductById(id);
             this.Name = product.Name;
             this.ParentCategoryId = parentId ?? Guid.Empty;
@@ -106,6 +111,26 @@ namespace InstantStore.WebUI.ViewModels
             this.CreateTemplatesList(repository);
 
             this.Attributes = attributesTemplate != null ? repository.GetPropertiesForTemplate(attributesTemplate.Id).OrderBy(x => x.Name).ToList() : new List<CustomProperty>();
+      
+            if (user != null && !user.IsAdmin && user.DefaultCurrencyId != null)
+            {
+                var userCurrency = repository.GetCurrencies().FirstOrDefault(x => x.Id == user.DefaultCurrencyId.Value);
+                var price = product.GetPriceForUser(user, repository.GetExchangeRates());
+                
+                this.Attributes.Add(new CustomProperty
+                {
+                    Name = StringResource.Price,
+                    Value = userCurrency != null ? new CurrencyString(price, userCurrency.Text).ToString() : null
+                });
+
+                this.AddToCart = new NavigationLink
+                {
+                    ControllerName = "Main",
+                    ActionName = "AddToCart",
+                    PageId = this.Id,
+                    Text = StringResource.productTile_AddToCart
+                };
+            }
         }
 
         private void CreateTemplatesList(IRepository repository)

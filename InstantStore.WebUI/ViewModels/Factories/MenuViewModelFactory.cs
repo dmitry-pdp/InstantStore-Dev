@@ -9,13 +9,22 @@ using InstantStore.Domain.Concrete;
 
 namespace InstantStore.WebUI.ViewModels.Factories
 {
+    public enum PageIdentity
+    {
+        Unknown,
+        UserProfile,
+        Cart,
+        History,
+        Feedback
+    }
+    
     public static class MenuViewModelFactory
     {
-        public static MainMenuViewModel CreateDefaultMenu(IRepository repository, Guid current, User user)
+        public static MainMenuViewModel CreateDefaultMenu(IRepository repository, Guid current, User user, PageIdentity page = PageIdentity.Unknown)
         {
             var mainMenuViewModel = new MainMenuViewModel { MetaMenu = new List<MenuItemViewModel>() };
             mainMenuViewModel.Menu = CreateItems(repository, null, 0, current);
-            mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel { Name = StringResource.admin_HomeShort, IsActive = current == Guid.Empty, Link = new NavigationLink { ActionName = "Index" } });
+            mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel { Name = StringResource.admin_HomeShort, IsActive = current == Guid.Empty && page == PageIdentity.Unknown, Link = new NavigationLink { ActionName = "Index" } });
             
             if (user != null)
             {
@@ -25,7 +34,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-cog",
                         Name = StringResource.admin_Dashboard,
-                        Link = new NavigationLink { ActionName = "Dashboard", ControllerName = "Admin" }
+                        Link = new NavigationLink { ActionName = "Index", ControllerName = "Admin" }
                     });
                 }
                 else
@@ -34,7 +43,8 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-briefcase",
                         Name = StringResource.nav_History,
-                        Link = new NavigationLink { ActionName = "History", ControllerName = "Main" }
+                        Link = new NavigationLink { ActionName = "History", ControllerName = "Main" },
+                        IsActive = page == PageIdentity.History
                     });
 
                     var ordersCount = repository.GetOrderItemsCount(user);
@@ -44,7 +54,16 @@ namespace InstantStore.WebUI.ViewModels.Factories
                         Glyph = "glyphicon glyphicon-shopping-cart",
                         Name = StringResource.nav_Orders,
                         Link = new NavigationLink { ActionName = "Orders", ControllerName = "Main" },
-                        Badge = ordersCount > 0 ? ordersCount.ToString() : null
+                        Badge = ordersCount > 0 ? ordersCount.ToString() : null,
+                        IsActive = page == PageIdentity.Cart
+                    });
+
+                    mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                    {
+                        Glyph = "glyphicon glyphicon-user",
+                        Name = StringResource.nav_Profile,
+                        Link = new NavigationLink { ActionName = "Profile", ControllerName = "Main" },
+                        IsActive = page == PageIdentity.UserProfile
                     });
                 }
             }
@@ -53,7 +72,8 @@ namespace InstantStore.WebUI.ViewModels.Factories
             {
                 Glyph = "glyphicon glyphicon-paperclip",
                 Name = StringResource.form_Contact_us,
-                Link = new NavigationLink { ActionName = "Feedback", ControllerName = "Main" }
+                Link = new NavigationLink { ActionName = "Feedback", ControllerName = "Main" },
+                IsActive = page == PageIdentity.Feedback
             });
 
             if (user != null)
@@ -91,7 +111,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             mainMenuViewModel.Menu.Add(new MenuItemViewModel
             {
                 Name = StringResource.admin_UsersOrdersAction,
-                Badge = 10.ToString(),
+                Badge = repository.GetOrdersWithStatus(new [] { OrderStatus.Placed }, null, 0, -1).Count.ToString(),
                 Link = new NavigationLink { ActionName = "Orders", ControllerName = "Admin" },
                 Glyph = "glyphicon glyphicon-shopping-cart",
                 IsActive = page == ControlPanelPage.Orders
@@ -111,6 +131,14 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 Link = new NavigationLink { ActionName = "Currency", ControllerName = "Admin" },
                 Glyph = "glyphicon glyphicon-usd",
                 IsActive = page == ControlPanelPage.Currency
+            });
+
+            mainMenuViewModel.Menu.Add(new MenuItemViewModel
+            {
+                Name = StringResource.admin_Offers,
+                Link = new NavigationLink { ActionName = "Offers", ControllerName = "Admin" },
+                Glyph = "glyphicon glyphicon glyphicon-star",
+                IsActive = page == ControlPanelPage.Offers
             });
 
             mainMenuViewModel.Menu.Add(new MenuItemViewModel

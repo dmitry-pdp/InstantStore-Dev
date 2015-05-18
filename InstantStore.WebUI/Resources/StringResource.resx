@@ -981,4 +981,82 @@
   <data name="productTile_AddToCart" xml:space="preserve">
     <value>Добавить в корзину</value>
   </data>
+  <data name="user_OrdersEmpty" xml:space="preserve">
+    <value>Корзина пуста</value>
+  </data>
+  <data name="user_OrdersPageTitle" xml:space="preserve">
+    <value>Корзина</value>
+  </data>
+  <data name="user_OrdersPriceTitle" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="user_OrdersTitleQuantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="user_OrdersTotal" xml:space="preserve">
+    <value>Итого</value>
+  </data>
+  <data name="user_SubmitOrder" xml:space="preserve">
+    <value>Разместить заказ</value>
+  </data>
+  <data name="user_OrdersProductIsAvailable" xml:space="preserve">
+    <value>В наличии:</value>
+  </data>
+  <data name="user_OrdersProductNotAvaialbePrice" xml:space="preserve">
+    <value>Нет в наличии</value>
+  </data>
+  <data name="user_HistoryEmpty" xml:space="preserve">
+    <value>История пуста</value>
+  </data>
+  <data name="user_OrderProductDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="user_HistoryListHeaderIsProcessed" xml:space="preserve">
+    <value>Обработан</value>
+  </data>
+  <data name="user_HistoryListHeaderItemCount" xml:space="preserve">
+    <value>Количество штук</value>
+  </data>
+  <data name="user_HistoryListHeaderProcessTime" xml:space="preserve">
+    <value>Время обработки</value>
+  </data>
+  <data name="user_HistoryListHeaderTime" xml:space="preserve">
+    <value>Время размещения заказа</value>
+  </data>
+  <data name="user_HistoryListHeaderTotalPrice" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="user_OrderItemCountChangeApply" xml:space="preserve">
+    <value>Пересчитать</value>
+  </data>
+  <data name="admin_Offers" xml:space="preserve">
+    <value>Скидки</value>
+  </data>
+  <data name="nav_Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="orderStatus_Placed" xml:space="preserve">
+    <value>Размещен</value>
+  </data>
+  <data name="orderStatus_Processed" xml:space="preserve">
+    <value>Обработан</value>
+  </data>
+  <data name="UserProfile_BtnUpdate" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="UserProfile_Title" xml:space="preserve">
+    <value>Профиль пользователя</value>
+  </data>
+  <data name="user_OrderDetailsComment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="user_OrderDetailsTitle" xml:space="preserve">
+    <value>Заказ от {0}</value>
+  </data>
+  <data name="user_OrdersHasUnavailableProducts" xml:space="preserve">
+    <value>В корзине имеются продукты которые не доступны в двнный момент.  Корзина заблокирована и заказ не может быть размещен. Удалите все недоступные продукты.</value>
+  </data>
+  <data name="user_HIstoryDetails_CopyToCart" xml:space="preserve">
+    <value>Копировать в корзину</value>
+  </data>
 </root>

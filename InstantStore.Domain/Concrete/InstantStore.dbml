@@ -34,6 +34,7 @@
       <Column Name="Text" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Currency_Product" Member="Products" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Product" />
       <Association Name="Currency_Order" Member="Orders" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Order" />
+      <Association Name="Currency_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="PriceCurrencyId" Type="OrderProduct" />
     </Type>
   </Table>
   <Table Name="dbo.ExchangeRate" Member="ExchangeRates">
@@ -119,8 +120,8 @@
       <Column Name="PriceValueCashless" Type="System.Decimal" DbType="Decimal(19,4)" CanBeNull="true" />
       <Column Name="CustomAttributesTemplateId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_OrderProduct" Member="OrderProducts" ThisKey="VersionId" OtherKey="ProductId" Type="OrderProduct" />
       <Association Name="Product_ProductToCategory" Member="ProductToCategories" ThisKey="VersionId" OtherKey="ProductId" Type="ProductToCategory" />
+      <Association Name="Product_OrderProduct" Member="OrderProducts" ThisKey="VersionId" OtherKey="ProductId" Type="OrderProduct" />
       <Association Name="Currency_Product" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
       <Association Name="Image_Product" Member="Image" ThisKey="MainImageId" OtherKey="Id" Type="Image" IsForeignKey="true" />
       <Association Name="PropertyTemplate_Product" Member="PropertyTemplate" ThisKey="CustomAttributesTemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
@@ -153,16 +154,6 @@
       <Association Name="User_Order" Member="Orders" ThisKey="Id" OtherKey="UserId" Type="Order" />
     </Type>
   </Table>
-  <Table Name="dbo.OrderProducts" Member="OrderProducts">
-    <Type Name="OrderProduct">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="OrderId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_OrderProduct" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
-      <Association Name="Order_OrderProduct" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.OrderUpdates" Member="OrderUpdates">
     <Type Name="OrderUpdate">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -180,8 +171,8 @@
       <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Association Name="Order_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="OrderId" Type="OrderProduct" />
       <Association Name="Order_OrderUpdate" Member="OrderUpdates" ThisKey="Id" OtherKey="OrderId" Type="OrderUpdate" />
+      <Association Name="Order_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="OrderId" Type="OrderProduct" />
       <Association Name="Currency_Order" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
       <Association Name="User_Order" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" />
     </Type>
@@ -210,6 +201,19 @@
       <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsImportant" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Category_ContentPage" Member="ContentPages" ThisKey="VersionId" OtherKey="CategoryId" Type="ContentPage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderProducts" Member="OrderProducts">
+    <Type Name="OrderProduct">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrderId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="Currency_OrderProduct" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+      <Association Name="Order_OrderProduct" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
+      <Association Name="Product_OrderProduct" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

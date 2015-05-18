@@ -1,6 +1,95 @@
-﻿@{
-    ViewBag.Title = "Order";
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model OrderDetailsViewModel
+@{
+    ViewBag.Title = StringResource.user_OrdersPageTitle;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    bool hasUnavailable = this.Model.Products.Any(x => !x.IsAvailable);
 }
 
-<h2>Order</h2>
+<link href="~/Content/Order.css" rel="stylesheet" />
+
+@if (this.Model.Products == null || !this.Model.Products.Any())
+{
+    <h2>@ViewBag.Title</h2>
+    @StringResource.user_OrdersEmpty
+}
+else
+{
+    using (Html.BeginForm("PlaceOrder", "Main", FormMethod.Post, new { id = "order-form" }))
+    { 
+        @Html.HiddenFor(model => model.Id)
+    
+       <div class="list-group">
+        <div class="list-group-item order-header">
+            <div class="order-title-item">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="order-title-quantity">
+                @StringResource.user_OrdersTitleQuantity
+            </div>
+            <div class="order-title-price">
+                @StringResource.user_OrdersPriceTitle
+            </div>
+        </div>
+        @for (int index = 0; index < this.Model.Products.Count; index++)
+        {
+            var orderProduct = this.Model.Products[index];
+            <div class="list-group-item" style="height:135px">
+                <a class="order-item-imagebox img-thumbnail" style="vertical-align:top;" href="@orderProduct.Title.GetUrl(this.Url)" title="@orderProduct.Title.Text">
+                    @Html.Partial("ImageThumbnail", new ViewDataDictionary(orderProduct.Thumbnail))
+                </a>
+                <div class="order-item-caption">
+                    <h4>@Html.Partial("NavigationLink", orderProduct.Title)</h4>
+                    <div>
+                        <label>@StringResource.user_OrdersProductIsAvailable</label>
+                        <span class="@(orderProduct.IsAvailable ? "text-success" : "text-danger")">@(orderProduct.IsAvailable ? StringResource.Yes : StringResource.No)</span>
+                    </div>
+                    <a href="@Url.Action("Orders", new { a = "delete", id = orderProduct.Id })">@StringResource.user_OrderProductDelete</a>
+                </div>
+                <div class="order-item-quantity">
+                    @Html.TextBoxFor(model => model.Products[index].Count, new { @class = "form-control input-count" })
+                </div>
+                <div class="order-item-price">
+                    @(orderProduct.ItemPrice != null ? orderProduct.ItemPrice.ToString() : StringResource.user_OrdersProductNotAvaialbePrice)
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.Products[index].Id);
+        }
+    </div>
+    <div class="order-line">
+        <div class="order-total">
+            <h3>@StringResource.user_OrdersTotal</h3>
+            <div>@this.Model.Total</div>
+        </div>
+    </div>
+    <div class="order-line" style="margin-top: 10px; margin-right: 20px;">
+        @if (!hasUnavailable)
+        {
+            <input type="submit" value="@StringResource.user_SubmitOrder" class="btn btn-primary btn-lg pull-right" id="btn-submit" />
+        }
+        
+        <a href="#" class="btn btn-default btn-lg pull-right" style="margin-right:20px;" id="btn-recalculate">@StringResource.user_OrderItemCountChangeApply</a>
+    </div>
+    }
+    
+    <script>
+        $(function () {
+            $("#btn-recalculate").hide();
+            $(".input-count").change(function() {
+                $("#btn-submit").hide();
+                $("#btn-recalculate").show();
+            });
+            $("#btn-recalculate").click(function () {
+                $("#order-form").attr("action", "@Url.Action("Recalculate")");
+                $("#order-form").submit();
+            });
+
+            @if (hasUnavailable)
+            {
+                @Html.Raw("alert(\"" + StringResource.user_OrdersHasUnavailableProducts + "\");");
+            }
+        });
+    </script>
+}
+

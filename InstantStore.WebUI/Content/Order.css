@@ -1,0 +1,60 @@
+﻿.order-title-price,
+.order-title-quantity,
+.order-item-price,
+.order-item-quantity,
+.order-total
+{
+    display:inline-block;
+    float:right;
+}
+
+.order-title-price,
+.order-title-quantity
+{
+    margin-top:25px;
+}
+
+.order-title-price,
+.order-item-price
+{
+    width:150px;
+}
+
+.order-title-quantity,
+.order-item-quantity,
+.order-total
+{
+    width:150px;
+}
+
+div.order-title-item
+{
+    display:inline-block;
+}
+
+.order-item-imagebox
+{
+    display:inline-block;
+    width:110px;
+}
+
+.order-item-caption
+{
+    display:inline-block;
+}
+
+.order-total
+{
+    margin-right:20px;
+}
+
+.order-line
+{
+    display:inline-block;
+    width:100%;
+}
+
+.order-item-imagebox
+{
+    margin-right:10px;
+}

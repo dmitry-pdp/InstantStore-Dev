@@ -1,0 +1,9 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@model ImageThumbnailViewModel
+@{
+    var isValid = this.Model.ThumbnailId != null && this.Model.ThumbnailId != Guid.Empty;
+    var thumbnailQuality = this.Model.Width > 64 ? "l" : "s";
+    var imagePath = isValid ? Url.Action("Thumbnail", "Main", new { Id = this.Model.ThumbnailId, size = thumbnailQuality }) : "/Image/NoImage.png";
+}
+<img src="@imagePath" width="@this.Model.Width" />
+

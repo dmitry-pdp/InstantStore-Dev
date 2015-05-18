@@ -34,5 +34,17 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 return UserStatus.Pending;
             }
         }
+
+        public static UserViewModelBase CreateUserViewModel(User user)
+        {
+            return new UserViewModelBase
+            {
+                Name = user.Name,
+                City = user.City,
+                Company = user.Company,
+                Email = user.Email,
+                Phonenumber = user.Phonenumber
+            };
+        }
     }
 }

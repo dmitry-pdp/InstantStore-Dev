@@ -8,6 +8,7 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -51,6 +52,40 @@ namespace InstantStore.WebUI.Controllers
         {
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             return this.View();
+        }
+
+        public ActionResult Profile()
+        {
+            var user = this.InitializeCommonControls(Guid.Empty, PageIdentity.UserProfile);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return this.View(UserViewModelFactory.CreateUserViewModel(user));
+        }
+
+        [HttpPost]
+        public ActionResult Profile(UserViewModelBase userViewModel)
+        {
+            var user = this.InitializeCommonControls(Guid.Empty, PageIdentity.UserProfile);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                user.City = userViewModel.City;
+                user.Company = userViewModel.Company;
+                user.Email = userViewModel.Email;
+                user.Phonenumber = userViewModel.Phonenumber;
+                this.repository.UpdateUser(user);
+
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(userViewModel);
         }
     }
 }

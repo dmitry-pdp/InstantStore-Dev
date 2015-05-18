@@ -5,8 +5,10 @@ using System.Web;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
+using InstantStore.Domain.Helpers;
 using InstantStore.WebUI.Resources;
 using System.Globalization;
+using InstantStore.WebUI.ViewModels.Helpers;
 
 namespace InstantStore.WebUI.ViewModels.Factories
 {
@@ -60,7 +62,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
 
             var tilesViewModel = new TilesViewModel() { Tiles = new List<TileViewModel>(), Pagination = pagination };
 
-            var currency = user != null && user.DefaultCurrencyId != null 
+            var currency = user != null && user.DefaultCurrencyId != null && !user.IsAdmin
                 ? repository.GetCurrencies().FirstOrDefault(x => x.Id == user.DefaultCurrencyId) 
                 : null; 
 
@@ -81,32 +83,21 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 {
                     var attributes = new AttributeList();
                     attributes.Add(new KeyValuePair<string, string>(StringResource.productTile_Available, product.IsAvailable ? StringResource.Yes : StringResource.No));
-                    
-                    bool sameCurrency = product.PriceCurrencyId != null && user.DefaultCurrencyId != null && product.PriceCurrencyId == user.DefaultCurrencyId;
-                    
-                    double conversionRate = 1.0;
 
-                    if (!sameCurrency)
+                    if (currency != null && !user.IsAdmin)
                     {
-                        var exchangeRate = exchangeRates.Any() && product.PriceCurrencyId != null
-                            ? exchangeRates.FirstOrDefault(x => x.FromCurrencyId == product.PriceCurrencyId)
-                            : null;
-
-                        conversionRate = exchangeRate != null && exchangeRate.ConversionRate != null ? exchangeRate.ConversionRate.Value : -1.0;
-                    }
-                    
-                    if (conversionRate > 0.0 && currency != null)
-                    {
-                        var numberFormat = russianCultureNumber;
-                        numberFormat.CurrencySymbol = string.Empty;
-
-                        var priceInUserCurrency = (user.IsPaymentCash ? product.PriceValueCash ?? (decimal)0.0 : product.PriceValueCashless ?? (decimal)0.0) * (decimal)conversionRate;
-                        attributes.Add(new KeyValuePair<string, string>(StringResource.productTile_Price, string.Concat(priceInUserCurrency.ToString("C", numberFormat), " ", currency.Text)));
+                        var price = product.GetPriceForUser(user, repository.GetExchangeRates());
+                        attributes.Add(new KeyValuePair<string, string>(
+                            StringResource.productTile_Price, 
+                            new CurrencyString(price, currency.Text).ToString()));
                     }
                     
                     tileViewModel.Attributes = attributes;
 
-                    tileViewModel.Action = new NavigationLink { ControllerName = "Main", ActionName = "AddToCart", PageId = product.VersionId, Text = StringResource.productTile_AddToCart };
+                    if (!user.IsAdmin)
+                    {
+                        tileViewModel.Action = new NavigationLink { ControllerName = "Main", ActionName = "AddToCart", PageId = product.VersionId, Text = StringResource.productTile_AddToCart };
+                    }
                 }
 
                 tilesViewModel.Tiles.Add(tileViewModel);

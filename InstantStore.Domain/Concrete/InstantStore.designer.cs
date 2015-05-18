@@ -69,9 +69,6 @@ namespace InstantStore.Domain.Concrete
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
-    partial void InsertOrderProduct(OrderProduct instance);
-    partial void UpdateOrderProduct(OrderProduct instance);
-    partial void DeleteOrderProduct(OrderProduct instance);
     partial void InsertOrderUpdate(OrderUpdate instance);
     partial void UpdateOrderUpdate(OrderUpdate instance);
     partial void DeleteOrderUpdate(OrderUpdate instance);
@@ -84,6 +81,9 @@ namespace InstantStore.Domain.Concrete
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
+    partial void InsertOrderProduct(OrderProduct instance);
+    partial void UpdateOrderProduct(OrderProduct instance);
+    partial void DeleteOrderProduct(OrderProduct instance);
     #endregion
 		
 		public InstantStoreDataContext() : 
@@ -220,14 +220,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		public System.Data.Linq.Table<OrderProduct> OrderProducts
-		{
-			get
-			{
-				return this.GetTable<OrderProduct>();
-			}
-		}
-		
 		public System.Data.Linq.Table<OrderUpdate> OrderUpdates
 		{
 			get
@@ -257,6 +249,14 @@ namespace InstantStore.Domain.Concrete
 			get
 			{
 				return this.GetTable<Category>();
+			}
+		}
+		
+		public System.Data.Linq.Table<OrderProduct> OrderProducts
+		{
+			get
+			{
+				return this.GetTable<OrderProduct>();
 			}
 		}
 	}
@@ -773,6 +773,8 @@ namespace InstantStore.Domain.Concrete
 		
 		private EntitySet<Order> _Orders;
 		
+		private EntitySet<OrderProduct> _OrderProducts;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -787,6 +789,7 @@ namespace InstantStore.Domain.Concrete
 		{
 			this._Products = new EntitySet<Product>(new Action<Product>(this.attach_Products), new Action<Product>(this.detach_Products));
 			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
+			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
 			OnCreated();
 		}
 		
@@ -856,6 +859,19 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Currency_OrderProduct", Storage="_OrderProducts", ThisKey="Id", OtherKey="PriceCurrencyId")]
+		public EntitySet<OrderProduct> OrderProducts
+		{
+			get
+			{
+				return this._OrderProducts;
+			}
+			set
+			{
+				this._OrderProducts.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -895,6 +911,18 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		private void detach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.Currency = null;
+		}
+		
+		private void attach_OrderProducts(OrderProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Currency = this;
+		}
+		
+		private void detach_OrderProducts(OrderProduct entity)
 		{
 			this.SendPropertyChanging();
 			entity.Currency = null;
@@ -2341,9 +2369,9 @@ namespace InstantStore.Domain.Concrete
 		
 		private int _Version;
 		
-		private EntitySet<OrderProduct> _OrderProducts;
-		
 		private EntitySet<ProductToCategory> _ProductToCategories;
+		
+		private EntitySet<OrderProduct> _OrderProducts;
 		
 		private EntityRef<Currency> _Currency;
 		
@@ -2383,8 +2411,8 @@ namespace InstantStore.Domain.Concrete
 		
 		public Product()
 		{
-			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
 			this._ProductToCategories = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories), new Action<ProductToCategory>(this.detach_ProductToCategories));
+			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
 			this._Currency = default(EntityRef<Currency>);
 			this._Image = default(EntityRef<Image>);
 			this._PropertyTemplate = default(EntityRef<PropertyTemplate>);
@@ -2643,19 +2671,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_OrderProduct", Storage="_OrderProducts", ThisKey="VersionId", OtherKey="ProductId")]
-		public EntitySet<OrderProduct> OrderProducts
-		{
-			get
-			{
-				return this._OrderProducts;
-			}
-			set
-			{
-				this._OrderProducts.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToCategory", Storage="_ProductToCategories", ThisKey="VersionId", OtherKey="ProductId")]
 		public EntitySet<ProductToCategory> ProductToCategories
 		{
@@ -2666,6 +2681,19 @@ namespace InstantStore.Domain.Concrete
 			set
 			{
 				this._ProductToCategories.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_OrderProduct", Storage="_OrderProducts", ThisKey="VersionId", OtherKey="ProductId")]
+		public EntitySet<OrderProduct> OrderProducts
+		{
+			get
+			{
+				return this._OrderProducts;
+			}
+			set
+			{
+				this._OrderProducts.Assign(value);
 			}
 		}
 		
@@ -2791,18 +2819,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		private void attach_OrderProducts(OrderProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Product = this;
-		}
-		
-		private void detach_OrderProducts(OrderProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Product = null;
-		}
-		
 		private void attach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
@@ -2810,6 +2826,18 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		private void detach_ProductToCategories(ProductToCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = null;
+		}
+		
+		private void attach_OrderProducts(OrderProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = this;
+		}
+		
+		private void detach_OrderProducts(OrderProduct entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
@@ -3369,222 +3397,6 @@ namespace InstantStore.Domain.Concrete
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrderProducts")]
-	public partial class OrderProduct : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _Id;
-		
-		private System.Guid _OrderId;
-		
-		private System.Guid _ProductId;
-		
-		private int _Count;
-		
-		private EntityRef<Product> _Product;
-		
-		private EntityRef<Order> _Order;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(System.Guid value);
-    partial void OnIdChanged();
-    partial void OnOrderIdChanging(System.Guid value);
-    partial void OnOrderIdChanged();
-    partial void OnProductIdChanging(System.Guid value);
-    partial void OnProductIdChanged();
-    partial void OnCountChanging(int value);
-    partial void OnCountChanged();
-    #endregion
-		
-		public OrderProduct()
-		{
-			this._Product = default(EntityRef<Product>);
-			this._Order = default(EntityRef<Order>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid OrderId
-		{
-			get
-			{
-				return this._OrderId;
-			}
-			set
-			{
-				if ((this._OrderId != value))
-				{
-					if (this._Order.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnOrderIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrderId = value;
-					this.SendPropertyChanged("OrderId");
-					this.OnOrderIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid ProductId
-		{
-			get
-			{
-				return this._ProductId;
-			}
-			set
-			{
-				if ((this._ProductId != value))
-				{
-					if (this._Product.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnProductIdChanging(value);
-					this.SendPropertyChanging();
-					this._ProductId = value;
-					this.SendPropertyChanged("ProductId");
-					this.OnProductIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int NOT NULL")]
-		public int Count
-		{
-			get
-			{
-				return this._Count;
-			}
-			set
-			{
-				if ((this._Count != value))
-				{
-					this.OnCountChanging(value);
-					this.SendPropertyChanging();
-					this._Count = value;
-					this.SendPropertyChanged("Count");
-					this.OnCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_OrderProduct", Storage="_Product", ThisKey="ProductId", OtherKey="VersionId", IsForeignKey=true)]
-		public Product Product
-		{
-			get
-			{
-				return this._Product.Entity;
-			}
-			set
-			{
-				Product previousValue = this._Product.Entity;
-				if (((previousValue != value) 
-							|| (this._Product.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Product.Entity = null;
-						previousValue.OrderProducts.Remove(this);
-					}
-					this._Product.Entity = value;
-					if ((value != null))
-					{
-						value.OrderProducts.Add(this);
-						this._ProductId = value.VersionId;
-					}
-					else
-					{
-						this._ProductId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Product");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProduct", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true)]
-		public Order Order
-		{
-			get
-			{
-				return this._Order.Entity;
-			}
-			set
-			{
-				Order previousValue = this._Order.Entity;
-				if (((previousValue != value) 
-							|| (this._Order.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Order.Entity = null;
-						previousValue.OrderProducts.Remove(this);
-					}
-					this._Order.Entity = value;
-					if ((value != null))
-					{
-						value.OrderProducts.Add(this);
-						this._OrderId = value.Id;
-					}
-					else
-					{
-						this._OrderId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Order");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrderUpdates")]
 	public partial class OrderUpdate : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3778,9 +3590,9 @@ namespace InstantStore.Domain.Concrete
 		
 		private System.Guid _UserId;
 		
-		private EntitySet<OrderProduct> _OrderProducts;
-		
 		private EntitySet<OrderUpdate> _OrderUpdates;
+		
+		private EntitySet<OrderProduct> _OrderProducts;
 		
 		private EntityRef<Currency> _Currency;
 		
@@ -3806,8 +3618,8 @@ namespace InstantStore.Domain.Concrete
 		
 		public Order()
 		{
-			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
 			this._OrderUpdates = new EntitySet<OrderUpdate>(new Action<OrderUpdate>(this.attach_OrderUpdates), new Action<OrderUpdate>(this.detach_OrderUpdates));
+			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
 			this._Currency = default(EntityRef<Currency>);
 			this._User = default(EntityRef<User>);
 			OnCreated();
@@ -3941,19 +3753,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProduct", Storage="_OrderProducts", ThisKey="Id", OtherKey="OrderId")]
-		public EntitySet<OrderProduct> OrderProducts
-		{
-			get
-			{
-				return this._OrderProducts;
-			}
-			set
-			{
-				this._OrderProducts.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderUpdate", Storage="_OrderUpdates", ThisKey="Id", OtherKey="OrderId")]
 		public EntitySet<OrderUpdate> OrderUpdates
 		{
@@ -3964,6 +3763,19 @@ namespace InstantStore.Domain.Concrete
 			set
 			{
 				this._OrderUpdates.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProduct", Storage="_OrderProducts", ThisKey="Id", OtherKey="OrderId")]
+		public EntitySet<OrderProduct> OrderProducts
+		{
+			get
+			{
+				return this._OrderProducts;
+			}
+			set
+			{
+				this._OrderProducts.Assign(value);
 			}
 		}
 		
@@ -4055,18 +3867,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		private void attach_OrderProducts(OrderProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Order = this;
-		}
-		
-		private void detach_OrderProducts(OrderProduct entity)
-		{
-			this.SendPropertyChanging();
-			entity.Order = null;
-		}
-		
 		private void attach_OrderUpdates(OrderUpdate entity)
 		{
 			this.SendPropertyChanging();
@@ -4074,6 +3874,18 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		private void detach_OrderUpdates(OrderUpdate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Order = null;
+		}
+		
+		private void attach_OrderProducts(OrderProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Order = this;
+		}
+		
+		private void detach_OrderProducts(OrderProduct entity)
 		{
 			this.SendPropertyChanging();
 			entity.Order = null;
@@ -4440,7 +4252,7 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Image
 		{
 			get
@@ -4623,6 +4435,311 @@ namespace InstantStore.Domain.Concrete
 		{
 			this.SendPropertyChanging();
 			entity.Category = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrderProducts")]
+	public partial class OrderProduct : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Guid _OrderId;
+		
+		private System.Guid _ProductId;
+		
+		private int _Count;
+		
+		private decimal _Price;
+		
+		private System.Guid _PriceCurrencyId;
+		
+		private EntityRef<Currency> _Currency;
+		
+		private EntityRef<Order> _Order;
+		
+		private EntityRef<Product> _Product;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnOrderIdChanging(System.Guid value);
+    partial void OnOrderIdChanged();
+    partial void OnProductIdChanging(System.Guid value);
+    partial void OnProductIdChanged();
+    partial void OnCountChanging(int value);
+    partial void OnCountChanged();
+    partial void OnPriceChanging(decimal value);
+    partial void OnPriceChanged();
+    partial void OnPriceCurrencyIdChanging(System.Guid value);
+    partial void OnPriceCurrencyIdChanged();
+    #endregion
+		
+		public OrderProduct()
+		{
+			this._Currency = default(EntityRef<Currency>);
+			this._Order = default(EntityRef<Order>);
+			this._Product = default(EntityRef<Product>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid OrderId
+		{
+			get
+			{
+				return this._OrderId;
+			}
+			set
+			{
+				if ((this._OrderId != value))
+				{
+					if (this._Order.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOrderIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrderId = value;
+					this.SendPropertyChanged("OrderId");
+					this.OnOrderIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid ProductId
+		{
+			get
+			{
+				return this._ProductId;
+			}
+			set
+			{
+				if ((this._ProductId != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProductId = value;
+					this.SendPropertyChanged("ProductId");
+					this.OnProductIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int NOT NULL")]
+		public int Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this.OnCountChanging(value);
+					this.SendPropertyChanging();
+					this._Count = value;
+					this.SendPropertyChanged("Count");
+					this.OnCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceCurrencyId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid PriceCurrencyId
+		{
+			get
+			{
+				return this._PriceCurrencyId;
+			}
+			set
+			{
+				if ((this._PriceCurrencyId != value))
+				{
+					if (this._Currency.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPriceCurrencyIdChanging(value);
+					this.SendPropertyChanging();
+					this._PriceCurrencyId = value;
+					this.SendPropertyChanged("PriceCurrencyId");
+					this.OnPriceCurrencyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Currency_OrderProduct", Storage="_Currency", ThisKey="PriceCurrencyId", OtherKey="Id", IsForeignKey=true)]
+		public Currency Currency
+		{
+			get
+			{
+				return this._Currency.Entity;
+			}
+			set
+			{
+				Currency previousValue = this._Currency.Entity;
+				if (((previousValue != value) 
+							|| (this._Currency.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Currency.Entity = null;
+						previousValue.OrderProducts.Remove(this);
+					}
+					this._Currency.Entity = value;
+					if ((value != null))
+					{
+						value.OrderProducts.Add(this);
+						this._PriceCurrencyId = value.Id;
+					}
+					else
+					{
+						this._PriceCurrencyId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Currency");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProduct", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true)]
+		public Order Order
+		{
+			get
+			{
+				return this._Order.Entity;
+			}
+			set
+			{
+				Order previousValue = this._Order.Entity;
+				if (((previousValue != value) 
+							|| (this._Order.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Order.Entity = null;
+						previousValue.OrderProducts.Remove(this);
+					}
+					this._Order.Entity = value;
+					if ((value != null))
+					{
+						value.OrderProducts.Add(this);
+						this._OrderId = value.Id;
+					}
+					else
+					{
+						this._OrderId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Order");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_OrderProduct", Storage="_Product", ThisKey="ProductId", OtherKey="VersionId", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.OrderProducts.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.OrderProducts.Add(this);
+						this._ProductId = value.VersionId;
+					}
+					else
+					{
+						this._ProductId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
