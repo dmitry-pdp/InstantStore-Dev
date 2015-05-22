@@ -1,6 +1,8 @@
 ﻿@using InstantStore.WebUI.ViewModels;
 @model PaginationViewModel
 
+@if (this.Model.UseJs)
+{    
 <nav>
     <ul class="pagination" id="pagination-ctrl-@this.Model.Id">
         <li class="@(this.Model.CurrentPage == 1 ? "disabled" : "")">
@@ -43,3 +45,25 @@
         });
     });
 </script>
+}
+else
+{
+        <ul class="pagination">
+            <li class="@(this.Model.CurrentPage == 0 ? "disabled" : null)">
+                <a href="@(this.Model.CurrentPage != 0 ? this.Model.GetUrl(this.Url, PaginationAction.Prev) : "javascript:void(0);")" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @foreach (var pageNumber in this.Model.GetPages())
+            {
+                <li class="@(pageNumber == this.Model.CurrentPage ? "active" : null)">
+                    <a href="@this.Model.GetUrl(this.Url, PaginationAction.Page, pageNumber)">@(pageNumber + 1)</a>
+                </li>
+            }
+            <li class="@(this.Model.CurrentPage == this.Model.MaxPages ? "disabled" : null)">
+                <a href="@(this.Model.CurrentPage != this.Model.MaxPages ? this.Model.GetUrl(this.Url, PaginationAction.Next) : "javascript:void(0);")" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+}

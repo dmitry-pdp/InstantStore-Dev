@@ -57,3 +57,8 @@ a.tile-item
 {
     text-decoration: none;
 }
+
+.left-space
+{
+    margin-left:15px;
+}

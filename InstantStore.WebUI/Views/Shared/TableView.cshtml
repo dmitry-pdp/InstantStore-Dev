@@ -1,0 +1,54 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model TableViewModel
+@{
+    bool IsRowClickable = this.Model.RowClickAction != null;
+    string tableId =  "_c_" + this.Model.Id;    
+}
+
+<table class="table table-hover">
+    @if (this.Model.Header.Any())
+    {
+        <thead>
+            <tr>
+                @foreach (var header in this.Model.Header)
+                {
+                    <th>@header.Text</th>
+                }
+            </tr>
+        </thead>
+    }
+    @foreach (var row in this.Model.Rows)
+    {
+        <tr id="@(IsRowClickable ? row.Id : null)" class="@(IsRowClickable ? "c_pointer " + tableId : null)">
+            @foreach(var cell in row.Cells)
+            {
+                <td>
+                    @if (cell.Action != null)
+                    {
+                        <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default">@cell.Action.Text</a>
+                    }
+                    else
+                    {
+                        @cell.Text
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>
+@if (this.Model.Pagination != null)
+{
+    @Html.Partial("Pager", this.Model.Pagination);
+}
+@if (IsRowClickable)
+{
+    <script>
+        $(function () {
+            $(".@tableId").click(function () {
+                location.href = "@this.Model.RowClickAction.GetUrl(this.Url)" + "?id=" + $(this).attr("id");
+            });
+        });
+    </script>
+}

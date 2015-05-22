@@ -8,6 +8,16 @@ namespace InstantStore.WebUI.ViewModels
 {
     public class NavigationLink
     {
+        public NavigationLink()
+        {
+        }
+
+        public NavigationLink(string action, string controller = null)
+        {
+            this.ActionName = action;
+            this.ControllerName = controller;
+        }
+
         public string Text { get; set; }
 
         public string ActionName { get; set; }
@@ -18,9 +28,12 @@ namespace InstantStore.WebUI.ViewModels
 
         public Guid? ParentId { get; set; }
 
+        public object Parameters { get; set; }
+
         public string GetUrl(UrlHelper helper)
         {
-            object parameters = null;
+            object parameters = this.Parameters;
+
             if (this.PageId != null)
             {
                 parameters = this.ParentId == null ? (object)new { id = this.PageId } : (object)new { id = PageId, parentId = this.ParentId };

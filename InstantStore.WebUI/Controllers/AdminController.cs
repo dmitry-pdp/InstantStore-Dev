@@ -19,6 +19,11 @@ namespace InstantStore.WebUI.Controllers
 
         public AdminController(IRepository repository)
         {
+            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
+            if (user == null || !user.IsAdmin)
+            {
+            }
+
             this.repository = repository;
             this.settingsViewModel = new SettingsViewModel(this.repository);
             this.ViewData["RenderCustomLeftColumn"] = true;
@@ -34,22 +39,6 @@ namespace InstantStore.WebUI.Controllers
 
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             return null;
-        }
-
-        public ActionResult Orders()
-        {
-            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Orders);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Orders);
-            return this.Authorize() ?? this.View(new OrderHistoryListViewModel(this.repository, user, 0, 100));
-        }
-
-        public ActionResult Offers()
-        {
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Offers);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Offers);
-            return this.Authorize() ?? this.View();
         }
     }
 }

@@ -5,31 +5,10 @@
 @{
     ViewBag.Title = StringResource.admin_Template_New;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    var templateList = ViewBag.TemplatesList as IList<TemplateViewModel>;
 }
 
-<div class="border col-sm-3">
-    <div class="row" style="vertical-align:bottom">
-        <div class="col-sm-offset-1 col-sm-5">
-            <h4>@StringResource.admin_Templates</h4>
-        </div>
-        <div class="col-sm-6">
-            @Html.ActionLink(StringResource.admin_Back, "Templates", null, new { @class = "btn btn-primary pull-right" })
-        </div>
-    </div>
-
-    <ul class="nav nav-pills nav-stacked">
-        @foreach (var template in templateList)
-        {
-            <li role="presentation" class="@(template.Id == this.Model.Id ? "active" : "")">
-                <a href="/admin/template?id=@template.Id"><span>@template.Name</span></a>
-            </li>
-        }
-    </ul>
-</div>
-<div class="border col-sm-8 container-fluid">
+<div class="col-sm-offset-1 col-sm-10">
     <h2>@ViewBag.Title</h2>
-
     @using (Html.BeginForm("Template", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="form-group">
@@ -62,10 +41,9 @@
                 </div>
             </div>
         </div>
-
         @Html.HiddenFor(model => model.Id);
-        }
-    </div>
+    }
+</div>
 <script>
     $(function () {
 
@@ -99,8 +77,7 @@
             $.ajax({
                 url: url,
                 cache: false,
-                success: function (html)
-                {
+                success: function (html) {
                     $("#templateProperties").append(html);
                     $("#CustomProperty-New").val('');
                     $("a.delete-button").click(deleteFunc);

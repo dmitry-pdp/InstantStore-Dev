@@ -1,0 +1,15 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model TabControlViewModel
+
+<div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+        @foreach (var tabItem in this.Model.Tabs)
+        { 
+            <li class="@(tabItem.IsActive ? "active" : null)">
+                <a href="@(tabItem.IsActive ? "#" : tabItem.Link.GetUrl(this.Url))">@tabItem.Name</a>
+            </li>
+        }
+    </ul>
+</div>

@@ -9,6 +9,7 @@ using InstantStore.Domain.Concrete;
 using InstantStore.Domain.Helpers;
 using InstantStore.WebUI.Resources;
 using InstantStore.WebUI.ViewModels.Helpers;
+using System.Globalization;
 
 namespace InstantStore.WebUI.ViewModels
 {
@@ -83,6 +84,28 @@ namespace InstantStore.WebUI.ViewModels
                     this.Products.Add(viewModel);
                 }
 
+                order.TotalPrice = total;
+
+                this.Offer = this.GetOffer(order, currency);
+
+                if (this.Offer != null)
+                {
+                    total = this.Offer.Type == OfferDiscountType.Percent
+                        ? total * (1 - this.Offer.Discount / 100.0M)
+                        : total - this.Offer.Discount;
+
+                    using (var context = new InstantStoreDataContext())
+                    {
+                        var o = context.Orders.FirstOrDefault(x => x.Id == order.Id);
+                        if (o != null)
+                        {
+                            o.OfferId = this.Offer.Id;
+                            o.TotalPrice = total;
+                            context.SubmitChanges();
+                        }
+                    }
+                }
+
                 this.Total = new CurrencyString(total, currency.Text);
             }
         }
@@ -127,7 +150,7 @@ namespace InstantStore.WebUI.ViewModels
         {
             var orderStatuses = repository.GetStatusesForOrder(order.Id);
             var submittedUpdate = orderStatuses.FirstOrDefault(x => x.Status == (int)OrderStatus.Placed);
-            var processedUpdate = orderStatuses.FirstOrDefault(x => x.Status == (int)OrderStatus.Processed);
+            var processedUpdate = orderStatuses.FirstOrDefault(x => x.Status == (int)OrderStatus.Completed);
 
             this.SubmitDate = submittedUpdate != null ? (DateTime?)submittedUpdate.DateTime : null;
             this.ProcessedDate = processedUpdate != null ? (DateTime?)processedUpdate.DateTime : null;
@@ -146,6 +169,55 @@ namespace InstantStore.WebUI.ViewModels
         public Guid Id { get; set; }
 
         public string Description { get; set; }
+
+        public string UserName { get; set; }
+
+        public OrderStatus Status { get; set; }
+
+        public OfferViewModel Offer { get; set; }
+
+        public string GetOfferText()
+        {
+            if (this.Offer == null)
+            {
+                return null;
+            }
+
+            return this.Offer.Type == OfferDiscountType.Percent
+                ? string.Format(StringResource.PercentDiscountFormat, this.Offer.Discount.ToString("N", new CultureInfo("ru-RU")))
+                : new InstantStore.WebUI.ViewModels.Helpers.CurrencyString(this.Offer.Discount, this.Offer.CurrencyText).ToString();
+        }
+
+        private OfferViewModel GetOffer(Order order, Currency currency)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var availableOffer = context.Offers
+                    .Where(
+                        offer =>
+                        offer.IsActive &&
+                        offer.CurrencyId == currency.Id &&
+                        offer.ThresholdPriceValue <= order.TotalPrice)
+                    .OrderByDescending(
+                        offer =>
+                        offer.ThresholdPriceValue)
+                    .FirstOrDefault();
+
+                if (availableOffer != null)
+                {
+                    return new OfferViewModel
+                    {
+                        Id = availableOffer.VersionId,
+                        Name = availableOffer.Name,
+                        Type = (OfferDiscountType)availableOffer.DiscountType,
+                        Discount = availableOffer.DiscountValue,
+                        CurrencyText = availableOffer.Currency.Text
+                    };
+                }
+            }
+
+            return null;
+        }
     }
 
     public class ProductOrderViewModel

@@ -1,0 +1,21 @@
+﻿@using InstantStore.WebUI.Resources;
+@using InstantStore.WebUI.ViewModels;
+
+@model PaginationViewModel
+@{
+    var isPrev = this.Model.CurrentPage == 0;
+    var isNext = this.Model.CurrentPage == this.Model.MaxPages;
+    
+    var prevLink = !isPrev ? this.Model.GetUrl(this.Url, PaginationAction.Prev) : "javascript:void(0);";
+    var nextLink = !isNext ? this.Model.GetUrl(this.Url, PaginationAction.Next) : "javascript:void(0);";
+}
+<nav>
+    <ul class="pager">
+        <li class="previous @(isPrev ? "disabled" : null)">
+            <a href="@(prevLink)"><span aria-hidden="true">&larr;</span>&nbsp;@StringResource.admin_OrdersPagerPrev</a>
+        </li>
+        <li class="next @(isNext ? "disabled" : null)">
+            <a href="@nextLink">@StringResource.admin_OrdersPagerNext&nbsp;<span aria-hidden="true">&rarr;</span></a>
+        </li>
+    </ul>
+</nav>

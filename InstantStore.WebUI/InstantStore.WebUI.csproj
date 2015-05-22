@@ -132,6 +132,8 @@
     <Compile Include="Controllers\AdminController.Currency.cs" />
     <Compile Include="Controllers\AdminController.Dashboard.cs" />
     <Compile Include="Controllers\AdminController.Images.cs" />
+    <Compile Include="Controllers\AdminController.Offers.cs" />
+    <Compile Include="Controllers\AdminController.Orders.cs" />
     <Compile Include="Controllers\AdminController.Pages.cs" />
     <Compile Include="Controllers\AdminController.Product.cs" />
     <Compile Include="Controllers\AdminController.Settings.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="ViewModels\CategoryProductsViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
+    <Compile Include="ViewModels\OfferViewModel.cs" />
     <Compile Include="ViewModels\OrderDetailsViewModel.cs" />
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
@@ -173,6 +176,8 @@
     <Compile Include="ViewModels\OrderHistoryViewModel.cs" />
     <Compile Include="ViewModels\OrderListViewModel.cs" />
     <Compile Include="ViewModels\Shared\ImageThumbnailViewModel.cs" />
+    <Compile Include="ViewModels\Shared\ItemListViewModel.cs" />
+    <Compile Include="ViewModels\Shared\ListViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\BreadcrumbItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\BreadcrumbViewModel.cs" />
     <Compile Include="ViewModels\Shared\Navigation\MainMenuViewModel.cs" />
@@ -186,6 +191,8 @@
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Shared\TabControlViewModel.cs" />
+    <Compile Include="ViewModels\Shared\TableViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\Shared\TilesViewModel.cs" />
     <Compile Include="ViewModels\TreeViewModel.cs" />
@@ -316,6 +323,12 @@
     <Content Include="Views\Shared\NavigationLink.cshtml" />
     <Content Include="Views\Main\HistoryOrderDetails.cshtml" />
     <Content Include="Views\Main\Profile.cshtml" />
+    <Content Include="Views\Shared\ListView.cshtml" />
+    <Content Include="Views\Shared\TableView.cshtml" />
+    <Content Include="Views\Admin\Order.cshtml" />
+    <Content Include="Views\Shared\TabControlView.cshtml" />
+    <Content Include="Views\Shared\Pager.cshtml" />
+    <Content Include="Views\Admin\Offer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

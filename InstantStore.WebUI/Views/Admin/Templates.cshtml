@@ -6,42 +6,45 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="col-sm-offset-1 col-sm-10">
 
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>@StringResource.admin_Templates_Name</th>
-            </tr>
-        </thead>
-        @foreach (var template in this.Model)
-        {
-            <tr id="@template.Id" class="c_pointer">
-                <td class="col-sm-3">@template.Name</td>
-            </tr>
-        }
-    </table>
-</div>
-<div class="table-responsive">
-    @using (Html.BeginForm("Template", "Admin", FormMethod.Post))
-    {
+    <h2>@ViewBag.Title</h2>
+
+    <div class="table-responsive">
         <table class="table table-hover">
-            <tr>
-                <td class="col-sm-3">
-                    <input type="text" class="form-control" id="TemplateViewModel.Name" name="TemplateViewModel.Name" placeholder="@StringResource.Template_New" />
-                </td>
-                <td>
-                    <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>@StringResource.admin_Templates_Name</th>
+                </tr>
+            </thead>
+            @foreach (var template in this.Model)
+            {
+                <tr id="@template.Id" class="c_pointer">
+                    <td class="col-sm-3">@template.Name</td>
+                </tr>
+            }
         </table>
-    }
-</div>
+    </div>
+    <div class="table-responsive">
+        @using (Html.BeginForm("Template", "Admin", FormMethod.Post))
+        {
+            <table class="table table-hover">
+                <tr>
+                    <td class="col-sm-3">
+                        <input type="text" class="form-control" id="TemplateViewModel.Name" name="TemplateViewModel.Name" placeholder="@StringResource.Template_New" />
+                    </td>
+                    <td>
+                        <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
 
-<script>
-    $("tr.c_pointer").click(function () {
-        window.location.href = '/admin/template?id=' + this.getAttribute('id');
-    });
-</script>
+</div>
+    <script>
+        $("tr.c_pointer").click(function () {
+            window.location.href = '/admin/template?id=' + this.getAttribute('id');
+        });
+    </script>
 

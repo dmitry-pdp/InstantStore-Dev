@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using InstantStore.Domain.Exceptions;
 using InstantStore.Domain.Helpers;
+using InstantStore.Domain.Abstract;
 
 namespace InstantStore.Domain.Concrete
 {
@@ -14,7 +15,8 @@ namespace InstantStore.Domain.Concrete
         Unknown = 0,
         Active = 1,
         Placed = 2,
-        Processed = 3
+        InProcess = 3,
+        Completed = 4
     }
 
     public partial class LinqRepository
@@ -203,6 +205,13 @@ namespace InstantStore.Domain.Concrete
 
                     order.Status = (int)OrderStatus.Placed;
                     order.TotalPrice = order.OrderProducts.Sum(x => x.Price * x.Count);
+                    if (order.Offer != null)
+                    {
+                        order.TotalPrice = order.Offer.DiscountType == (int)OfferDiscountType.Percent
+                            ? order.TotalPrice * (1 - order.Offer.DiscountValue / 100.0M)
+                            : order.TotalPrice - order.Offer.DiscountValue;
+                    }
+
                     order.PriceCurrencyId = userCurrency;
                     
                     context.OrderUpdates.InsertOnSubmit(new OrderUpdate
@@ -218,20 +227,23 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public IList<Order> GetOrdersWithStatus(IEnumerable<OrderStatus> statuses, Guid? userId, int offset, int count)
+        public OrdersQueryResult GetOrdersWithStatus(IEnumerable<OrderStatus> statuses, Guid? userId, int offset, int count)
         {
             using (var context = new InstantStoreDataContext())
             {
-                var orders = context.Orders
-                    .Where(x => statuses.Contains((OrderStatus)x.Status) && (userId == null || x.UserId == userId))
-                    .Skip(offset);
+                Func<Order, bool> selector = (Order order) => statuses.Contains((OrderStatus)order.Status) && (userId == null || order.UserId == userId);
+                var orders = context.Orders.Where(selector).Skip(offset);
 
                 if (count > 0)
-                { 
+                {
                     orders = orders.Take(count);
                 }
-                
-                return orders.ToList();
+
+                return new OrdersQueryResult
+                {
+                    Result = orders.ToList(),
+                    MaxCount = context.Orders.Count(selector)
+                };
             }
         }
 

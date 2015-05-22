@@ -21,7 +21,6 @@ namespace InstantStore.WebUI.Controllers
             var currencies = this.repository.GetCurrencies();
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Currency);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Currency);
             this.ViewData["Currencies"] = currencies;
             this.ViewData["Tab"] = tab;
             this.ViewData["CurrenciesSelectList"] = 

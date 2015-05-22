@@ -14,16 +14,17 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        public ActionResult Users()
+        public ActionResult Users(int o = 0, int c = 25, Guid? uid = null)
         {
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Users);
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository);
+
             return this.Authorize() ?? View();
         }
 
         public ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
         {
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, id);
             if (activate != null && activate.Value)
             {

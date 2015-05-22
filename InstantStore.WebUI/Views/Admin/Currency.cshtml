@@ -9,128 +9,129 @@
     var currencySelectList = ViewBag.CurrenciesSelectList as IEnumerable<SelectListItem>;
 }
 
-<h2>@ViewBag.Title</h2>
-<div role="tabpanel">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="@(isCurrencyTab ? "" : "active")">
-            <a href="#exchange_rate" aria-controls="exchange_rate" role="tab" data-toggle="tab">@StringResource.admin_ExchangeRate</a>
-        </li>
-        <li role="presentation" class="@(isCurrencyTab ? "active" : "")">
-            <a href="#currency_list" aria-controls="currency_list" role="tab" data-toggle="tab">@StringResource.admin_Currency</a>
-        </li>
-    </ul>
-</div>
+<div class="col-sm-offset-1 col-sm-10">
 
-<div class="tab-content form-group">
-    <div role="tabpanel" class="tab-pane table-responsive @(isCurrencyTab ? "" : "active")" id="exchange_rate">
-        <table class="table table-hover">
-            @foreach (var exchangeRateItem in this.Model.ExchangeRateItems)
-            {
-                <tr>
-                    <td class="">@exchangeRateItem.CurrencyFrom</td>
-                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
-                    <td>@exchangeRateItem.CurrencyTo</td>
-                    <td class="col-sm-2">
-                        <div class="has-feedback" id="@exchangeRateItem.Id-Direct-ValidationSuccessContainer">
-                            <input type="text" value="@exchangeRateItem.ConversionRate" class="form-control" id="@exchangeRateItem.Id-Direct" />
-                            <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Direct-ValidationSuccess"></span>
-                        </div>
-                    </td>
-                    <td>|</td>
-                    <td class="">@exchangeRateItem.CurrencyTo</td>
-                    <td><span class="glyphicon glyphicon-arrow-right"></span></td>
-                    <td>@exchangeRateItem.CurrencyFrom</td>
-                    <td class="col-sm-2">
-                        <div class="has-feedback" id="@exchangeRateItem.Id-Reverse-ValidationSuccessContainer">
-                            <input type="text" value="@exchangeRateItem.ReverseConversionRate" class="form-control" id="@exchangeRateItem.Id-Reverse" />
-                            <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Reverse-ValidationSuccess"></span>
-                        </div>
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-default btn-sm" onclick="SubmitRateUpdate(event, '@exchangeRateItem.Id')">@StringResource.admin_Save</a>
-                        <a href="@Url.Action("ExchangeRateUpdate", new { a="delete", id=exchangeRateItem.Id})" class="btn btn-default btn-sm">@StringResource.admin_Delete</a>
-                    </td>
-                </tr>
-            }
-        </table>
-        
-        @using (Html.BeginForm("ExchangeRateUpdate", "Admin", FormMethod.Post))
-        {
-            if (!this.ViewData.ModelState.IsValid)
-            {
-                <div class="text-danger">
-                    <span>@StringResource.error_ErrorsLabel</span>
-                    @Html.ValidationSummary(false)
-                </div>
-            }
-            <div class="col-sm-2">
-                @Html.DropDownListFor(model => model.FromId, currencySelectList, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2">
-                @Html.DropDownListFor(model => model.ToId, currencySelectList, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2">
-                @Html.TextBoxFor(model => model.Rate, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2">
-                @Html.TextBoxFor(model => model.ReverseRate, new { @class = "form-control" })
-            </div>
-            <div>
-                <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
-            </div>
-        }
+    <h2>@ViewBag.Title</h2>
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="@(isCurrencyTab ? "" : "active")">
+                <a href="#exchange_rate" aria-controls="exchange_rate" role="tab" data-toggle="tab">@StringResource.admin_ExchangeRate</a>
+            </li>
+            <li role="presentation" class="@(isCurrencyTab ? "active" : "")">
+                <a href="#currency_list" aria-controls="currency_list" role="tab" data-toggle="tab">@StringResource.admin_Currency</a>
+            </li>
+        </ul>
     </div>
-    <div role="tabpanel" class="tab-pane table-responsive @(isCurrencyTab ? "active" : "")" id="currency_list">
-        @using (Html.BeginForm("CurrencyUpdate", "Admin", FormMethod.Post))
-        {
+
+    <div class="tab-content form-group">
+        <div role="tabpanel" class="tab-pane table-responsive @(isCurrencyTab ? "" : "active")" id="exchange_rate">
             <table class="table table-hover">
-                @foreach (var c in this.Model.Currencies)
+                @foreach (var exchangeRateItem in this.Model.ExchangeRateItems)
                 {
                     <tr>
-                        <td class="col-sm-3">@c.Value.Text</td>
-                        <td><a href="@Url.Action("CurrencyUpdate", new { a="delete", id=c.Key})" class="btn btn-default">@StringResource.admin_Delete</a></td>
+                        <td class="">@exchangeRateItem.CurrencyFrom</td>
+                        <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                        <td>@exchangeRateItem.CurrencyTo</td>
+                        <td class="col-sm-2">
+                            <div class="has-feedback" id="@exchangeRateItem.Id-Direct-ValidationSuccessContainer">
+                                <input type="text" value="@exchangeRateItem.ConversionRate" class="form-control" id="@exchangeRateItem.Id-Direct" />
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Direct-ValidationSuccess"></span>
+                            </div>
+                        </td>
+                        <td>|</td>
+                        <td class="">@exchangeRateItem.CurrencyTo</td>
+                        <td><span class="glyphicon glyphicon-arrow-right"></span></td>
+                        <td>@exchangeRateItem.CurrencyFrom</td>
+                        <td class="col-sm-2">
+                            <div class="has-feedback" id="@exchangeRateItem.Id-Reverse-ValidationSuccessContainer">
+                                <input type="text" value="@exchangeRateItem.ReverseConversionRate" class="form-control" id="@exchangeRateItem.Id-Reverse" />
+                                <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Reverse-ValidationSuccess"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-default btn-sm" onclick="SubmitRateUpdate(event, '@exchangeRateItem.Id')">@StringResource.admin_Save</a>
+                            <a href="@Url.Action("ExchangeRateUpdate", new { a="delete", id=exchangeRateItem.Id})" class="btn btn-default btn-sm">@StringResource.admin_Delete</a>
+                        </td>
                     </tr>
                 }
-                <tr>
-                    <td class="col-sm-3">
-                        <input type="text" class="form-control" id="Currency.Text" name="Currency.Text" placeholder="@StringResource.Currency_New" />
-                    </td>
-                    <td>
-                        <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
-                    </td>
-                </tr>
             </table>
-        }
+
+            @using (Html.BeginForm("ExchangeRateUpdate", "Admin", FormMethod.Post))
+            {
+                if (!this.ViewData.ModelState.IsValid)
+                {
+                    <div class="text-danger">
+                        <span>@StringResource.error_ErrorsLabel</span>
+                        @Html.ValidationSummary(false)
+                    </div>
+                }
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.FromId, currencySelectList, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.ToId, currencySelectList, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.Rate, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.ReverseRate, new { @class = "form-control" })
+                </div>
+                <div>
+                    <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <div role="tabpanel" class="tab-pane table-responsive @(isCurrencyTab ? "active" : "")" id="currency_list">
+            @using (Html.BeginForm("CurrencyUpdate", "Admin", FormMethod.Post))
+            {
+                <table class="table table-hover">
+                    @foreach (var c in this.Model.Currencies)
+                    {
+                        <tr>
+                            <td class="col-sm-3">@c.Value.Text</td>
+                            <td><a href="@Url.Action("CurrencyUpdate", new { a="delete", id=c.Key})" class="btn btn-default">@StringResource.admin_Delete</a></td>
+                        </tr>
+                    }
+                    <tr>
+                        <td class="col-sm-3">
+                            <input type="text" class="form-control" id="Currency.Text" name="Currency.Text" placeholder="@StringResource.Currency_New" />
+                        </td>
+                        <td>
+                            <input type="submit" value="@StringResource.admin_Add" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
     </div>
 </div>
-<script>
-    $("")
+    <script>
+        $("")
 
-    function SubmitRateUpdate(event, id)
-    {
-        event.preventDefault();
-        var rateDirect = $("#" + id + "-Direct").val();
-        var rateReverse = $("#" + id + "-Reverse").val();
-        $.ajax({
-            url : "/admin/ExchangeRateUpdate", 
-            method: "POST",
-            data: {
-                rate: rateDirect,
-                rate_r: rateReverse,
-                action: "update",
-                id: id
-            },
-            dataType: "html"
-        })
-        .fail(function (jqXHR, textStatus) {
-            alert("Ошибка соединения с сервером: " + textStatus);
-        })
-        .done(function ()
-        {
-            $("#" + id + "-Direct-ValidationSuccess").removeClass('hide');
-            $("#" + id + "-Direct-ValidationSuccessContainer").addClass('has-success');
-            $("#" + id + "-Reverse-ValidationSuccess").removeClass('hide');
-            $("#" + id + "-Reverse-ValidationSuccessContainer").addClass('has-success');
-        });
-    }
-</script>
+        function SubmitRateUpdate(event, id) {
+            event.preventDefault();
+            var rateDirect = $("#" + id + "-Direct").val();
+            var rateReverse = $("#" + id + "-Reverse").val();
+            $.ajax({
+                url: "/admin/ExchangeRateUpdate",
+                method: "POST",
+                data: {
+                    rate: rateDirect,
+                    rate_r: rateReverse,
+                    action: "update",
+                    id: id
+                },
+                dataType: "html"
+            })
+            .fail(function (jqXHR, textStatus) {
+                alert("Ошибка соединения с сервером: " + textStatus);
+            })
+            .done(function () {
+                $("#" + id + "-Direct-ValidationSuccess").removeClass('hide');
+                $("#" + id + "-Direct-ValidationSuccessContainer").addClass('has-success');
+                $("#" + id + "-Reverse-ValidationSuccess").removeClass('hide');
+                $("#" + id + "-Reverse-ValidationSuccessContainer").addClass('has-success');
+            });
+        }
+    </script>

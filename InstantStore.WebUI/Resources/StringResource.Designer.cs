@@ -547,6 +547,123 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Новая скидка.
+        /// </summary>
+        public static string admin_OffersAddNew {
+            get {
+                return ResourceManager.GetString("admin_OffersAddNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Записи не найдены.
+        /// </summary>
+        public static string admin_OffersListEmpty {
+            get {
+                return ResourceManager.GetString("admin_OffersListEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скидка.
+        /// </summary>
+        public static string admin_OfferTitle {
+            get {
+                return ResourceManager.GetString("admin_OfferTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Комментарии.
+        /// </summary>
+        public static string admin_OrderDetailsCommentary {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsCommentary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обработан.
+        /// </summary>
+        public static string admin_OrderDetailsCompleted {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Детали заказа.
+        /// </summary>
+        public static string admin_OrderDetailsListTitle {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статус.
+        /// </summary>
+        public static string admin_OrderDetailsStatus {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновить.
+        /// </summary>
+        public static string admin_OrderDetailsSubmit {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsSubmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Размещен.
+        /// </summary>
+        public static string admin_OrderDetailsSubmitted {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsSubmitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заказ.
+        /// </summary>
+        public static string admin_OrderDetailsTitle {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь.
+        /// </summary>
+        public static string admin_OrderDetailsUser {
+            get {
+                return ResourceManager.GetString("admin_OrderDetailsUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Следующий.
+        /// </summary>
+        public static string admin_OrdersPagerNext {
+            get {
+                return ResourceManager.GetString("admin_OrdersPagerNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предыдущий.
+        /// </summary>
+        public static string admin_OrdersPagerPrev {
+            get {
+                return ResourceManager.GetString("admin_OrdersPagerPrev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Файлы приложенные к странице.
         /// </summary>
         public static string admin_PageAttachment {
@@ -1924,11 +2041,182 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to - Нет -.
+        /// </summary>
+        public static string NotAvailable {
+            get {
+                return ResourceManager.GetString("NotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя должно быть заполнено..
+        /// </summary>
+        public static string offer_Error_NameRequired {
+            get {
+                return ResourceManager.GetString("offer_Error_NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скидка в процентах должена быть меньше 100..
+        /// </summary>
+        public static string offer_ErrorDiscountPercentRange {
+            get {
+                return ResourceManager.GetString("offer_ErrorDiscountPercentRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скидка должена быть больше нуля..
+        /// </summary>
+        public static string offer_ErrorDiscountRange {
+            get {
+                return ResourceManager.GetString("offer_ErrorDiscountRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя скидки должно быть больше 3х символов и не превышать 250 символов..
+        /// </summary>
+        public static string offer_ErrorNameLength {
+            get {
+                return ResourceManager.GetString("offer_ErrorNameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Порог должен быть больше нуля..
+        /// </summary>
+        public static string offer_ErrorThresholdRange {
+            get {
+                return ResourceManager.GetString("offer_ErrorThresholdRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фиксированная сумма.
+        /// </summary>
+        public static string offerDetailsDiscountType_LumpSum {
+            get {
+                return ResourceManager.GetString("offerDetailsDiscountType_LumpSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Процент.
+        /// </summary>
+        public static string offerDetailsDiscountType_Percent {
+            get {
+                return ResourceManager.GetString("offerDetailsDiscountType_Percent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тип скидки.
+        /// </summary>
+        public static string offerDetailsDiscountTypeLabel {
+            get {
+                return ResourceManager.GetString("offerDetailsDiscountTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить.
+        /// </summary>
+        public static string offerDetailsSubmitNew {
+            get {
+                return ResourceManager.GetString("offerDetailsSubmitNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string offerDetailsSubmitUpdate {
+            get {
+                return ResourceManager.GetString("offerDetailsSubmitUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Активные.
+        /// </summary>
+        public static string OfferStatus_Active {
+            get {
+                return ResourceManager.GetString("OfferStatus_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не активные.
+        /// </summary>
+        public static string OfferStatus_Disabled {
+            get {
+                return ResourceManager.GetString("OfferStatus_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сумма\процент скидки.
+        /// </summary>
+        public static string offerTableHeaderDiscount {
+            get {
+                return ResourceManager.GetString("offerTableHeaderDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Другие скидки не могут быть применены когда данная скидка выбрана..
+        /// </summary>
+        public static string offerTableHeaderMultiApply {
+            get {
+                return ResourceManager.GetString("offerTableHeaderMultiApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string offerTableHeaderName {
+            get {
+                return ResourceManager.GetString("offerTableHeaderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Приоритет.
+        /// </summary>
+        public static string offerTableHeaderPriority {
+            get {
+                return ResourceManager.GetString("offerTableHeaderPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сумма активации.
+        /// </summary>
+        public static string offerTableHeaderThreshold {
+            get {
+                return ResourceManager.GetString("offerTableHeaderThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В обработке.
+        /// </summary>
+        public static string orderStatus_InProcess {
+            get {
+                return ResourceManager.GetString("orderStatus_InProcess", resourceCulture);
             }
         }
         
@@ -1983,6 +2271,15 @@ namespace InstantStore.WebUI.Resources {
         public static string PaymentType_Cashless {
             get {
                 return ResourceManager.GetString("PaymentType_Cashless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} %.
+        /// </summary>
+        public static string PercentDiscountFormat {
+            get {
+                return ResourceManager.GetString("PercentDiscountFormat", resourceCulture);
             }
         }
         
@@ -2581,6 +2878,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Пользователь.
+        /// </summary>
+        public static string user_HistoryListHeaderUserName {
+            get {
+                return ResourceManager.GetString("user_HistoryListHeaderUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя должно быть от 3 до 100 символов.
         /// </summary>
         public static string user_NameErrorLength {
@@ -2622,6 +2928,24 @@ namespace InstantStore.WebUI.Resources {
         public static string user_OrderItemCountChangeApply {
             get {
                 return ResourceManager.GetString("user_OrderItemCountChangeApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Применить.
+        /// </summary>
+        public static string user_OrderOffersSelect {
+            get {
+                return ResourceManager.GetString("user_OrderOffersSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доступные скидки.
+        /// </summary>
+        public static string user_OrderOffersTitle {
+            get {
+                return ResourceManager.GetString("user_OrderOffersTitle", resourceCulture);
             }
         }
         

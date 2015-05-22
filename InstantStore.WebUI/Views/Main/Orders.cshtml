@@ -2,6 +2,7 @@
 @using InstantStore.WebUI.Resources;
 @model OrderDetailsViewModel
 @{
+    var culture = new System.Globalization.CultureInfo("ru-RU");
     ViewBag.Title = StringResource.user_OrdersPageTitle;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     bool hasUnavailable = this.Model.Products.Any(x => !x.IsAvailable);
@@ -45,7 +46,7 @@ else
                         <label>@StringResource.user_OrdersProductIsAvailable</label>
                         <span class="@(orderProduct.IsAvailable ? "text-success" : "text-danger")">@(orderProduct.IsAvailable ? StringResource.Yes : StringResource.No)</span>
                     </div>
-                    <a href="@Url.Action("Orders", new { a = "delete", id = orderProduct.Id })">@StringResource.user_OrderProductDelete</a>
+                    <a href="@Url.Action( "Orders", new { a = "delete", id = orderProduct.Id })">@StringResource.user_OrderProductDelete</a>
                 </div>
                 <div class="order-item-quantity">
                     @Html.TextBoxFor(model => model.Products[index].Count, new { @class = "form-control input-count" })
@@ -57,6 +58,20 @@ else
             @Html.HiddenFor(model => model.Products[index].Id);
         }
     </div>
+    if (this.Model.Offer != null)
+    {
+        <h4>@StringResource.user_OrderOffersTitle</h4>
+        <div class="list-group">
+           <div class="list-group-item form-group">
+               <h4>
+                   @this.Model.Offer.Name
+               </h4>
+               <div>
+                   @this.Model.GetOfferText()
+               </div>
+           </div>
+        </div> 
+    }
     <div class="order-line">
         <div class="order-total">
             <h3>@StringResource.user_OrdersTotal</h3>
@@ -76,7 +91,7 @@ else
     <script>
         $(function () {
             $("#btn-recalculate").hide();
-            $(".input-count").change(function() {
+            $(".input-count").change(function () {
                 $("#btn-submit").hide();
                 $("#btn-recalculate").show();
             });

@@ -7,55 +7,57 @@
     var userLists = ViewBag.UsersListViewModel as UsersListViewModel;
     var newUsers = userLists.NewUsers.Count;
 }
+<div class="col-sm-offset-1 col-sm-10">
 
-<h3>@ViewBag.Title</h3>
-<div role="tabpanel">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="@(newUsers > 0 ? "" : "active")">
-            <a href="#active_users" aria-controls="active_users" role="tab" data-toggle="tab">@StringResource.admin_Users_ActiveTab</a>
-        </li>
-        @if (newUsers > 0)
-{
-            <li role="presentation" class="active">
-                <a href="#new_users" aria-controls="new_users" role="tab" data-toggle="tab">
-                    @StringResource.admin_Users_NewTab
-                    <span class="badge">@newUsers.ToString()</span>
-                </a>
-            </li>
-}
-        @if (userLists.BlockedUsers.Count > 0)
-{
-            <li role="presentation">
-                <a href="#blocked_users" aria-controls="blocked_users" role="tab" data-toggle="tab">@StringResource.admin_Users_BlockedTab</a>
-            </li>
-}
-    </ul>
-</div>
-<div class="tab-content form-group">
-    <div role="tabpanel" class="tab-pane table-responsive @(newUsers > 0 ? "" : "active")" id="active_users">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>@StringResource.form_Contact_Name</th>
-                    <th>@StringResource.form_Reg_Region</th>
-                    <th>@StringResource.form_Reg_CompanyName</th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var user in userLists.ActiveUsers)
+    <h3>@ViewBag.Title</h3>
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            @if (newUsers > 0)
             {
-                <tr id="@user.Id" class="c_pointer">
-                    <td class="col-sm-3">@user.Name</td>
-                    <td class="col-sm-3">@user.City</td>
-                    <td class="col-sm-3">@user.Company</td>
-                    <td><a href="/admin/orders?userid=@user.Id" class="btn btn-default">@StringResource.admin_UsersOrdersAction</a></td>
-                </tr>
+                <li role="presentation" class="active">
+                    <a href="#new_users" aria-controls="new_users" role="tab" data-toggle="tab">
+                        @StringResource.admin_Users_NewTab
+                        <span class="badge">@newUsers.ToString()</span>
+                    </a>
+                </li>
             }
-        </table>
+            <li role="presentation" class="@(newUsers > 0 ? "" : "active")">
+                <a href="#active_users" aria-controls="active_users" role="tab" data-toggle="tab">@StringResource.admin_Users_ActiveTab</a>
+            </li>
+            @if (userLists.BlockedUsers.Count > 0)
+            {
+                <li role="presentation">
+                    <a href="#blocked_users" aria-controls="blocked_users" role="tab" data-toggle="tab">@StringResource.admin_Users_BlockedTab</a>
+                </li>
+            }
+        </ul>
     </div>
-    @if (newUsers > 0)
-    {
-        <div role="tabpanel" class="tab-pane table-responsive active" id="new_users">
+    <div class="tab-content form-group">
+        @if (newUsers > 0)
+        {
+            <div role="tabpanel" class="tab-pane table-responsive active" id="new_users">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>@StringResource.form_Contact_Name</th>
+                            <th>@StringResource.form_Reg_Region</th>
+                            <th>@StringResource.form_Reg_CompanyName</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var user in userLists.NewUsers)
+                    {
+                        <tr id="@user.Id" class="c_pointer">
+                            <td class="col-sm-3">@user.Name</td>
+                            <td class="col-sm-3">@user.City</td>
+                            <td class="col-sm-3">@user.Company</td>
+                            <td><a href="/admin/user?id=@user.Id&activate=true" class="btn btn-default">@StringResource.admin_UserActivateAction</a></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+        <div role="tabpanel" class="tab-pane table-responsive @(newUsers > 0 ? "" : "active")" id="active_users">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -65,42 +67,42 @@
                         <th></th>
                     </tr>
                 </thead>
-                @foreach (var user in userLists.NewUsers)
+                @foreach (var user in userLists.ActiveUsers)
                 {
                     <tr id="@user.Id" class="c_pointer">
                         <td class="col-sm-3">@user.Name</td>
                         <td class="col-sm-3">@user.City</td>
                         <td class="col-sm-3">@user.Company</td>
-                        <td><a href="/admin/user?id=@user.Id&activate=true" class="btn btn-default">@StringResource.admin_UserActivateAction</a></td>
+                        <td><a href="/admin/orders?userid=@user.Id" class="btn btn-default">@StringResource.admin_UsersOrdersAction</a></td>
                     </tr>
                 }
             </table>
         </div>
-    }
-    @if (userLists.BlockedUsers.Count > 0)
-    {
-        <div role="tabpanel" class="tab-pane table-responsive" id="blocked_users">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>@StringResource.form_Contact_Name</th>
-                        <th>@StringResource.form_Reg_Region</th>
-                        <th>@StringResource.form_Reg_CompanyName</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                @foreach (var user in userLists.BlockedUsers)
-                {
-                    <tr id="@user.Id" class="c_pointer">
-                        <td class="col-sm-3">@user.Name</td>
-                        <td class="col-sm-3">@user.City</td>
-                        <td class="col-sm-3">@user.Company</td>
-                        <td><a href="/admin/user?id=@user.Id&unblock=true" class="btn btn-default">@StringResource.admin_UserUnblockAction</a></td>
-                    </tr>
-                }
-            </table>
-        </div>
-    }
+        @if (userLists.BlockedUsers.Count > 0)
+        {
+            <div role="tabpanel" class="tab-pane table-responsive" id="blocked_users">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>@StringResource.form_Contact_Name</th>
+                            <th>@StringResource.form_Reg_Region</th>
+                            <th>@StringResource.form_Reg_CompanyName</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var user in userLists.BlockedUsers)
+                    {
+                        <tr id="@user.Id" class="c_pointer">
+                            <td class="col-sm-3">@user.Name</td>
+                            <td class="col-sm-3">@user.City</td>
+                            <td class="col-sm-3">@user.Company</td>
+                            <td><a href="/admin/user?id=@user.Id&unblock=true" class="btn btn-default">@StringResource.admin_UserUnblockAction</a></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
 </div>
 <script>
     $("tr.c_pointer").click(function () {

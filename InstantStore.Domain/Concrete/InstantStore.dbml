@@ -33,8 +33,9 @@
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Text" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Currency_Product" Member="Products" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Product" />
-      <Association Name="Currency_Order" Member="Orders" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Order" />
       <Association Name="Currency_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="PriceCurrencyId" Type="OrderProduct" />
+      <Association Name="Currency_Order" Member="Orders" ThisKey="Id" OtherKey="PriceCurrencyId" Type="Order" />
+      <Association Name="Currency_Offer" Member="Offers" ThisKey="Id" OtherKey="CurrencyId" Type="Offer" />
     </Type>
   </Table>
   <Table Name="dbo.ExchangeRate" Member="ExchangeRates">
@@ -163,20 +164,6 @@
       <Association Name="Order_OrderUpdate" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.[Order]" Member="Orders">
-    <Type Name="Order">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Association Name="Order_OrderUpdate" Member="OrderUpdates" ThisKey="Id" OtherKey="OrderId" Type="OrderUpdate" />
-      <Association Name="Order_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="OrderId" Type="OrderProduct" />
-      <Association Name="Currency_Order" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
-      <Association Name="User_Order" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.ProductToCategory" Member="ProductToCategories">
     <Type Name="ProductToCategory">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -212,8 +199,42 @@
       <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Association Name="Currency_OrderProduct" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
-      <Association Name="Order_OrderProduct" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
       <Association Name="Product_OrderProduct" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
+      <Association Name="Order_OrderProduct" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Order]" Member="Orders">
+    <Type Name="Order">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="PriceCurrencyId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="OfferId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="Order_OrderUpdate" Member="OrderUpdates" ThisKey="Id" OtherKey="OrderId" Type="OrderUpdate" />
+      <Association Name="Order_OrderProduct" Member="OrderProducts" ThisKey="Id" OtherKey="OrderId" Type="OrderProduct" />
+      <Association Name="Currency_Order" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+      <Association Name="User_Order" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" />
+      <Association Name="Offer_Order" Member="Offer" ThisKey="OfferId" OtherKey="VersionId" Type="Offer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Offer" Member="Offers">
+    <Type Name="Offer">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ThresholdPriceValue" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountValue" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CurrencyId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="MultiApply" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ThresholdMultiCurrency" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VersionId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscountType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Offer_Order" Member="Orders" ThisKey="VersionId" OtherKey="OfferId" Type="Order" />
+      <Association Name="Currency_Offer" Member="Currency" ThisKey="CurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

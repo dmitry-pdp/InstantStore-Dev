@@ -111,7 +111,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             mainMenuViewModel.Menu.Add(new MenuItemViewModel
             {
                 Name = StringResource.admin_UsersOrdersAction,
-                Badge = repository.GetOrdersWithStatus(new [] { OrderStatus.Placed }, null, 0, -1).Count.ToString(),
+                Badge = repository.GetOrdersWithStatus(new [] { OrderStatus.Placed }, null, 0, -1).Result.Count.ToString(),
                 Link = new NavigationLink { ActionName = "Orders", ControllerName = "Admin" },
                 Glyph = "glyphicon glyphicon-shopping-cart",
                 IsActive = page == ControlPanelPage.Orders

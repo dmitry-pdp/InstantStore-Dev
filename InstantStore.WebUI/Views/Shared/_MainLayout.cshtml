@@ -8,6 +8,8 @@
     var navigationBarViewModel = this.ViewBag.NavigationMenuViewModel as NavigationMenuViewModel;
     var breadcrumbViewModel = this.ViewBag.BreadcrumbViewModel as BreadcrumbViewModel;
     var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
+    var navigationListViewModel = this.ViewBag.NavigationListViewModel as ListViewModel;
+        
     bool showLeftRailLogin = (bool?)this.ViewBag.ShowLeftRailLogin ?? false;
     var userLeftPanel = this.ViewBag.UserLeftPanel as UserPanelViewModel;
 
@@ -15,7 +17,8 @@
         !showLeftRailLogin &&
         userLeftPanel == null &&
         navigationBarViewModel == null &&
-        mediaListViewModel == null
+        mediaListViewModel == null &&
+        navigationListViewModel == null
     );
 }
 
@@ -87,6 +90,14 @@
                     @if (mediaListViewModel != null)
                     {
                         @Html.Partial("MediaList", mediaListViewModel)
+                    }
+                    @if (navigationListViewModel != null)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="min-height:780px">
+                                @Html.Partial("ListView", navigationListViewModel)
+                            </div>
+                        </div>
                     }
                 </div>
                 <div class="col-sm-9">

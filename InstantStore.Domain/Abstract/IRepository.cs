@@ -137,10 +137,16 @@ namespace InstantStore.Domain.Abstract
 
         void SubmitOrder(Guid orderId);
 
-        IList<Order> GetOrdersWithStatus(IEnumerable<OrderStatus> statuses, Guid? userId, int offset, int count);
+        OrdersQueryResult GetOrdersWithStatus(IEnumerable<OrderStatus> statuses, Guid? userId, int offset, int count);
 
         IList<OrderUpdate> GetStatusesForOrder(Guid orderId);
 
         void AddProductsFromOrder(Guid orderId, User user);
+    }
+    public struct OrdersQueryResult
+    {
+        public IList<Order> Result;
+
+        public int MaxCount;
     }
 }

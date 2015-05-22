@@ -19,7 +19,6 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult Templates()
         {
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Templates);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Templates);
             var templates = this.repository.GetTemplates().Select(x => new TemplateViewModel() { Id = x.Id, Name = x.Name }).ToList();
             return this.Authorize() ?? this.View(templates);
         }
@@ -65,7 +64,6 @@ namespace InstantStore.WebUI.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        [HttpGet]
         public ActionResult Template(string a, Guid? id)
         {
             PropertyTemplate template;
@@ -79,8 +77,8 @@ namespace InstantStore.WebUI.Controllers
                 this.repository.DeleteTemplate(id.Value);
                 return this.RedirectToAction("Templates");
             }
-            
-            this.ViewData["TemplatesList"] = this.repository.GetTemplates().Select(x => new TemplateViewModel() { Id = x.Id, Name = x.Name }).ToList();
+
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Templates);
             return this.Authorize() ?? this.View(new TemplateViewModel(template, repository));
         }
 

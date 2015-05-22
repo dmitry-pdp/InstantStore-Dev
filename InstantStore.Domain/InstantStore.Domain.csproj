@@ -65,6 +65,7 @@
     <Compile Include="Concrete\LinqRepository.Settings.cs" />
     <Compile Include="Concrete\LinqRepository.Templates.cs" />
     <Compile Include="Concrete\LinqRepository.User.cs" />
+    <Compile Include="Concrete\Offers.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductSize.cs" />

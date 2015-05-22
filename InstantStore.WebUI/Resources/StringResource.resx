@@ -1059,4 +1059,112 @@
   <data name="user_HIstoryDetails_CopyToCart" xml:space="preserve">
     <value>Копировать в корзину</value>
   </data>
+  <data name="admin_OrderDetailsCommentary" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
+  <data name="admin_OrderDetailsCompleted" xml:space="preserve">
+    <value>Обработан</value>
+  </data>
+  <data name="admin_OrderDetailsListTitle" xml:space="preserve">
+    <value>Детали заказа</value>
+  </data>
+  <data name="admin_OrderDetailsStatus" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="admin_OrderDetailsSubmit" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="admin_OrderDetailsSubmitted" xml:space="preserve">
+    <value>Размещен</value>
+  </data>
+  <data name="admin_OrderDetailsTitle" xml:space="preserve">
+    <value>Заказ</value>
+  </data>
+  <data name="admin_OrderDetailsUser" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>- Нет -</value>
+  </data>
+  <data name="orderStatus_InProcess" xml:space="preserve">
+    <value>В обработке</value>
+  </data>
+  <data name="user_HistoryListHeaderUserName" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
+  <data name="admin_OrdersPagerNext" xml:space="preserve">
+    <value>Следующий</value>
+  </data>
+  <data name="admin_OrdersPagerPrev" xml:space="preserve">
+    <value>Предыдущий</value>
+  </data>
+  <data name="OfferStatus_Active" xml:space="preserve">
+    <value>Активные</value>
+  </data>
+  <data name="OfferStatus_Disabled" xml:space="preserve">
+    <value>Не активные</value>
+  </data>
+  <data name="offerTableHeaderDiscount" xml:space="preserve">
+    <value>Сумма\процент скидки</value>
+  </data>
+  <data name="offerTableHeaderMultiApply" xml:space="preserve">
+    <value>Другие скидки не могут быть применены когда данная скидка выбрана.</value>
+  </data>
+  <data name="offerTableHeaderName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="offerTableHeaderPriority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
+  <data name="offerTableHeaderThreshold" xml:space="preserve">
+    <value>Сумма активации</value>
+  </data>
+  <data name="PercentDiscountFormat" xml:space="preserve">
+    <value>{0} %</value>
+  </data>
+  <data name="admin_OffersListEmpty" xml:space="preserve">
+    <value>Записи не найдены</value>
+  </data>
+  <data name="admin_OffersAddNew" xml:space="preserve">
+    <value>Новая скидка</value>
+  </data>
+  <data name="admin_OfferTitle" xml:space="preserve">
+    <value>Скидка</value>
+  </data>
+  <data name="offerDetailsDiscountTypeLabel" xml:space="preserve">
+    <value>Тип скидки</value>
+  </data>
+  <data name="offerDetailsDiscountType_LumpSum" xml:space="preserve">
+    <value>Фиксированная сумма</value>
+  </data>
+  <data name="offerDetailsDiscountType_Percent" xml:space="preserve">
+    <value>Процент</value>
+  </data>
+  <data name="offerDetailsSubmitNew" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="offerDetailsSubmitUpdate" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="offer_ErrorDiscountPercentRange" xml:space="preserve">
+    <value>Скидка в процентах должена быть меньше 100.</value>
+  </data>
+  <data name="offer_ErrorDiscountRange" xml:space="preserve">
+    <value>Скидка должена быть больше нуля.</value>
+  </data>
+  <data name="offer_ErrorNameLength" xml:space="preserve">
+    <value>Имя скидки должно быть больше 3х символов и не превышать 250 символов.</value>
+  </data>
+  <data name="offer_ErrorThresholdRange" xml:space="preserve">
+    <value>Порог должен быть больше нуля.</value>
+  </data>
+  <data name="offer_Error_NameRequired" xml:space="preserve">
+    <value>Имя должно быть заполнено.</value>
+  </data>
+  <data name="user_OrderOffersSelect" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="user_OrderOffersTitle" xml:space="preserve">
+    <value>Доступные скидки</value>
+  </data>
 </root>
