@@ -1,5 +1,5 @@
-- ASP.NET authorization & filters.
+- Filters -> ASP.NET authorization & filters.
 - Emailing.
-- User. Password reset. Send email.
-- Details page - add to cart, price data.
-- user profile
+- User. Password reset. Send email,
+- Page impression log,
+- Product list view,

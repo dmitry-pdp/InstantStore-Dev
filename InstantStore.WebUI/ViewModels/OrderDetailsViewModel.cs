@@ -73,7 +73,7 @@ namespace InstantStore.WebUI.ViewModels
                     var viewModel = new ProductOrderViewModel
                     {
                         Id = orderProduct.Id,
-                        Thumbnail = new ImageThumbnailViewModel { ThumbnailId = product.MainImageId, Width = 100 },
+                        Thumbnail = new ImageThumbnailViewModel { ThumbnailId = product.MainImageId ?? Guid.Empty, Width = 100 },
                         Title = new NavigationLink { Text = product.Name, ActionName = "Page", PageId = product.VersionId },
                         Count = itemsCount,
                         IsAvailable = product.IsAvailable,
@@ -132,7 +132,7 @@ namespace InstantStore.WebUI.ViewModels
                     this.Products.Add(new ProductOrderViewModel
                     {
                         Id = orderProduct.Id,
-                        Thumbnail = new ImageThumbnailViewModel { ThumbnailId = product.MainImageId, Width = 100 },
+                        Thumbnail = new ImageThumbnailViewModel { ThumbnailId = product.MainImageId ?? Guid.Empty, Width = 100 },
                         Title = new NavigationLink { Text = product.Name, ActionName = "Page", PageId = product.VersionId },
                         Count = orderProduct.Count,
                         IsAvailable = product.IsAvailable,

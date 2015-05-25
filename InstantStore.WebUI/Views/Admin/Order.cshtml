@@ -66,7 +66,7 @@
         if (this.Model.Offer != null)
         {
             <div class="form-group">
-                <label>@StringResource.user_OrderOffersTitle</label>
+                <label>@StringResource.admin_OrdersAppliedOffer</label>
                 <div class="list-group">
                     <div class="list-group-item form-group">
                         <h4>
@@ -90,7 +90,8 @@
             </div>
         </div>
         <div class="order-line" style="margin-top: 10px; margin-right: 20px;">
-            <input type="submit" value="@StringResource.admin_OrderDetailsSubmit" class="btn btn-primary btn-lg pull-right" id="btn-submit" />
+            @Html.ActionLink(StringResource.admin_Back, "Orders", null, new { @class = "btn btn-default btn-lg" })
+            <input type="submit" value="@StringResource.admin_OrderDetailsSubmit" class="btn btn-primary btn-lg" id="btn-submit" />
         </div>
     }
 </div>

@@ -4,6 +4,18 @@
     var isValid = this.Model.ThumbnailId != null && this.Model.ThumbnailId != Guid.Empty;
     var thumbnailQuality = this.Model.Width > 64 ? "l" : "s";
     var imagePath = isValid ? Url.Action("Thumbnail", "Main", new { Id = this.Model.ThumbnailId, size = thumbnailQuality }) : "/Image/NoImage.png";
+    var linkUrl = this.Model.Click != null ? this.Model.Click.GetUrl(this.Url) : null;
+    
 }
-<img src="@imagePath" width="@this.Model.Width" />
+
+@if (linkUrl != null)
+{
+    <a href="@linkUrl">
+        <img src="@imagePath" width="@this.Model.Width" />
+    </a>
+}
+else
+{
+    <img src="@imagePath" width="@this.Model.Width" />
+}
 

@@ -646,6 +646,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Скидка.
+        /// </summary>
+        public static string admin_OrdersAppliedOffer {
+            get {
+                return ResourceManager.GetString("admin_OrdersAppliedOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Следующий.
         /// </summary>
         public static string admin_OrdersPagerNext {

@@ -34,7 +34,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-cog",
                         Name = StringResource.admin_Dashboard,
-                        Link = new NavigationLink { ActionName = "Index", ControllerName = "Admin" }
+                        Link = new NavigationLink { ActionName = "Orders", ControllerName = "Admin" }
                     });
                 }
                 else

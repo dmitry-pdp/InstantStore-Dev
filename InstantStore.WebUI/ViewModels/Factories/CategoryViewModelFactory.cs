@@ -44,68 +44,6 @@ namespace InstantStore.WebUI.ViewModels.Factories
             return tilesViewModel;
         }
 
-        public static TilesViewModel GetProductsForCategory(this IRepository repository, User user, Guid categoryId, int count, int offset = 0)
-        {
-            var products = repository.GetProductsForCategory(categoryId, offset, count);
-            if (products == null)
-            {
-                return null;
-            }
-
-            var maxProducts = repository.GetProductsCountForCategory(categoryId);
-            var maxPages = maxProducts / count;
-            var pagination = new PaginationViewModel { 
-                MaxPages = maxPages,
-                CurrentPage = maxProducts != 0 ? offset * maxPages / maxProducts : 0,
-                Count = count
-            };
-
-            var tilesViewModel = new TilesViewModel() { Tiles = new List<TileViewModel>(), Pagination = pagination };
-
-            var currency = user != null && user.DefaultCurrencyId != null && !user.IsAdmin
-                ? repository.GetCurrencies().FirstOrDefault(x => x.Id == user.DefaultCurrencyId) 
-                : null; 
-
-            var exchangeRates = user != null && user.DefaultCurrencyId != null 
-                ? repository.GetExchangeRates().Where(x => x.ToCurrencyId == user.DefaultCurrencyId)
-                : new List<ExchangeRate>();
-
-            foreach(var product in products)
-            {
-                var tileViewModel = new TileViewModel
-                {
-                    Link = new NavigationLink { PageId = product.VersionId },
-                    ImageId = product.MainImageId ?? Guid.Empty,
-                    Name = product.Name
-                };
-
-                if (user != null)
-                {
-                    var attributes = new AttributeList();
-                    attributes.Add(new KeyValuePair<string, string>(StringResource.productTile_Available, product.IsAvailable ? StringResource.Yes : StringResource.No));
-
-                    if (currency != null && !user.IsAdmin)
-                    {
-                        var price = product.GetPriceForUser(user, repository.GetExchangeRates());
-                        attributes.Add(new KeyValuePair<string, string>(
-                            StringResource.productTile_Price, 
-                            new CurrencyString(price, currency.Text).ToString()));
-                    }
-                    
-                    tileViewModel.Attributes = attributes;
-
-                    if (!user.IsAdmin)
-                    {
-                        tileViewModel.Action = new NavigationLink { ControllerName = "Main", ActionName = "AddToCart", PageId = product.VersionId, Text = StringResource.productTile_AddToCart };
-                    }
-                }
-
-                tilesViewModel.Tiles.Add(tileViewModel);
-            }
-
-            return tilesViewModel;
-        }
-
         public static MediaListViewModel CreatePopularProducts(this IRepository repository, Guid? pageId)
         {
             var viewModel = new MediaListViewModel();
@@ -134,6 +72,195 @@ namespace InstantStore.WebUI.ViewModels.Factories
             .ToList();
 
             return viewModel;
+        }
+    }
+
+    public interface IProductViewModelFactory
+    {
+        object CreateProductViewModel();
+    }
+
+    public abstract class ProductViewModelFactoryBase: IProductViewModelFactory
+    {
+        protected IRepository repository;
+        protected User user;
+        protected Guid categoryId;
+        protected int count;
+        protected int offset;
+
+        public ProductViewModelFactoryBase(IRepository repository, User user, Guid categoryId, int count, int offset)
+        {
+            this.repository = repository;
+            this.user = user;
+            this.categoryId = categoryId;
+            this.count = count;
+            this.offset = offset;
+        }
+
+        public virtual object CreateProductViewModel()
+        {
+            var products = this.repository.GetProductsForCategory(this.categoryId, this.offset, this.count);
+            if (products == null)
+            {
+                return null;
+            }
+
+            var maxProducts = this.repository.GetProductsCountForCategory(this.categoryId);
+            var maxPages = maxProducts / this.count;
+            var pagination = new PaginationViewModel
+            {
+                MaxPages = maxPages,
+                CurrentPage = maxProducts != 0 ? this.offset * maxPages / maxProducts : 0,
+                Count = this.count
+            };
+
+            var currency = this.user != null && this.user.DefaultCurrencyId != null && !this.user.IsAdmin
+                ? this.repository.GetCurrencies().FirstOrDefault(x => x.Id == this.user.DefaultCurrencyId)
+                : null;
+
+            var exchangeRates = this.user != null && this.user.DefaultCurrencyId != null
+                ? this.repository.GetExchangeRates().Where(x => x.ToCurrencyId == this.user.DefaultCurrencyId)
+                : new List<ExchangeRate>();
+
+            foreach(var product in products)
+            {
+                this.AddItem(product, (user != null && currency != null && !user.IsAdmin)
+                    ? new CurrencyString(product.GetPriceForUser(user, repository.GetExchangeRates()), currency.Text)
+                    : null);
+            }
+
+            return this.CreateViewModel(pagination);
+        }
+
+        protected abstract void AddItem(Product product, CurrencyString price);
+
+        protected abstract object CreateViewModel(PaginationViewModel pagination);
+
+        protected string GetProductAvailableString(Product product)
+        {
+            return product.IsAvailable ? StringResource.Yes : StringResource.No;
+        }
+
+        protected NavigationLink CreateAddToCartLink(Product product)
+        {
+            return new NavigationLink 
+            { 
+                ControllerName = "Main", 
+                ActionName = "AddToCart", 
+                PageId = product.VersionId, 
+                Text = StringResource.productTile_AddToCart 
+            };
+        }
+    }
+
+    public class TileProductViewModelFactory : ProductViewModelFactoryBase
+    {
+        private IList<TileViewModel> Items = new List<TileViewModel>();
+
+        public TileProductViewModelFactory(IRepository repository, User user, Guid categoryId, int count, int offset)
+            : base(repository, user, categoryId, count, offset)
+        {
+        }
+
+        protected override object CreateViewModel(PaginationViewModel pagination)
+        {
+            return new TilesViewModel { Pagination = pagination, Tiles = this.Items };
+        }
+
+        protected override void AddItem(Product product, CurrencyString price)
+        {
+            var tileViewModel = new TileViewModel
+            {
+                Link = new NavigationLink { PageId = product.VersionId },
+                ImageId = product.MainImageId ?? Guid.Empty,
+                Name = product.Name
+            };
+
+            if (this.user != null)
+            {
+                var attributes = new AttributeList();
+                attributes.Add(new KeyValuePair<string, string>(StringResource.productTile_Available, this.GetProductAvailableString(product)));
+
+                if (price != null)
+                {
+                    attributes.Add(new KeyValuePair<string, string>(StringResource.productTile_Price, price.ToString()));
+                }
+                
+                tileViewModel.Attributes = attributes;
+
+                if (!user.IsAdmin)
+                {
+                    tileViewModel.Action = this.CreateAddToCartLink(product);
+                }
+            }
+
+            this.Items.Add(tileViewModel);        
+        }
+    }
+
+    public class ListProductViewModelFactory : ProductViewModelFactoryBase, IProductViewModelFactory
+    {
+        private IList<TableRowViewModel> Items = new List<TableRowViewModel>();
+
+        public ListProductViewModelFactory(IRepository repository, User user, Guid categoryId, int count, int offset)
+            : base(repository, user, categoryId, count, offset)
+        {
+        }
+
+        protected override object CreateViewModel(PaginationViewModel pagination)
+        {
+            var headers = user != null 
+                ? new List<TableCellViewModel>
+                {
+                    new TableCellViewModel(string.Empty),
+                    new TableCellViewModel(StringResource.admin_Name),
+                    new TableCellViewModel(StringResource.productTile_Available),
+                    new TableCellViewModel(StringResource.productTile_Price),
+                    new TableCellViewModel(string.Empty), // Add to cart action column
+                }
+                : new List<TableCellViewModel>
+                {
+                    new TableCellViewModel(string.Empty),
+                    new TableCellViewModel(StringResource.admin_Name)
+                };
+
+            return new TableViewModel 
+            { 
+                Pagination = pagination,
+                Header = headers,
+                Rows = this.Items,
+                RowClickAction = new NavigationLink("Page")
+            };
+        }
+
+        protected override void AddItem(Product product, CurrencyString price)
+        {
+            var row = user != null
+                ? new List<TableCellViewModel>
+                {
+                    new TableCellViewModel(new ImageThumbnailViewModel{
+                        ThumbnailId = product.MainImageId ?? Guid.Empty,
+                        Width = 64
+                    }),
+                    new TableCellViewModel(product.Name),
+                    new TableCellViewModel(this.GetProductAvailableString(product)),
+                    new TableCellViewModel(price != null ? price.ToString() : StringResource.NotAvailable),
+                    new TableCellViewModel(this.CreateAddToCartLink(product))
+                }
+                : new List<TableCellViewModel>
+                {
+                    new TableCellViewModel(new ImageThumbnailViewModel{
+                        ThumbnailId = product.MainImageId ?? Guid.Empty,
+                        Width = 64
+                    }),
+                    new TableCellViewModel(product.Name)
+                };
+
+            this.Items.Add(new TableRowViewModel
+            {
+                Cells = row,
+                Id = product.Id.ToString()
+            });        
         }
     }
 }

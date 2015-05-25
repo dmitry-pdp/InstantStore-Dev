@@ -35,11 +35,7 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Orders(char t = 'p', int o = 0, int c = 50)
         {
-            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-            if (user == null || !user.IsAdmin)
-            {
-                return this.HttpNotFound();
-            }
+            var user = this.HttpContext.CurrentUser();
 
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Orders);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
@@ -124,11 +120,7 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Order(Guid id)
         {
-            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-            if (user == null || !user.IsAdmin || id == Guid.Empty)
-            {
-                return this.HttpNotFound();
-            }
+            var user = this.HttpContext.CurrentUser();
 
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Orders);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
@@ -181,7 +173,7 @@ namespace InstantStore.WebUI.Controllers
                 Id = orderProduct.Id,
                 Thumbnail = new ImageThumbnailViewModel 
                 { 
-                    ThumbnailId = orderProduct.Product.MainImageId, 
+                    ThumbnailId = orderProduct.Product.MainImageId ?? Guid.Empty, 
                     Width = 100 
                 },
                 Title = new NavigationLink 

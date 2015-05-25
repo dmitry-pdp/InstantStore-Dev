@@ -27,7 +27,11 @@
                 <td>
                     @if (cell.Action != null)
                     {
-                        <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default">@cell.Action.Text</a>
+                        <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@cell.Action.Text</a>
+                    }
+                    else if (cell.Thumbnail != null)
+                    {
+                        @Html.Partial("ImageThumbnail", cell.Thumbnail)
                     }
                     else
                     {

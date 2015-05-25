@@ -31,8 +31,8 @@ namespace InstantStore.Domain.Concrete
                 context.ImageThumbnails.InsertOnSubmit(new ImageThumbnail
                 {
                     Id = image.Id,
-                    SmallThumbnail = CreateThumbnail(image.Image1, 64, 64),
-                    LargeThumbnail = CreateThumbnail(image.Image1, 320, 240)
+                    SmallThumbnail = CreateThumbnail(image.Image1, 64, 64, true),
+                    LargeThumbnail = CreateThumbnail(image.Image1, 235, 200, false)
                 });
 
                 context.SubmitChanges();
@@ -48,7 +48,7 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        private Binary CreateThumbnail(Binary binaryImage, int width, int height)
+        private Binary CreateThumbnail(Binary binaryImage, int width, int height, bool advancedCrop = false)
         {
             using (var inputImageStream = new MemoryStream(binaryImage.ToArray()))
             {
@@ -61,7 +61,53 @@ namespace InstantStore.Domain.Concrete
                         Graphic.SmoothingMode = SmoothingMode.AntiAlias;
                         Graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
                         Graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        Graphic.DrawImage(image, new SD.Rectangle(0, 0, width, height), 0, 0, image.Width, image.Height, SD.GraphicsUnit.Pixel);
+
+                        float srcImageRatio = (float)image.Width / (float)image.Height;
+                        float dstImageRatio = (float)width / (float)height;
+
+                        SD.Rectangle srcRect = new SD.Rectangle(0, 0, image.Width, image.Height);
+                        SD.Rectangle dstRect = new SD.Rectangle(0, 0, width, height);
+
+                        bool useWidthConst =
+                            (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio) ||
+                            (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio);
+                        bool useHeightConst =
+                            (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio) ||
+                            (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio);
+
+                        // Crop 
+                        if (!advancedCrop)
+                        {
+                            if (useWidthConst)
+                            {
+                                int newSrcHeight = (int)(width / srcImageRatio);
+                                int srcTopOffset = (height - newSrcHeight) / 2;
+                                dstRect = new SD.Rectangle(0, srcTopOffset, width, newSrcHeight);
+                            }
+                            else if (useHeightConst)
+                            {
+                                int newSrcWidth = (int)(height * srcImageRatio);
+                                int srcLeftOffset = (width - newSrcWidth) / 2;
+                                dstRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, height);
+                            }
+                        }
+                        else
+                        {
+                            if (useWidthConst)
+                            {
+                                int newSrcWidth = (int)(image.Height * dstImageRatio);
+                                int srcLeftOffset = (image.Width - newSrcWidth) / 2;
+                                srcRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, image.Height);
+                            }
+                            else if (useHeightConst)
+                            {
+                                int newSrcHeight = (int)(image.Width / dstImageRatio);
+                                int srcTopOffset = (image.Height - newSrcHeight) / 2;
+                                srcRect = new SD.Rectangle(0, srcTopOffset, image.Width, newSrcHeight);
+                            }
+                        }
+
+                        Graphic.DrawImage(image, dstRect, srcRect, SD.GraphicsUnit.Pixel);
                         MemoryStream ms = new MemoryStream();
                         thumbnail.Save(ms, SD.Imaging.ImageFormat.Png);
                         return new Binary(ms.GetBuffer());

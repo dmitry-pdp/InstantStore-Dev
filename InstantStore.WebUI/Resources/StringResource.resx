@@ -1167,4 +1167,7 @@
   <data name="user_OrderOffersTitle" xml:space="preserve">
     <value>Доступные скидки</value>
   </data>
+  <data name="admin_OrdersAppliedOffer" xml:space="preserve">
+    <value>Скидка</value>
+  </data>
 </root>

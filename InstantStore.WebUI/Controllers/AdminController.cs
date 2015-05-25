@@ -12,6 +12,7 @@ using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
+    [CustomAuthorization(true)]
     public partial class AdminController : Controller
     {
         private readonly IRepository repository;
@@ -19,26 +20,9 @@ namespace InstantStore.WebUI.Controllers
 
         public AdminController(IRepository repository)
         {
-            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-            if (user == null || !user.IsAdmin)
-            {
-            }
-
             this.repository = repository;
             this.settingsViewModel = new SettingsViewModel(this.repository);
             this.ViewData["RenderCustomLeftColumn"] = true;
-        }
-
-        private ActionResult Authorize()
-        {
-            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
-            if (user == null || !user.IsAdmin)
-            {
-                //return this.HttpNotFound();
-            }
-
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            return null;
         }
     }
 }

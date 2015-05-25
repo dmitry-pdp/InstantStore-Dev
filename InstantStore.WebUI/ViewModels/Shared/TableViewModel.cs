@@ -42,8 +42,15 @@ namespace InstantStore.WebUI.ViewModels
             this.Action = action;
         }
 
+        public TableCellViewModel(ImageThumbnailViewModel thumbnail)
+        {
+            this.Thumbnail = thumbnail;
+        }
+
         public string Text { get; set; }
 
         public NavigationLink Action { get; set; }
+
+        public ImageThumbnailViewModel Thumbnail { get; set; }
     }
 }

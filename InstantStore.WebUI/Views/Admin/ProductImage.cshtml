@@ -4,11 +4,11 @@
 
 <div class="image-container img-thumbnail">
     @using (Html.BeginCollectionItem("Images"))
-    {
-        <img class="img-thumbnail" src="~/Main/GetImage?id=@this.Model.ToString()" />
+{
+        <img class="img-thumbnail" src="~/Main/Thumbnail?size=s&id=@this.Model.ToString()" />
         @Html.HiddenFor(model => model)
         <a href="#" class="image-delete-overlay" title="@StringResource.admin_Delete">
-            <img src="~/Image/close-icon.png" width="32" height="32"/>
+            <img src="~/Image/close-icon.png" width="16" height="16"/>
         </a>
     }    
 </div>

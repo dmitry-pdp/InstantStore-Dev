@@ -11,11 +11,9 @@
     var navigationListViewModel = this.ViewBag.NavigationListViewModel as ListViewModel;
         
     bool showLeftRailLogin = (bool?)this.ViewBag.ShowLeftRailLogin ?? false;
-    var userLeftPanel = this.ViewBag.UserLeftPanel as UserPanelViewModel;
 
     bool renderCustomLeftColumn = (bool?)this.ViewBag.RenderCustomLeftColumn ?? (
         !showLeftRailLogin &&
-        userLeftPanel == null &&
         navigationBarViewModel == null &&
         mediaListViewModel == null &&
         navigationListViewModel == null
@@ -78,10 +76,6 @@
                     @if (showLeftRailLogin)
                     {
                         @Html.Partial("LeftRailLogin")
-                    }
-                    @if (userLeftPanel != null)
-                    {
-                        @Html.Partial("UserLeftPanel", userLeftPanel)
                     }
                     @if (navigationBarViewModel != null)
                     { 

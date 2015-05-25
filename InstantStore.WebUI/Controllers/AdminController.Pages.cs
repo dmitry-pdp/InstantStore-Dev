@@ -20,10 +20,11 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Pages(Guid? treeSelection)
         {
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
-            this.ViewData["TreeSelection"] = treeSelection;
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-            return this.Authorize() ?? this.View(new PageViewModel());
+            this.ViewData["TreeSelection"] = treeSelection;
+            return this.View(new PageViewModel());
         }
 
         public ActionResult PreviewPage(Guid id, bool import = false, Guid? importToCat = null, int p = 1, int c = 15)
@@ -74,12 +75,7 @@ namespace InstantStore.WebUI.Controllers
                     return this.RedirectToAction("Pages", new { treeSelection = id.Value });
                 }
             }
-
-            if (id == null)
-            {
-                return this.RedirectToAction("Dashboard");
-            }
-
+            
             if (id == Guid.Empty)
             {
                 return this.RedirectToAction("Settings", new { t = "main" });
@@ -91,14 +87,17 @@ namespace InstantStore.WebUI.Controllers
             }
 
             var pageViewModel = id != null ? new PageViewModel(this.repository, id.Value) : new PageViewModel() { ParentCategoryId = parentId ?? Guid.Empty };
-            if (pageViewModel.ContentPage.IsCategory())
+            if (pageViewModel.ContentPage != null && pageViewModel.ContentPage.IsCategory())
             {
                 return this.Category(id, parentId ?? pageViewModel.ParentCategoryId);
             }
             else
             {
+                this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+                this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
+
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-                return this.Authorize() ?? this.View(pageViewModel);
+                return this.View(pageViewModel);
             }
         }
 
@@ -139,6 +138,7 @@ namespace InstantStore.WebUI.Controllers
                         Name = pageViewModel.Name,
                         Text = pageViewModel.Text,
                         ParentId = parentId,
+                        ShowInMenu = pageViewModel.ShowInMenu,
                         Position = repository.GetPages(parentId, null).Count,
                         AttachmentId = attachmentId,
                     });
@@ -148,6 +148,7 @@ namespace InstantStore.WebUI.Controllers
                     contentPage.Name = pageViewModel.Name;
                     contentPage.Text = pageViewModel.Text;
                     contentPage.ParentId = parentId;
+                    contentPage.ShowInMenu = pageViewModel.ShowInMenu;
                     contentPage.AttachmentId = attachmentId;
 
                     this.repository.UpdateContentPage(contentPage);
@@ -158,7 +159,7 @@ namespace InstantStore.WebUI.Controllers
             else
             {
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-                return this.Authorize() ?? this.View(pageViewModel ?? new PageViewModel());
+                return this.View(pageViewModel ?? new PageViewModel());
             }
         }
 
@@ -167,7 +168,7 @@ namespace InstantStore.WebUI.Controllers
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             var categoryViewModel = id != null ? new CategoryViewModel(this.repository, id.Value) : new CategoryViewModel();
             categoryViewModel.Content.ParentCategoryId = parentId ?? Guid.Empty;
-            return this.Authorize() ?? this.View("Category", categoryViewModel);
+            return this.View("Category", categoryViewModel);
         }
 
         [HttpPost]
@@ -226,7 +227,7 @@ namespace InstantStore.WebUI.Controllers
             else
             {
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-                return this.Authorize() ?? this.View(categoryViewModel ?? new CategoryViewModel());
+                return this.View(categoryViewModel ?? new CategoryViewModel());
             }
         }
 

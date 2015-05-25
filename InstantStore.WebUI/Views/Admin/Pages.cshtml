@@ -23,9 +23,6 @@
 <div class="border col-sm-3 admin-pages-tree">
     <input type="hidden" value="@Guid.Empty" id="current-selection" />
     <div class="btn-toolbar">
-        <div class="btn-group">
-            @Html.ActionLink(StringResource.admin_Back, "Index", null, new { @class = "btn btn-primary" })
-        </div>
         <div class="btn-group pull-right" id="tree-buttons">
             <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button" id="btn-item-edit">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
-using InstantStore.WebUI.ViewModels;
-using InstantStore.WebUI.Models;
-using InstantStore.WebUI.HtmlHelpers;
-using System.Data.Linq;
-using InstantStore.WebUI.Resources;
 using InstantStore.Domain.Entities;
+using InstantStore.WebUI.HtmlHelpers;
+using InstantStore.WebUI.Models;
+using InstantStore.WebUI.Resources;
+using InstantStore.WebUI.ViewModels;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -24,8 +25,10 @@ namespace InstantStore.WebUI.Controllers
                 : new ProductViewModel(this.repository, parentId);
 
             viewModel.InitializeRootCategory(this.repository);
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Offers);
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-            return this.Authorize() ?? this.View("Product", viewModel);
+            return this.View("Product", viewModel);
         }
 
         [HttpPost]
@@ -59,7 +62,7 @@ namespace InstantStore.WebUI.Controllers
             else
             {
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
-                return this.Authorize() ?? this.View(productViewModel);
+                return this.View(productViewModel);
             }
         }
 

@@ -19,7 +19,7 @@ namespace InstantStore.WebUI.ViewModels
         }
 
         public PageViewModel(IRepository repository, Guid id)
-            : this(repository.GetPageById(id))
+            : this(repository.GetPageById(id), true)
         {
         }
 

@@ -9,23 +9,108 @@ using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using InstantStore.WebUI.ViewModels.Factories;
+using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        public ActionResult Users(int o = 0, int c = 25, Guid? uid = null)
+        private static Dictionary<char, UserStatus> userTabMap = new Dictionary<char, UserStatus>
         {
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
-            this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository);
+            {'a', UserStatus.Active },
+            {'n', UserStatus.New },
+            {'b', UserStatus.Blocked }
+        };
 
-            return this.Authorize() ?? View();
+        private static Dictionary<UserStatus, string> userTabLocalizationMap = new Dictionary<UserStatus, string>
+        {
+            { UserStatus.Active, StringResource.admin_Users_ActiveTab },
+            { UserStatus.New, StringResource.admin_Users_NewTab },
+            { UserStatus.Blocked, StringResource.admin_Users_BlockedTab }
+        };
+
+        public ActionResult Users(char t = 'n', int o = 0, int c = 50)
+        {
+            UserStatus status;
+            if (!userTabMap.TryGetValue(t, out status))
+            {
+                status = UserStatus.Active;
+            }
+
+            using (var context = new InstantStoreDataContext())
+            {
+                bool hasNewUsers = context.Users.Any(user => !user.IsActivated);
+                status = status == UserStatus.New && !hasNewUsers ? UserStatus.Active : status;
+
+                Func<User, bool> selector = (User user) => status == UserStatus.New ? !user.IsActivated : (status == UserStatus.Blocked ? user.IsBlocked : user.IsActivated);
+                this.ViewData["UsersTableViewModel"] = new TableViewModel
+                {
+                    Header = new List<TableCellViewModel>
+                    {
+                        new TableCellViewModel(StringResource.form_Contact_Name),
+                        new TableCellViewModel(StringResource.form_Reg_Region),
+                        new TableCellViewModel(StringResource.form_Reg_CompanyName)
+                    },
+                    Rows = context.Users
+                        .Where(selector)
+                        .OrderBy(user => user.Name)
+                        .Skip(o)
+                        .Take(c)
+                        .Select(ConvertUserToTableRow)
+                        .ToList(),
+                    RowClickAction = new NavigationLink("User"),
+                    Pagination = new PaginationViewModel(c, o, context.Users.Count(selector))
+                    {
+                        Link = new NavigationLink("Users", "Admin")
+                        {
+                            Parameters = new { t = t }
+                        }
+                    }
+                };
+
+                this.ViewData["UsersHeaderViewModel"] = new TabControlViewModel
+                {
+                    Tabs = userTabMap
+                    .Where(x => hasNewUsers || x.Value != UserStatus.New)
+                    .Select(key => CreateUserStatusHeader(key, t)).ToList()
+                };
+            }
+
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
+            return View();
+        }
+
+        private TableRowViewModel ConvertUserToTableRow(User user)
+        { 
+            return new TableRowViewModel
+            {
+                Id = user.Id.ToString(),
+                Cells = new List<TableCellViewModel>
+                {
+                    new TableCellViewModel(user.Name),
+                    new TableCellViewModel(user.City),
+                    new TableCellViewModel(user.Company)
+                }
+            };
+        }
+
+        private BreadcrumbItemViewModel CreateUserStatusHeader(KeyValuePair<char, UserStatus> data, char current)
+        {
+            return new BreadcrumbItemViewModel
+            {
+                IsActive = data.Key == current,
+                Name = userTabLocalizationMap[data.Value],
+                Link = new NavigationLink("Users", "Admin") { Parameters = new { t = data.Key } }
+            };
         }
 
         public ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
         {
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, id);
+
             if (activate != null && activate.Value)
             {
                 this.repository.ActivateUser(id);
@@ -42,19 +127,13 @@ namespace InstantStore.WebUI.Controllers
                 return this.RedirectToAction("Users");
             }
 
-            return this.Authorize() ?? this.View(new UserProfileViewModel(this.repository, id));
+            return this.View(new UserProfileViewModel(this.repository, id));
         }
 
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult User(UserProfileViewModel userProfileViewModel)
         {
-            var nonAuthorizedResult = this.Authorize();
-            if (nonAuthorizedResult != null)
-            {
-                return nonAuthorizedResult;
-            }
-
             if (this.ModelState.IsValid)
             {
                 var user = this.repository.GetUser(userProfileViewModel.Id);

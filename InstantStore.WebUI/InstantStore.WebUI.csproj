@@ -130,7 +130,6 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminController.Currency.cs" />
-    <Compile Include="Controllers\AdminController.Dashboard.cs" />
     <Compile Include="Controllers\AdminController.Images.cs" />
     <Compile Include="Controllers\AdminController.Offers.cs" />
     <Compile Include="Controllers\AdminController.Orders.cs" />
@@ -140,6 +139,8 @@
     <Compile Include="Controllers\AdminController.Templates.cs" />
     <Compile Include="Controllers\AdminController.User.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\MainController.Order.cs" />
+    <Compile Include="Controllers\MainController.Page.cs" />
     <Compile Include="Controllers\MainController.User.cs" />
     <Compile Include="Controllers\NavCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -149,11 +150,14 @@
     <Compile Include="HtmlHelpers\ControllerHelpers.cs" />
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Models\HtmlPrefixScopeExtensions.cs" />
+    <Compile Include="Models\EmailManager.cs" />
+    <Compile Include="Models\Security\CustomAuthorizationAttribute.cs" />
+    <Compile Include="Models\Helpers\HtmlPrefixScopeExtensions.cs" />
+    <Compile Include="Models\Helpers\HttpContextHelper.cs" />
     <Compile Include="Models\PagingInfo.cs" />
-    <Compile Include="Models\PasswordHash.cs" />
+    <Compile Include="Models\Security\PasswordHash.cs" />
     <Compile Include="Models\ProductListViewModel.cs" />
-    <Compile Include="Models\UserIdentityManager.cs" />
+    <Compile Include="Models\Security\UserIdentityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\StringResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -165,13 +169,13 @@
     <Compile Include="ViewModels\CategoryProductsViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
+    <Compile Include="ViewModels\Factories\UserViewModelFactory.cs" />
     <Compile Include="ViewModels\OfferViewModel.cs" />
     <Compile Include="ViewModels\OrderDetailsViewModel.cs" />
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
     <Compile Include="ViewModels\ExchangeRateViewModel.cs" />
     <Compile Include="ViewModels\Factories\MenuViewModelFactory.cs" />
     <Compile Include="ViewModels\Factories\CategoryViewModelFactory.cs" />
-    <Compile Include="ViewModels\Factories\UserViewModelFactory.cs" />
     <Compile Include="ViewModels\Helpers\CurrencyString.cs" />
     <Compile Include="ViewModels\OrderHistoryViewModel.cs" />
     <Compile Include="ViewModels\OrderListViewModel.cs" />
@@ -197,7 +201,6 @@
     <Compile Include="ViewModels\Shared\TilesViewModel.cs" />
     <Compile Include="ViewModels\TreeViewModel.cs" />
     <Compile Include="ViewModels\UploadControlViewModel.cs" />
-    <Compile Include="ViewModels\UserPanelViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -281,7 +284,6 @@
     <Content Include="Views\Main\Login.cshtml" />
     <Content Include="Views\Main\NewUser.cshtml" />
     <Content Include="Views\Admin\Users.cshtml" />
-    <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Main\NewUserConfirmation.cshtml" />
     <Content Include="Views\Admin\User.cshtml" />
     <Content Include="Views\Admin\Currency.cshtml" />
@@ -316,7 +318,6 @@
     <Content Include="Views\Shared\MediaList.cshtml" />
     <Content Include="Views\Main\Product.cshtml" />
     <Content Include="Views\Main\LeftRailLogin.cshtml" />
-    <Content Include="Views\Main\UserLeftPanel.cshtml" />
     <Content Include="Views\Main\History.cshtml" />
     <Content Include="Views\Main\Orders.cshtml" />
     <Content Include="Views\Shared\ImageThumbnail.cshtml" />

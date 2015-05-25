@@ -7,4 +7,10 @@ using System.Threading.Tasks;
 
 namespace InstantStore.Domain.Concrete
 {
+    public enum UserStatus
+    {
+        New,
+        Active, 
+        Blocked
+    }
 }

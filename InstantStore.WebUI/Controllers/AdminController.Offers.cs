@@ -31,10 +31,6 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult Offers(char t = 'a', int o = 0, int c = 50)
         {
             var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-            if (user == null || !user.IsAdmin)
-            {
-                return this.HttpNotFound();
-            }
 
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Offers);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
@@ -83,7 +79,7 @@ namespace InstantStore.WebUI.Controllers
                 };
             }
 
-            return this.Authorize() ?? this.View();
+            return this.View();
         }
 
         private BreadcrumbItemViewModel CreateOfferStatusHeader(KeyValuePair<char, bool> data, char current)

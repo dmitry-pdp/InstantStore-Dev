@@ -1,8 +1,7 @@
 ﻿.order-title-price,
 .order-title-quantity,
 .order-item-price,
-.order-item-quantity,
-.order-total
+.order-item-quantity
 {
     display:inline-block;
     float:right;

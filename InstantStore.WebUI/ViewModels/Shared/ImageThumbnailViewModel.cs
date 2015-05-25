@@ -7,8 +7,12 @@ namespace InstantStore.WebUI.ViewModels
 {
     public class ImageThumbnailViewModel
     {
-        public Guid? ThumbnailId { get; set; }
-
         public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        public Guid ThumbnailId { get; set; }
+
+        public NavigationLink Click { get; set; }
     }
 }
