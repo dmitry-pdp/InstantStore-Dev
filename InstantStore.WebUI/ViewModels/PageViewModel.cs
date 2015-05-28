@@ -70,11 +70,20 @@ namespace InstantStore.WebUI.ViewModels
 
         public ContentPage ContentPage { get; private set; }
 
-        public static dynamic CreateTreeNode(CategoryTreeItemViewModel node)
+        public static dynamic CreateTreeNode(CategoryTreeItemViewModel node, bool useIcons = true)
         {
-            var icon = node.Id == Guid.Empty ? "glyphicon glyphicon-home" : (node.IsCategory ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file");
-            var subItems = node.Items.Select(i => CreateTreeNode(i)).ToArray();
-            return new { text = node.Name, nodes = subItems.Any() ? subItems : null, id = node.Id.ToString(), icon = icon };
+            var icon = useIcons 
+                ? (node.Id == Guid.Empty ? "glyphicon glyphicon-home" : (node.IsCategory ? "glyphicon glyphicon-folder-open" : "glyphicon glyphicon-file"))
+                : null;
+            var subItems = node.Items != null ? node.Items.Select(i => CreateTreeNode(i)).ToArray() : null;
+            return new 
+            { 
+                text = node.Name, 
+                nodes = subItems != null && subItems.Any() ? subItems : null, 
+                id = node.Id.ToString(), 
+                icon = icon,
+                key = node.Key
+            };
         }
      }
 }

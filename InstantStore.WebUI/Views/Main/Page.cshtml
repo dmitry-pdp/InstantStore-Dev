@@ -4,7 +4,8 @@
 @{
     ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    var productTiles = this.ViewBag.ProductTilesViewModel as TilesViewModel;
+    var productTiles = this.ViewBag.ProductItemsViewModel as TilesViewModel;
+    var productTable = this.ViewBag.ProductItemsViewModel as TableViewModel;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -20,10 +21,13 @@
 {
     Html.RenderPartial("TilesView", productTiles);
 }
-
+else if (productTable != null)
+{
+    Html.RenderPartial("TableView", productTable);
+}
 <script>
     $(function () {
-        $("a.tile-action").on("click", function () {
+        var addToCartAction = function () {
             $.ajax({
                 url: this.href,
                 cached: false,
@@ -37,6 +41,9 @@
                 alert("@StringResource.productTile_AddItemFailure");
             });
             return false;
-        });
+        };
+
+        $("a.tile-action").on("click", addToCartAction);
+        $("a.table-action").on("click", addToCartAction);
     });
 </script>

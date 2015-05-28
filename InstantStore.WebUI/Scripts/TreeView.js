@@ -19,13 +19,18 @@
         return null;
     };
 
-    function initializeTreeView(id, treeId) {
+    function initializeTreeView(id, treeId, silent) {
+        if (!silent)
+        {
+            silent = false;
+        }
+
         window.setTimeout(function () {
             var treeView = $('#' + treeId).treeview(true);
             var rootNode = treeView.getNode(0);
             var node = selectCategoryTreeNodeById(id, rootNode);
             if (node) {
-                treeView.selectNode(node);
+                treeView.selectNode(node, { silent : silent });
                 while (node != rootNode) {
                     treeView.expandNode(node);
                     node = treeView.getParent(node);

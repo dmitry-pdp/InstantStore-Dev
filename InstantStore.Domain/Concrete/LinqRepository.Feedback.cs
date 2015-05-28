@@ -13,6 +13,7 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 feedback.Id = Guid.NewGuid();
+                feedback.Submitted = DateTime.Now;
                 context.Feedbacks.InsertOnSubmit(feedback);
                 context.SubmitChanges();
             }

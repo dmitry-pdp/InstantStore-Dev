@@ -1170,4 +1170,76 @@
   <data name="admin_OrdersAppliedOffer" xml:space="preserve">
     <value>Скидка</value>
   </data>
+  <data name="admin_SettingsNode_EmailGroup" xml:space="preserve">
+    <value>Настройки email</value>
+  </data>
+  <data name="admin_SettingsNode_EmailNewUserActivation" xml:space="preserve">
+    <value>Новый пользователь (администратору)</value>
+  </data>
+  <data name="admin_SettingsNode_EmailNewUserNotification" xml:space="preserve">
+    <value>Статус пользователя</value>
+  </data>
+  <data name="admin_SettingsNode_EmailNewUserRegistration" xml:space="preserve">
+    <value>Новый пользователь (пользователю)</value>
+  </data>
+  <data name="admin_SettingsNode_FeedbackGroup" xml:space="preserve">
+    <value>Обратная связь</value>
+  </data>
+  <data name="admin_SettingsNode_PagesFooter" xml:space="preserve">
+    <value>Нижний заголовок</value>
+  </data>
+  <data name="admin_SettingsNode_PagesGroup" xml:space="preserve">
+    <value>Страницы</value>
+  </data>
+  <data name="admin_SettingsNode_PagesHeader" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="admin_SettingsNode_PagesMainContent" xml:space="preserve">
+    <value>Текст главной страницы</value>
+  </data>
+  <data name="admin_Settings_EmailBody" xml:space="preserve">
+    <value>Содержание</value>
+  </data>
+  <data name="admin_Settings_EmailConfiguration" xml:space="preserve">
+    <value>Настройки SMTP</value>
+  </data>
+  <data name="admin_Settings_EmailSettings_EmailFrom" xml:space="preserve">
+    <value>Email отправителя</value>
+  </data>
+  <data name="admin_Settings_EmailSettings_SmtpServer" xml:space="preserve">
+    <value>SMTP сервер</value>
+  </data>
+  <data name="admin_Settings_EmailSubject" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="admin_Settings_GeneralSettingsLabel" xml:space="preserve">
+    <value>Основные настройки</value>
+  </data>
+  <data name="admin_FeedbackNameFormat" xml:space="preserve">
+    <value>{0}({1}) от {2}</value>
+  </data>
+  <data name="admin_Settings_EmailAdmin" xml:space="preserve">
+    <value>Email администратора.</value>
+  </data>
+  <data name="admin_SettingsNode_EmailNewOrder" xml:space="preserve">
+    <value>Новый заказ </value>
+  </data>
+  <data name="admin_SettingsNode_EmailOrderUpdated" xml:space="preserve">
+    <value>Заказ обновлен</value>
+  </data>
+  <data name="admin_SettingsNode_EmailResetPassword" xml:space="preserve">
+    <value>Сброс пароля</value>
+  </data>
+  <data name="admin_SettingsNode_EmailUserBlock" xml:space="preserve">
+    <value>Пользователь заблокирован</value>
+  </data>
+  <data name="admin_Settings_SmtpLogin" xml:space="preserve">
+    <value>Логин SMTP сервера</value>
+  </data>
+  <data name="admin_Settings_SmtpPassword" xml:space="preserve">
+    <value>Пароль SMTP сервера</value>
+  </data>
+  <data name="admin_Settings_SmtpServerPort" xml:space="preserve">
+    <value>Порт SMTP сервера</value>
+  </data>
 </root>

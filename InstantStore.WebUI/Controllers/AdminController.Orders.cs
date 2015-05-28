@@ -31,8 +31,6 @@ namespace InstantStore.WebUI.Controllers
             { OrderStatus.Completed, StringResource.orderStatus_Processed }
         };
 
-        private static CultureInfo russianCulture = new System.Globalization.CultureInfo("ru-RU");
-
         public ActionResult Orders(char t = 'p', int o = 0, int c = 50)
         {
             var user = this.HttpContext.CurrentUser();

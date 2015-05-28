@@ -4,7 +4,7 @@
 @model TreeViewModel
 @{
     var treeId = this.Model.TreeId;
-    var treeData = Json.Encode(new [] { PageViewModel.CreateTreeNode(this.Model.Root) } );
+    var treeData = Json.Encode(new [] { PageViewModel.CreateTreeNode(this.Model.Root, this.Model.UseIcons) } );
 }
 
 <script src="~/Scripts/bootstrap-treeview.js"></script>
@@ -25,7 +25,7 @@
             data: categoryTree,
             onNodeSelected: function (event, node) {
                 if (node && node.id) {
-                    $(document).trigger("category-tree:selected", [ node.id, tid ]);
+                    $(document).trigger("category-tree:selected", [ node.id, tid, node ]);
                 }
             }
         });

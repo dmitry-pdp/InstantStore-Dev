@@ -403,6 +403,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}({1}) от {2}.
+        /// </summary>
+        public static string admin_FeedbackNameFormat {
+            get {
+                return ResourceManager.GetString("admin_FeedbackNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактируем список форм собственности.
         /// </summary>
         public static string admin_FormaSobstvennosti_Edit {
@@ -1065,6 +1074,213 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Settings {
             get {
                 return ResourceManager.GetString("admin_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email администратора..
+        /// </summary>
+        public static string admin_Settings_EmailAdmin {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Содержание.
+        /// </summary>
+        public static string admin_Settings_EmailBody {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Настройки SMTP.
+        /// </summary>
+        public static string admin_Settings_EmailConfiguration {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email отправителя.
+        /// </summary>
+        public static string admin_Settings_EmailSettings_EmailFrom {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailSettings_EmailFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP сервер.
+        /// </summary>
+        public static string admin_Settings_EmailSettings_SmtpServer {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailSettings_SmtpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заголовок.
+        /// </summary>
+        public static string admin_Settings_EmailSubject {
+            get {
+                return ResourceManager.GetString("admin_Settings_EmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Основные настройки.
+        /// </summary>
+        public static string admin_Settings_GeneralSettingsLabel {
+            get {
+                return ResourceManager.GetString("admin_Settings_GeneralSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Логин SMTP сервера.
+        /// </summary>
+        public static string admin_Settings_SmtpLogin {
+            get {
+                return ResourceManager.GetString("admin_Settings_SmtpLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароль SMTP сервера.
+        /// </summary>
+        public static string admin_Settings_SmtpPassword {
+            get {
+                return ResourceManager.GetString("admin_Settings_SmtpPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Порт SMTP сервера.
+        /// </summary>
+        public static string admin_Settings_SmtpServerPort {
+            get {
+                return ResourceManager.GetString("admin_Settings_SmtpServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Настройки email.
+        /// </summary>
+        public static string admin_SettingsNode_EmailGroup {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новый заказ .
+        /// </summary>
+        public static string admin_SettingsNode_EmailNewOrder {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailNewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новый пользователь (администратору).
+        /// </summary>
+        public static string admin_SettingsNode_EmailNewUserActivation {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailNewUserActivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статус пользователя.
+        /// </summary>
+        public static string admin_SettingsNode_EmailNewUserNotification {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailNewUserNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новый пользователь (пользователю).
+        /// </summary>
+        public static string admin_SettingsNode_EmailNewUserRegistration {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailNewUserRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заказ обновлен.
+        /// </summary>
+        public static string admin_SettingsNode_EmailOrderUpdated {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailOrderUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сброс пароля.
+        /// </summary>
+        public static string admin_SettingsNode_EmailResetPassword {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь заблокирован.
+        /// </summary>
+        public static string admin_SettingsNode_EmailUserBlock {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_EmailUserBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обратная связь.
+        /// </summary>
+        public static string admin_SettingsNode_FeedbackGroup {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_FeedbackGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нижний заголовок.
+        /// </summary>
+        public static string admin_SettingsNode_PagesFooter {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_PagesFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Страницы.
+        /// </summary>
+        public static string admin_SettingsNode_PagesGroup {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_PagesGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заголовок.
+        /// </summary>
+        public static string admin_SettingsNode_PagesHeader {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_PagesHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Текст главной страницы.
+        /// </summary>
+        public static string admin_SettingsNode_PagesMainContent {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_PagesMainContent", resourceCulture);
             }
         }
         

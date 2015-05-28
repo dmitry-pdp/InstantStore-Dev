@@ -5,7 +5,7 @@ using System.Web;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class TableViewModel
+    public class TableViewModel : CustomViewModel
     {
         public TableViewModel()
         {

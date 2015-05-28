@@ -5,14 +5,21 @@ using System.Web;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
-using InstantStore.WebUI.Resources;
 using InstantStore.Domain.Entities;
+using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.ViewModels
 {
     public class TreeViewModel
     {
+        public TreeViewModel()
+        {
+            this.UseIcons = true;
+        }
+
         public string TreeId { get; set; }
+
+        public bool UseIcons { get; set; }
 
         public CategoryTreeItemViewModel Root { get; set; }
     }
@@ -22,6 +29,13 @@ namespace InstantStore.WebUI.ViewModels
         public CategoryTreeItemViewModel()
         {
             this.Items = new List<CategoryTreeItemViewModel>();
+        }
+
+        public CategoryTreeItemViewModel(string key, string name)
+        {
+            this.Key = key;
+            this.Name = name;
+            this.Id = Guid.NewGuid();
         }
 
         public CategoryTreeItemViewModel(ContentPage page)
@@ -58,6 +72,8 @@ namespace InstantStore.WebUI.ViewModels
 
         public bool IsCategory { get; set; }
 
-        public List<CategoryTreeItemViewModel> Items { get; private set; }
+        public List<CategoryTreeItemViewModel> Items { get; set; }
+
+        public string Key { get; set; }
     }
 }

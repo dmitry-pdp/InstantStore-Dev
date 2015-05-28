@@ -41,55 +41,25 @@ namespace InstantStore.WebUI.ViewModels
 
         public void ValidateAndSave()
         {
-            var setting = this.repository.Settings;
-            if (setting == null)
-            {
-                setting = new Setting();
-            }
-
             // TODO: XSS and header consistency validation.
-
-            setting.HeaderHtml = this.headerHtml;
-            setting.FooterHtml = this.footerHtml;
-            setting.MainDescription = this.mainDocumentHtml;
-            
-            this.repository.Update(setting);
+            this.repository.SetSettings(SettingsKey.HeaderHtml, this.headerHtml);
+            this.repository.SetSettings(SettingsKey.FooterHtml, this.footerHtml);
+            this.repository.SetSettings(SettingsKey.MainPageHtml, this.mainDocumentHtml);
         }
 
         private string CreateHeaderHtml()
         {
-            if (this.repository.Settings != null && !string.IsNullOrEmpty(this.repository.Settings.HeaderHtml))
-            {
-                return this.repository.Settings.HeaderHtml;
-            }
-            else
-            {
-                return StringResource.Header_Empty;
-            }
+            return this.repository.GetSettings(SettingsKey.HeaderHtml) ?? StringResource.Header_Empty;
         }
 
         private string CreateFooterHtml()
         {
-            if (this.repository.Settings != null && !string.IsNullOrEmpty(this.repository.Settings.FooterHtml))
-            {
-                return this.repository.Settings.FooterHtml;
-            }
-            else
-            {
-                return string.Empty;
-            }
+            return this.repository.GetSettings(SettingsKey.FooterHtml) ?? string.Empty;
         }
 
         private string CreateMainDocumentHtml()
         {
-            if (this.repository.Settings != null && !string.IsNullOrEmpty(this.repository.Settings.MainDescription))
-            {
-                return this.repository.Settings.MainDescription;
-            }
-            else
-            {
-                return string.Empty;
-            }
+            return this.repository.GetSettings(SettingsKey.MainPageHtml) ?? string.Empty;
         }
     }
 }

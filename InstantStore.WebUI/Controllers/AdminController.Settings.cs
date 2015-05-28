@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,36 +10,225 @@ using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
 using InstantStore.WebUI.ViewModels.Factories;
+using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        public ActionResult Settings(string t = null)
+        private static CategoryTreeItemViewModel settingsNavigationTree = new CategoryTreeItemViewModel
         {
-            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
-            if (user == null || !user.IsAdmin)
+            Id = Guid.Empty,
+            Name = StringResource.admin_Settings,
+            Items = new List<CategoryTreeItemViewModel>
             {
-                ////return this.HttpNotFound();
+                new CategoryTreeItemViewModel("PagesGroup", StringResource.admin_SettingsNode_PagesGroup)
+                {
+                    Items = new List<CategoryTreeItemViewModel>
+                    {
+                        new CategoryTreeItemViewModel("PagesHeader", StringResource.admin_SettingsNode_PagesHeader),
+                        new CategoryTreeItemViewModel("PagesFooter", StringResource.admin_SettingsNode_PagesFooter),
+                        new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent)
+                    }
+                },
+                new CategoryTreeItemViewModel("GroupGmail", StringResource.admin_SettingsNode_EmailGroup)
+                {
+                    Items = new List<CategoryTreeItemViewModel>
+                    {
+                        new CategoryTreeItemViewModel("EmailNewUserRegistration", StringResource.admin_SettingsNode_EmailNewUserRegistration),
+                        new CategoryTreeItemViewModel("EmailNewUserNotification", StringResource.admin_SettingsNode_EmailNewUserNotification),
+                        new CategoryTreeItemViewModel("EmailNewUserActivation", StringResource.admin_SettingsNode_EmailNewUserActivation),
+                        new CategoryTreeItemViewModel("EmailUserBlocked", StringResource.admin_SettingsNode_EmailUserBlock),
+                        new CategoryTreeItemViewModel("EmailResetPassword", StringResource.admin_SettingsNode_EmailResetPassword),
+                        new CategoryTreeItemViewModel("EmailOrderHasBeenUpdated", StringResource.admin_SettingsNode_EmailOrderUpdated),
+                        new CategoryTreeItemViewModel("EmailOrderHasBeenPlaced", StringResource.admin_SettingsNode_EmailNewOrder)
+                    }
+                },
+                new CategoryTreeItemViewModel("Feedback", StringResource.admin_SettingsNode_FeedbackGroup)
+            }
+        };
+
+        public ActionResult Settings(Guid? i = null, Guid? id = null, int c = 25, int o = 0)
+        {
+            if (i == null)
+            {
+                this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Settings);
+                this.ViewData["SettingsMenuViewModel"] = settingsNavigationTree;
+                this.ViewData["SettingsMenuSelection"] = id;
+                return View();
+            }
+            else
+            {
+                CustomViewModel settingsViewModel = null;
+                var item = i != null ? this.GetItemById(i.Value, settingsNavigationTree) : null;
+                if (item == null || item.Id == Guid.Empty)
+                {
+                }
+                else
+                {
+                    if (item.Key.StartsWith("Email"))
+                    {
+                        settingsViewModel = this.CreateEmailSettingsViewModel(item);
+                    }
+                    else
+                    {
+                        switch (item.Key)
+                        {
+                            case "PagesHeader":
+                                settingsViewModel = this.CreateContentSettingsViewModel(
+                                    StringResource.Settings_HeaderLabel, SettingsKey.HeaderHtml);
+                                break;
+                            case "PagesFooter":
+                                settingsViewModel = this.CreateContentSettingsViewModel(
+                                    StringResource.Settings_FooterLabel, SettingsKey.FooterHtml);
+                                break;
+                            case "MainContent":
+                                settingsViewModel = this.CreateContentSettingsViewModel(
+                                    StringResource.Settings_MainTextLabel, SettingsKey.MainPageHtml);
+                                break;
+                            case "Feedback":
+                                using (var context = new InstantStoreDataContext())
+                                {
+                                    settingsViewModel = new TableViewModel
+                                    {
+                                        Title = StringResource.admin_SettingsNode_FeedbackGroup,
+                                        Rows = context.Feedbacks
+                                            .OrderBy(feedback => feedback.Submitted)
+                                            .Skip(o)
+                                            .Take(c)
+                                            .ToList()
+                                            .Select(feedback => new TableRowViewModel
+                                            {
+                                                Cells = new List<TableCellViewModel>
+                                            {
+                                                new TableCellViewModel(string.Format(StringResource.admin_FeedbackNameFormat, feedback.Name, feedback.Email, feedback.Submitted.ToString("F", new CultureInfo("ru-RU")))),
+                                                new TableCellViewModel(feedback.Message)
+                                            }
+                                            })
+                                            .ToList(),
+                                        Pagination = new PaginationViewModel(c, o, context.Feedbacks.Count()),
+                                        ViewName = "TableView"
+                                    };
+                                }
+                                break;
+                            case "GroupEmail":
+                                settingsViewModel = this.CreatePropertyListViewModel(
+                                    StringResource.admin_Settings_EmailConfiguration,
+                                    new List<PropertyInfo> 
+                                { 
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_SmtpServer.ToString(), 
+                                        StringResource.admin_Settings_EmailSettings_SmtpServer, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_SmtpServer)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_SmtpServerPort.ToString(), 
+                                        StringResource.admin_Settings_SmtpServerPort, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPort)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_SmtpServerLogin.ToString(), 
+                                        StringResource.admin_Settings_SmtpLogin, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_SmtpServerLogin)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_SmtpServerPassword.ToString(), 
+                                        StringResource.admin_Settings_SmtpPassword, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPassword)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_EmailFrom.ToString(), 
+                                        StringResource.admin_Settings_EmailSettings_EmailFrom, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_EmailFrom)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_EmailAdmin.ToString(), 
+                                        StringResource.admin_Settings_EmailAdmin, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin)),
+                                });
+                                break;
+                        }
+                    }
+                }
+
+                if (settingsViewModel != null)
+                {
+                    //settingsViewModel.Id = i ?? Guid.Empty;
+                    return View(settingsViewModel.ViewName, settingsViewModel);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        private CustomViewModel CreatePropertyListViewModel(string title, IList<PropertyInfo> properties)
+        {
+            return new PropertyListViewModel
+            {
+                Title = title,
+                Properties = properties,
+                ViewName = "PropertyListView"
+            };
+        }
+
+        private CustomViewModel CreateEmailSettingsViewModel(CategoryTreeItemViewModel item)
+        {
+            SettingsKey
+                subjectKey = (SettingsKey)Enum.Parse(typeof(SettingsKey), item.Key + "Subject"),
+                bodyKey = (SettingsKey)Enum.Parse(typeof(SettingsKey), item.Key + "Body");
+            
+            return new TextViewModel
+            {
+                Title = item.Name,
+                Subject = this.repository.GetSettings(subjectKey),
+                Content = this.repository.GetSettings(bodyKey),
+                HasSubject = true,
+                HasRichText = false,
+                SubjectLabel = StringResource.admin_Settings_EmailSubject,
+                ContentLabel = StringResource.admin_Settings_EmailBody,
+                ViewName = "TextView"
+            };
+        }
+
+        private CustomViewModel CreateContentSettingsViewModel(string title, SettingsKey key)
+        {
+            return new TextViewModel
+            {
+                HasRichText = true,
+                ViewName = "TextView",
+                Title = title,
+                Content = this.repository.GetSettings(key)
+            };
+        }
+
+        private CategoryTreeItemViewModel GetItemById(Guid id, CategoryTreeItemViewModel item)
+        {
+            if (item == null)
+            {
+                return null;
             }
 
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Settings);
-            this.ViewData["ControlPanelViewModel"] = new ControlPanelViewModel(this.repository, ControlPanelPage.Settings);
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            this.ViewData["ShowMainPage"] = "main" == t;
-            return View();
+            if (item.Id == id)
+            {
+                return item;
+            }
+
+            if (item.Items != null)
+            {
+                foreach(var child in item.Items)
+                {
+                    var result = GetItemById(id, child);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult SettingsUpdate(string headerHtml, string mainDocumentHtml, string footerHtml)
         {
-            var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
-            if (user == null || !user.IsAdmin)
-            {
-                ////return this.HttpNotFound();
-            }
-
             if (settingsViewModel != null)
             {
                 this.settingsViewModel.HeaderHtml = headerHtml;
@@ -51,5 +241,60 @@ namespace InstantStore.WebUI.Controllers
             return new RedirectResult("/");
         }
 
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Settings(Guid i, string t, TextViewModel data, PropertyListViewModel propertyList)
+        {
+            var item = i != null ? this.GetItemById(i, settingsNavigationTree) : null;
+            if (item == null || item.Id == Guid.Empty)
+            {
+                return null;
+            }
+
+            if (t == "TextView")
+            {
+                switch (item.Key)
+                {
+                    case "PagesHeader":
+                        this.repository.SetSettings(SettingsKey.HeaderHtml, data.Content);
+                        break;
+                    case "PagesFooter":
+                        this.repository.SetSettings(SettingsKey.FooterHtml, data.Content);
+                        break;
+                    case "MainContent":
+                        this.repository.SetSettings(SettingsKey.MainPageHtml, data.Content);
+                        break;
+                    case "EmailNewUserRegistration":
+                        this.repository.SetSettings(SettingsKey.EmailNewUserRegistrationSubject, data.Subject);
+                        this.repository.SetSettings(SettingsKey.EmailNewUserRegistrationBody, data.Content);
+                        break;
+                    case "EmailNewUserNotification":
+                        this.repository.SetSettings(SettingsKey.EmailNewUserNotificationSubject, data.Subject);
+                        this.repository.SetSettings(SettingsKey.EmailNewUserNotificationBody, data.Content);
+                        break;
+                    case "EmailNewUserActivation":
+                        this.repository.SetSettings(SettingsKey.EmailNewUserActivationSubject, data.Subject);
+                        this.repository.SetSettings(SettingsKey.EmailNewUserActivationBody, data.Content);
+                        break;
+                }
+
+                return this.RedirectToAction("Settings", new { id = i });
+            }
+            else if (t == "PropertyListView" && item.Key == "GroupEmail")
+            {
+                foreach(var property in propertyList.Properties)
+                {
+                    SettingsKey settingsKey;
+                    if (Enum.TryParse<SettingsKey>(property.Key, out settingsKey))
+                    {
+                        this.repository.SetSettings(settingsKey, property.Value);
+                    }
+                }
+
+                return this.RedirectToAction("Settings", new { id = i });
+            }
+
+            return null;
+        }
     }
 }

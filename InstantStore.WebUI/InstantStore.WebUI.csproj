@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\Shared\TableViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Compile Include="ViewModels\Shared\TilesViewModel.cs" />
+    <Compile Include="ViewModels\TextViewModel.cs" />
     <Compile Include="ViewModels\TreeViewModel.cs" />
     <Compile Include="ViewModels\UploadControlViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
@@ -330,6 +331,8 @@
     <Content Include="Views\Shared\TabControlView.cshtml" />
     <Content Include="Views\Shared\Pager.cshtml" />
     <Content Include="Views\Admin\Offer.cshtml" />
+    <Content Include="Views\Admin\TextView.cshtml" />
+    <Content Include="Views\Admin\PropertyListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

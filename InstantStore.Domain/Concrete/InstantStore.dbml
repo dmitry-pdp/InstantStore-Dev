@@ -1,21 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InstantStore" Class="InstantStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Integrated Security=True" SettingsObjectName="InstantStore.Domain.Properties.Settings" SettingsPropertyName="InstantStoreConnectionString2" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Settings" Member="Settings">
-    <Type Name="Setting">
-      <Column Name="MainDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="HeaderHtml" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="FooterHtml" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Feedback" Member="Feedbacks">
-    <Type Name="Feedback">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Message" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.ErrorLog" Member="ErrorLogs">
     <Type Name="ErrorLog">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -235,6 +219,21 @@
       <Column Name="DiscountType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Offer_Order" Member="Orders" ThisKey="VersionId" OtherKey="OfferId" Type="Order" />
       <Association Name="Currency_Offer" Member="Currency" ThisKey="CurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="NVarChar(250) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Feedback" Member="Feedbacks">
+    <Type Name="Feedback">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Submitted" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

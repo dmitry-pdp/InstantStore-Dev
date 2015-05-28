@@ -78,7 +78,7 @@ namespace InstantStore.WebUI.Controllers
                 this.repository.AddFeedback(feedback);
             }
 
-            return new RedirectResult("/");
+            return this.RedirectToAction("Index");
         }
     }
 }

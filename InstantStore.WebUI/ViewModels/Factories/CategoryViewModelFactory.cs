@@ -259,7 +259,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             this.Items.Add(new TableRowViewModel
             {
                 Cells = row,
-                Id = product.Id.ToString()
+                Id = product.VersionId.ToString()
             });        
         }
     }

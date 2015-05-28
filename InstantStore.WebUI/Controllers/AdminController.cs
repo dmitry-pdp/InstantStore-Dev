@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,6 +16,8 @@ namespace InstantStore.WebUI.Controllers
     [CustomAuthorization(true)]
     public partial class AdminController : Controller
     {
+        private static CultureInfo russianCulture = new System.Globalization.CultureInfo("ru-RU");
+
         private readonly IRepository repository;
         private readonly SettingsViewModel settingsViewModel;
 

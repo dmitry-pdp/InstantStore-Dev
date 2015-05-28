@@ -165,7 +165,8 @@
         });
 
         $("#TemplateId").on("change", function () {
-            var templateId = $(this.selectedOptions[0]).val();
+            var options = (this.selectedOptions && this.selectedOptions[0]) || (this.selectedIndex && this.options[this.selectedIndex]);
+            var templateId = $(options).val();
             if (templateId)
             {
                 $.ajax({

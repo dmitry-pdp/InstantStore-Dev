@@ -18,40 +18,45 @@ namespace InstantStore.WebUI.Controllers
         [HttpGet]
         public ActionResult NewUser()
         {
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
             return View(new UserViewModel());
         }
 
         [HttpPost]
-        public ActionResult NewUser(UserViewModel user)
+        public ActionResult NewUser(UserViewModel userViewModel)
         {
             // TODO: DDoS vulnerability. Throttling needs to be added here.
             if (!this.ModelState.IsValid)
             {
-                return this.View(user);
+                return this.View(userViewModel);
             }
 
-            this.repository.AddUser(new User
+            var user = new User
             {
-                Name = user.Name,
-                Email = user.Email,
-                Company = user.Company,
-                Phonenumber = user.Phonenumber,
-                City = user.City,
-                Password = user.Password,
+                Name = userViewModel.Name,
+                Email = userViewModel.Email,
+                Company = userViewModel.Company,
+                Phonenumber = userViewModel.Phonenumber,
+                City = userViewModel.City,
+                Password = userViewModel.Password,
                 IsAdmin = false,
                 IsActivated = false,
                 IsBlocked = false,
                 IsPaymentCash = true,
                 DefaultCurrencyId = null
-            });
+            };
+
+            this.repository.AddUser(user);
+
+            EmailManager.Send(user, this.repository, EmailType.EmailNewUserRegistration);
+            
 
             return new RedirectResult("~/main/NewUserConfirmation");
         }
 
         public ActionResult NewUserConfirmation()
         {
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
             return this.View();
         }
 
@@ -91,7 +96,7 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Login()
         {
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown); 
             return View();
         }
         
@@ -121,7 +126,6 @@ namespace InstantStore.WebUI.Controllers
             UserIdentityManager.AddUserSession(this.Response, user);
 
             return this.Json(new { result = "success" });
-            ;
         }
 
         public ActionResult Logoff()

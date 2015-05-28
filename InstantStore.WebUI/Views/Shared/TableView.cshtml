@@ -7,8 +7,13 @@
     string tableId =  "_c_" + this.Model.Id;    
 }
 
+@if (this.Model.Title != null)
+{
+    <h3>@this.Model.Title</h3>
+}
+
 <table class="table table-hover">
-    @if (this.Model.Header.Any())
+    @if (this.Model.Header != null && this.Model.Header.Any())
     {
         <thead>
             <tr>

@@ -6,36 +6,54 @@ using System.Threading.Tasks;
 
 namespace InstantStore.Domain.Concrete
 {
+    public enum SettingsKey
+    {
+        HeaderHtml,
+        FooterHtml,
+        MainPageHtml,
+        EmailNewUserRegistrationBody,
+        EmailNewUserRegistrationSubject,
+        EmailNewUserNotificationBody,
+        EmailNewUserNotificationSubject,
+        EmailNewUserActivationBody,
+        EmailNewUserActivationSubject,
+        EmailSettings_SmtpServer,
+        EmailSettings_SmtpServerPort,
+        EmailSettings_SmtpServerLogin,
+        EmailSettings_SmtpServerPassword,
+        EmailSettings_EmailFrom,
+        EmailSettings_EmailAdmin
+    }
+
     public partial class LinqRepository
     {
-        public Setting Settings 
+        public string GetSettings(SettingsKey key)
         { 
-            get
+            using(var context = new InstantStoreDataContext())
             {
-                using(var context = new InstantStoreDataContext())
-                {
-                    var settingsTable = context.Settings;
-                    return settingsTable.FirstOrDefault();
-                }
+                var keyString = key.ToString();
+                var setting = context.Settings.FirstOrDefault(x => x.Key == keyString);
+                return setting != null ? setting.Value : null;
             }
         }
 
-        public void Update(Setting settings)
+        public void SetSettings(SettingsKey key, string value)
         {
             using(var context = new InstantStoreDataContext())
             {
-                var settingsTable = context.Settings;
-                if (!settingsTable.Any())
+                var keyString = key.ToString();
+                var setting = context.Settings.FirstOrDefault(x => x.Key == keyString);
+                if (setting != null)
                 {
-                    settings.Id = Guid.NewGuid();
-                    settingsTable.InsertOnSubmit(settings);
+                    setting.Value = value;
                 }
                 else
                 {
-                    var existingSettings = settingsTable.First();
-                    existingSettings.HeaderHtml = settings.HeaderHtml;
-                    existingSettings.FooterHtml = settings.FooterHtml;
-                    existingSettings.MainDescription = settings.MainDescription;
+                    context.Settings.InsertOnSubmit(new Setting
+                    {
+                        Key = keyString,
+                        Value = value
+                    });
                 }
 
                 context.SubmitChanges();

@@ -9,9 +9,9 @@ namespace InstantStore.Domain.Abstract
     {
         //IEnumerable<InstantStore.Domain.Entities.Product> Products { get; }
 
-        Setting Settings { get; }
+        string GetSettings(SettingsKey key);
 
-        void Update(Setting settings);
+        void SetSettings(SettingsKey key, string value);
 
         void AddFeedback(Feedback feedback);
 
