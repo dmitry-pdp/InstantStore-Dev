@@ -50,5 +50,9 @@ namespace InstantStore.WebUI.ViewModels
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorRequired")]
         [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
         public string City { get; set; }
+
+        [Display(ResourceType = typeof(StringResource), Name = "admin_UserPaymentCurrency")]
+        [Required(ErrorMessage = "Currency is not set")]
+        public Guid Currency { get; set; }
     }
 }

@@ -207,20 +207,35 @@ namespace InstantStore.WebUI.Controllers
                     return this.HttpNotFound();
                 }
 
-                order.Comment = orderViewModel.Description;
-                if (order.Status != (int)orderViewModel.Status)
+                if (order.Comment != orderViewModel.Description ||
+                    order.Status != (int)orderViewModel.Status)
                 {
-                    order.Status = (int)orderViewModel.Status;
-                    context.OrderUpdates.InsertOnSubmit(new OrderUpdate
+                    order.Comment = orderViewModel.Description;
+                    if (order.Status != (int)orderViewModel.Status)
                     {
-                        Status = (int)orderViewModel.Status,
-                        DateTime = DateTime.Now,
-                        Id = Guid.NewGuid(),
-                        OrderId = order.Id
+                        order.Status = (int)orderViewModel.Status;
+                        context.OrderUpdates.InsertOnSubmit(new OrderUpdate
+                        {
+                            Status = (int)orderViewModel.Status,
+                            DateTime = DateTime.Now,
+                            Id = Guid.NewGuid(),
+                            OrderId = order.Id
+                        });
+                    }
+
+                    var orderSubmitDate = order.OrderUpdates.FirstOrDefault(x => x.Status == (int)OrderStatus.Placed);
+
+                    context.SubmitChanges();
+                    EmailManager.Send(
+                        user,
+                        this.repository,
+                        EmailType.EmailResetPassword,
+                        new Dictionary<string, string> { 
+                        { "%order.id%", order.Id.ToString() }, 
+                        { "%order.user%", order.User.Name }, 
+                        { "%order.date%", orderSubmitDate != null ? orderSubmitDate.DateTime.ToString("F", russianCulture) : string.Empty } 
                     });
                 }
-
-                context.SubmitChanges();
             }
 
             return this.RedirectToAction("Orders");

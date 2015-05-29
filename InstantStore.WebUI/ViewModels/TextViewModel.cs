@@ -54,5 +54,7 @@ namespace InstantStore.WebUI.ViewModels
     public class PropertyListViewModel : CustomViewModel
     {
         public IList<PropertyInfo> Properties { get; set; }
+
+        public string CustomText { get; set; }
     }
 }

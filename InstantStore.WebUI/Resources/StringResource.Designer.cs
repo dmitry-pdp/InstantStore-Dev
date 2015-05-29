@@ -1186,7 +1186,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Новый пользователь (администратору).
+        ///   Looks up a localized string similar to Запись пользователя активирована.
         /// </summary>
         public static string admin_SettingsNode_EmailNewUserActivation {
             get {
@@ -1195,7 +1195,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Статус пользователя.
+        ///   Looks up a localized string similar to Новый пользователь (администратору).
         /// </summary>
         public static string admin_SettingsNode_EmailNewUserNotification {
             get {
@@ -1420,6 +1420,24 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Пароль пользователя сброшен. Пользователю отправлено письмо с новам паролем..
+        /// </summary>
+        public static string admin_userPasswordReset {
+            get {
+                return ResourceManager.GetString("admin_userPasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка сброса пароля. Если ошибка повторится свяжитесь с админитратором..
+        /// </summary>
+        public static string admin_userPasswordResetError {
+            get {
+                return ResourceManager.GetString("admin_userPasswordResetError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Валюта.
         /// </summary>
         public static string admin_UserPaymentCurrency {
@@ -1623,6 +1641,15 @@ namespace InstantStore.WebUI.Resources {
         public static string ConfirmationTitle {
             get {
                 return ResourceManager.GetString("ConfirmationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка соединения. Проверьте ваше соединение с интернетом. Если ошибка повторится свяжитесь с админитратором..
+        /// </summary>
+        public static string Connection_Error {
+            get {
+                return ResourceManager.GetString("Connection_Error", resourceCulture);
             }
         }
         
@@ -3315,6 +3342,15 @@ namespace InstantStore.WebUI.Resources {
         public static string user_SubmitOrder {
             get {
                 return ResourceManager.GetString("user_SubmitOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь с таким именем и/или адресом электронной почты уже зарегестрирован..
+        /// </summary>
+        public static string UserAlreadyExists {
+            get {
+                return ResourceManager.GetString("UserAlreadyExists", resourceCulture);
             }
         }
         

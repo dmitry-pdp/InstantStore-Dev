@@ -16,6 +16,14 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
+        private static string mappingRules = "Email properties:\n\r" +
+            "User name: %user.name%\r\n" +
+            "New password: %password%\r\n" +
+            "Order id: %order.id%\r\n" +
+            "Order date: %order.date%\r\n" +
+            "Order user name: %order.user%\r\n" +
+            "";
+
         private static CategoryTreeItemViewModel settingsNavigationTree = new CategoryTreeItemViewModel
         {
             Id = Guid.Empty,
@@ -31,7 +39,7 @@ namespace InstantStore.WebUI.Controllers
                         new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent)
                     }
                 },
-                new CategoryTreeItemViewModel("GroupGmail", StringResource.admin_SettingsNode_EmailGroup)
+                new CategoryTreeItemViewModel("GroupEmail", StringResource.admin_SettingsNode_EmailGroup)
                 {
                     Items = new List<CategoryTreeItemViewModel>
                     {
@@ -164,7 +172,8 @@ namespace InstantStore.WebUI.Controllers
             {
                 Title = title,
                 Properties = properties,
-                ViewName = "PropertyListView"
+                ViewName = "PropertyListView",
+                CustomText = mappingRules
             };
         }
 
@@ -253,29 +262,29 @@ namespace InstantStore.WebUI.Controllers
 
             if (t == "TextView")
             {
-                switch (item.Key)
+                if (item.Key.StartsWith("Email"))
                 {
-                    case "PagesHeader":
-                        this.repository.SetSettings(SettingsKey.HeaderHtml, data.Content);
-                        break;
-                    case "PagesFooter":
-                        this.repository.SetSettings(SettingsKey.FooterHtml, data.Content);
-                        break;
-                    case "MainContent":
-                        this.repository.SetSettings(SettingsKey.MainPageHtml, data.Content);
-                        break;
-                    case "EmailNewUserRegistration":
-                        this.repository.SetSettings(SettingsKey.EmailNewUserRegistrationSubject, data.Subject);
-                        this.repository.SetSettings(SettingsKey.EmailNewUserRegistrationBody, data.Content);
-                        break;
-                    case "EmailNewUserNotification":
-                        this.repository.SetSettings(SettingsKey.EmailNewUserNotificationSubject, data.Subject);
-                        this.repository.SetSettings(SettingsKey.EmailNewUserNotificationBody, data.Content);
-                        break;
-                    case "EmailNewUserActivation":
-                        this.repository.SetSettings(SettingsKey.EmailNewUserActivationSubject, data.Subject);
-                        this.repository.SetSettings(SettingsKey.EmailNewUserActivationBody, data.Content);
-                        break;
+                    SettingsKey
+                        subjectKey = (SettingsKey)Enum.Parse(typeof(SettingsKey), item.Key + "Subject"),
+                        bodyKey = (SettingsKey)Enum.Parse(typeof(SettingsKey), item.Key + "Body");
+
+                    this.repository.SetSettings(subjectKey, data.Subject);
+                    this.repository.SetSettings(bodyKey, data.Content);
+                }
+                else
+                {
+                    switch (item.Key)
+                    {
+                        case "PagesHeader":
+                            this.repository.SetSettings(SettingsKey.HeaderHtml, data.Content);
+                            break;
+                        case "PagesFooter":
+                            this.repository.SetSettings(SettingsKey.FooterHtml, data.Content);
+                            break;
+                        case "MainContent":
+                            this.repository.SetSettings(SettingsKey.MainPageHtml, data.Content);
+                            break;
+                    }
                 }
 
                 return this.RedirectToAction("Settings", new { id = i });

@@ -21,26 +21,7 @@ tinymce.init(
         toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
     });
 </script>
-<!--
-<div class="border col-sm-3">
-    <div class="row" style="vertical-align:bottom">
-        <div class="col-sm-offset-1 col-sm-5">
-            <h4>@StringResource.admin_Users</h4>
-        </div>
-        <div class="col-sm-6">
-        </div>
-    </div>
-    
-    <ul class="nav nav-pills nav-stacked">
-        @foreach (var userInfo in userLists.AllUsers)
-        {
-            <li role="presentation" class="@(userInfo.Id == userLists.Current.Id ? "active" : "")" style="@(!userInfo.IsActivated ? "background-color:#efe" : "") @(userInfo.IsBlocked ? "background-color:#ddd" : "")">
-                <a href="/admin/user?id=@userInfo.Id"><span>@userInfo.Name</span></a>
-            </li>
-        }
-    </ul>
-</div>
-    -->
+
 <div class="border col-sm-10 col-sm-offset-1 container-fluid">
     <h3>@ViewBag.Title</h3>
     @using (Html.BeginForm("User", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
@@ -60,7 +41,7 @@ tinymce.init(
                 {
                     <a href="/admin/user?id=@userLists.Current.Id&unblock=true" class="btn btn-default">@StringResource.admin_UserUnblockAction</a>
                 }
-                <a href="#" class="btn btn-default">@StringResource.admin_UserResetPassword</a>
+                <a href="@Url.Action("ResetPassword", new {id = this.Model.Id })" class="btn btn-default" id="reset-password">@StringResource.admin_UserResetPassword</a>
             </div>
         </div>
         <fieldset>
@@ -141,3 +122,26 @@ tinymce.init(
         </div>
     }
 </div>
+<script>
+    $(function () {
+        $("#reset-password").click(function()
+        {
+            $.ajax({
+                url: this.href,
+                cached: false,
+                method: 'post'
+            })
+            .done(function (data) {
+                if (data.status == "OK") {
+                    alert('@StringResource.admin_userPasswordReset');
+                } else {
+                    alert('@StringResource.admin_userPasswordResetError');
+                }
+            })
+            .fail(function (data) {
+                alert('@StringResource.Connection_Error');
+            });
+            return false;
+        });
+    });
+</script>

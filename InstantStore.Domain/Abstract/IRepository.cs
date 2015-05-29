@@ -31,6 +31,8 @@ namespace InstantStore.Domain.Abstract
 
         void UpdateUser(User user);
 
+        void ResetPassword(Guid userId, string newPassword);
+
         IList<Currency> GetCurrencies();
 
         void AddCurrency(string text);

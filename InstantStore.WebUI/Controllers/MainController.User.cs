@@ -15,10 +15,10 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class MainController
     {
-        [HttpGet]
         public ActionResult NewUser()
         {
             this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
+            this.InitializeUserData();
             return View(new UserViewModel());
         }
 
@@ -26,12 +26,25 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult NewUser(UserViewModel userViewModel)
         {
             // TODO: DDoS vulnerability. Throttling needs to be added here.
+            using (var context = new InstantStoreDataContext())
+            {
+                if (context.Users.ToList().Any(
+                    user =>
+                        string.Equals(user.Name, userViewModel.Name, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(user.Email, userViewModel.Email, StringComparison.OrdinalIgnoreCase)))
+                {
+                    this.ModelState.AddModelError(string.Empty, StringResource.UserAlreadyExists);
+                }
+            }
+
             if (!this.ModelState.IsValid)
             {
+                this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
+                this.InitializeUserData();
                 return this.View(userViewModel);
             }
 
-            var user = new User
+            var newUser = new User
             {
                 Name = userViewModel.Name,
                 Email = userViewModel.Email,
@@ -43,15 +56,28 @@ namespace InstantStore.WebUI.Controllers
                 IsActivated = false,
                 IsBlocked = false,
                 IsPaymentCash = true,
-                DefaultCurrencyId = null
+                DefaultCurrencyId = userViewModel.Currency
             };
 
-            this.repository.AddUser(user);
+            this.repository.AddUser(newUser);
 
-            EmailManager.Send(user, this.repository, EmailType.EmailNewUserRegistration);
+            EmailManager.Send(newUser, this.repository, EmailType.EmailNewUserRegistration);
+            EmailManager.Send(newUser, this.repository, EmailType.EmailNewUserNotification);
             
-
             return new RedirectResult("~/main/NewUserConfirmation");
+        }
+
+        private void InitializeUserData()
+        {
+            var currencies = this.repository.GetCurrencies() ?? new List<Currency>();
+            this.ViewData["AvailableCurrencies"] = currencies.Select(x =>
+            {
+                return new SelectListItem()
+                {
+                    Text = x.Text,
+                    Value = x.Id.ToString()
+                };
+            }).ToList();
         }
 
         public ActionResult NewUserConfirmation()
@@ -92,12 +118,6 @@ namespace InstantStore.WebUI.Controllers
             }
 
             return this.View(userViewModel);
-        }
-
-        public ActionResult Login()
-        {
-            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown); 
-            return View();
         }
         
         [HttpPost]

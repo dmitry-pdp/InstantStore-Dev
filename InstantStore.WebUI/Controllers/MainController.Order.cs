@@ -12,6 +12,7 @@ using InstantStore.WebUI.Models;
 using InstantStore.WebUI.Resources;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.ViewModels.Factories;
+using System.Globalization;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -132,6 +133,19 @@ namespace InstantStore.WebUI.Controllers
             }
 
             this.repository.SubmitOrder(order.Id);
+
+            var orderSubmitDate = this.repository.GetStatusesForOrder(order.Id).FirstOrDefault(x => x.Status == (int)OrderStatus.Placed);
+
+            EmailManager.Send(
+                user,
+                this.repository,
+                EmailType.EmailOrderHasBeenPlaced,
+                new Dictionary<string, string> { 
+                        { "%order.id%", order.Id.ToString() }, 
+                        { "%order.user%", order.User.Name }, 
+                        { "%order.date%", orderSubmitDate != null ? orderSubmitDate.DateTime.ToString("F", new CultureInfo("ru-RU")) : string.Empty } 
+                    });
+
             return this.RedirectToAction("Index");
         }
 

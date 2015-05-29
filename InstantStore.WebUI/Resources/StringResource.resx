@@ -1174,10 +1174,10 @@
     <value>Настройки email</value>
   </data>
   <data name="admin_SettingsNode_EmailNewUserActivation" xml:space="preserve">
-    <value>Новый пользователь (администратору)</value>
+    <value>Запись пользователя активирована</value>
   </data>
   <data name="admin_SettingsNode_EmailNewUserNotification" xml:space="preserve">
-    <value>Статус пользователя</value>
+    <value>Новый пользователь (администратору)</value>
   </data>
   <data name="admin_SettingsNode_EmailNewUserRegistration" xml:space="preserve">
     <value>Новый пользователь (пользователю)</value>
@@ -1241,5 +1241,17 @@
   </data>
   <data name="admin_Settings_SmtpServerPort" xml:space="preserve">
     <value>Порт SMTP сервера</value>
+  </data>
+  <data name="admin_userPasswordReset" xml:space="preserve">
+    <value>Пароль пользователя сброшен. Пользователю отправлено письмо с новам паролем.</value>
+  </data>
+  <data name="admin_userPasswordResetError" xml:space="preserve">
+    <value>Произошла ошибка сброса пароля. Если ошибка повторится свяжитесь с админитратором.</value>
+  </data>
+  <data name="Connection_Error" xml:space="preserve">
+    <value>Произошла ошибка соединения. Проверьте ваше соединение с интернетом. Если ошибка повторится свяжитесь с админитратором.</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>Пользователь с таким именем и/или адресом электронной почты уже зарегестрирован.</value>
   </data>
 </root>

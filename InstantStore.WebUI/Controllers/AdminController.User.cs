@@ -111,19 +111,28 @@ namespace InstantStore.WebUI.Controllers
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, id);
 
+            var user = this.repository.GetUser(id);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
             if (activate != null && activate.Value)
             {
                 this.repository.ActivateUser(id);
+                EmailManager.Send(user, this.repository, EmailType.EmailNewUserActivation);
                 return this.RedirectToAction("Users");
             }
             if (unblock != null && unblock.Value)
             {
                 this.repository.UnblockUser(id);
+                EmailManager.Send(user, this.repository, EmailType.EmailNewUserActivation);
                 return this.RedirectToAction("Users");
             }
             if (block != null && block.Value)
             {
                 this.repository.BlockUser(id);
+                EmailManager.Send(user, this.repository, EmailType.EmailUserBlocked);
                 return this.RedirectToAction("Users");
             }
 
@@ -150,6 +159,22 @@ namespace InstantStore.WebUI.Controllers
 
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, userProfileViewModel.Id);
             return this.View(new UserProfileViewModel(this.repository, userProfileViewModel.Id));
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(Guid id)
+        {
+            var user = this.repository.GetUser(id);
+            if (user == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var guid = Guid.NewGuid().ToString();
+            var newPassword = guid.Substring(guid.LastIndexOf('-') + 1);
+            this.repository.ResetPassword(id, newPassword);
+            EmailManager.Send(user, this.repository, EmailType.EmailResetPassword, new Dictionary<string, string> { { "%password%", newPassword } });
+            return this.Json(new { status = "OK" });
         }
     }
 }

@@ -12,6 +12,7 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
+                user.DefaultCurrencyId = user.DefaultCurrencyId == null ? context.Currencies.FirstOrDefault().Id : user.DefaultCurrencyId;
                 user.Id = Guid.NewGuid();
                 user.Password = PasswordHash.PasswordHash.CreateHash(user.Password);
                 context.Users.InsertOnSubmit(user);
@@ -77,7 +78,7 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                var user = context.Users.First(u => u.Id == userId);
                 user.IsBlocked = true;
                 context.SubmitChanges();
             }

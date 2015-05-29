@@ -1,11 +1,12 @@
-﻿using InstantStore.Domain.Abstract;
-using InstantStore.Domain.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
+
+using InstantStore.Domain.Abstract;
+using InstantStore.Domain.Concrete;
 
 namespace InstantStore.WebUI.Models
 {
@@ -42,7 +43,8 @@ namespace InstantStore.WebUI.Models
 
         private static HashSet<EmailType> isAdminEmail = new HashSet<EmailType>
         {
-            EmailType.EmailNewUserNotification
+            EmailType.EmailNewUserNotification,
+            EmailType.EmailOrderHasBeenPlaced
         };
 
         public static void Send(
@@ -66,7 +68,7 @@ namespace InstantStore.WebUI.Models
             client.Send(mail);
         }
 
-        public static void Send(User toUser, IRepository repository, EmailType emailType)
+        public static void Send(User toUser, IRepository repository, EmailType emailType, IDictionary<string, string> emailProperties = null)
         {
             var fromEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailFrom);
             var adminEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin);
@@ -91,6 +93,15 @@ namespace InstantStore.WebUI.Models
                         var value = replacement.Value(toUser);
                         emailSubject = emailSubject.Replace(replacement.Key, value);
                         emailBody = emailBody.Replace(replacement.Key, value);
+                    }
+
+                    if (emailProperties != null)
+                    {
+                        foreach (var property in emailProperties)
+                        {
+                            emailSubject = emailSubject.Replace(property.Key, property.Value);
+                            emailBody = emailBody.Replace(property.Key, property.Value);
+                        }
                     }
 
                     string to = isAdminEmail.Contains(emailType)
