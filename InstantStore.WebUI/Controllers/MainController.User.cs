@@ -17,9 +17,8 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult NewUser()
         {
-            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
-            this.InitializeUserData();
-            return View(new UserViewModel());
+            this.Initialize(Guid.Empty, PageIdentity.Unknown);
+            return View(new UserViewModel { AvailableCurrencies = this.GetAvailableCurrencyList() });
         }
 
         [HttpPost]
@@ -39,8 +38,8 @@ namespace InstantStore.WebUI.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
-                this.InitializeUserData();
+                this.Initialize(Guid.Empty, PageIdentity.Unknown);
+                userViewModel.AvailableCurrencies = this.GetAvailableCurrencyList();
                 return this.View(userViewModel);
             }
 
@@ -63,63 +62,16 @@ namespace InstantStore.WebUI.Controllers
 
             EmailManager.Send(newUser, this.repository, EmailType.EmailNewUserRegistration);
             EmailManager.Send(newUser, this.repository, EmailType.EmailNewUserNotification);
-            
-            return new RedirectResult("~/main/NewUserConfirmation");
-        }
 
-        private void InitializeUserData()
-        {
-            var currencies = this.repository.GetCurrencies() ?? new List<Currency>();
-            this.ViewData["AvailableCurrencies"] = currencies.Select(x =>
-            {
-                return new SelectListItem()
-                {
-                    Text = x.Text,
-                    Value = x.Id.ToString()
-                };
-            }).ToList();
+            return this.RedirectToAction("NewUserConfirmation");
         }
 
         public ActionResult NewUserConfirmation()
         {
-            this.InitializeCommonControls(Guid.Empty, PageIdentity.Unknown);
+            this.Initialize(Guid.Empty, PageIdentity.Unknown);
             return this.View();
         }
 
-        public ActionResult Profile()
-        {
-            var user = this.InitializeCommonControls(Guid.Empty, PageIdentity.UserProfile);
-            if (user == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            return this.View(UserViewModelFactory.CreateUserViewModel(user));
-        }
-
-        [HttpPost]
-        public ActionResult Profile(UserViewModelBase userViewModel)
-        {
-            var user = this.InitializeCommonControls(Guid.Empty, PageIdentity.UserProfile);
-            if (user == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                user.City = userViewModel.City;
-                user.Company = userViewModel.Company;
-                user.Email = userViewModel.Email;
-                user.Phonenumber = userViewModel.Phonenumber;
-                this.repository.UpdateUser(user);
-
-                return this.RedirectToAction("Index");
-            }
-
-            return this.View(userViewModel);
-        }
-        
         [HttpPost]
         public ActionResult LoginUser(string name, string password)
         {

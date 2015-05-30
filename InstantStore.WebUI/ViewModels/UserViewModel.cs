@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 using InstantStore.WebUI.Resources;
 
@@ -19,7 +20,7 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_ConfirmPwd")]
         [DataType(DataType.Password)]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
-        [Compare("Password", ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorMismatch")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorMismatch")]
         [StringLength(50, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorLength")]
         public string ConfirmPassword { get; set; }
     }
@@ -54,5 +55,7 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "admin_UserPaymentCurrency")]
         [Required(ErrorMessage = "Currency is not set")]
         public Guid Currency { get; set; }
+
+        public IEnumerable<SelectListItem> AvailableCurrencies { get; set; }
     }
 }

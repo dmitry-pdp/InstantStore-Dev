@@ -16,26 +16,17 @@ using System.Globalization;
 
 namespace InstantStore.WebUI.Controllers
 {
-    public partial class MainController
+    public partial class UserController
     {
         public ActionResult History(int offset = 0, int count = 25)
         {
-            var user = this.InitializeCommonControls(Guid.Empty, PageIdentity.History);
-            if (user == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            return this.View(new OrderHistoryListViewModel(this.repository, user, offset, count));
+            this.Initialize(Guid.Empty, PageIdentity.History);
+            return this.View(new OrderHistoryListViewModel(this.repository, this.currentUser, offset, count));
         }
 
         public ActionResult HistoryOrderDetails(Guid? id)
         {
-            var user = this.InitializeCommonControls(Guid.Empty);
-            if (user == null)
-            {
-                return this.HttpNotFound();
-            }
+            this.Initialize(Guid.Empty);
 
             Order order = id != null && id.Value != Guid.Empty ? this.repository.GetOrderById(id.Value) : null;
             if (order == null)
@@ -43,12 +34,12 @@ namespace InstantStore.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            return this.View(new OrderDetailsViewModel().Load(this.repository, order, user));
+            return this.View(new OrderDetailsViewModel().Load(this.repository, order, this.currentUser));
         }
 
         public ActionResult Orders(Guid? id, string a)
         {
-            this.InitializeCommonControls(Guid.Empty, PageIdentity.Cart);
+            this.Initialize(Guid.Empty, PageIdentity.Cart);
             var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
             if (user == null)
             {

@@ -42,7 +42,7 @@ namespace InstantStore.WebUI.Controllers
                 bool hasNewUsers = context.Users.Any(user => !user.IsActivated);
                 status = status == UserStatus.New && !hasNewUsers ? UserStatus.Active : status;
 
-                Func<User, bool> selector = (User user) => status == UserStatus.New ? !user.IsActivated : (status == UserStatus.Blocked ? user.IsBlocked : user.IsActivated);
+                Func<User, bool> selector = (User user) => (status == UserStatus.New ? !user.IsActivated : (status == UserStatus.Blocked ? user.IsBlocked : (user.IsActivated && !user.IsBlocked))) && !user.IsAdmin;
                 this.ViewData["UsersTableViewModel"] = new TableViewModel
                 {
                     Header = new List<TableCellViewModel>

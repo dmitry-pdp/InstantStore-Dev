@@ -15,62 +15,31 @@ using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.Controllers
 {
-    public partial class MainController : Controller
+    // TODO: DDoS vulnerability. Throttling needs to be added here.
+    public partial class MainController : ControllerBase
     {
-        private readonly IRepository repository;
-        private readonly SettingsViewModel settingsViewModel;
-
-        // Logged in users.
-        // TODO: Replace with asp.net authentication.
-
-        public MainController(IRepository repository)
+        public MainController(IRepository repository) : base(repository)
         {
-            this.repository = repository;
-            this.settingsViewModel = new SettingsViewModel(this.repository);
-        }
-
-        private User InitializeCommonControls(Guid pageId, PageIdentity page = PageIdentity.Unknown, bool showProducts = true)
-        {
-            var user = UserIdentityManager.GetActiveUser(this.Request, repository);
-
-            bool isAuthenticated = user != null;
-            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(repository, pageId, user, page);
-            this.ViewData["ShowLeftRailLogin"] = !isAuthenticated;
-
-            if (showProducts)
-            {
-                this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreatePopularProducts(repository, null);
-            }
-
-            return user;
         }
 
         public ActionResult Index()
         {
-            this.InitializeCommonControls(Guid.Empty);
+            this.Initialize(Guid.Empty);
             this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, null);
             this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, null);
             this.ViewData["CategoryTilesViewModel"] = CategoryViewModelFactory.GetPriorityCategories(repository);
             return View();
         }
 
-        public ActionResult SomeWiredStuff()
-        {
-            return this.View();
-        }
-
         public ActionResult Feedback()
         {
-            this.InitializeCommonControls(Guid.Empty, PageIdentity.Feedback, false);
+            this.Initialize(Guid.Empty, PageIdentity.Feedback, false);
             return View();
         }
 
         [HttpPost]
         public ActionResult SubmitFeedback(Feedback feedback)
         {
-            // TODO: DDoS vulnerability. Throttling needs to be added here.
-
             if (!string.IsNullOrWhiteSpace(feedback.Name) &&
                 !string.IsNullOrWhiteSpace(feedback.Email) &&
                 !string.IsNullOrWhiteSpace(feedback.Message))
@@ -79,6 +48,35 @@ namespace InstantStore.WebUI.Controllers
             }
 
             return this.RedirectToAction("Index");
+        }
+
+        public ActionResult GetImage(Guid id)
+        {
+            var image = this.repository.GetImageById(id);
+            if (image == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var stream = new MemoryStream(image.Image1.ToArray());
+            return new FileStreamResult(stream, image.ImageContentType);
+        }
+
+        public ActionResult Thumbnail(Guid id, string size)
+        {
+            if (size != "l" && size != "s")
+            {
+                return this.HttpNotFound();
+            }
+
+            var thumbnail = this.repository.GetImageThumbnailById(id);
+            if (thumbnail == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var stream = new MemoryStream((size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray());
+            return new FileStreamResult(stream, "image/png");
         }
     }
 }

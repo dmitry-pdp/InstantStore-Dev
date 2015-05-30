@@ -24,7 +24,12 @@ namespace InstantStore.WebUI.ViewModels.Factories
         {
             var mainMenuViewModel = new MainMenuViewModel { MetaMenu = new List<MenuItemViewModel>() };
             mainMenuViewModel.Menu = CreateItems(repository, null, 0, current);
-            mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel { Name = StringResource.admin_HomeShort, IsActive = current == Guid.Empty && page == PageIdentity.Unknown, Link = new NavigationLink { ActionName = "Index" } });
+            mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel 
+            { 
+                Name = StringResource.admin_HomeShort, 
+                IsActive = current == Guid.Empty && page == PageIdentity.Unknown,
+                Link = new NavigationLink("Index", "Main")
+            });
             
             if (user != null)
             {
@@ -43,7 +48,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-briefcase",
                         Name = StringResource.nav_History,
-                        Link = new NavigationLink { ActionName = "History", ControllerName = "Main" },
+                        Link = new NavigationLink { ActionName = "History", ControllerName = "User" },
                         IsActive = page == PageIdentity.History
                     });
 
@@ -53,7 +58,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-shopping-cart",
                         Name = StringResource.nav_Orders,
-                        Link = new NavigationLink { ActionName = "Orders", ControllerName = "Main" },
+                        Link = new NavigationLink { ActionName = "Orders", ControllerName = "User" },
                         Badge = ordersCount > 0 ? ordersCount.ToString() : null,
                         IsActive = page == PageIdentity.Cart
                     });
@@ -62,7 +67,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-user",
                         Name = StringResource.nav_Profile,
-                        Link = new NavigationLink { ActionName = "Profile", ControllerName = "Main" },
+                        Link = new NavigationLink { ActionName = "Profile", ControllerName = "User" },
                         IsActive = page == PageIdentity.UserProfile
                     });
                 }
@@ -294,7 +299,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 .OrderBy(p => p.Position)
                 .Select(p => new MenuItemViewModel
                 {
-                    Link = new NavigationLink { PageId = p.Id },
+                    Link = new NavigationLink("Page", "Main") { PageId = p.Id },
                     Name = p.Name,
                     Level = level,
                     IsActive = p.Id == current

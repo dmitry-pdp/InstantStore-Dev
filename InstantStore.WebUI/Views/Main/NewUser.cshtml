@@ -14,63 +14,10 @@
             <p class="form-group col-sm-offset-1 col-sm-10">
                 @StringResource.form_Reg_Message
             </p>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Name)
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Email, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Email)
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Company, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Company, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Company)
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Phonenumber, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Phonenumber, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Phonenumber)
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.City, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.City)
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Currency, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.DropDownListFor(model => model.Currency, availableCurrencies, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Currency)
-                </div>
-            </div>
+            @Html.Partial("UserInfoBasic", this.Model);
             <div class="form-group">
                 @Html.LabelFor(model => model.Password, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
+                 <div class="col-sm-8">
                     @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                 </div>
                 <div class="col-sm-8 col-sm-offset-4 error-label">

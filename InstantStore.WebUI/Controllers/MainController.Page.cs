@@ -24,7 +24,7 @@ namespace InstantStore.WebUI.Controllers
                 return this.RedirectToAction("Index");
             }
 
-            this.InitializeCommonControls(id.Value);
+            this.Initialize(id.Value);
 
             Product product;
 
@@ -71,35 +71,6 @@ namespace InstantStore.WebUI.Controllers
             {
                 return this.HttpNotFound();
             }
-        }
-
-        public ActionResult GetImage(Guid id)
-        {
-            var image = this.repository.GetImageById(id);
-            if (image == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            var stream = new MemoryStream(image.Image1.ToArray());
-            return new FileStreamResult(stream, image.ImageContentType);
-        }
-
-        public ActionResult Thumbnail(Guid id, string size)
-        {
-            if (size != "l" && size != "s")
-            {
-                return this.HttpNotFound();
-            }
-
-            var thumbnail = this.repository.GetImageThumbnailById(id);
-            if (thumbnail == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            var stream = new MemoryStream((size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray());
-            return new FileStreamResult(stream, "image/png");
         }
 
         public ActionResult Download(Guid id)

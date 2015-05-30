@@ -1,0 +1,25 @@
+﻿@using InstantStore.WebUI.Resources;
+@using InstantStore.WebUI.ViewModels;
+@model UserViewModelBase
+@{
+    ViewBag.Title = StringResource.UserProfile_Title;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var availableCurrencies = this.ViewBag.AvailableCurrencies as IEnumerable<SelectListItem>;
+}
+
+<div class="container-fluid col-md-8 col-md-offset-2">
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("Profile", "Main", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            <div class="pull-right" style="margin-right:15px">
+                @Html.ActionLink(StringResource.User_ChangePassword, "ChangePassword", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+        <fieldset>
+            @Html.Partial("UserInfoBasic", this.Model);
+        </fieldset>
+
+        <input type="submit" value="@StringResource.UserProfile_BtnUpdate" class="btn btn-primary btn-lg col-sm-offset-4" />
+    }
+</div>

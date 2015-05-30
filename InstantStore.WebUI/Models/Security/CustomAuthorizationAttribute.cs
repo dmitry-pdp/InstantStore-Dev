@@ -25,11 +25,12 @@ namespace InstantStore.WebUI.Models
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var user = UserIdentityManager.GetActiveUser(httpContext.Request, new LinqRepository());
-            bool authorized = user != null && !user.IsBlocked && (!isAdmin || user.IsAdmin);
+            bool authorized = user != null && !user.IsBlocked && (!this.isAdmin || user.IsAdmin);
             if (authorized)
             {
                 httpContext.AssignUser(user);
             }
+
             return authorized;
         }
 

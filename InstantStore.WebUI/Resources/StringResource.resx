@@ -1254,4 +1254,7 @@
   <data name="UserAlreadyExists" xml:space="preserve">
     <value>Пользователь с таким именем и/или адресом электронной почты уже зарегестрирован.</value>
   </data>
+  <data name="User_ChangePassword" xml:space="preserve">
+    <value>Изменить пароль</value>
+  </data>
 </root>

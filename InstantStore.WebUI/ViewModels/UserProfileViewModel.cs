@@ -50,7 +50,7 @@ namespace InstantStore.WebUI.ViewModels
                     }
                 };
 
-                this.Currencies = repository.GetCurrencies().Select(x => 
+                this.AvailableCurrencies = repository.GetCurrencies().Select(x => 
                 {
                     return new SelectListItem()
                     {
@@ -66,10 +66,6 @@ namespace InstantStore.WebUI.ViewModels
         [Required(ErrorMessage="Payment type is not set")]
         public string PaymentType { get; set; }
 
-        [Display(ResourceType = typeof(StringResource), Name = "admin_UserPaymentCurrency")]
-        [Required(ErrorMessage = "Currency is not set")]
-        public Guid Currency { get; set; }
-
         [Required(ErrorMessage = "Id is empty.")]
         public Guid Id { get; set; }
 
@@ -77,7 +73,5 @@ namespace InstantStore.WebUI.ViewModels
         public string Comments { get; set; }
 
         public IList<SelectListItem> PaymentTypes { get; private set; }
-
-        public IList<SelectListItem> Currencies { get; private set; }
     }
 }

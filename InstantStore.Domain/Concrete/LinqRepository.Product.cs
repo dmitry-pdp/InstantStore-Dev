@@ -169,6 +169,8 @@ namespace InstantStore.Domain.Concrete
                     UpdateTime = DateTime.Now
                 }));
 
+                // assign to all parents
+
                 context.SubmitChanges();
             }
         }

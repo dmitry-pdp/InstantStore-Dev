@@ -2995,6 +2995,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изменить пароль.
+        /// </summary>
+        public static string User_ChangePassword {
+            get {
+                return ResourceManager.GetString("User_ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя города должно быть от 3 до 100 символов.
         /// </summary>
         public static string user_CityErrorLength {

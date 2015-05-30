@@ -138,8 +138,10 @@
     <Compile Include="Controllers\AdminController.Settings.cs" />
     <Compile Include="Controllers\AdminController.Templates.cs" />
     <Compile Include="Controllers\AdminController.User.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\MainController.Order.cs" />
+    <Compile Include="Controllers\UserController.Order.cs" />
     <Compile Include="Controllers\MainController.Page.cs" />
     <Compile Include="Controllers\MainController.User.cs" />
     <Compile Include="Controllers\NavCategoryController.cs" />
@@ -169,7 +171,6 @@
     <Compile Include="ViewModels\CategoryProductsViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ControlPanelViewModel.cs" />
-    <Compile Include="ViewModels\Factories\UserViewModelFactory.cs" />
     <Compile Include="ViewModels\OfferViewModel.cs" />
     <Compile Include="ViewModels\OrderDetailsViewModel.cs" />
     <Compile Include="ViewModels\ErrorCodeMap.cs" />
@@ -319,12 +320,12 @@
     <Content Include="Views\Shared\MediaList.cshtml" />
     <Content Include="Views\Main\Product.cshtml" />
     <Content Include="Views\Main\LeftRailLogin.cshtml" />
-    <Content Include="Views\Main\History.cshtml" />
-    <Content Include="Views\Main\Orders.cshtml" />
+    <Content Include="Views\User\History.cshtml" />
+    <Content Include="Views\User\Orders.cshtml" />
     <Content Include="Views\Shared\ImageThumbnail.cshtml" />
     <Content Include="Views\Shared\NavigationLink.cshtml" />
-    <Content Include="Views\Main\HistoryOrderDetails.cshtml" />
-    <Content Include="Views\Main\Profile.cshtml" />
+    <Content Include="Views\User\HistoryOrderDetails.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Shared\ListView.cshtml" />
     <Content Include="Views\Shared\TableView.cshtml" />
     <Content Include="Views\Admin\Order.cshtml" />
@@ -333,6 +334,8 @@
     <Content Include="Views\Admin\Offer.cshtml" />
     <Content Include="Views\Admin\TextView.cshtml" />
     <Content Include="Views\Admin\PropertyListView.cshtml" />
+    <Content Include="Views\Shared\UserInfoBasic.cshtml" />
+    <Content Include="Views\Shared\UserInfoPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
