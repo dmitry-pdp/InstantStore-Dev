@@ -71,6 +71,7 @@
     <Compile Include="Entities\ProductSize.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Exceptions\ModelValidationException.cs" />
+    <Compile Include="Helpers\CategoryTreeHelper.cs" />
     <Compile Include="Helpers\PasswordHash.cs" />
     <Compile Include="Helpers\PriceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

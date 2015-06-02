@@ -2,9 +2,9 @@
 @using InstantStore.WebUI.Resources;
 @model CategoryProductsViewModel
 @{
-    Guid? importCat = (Guid?)this.ViewData["importToCat"];
+    Guid? importPageId = (Guid?)this.ViewData["importToCat"];
 }
-@using (Html.BeginForm("ImportProducts", "Admin", new { importCat = importCat.Value }, FormMethod.Post, new { id = "import-products-form" }))
+@using (Html.BeginForm("ImportProducts", "Admin", new { importPageId = importPageId.Value }, FormMethod.Post, new { id = "import-products-form" }))
 { 
     <table class="table table-hover">
         <thead>

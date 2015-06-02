@@ -110,5 +110,18 @@ namespace InstantStore.Domain.Concrete
                 context.SubmitChanges();
             }
         }
+
+        public void UpdatePassword(Guid userId, string password)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user != null)
+                {
+                    user.Password = PasswordHash.PasswordHash.CreateHash(password);
+                    context.SubmitChanges();
+                }
+            }
+        }
     }
 }

@@ -336,6 +336,7 @@
     <Content Include="Views\Admin\PropertyListView.cshtml" />
     <Content Include="Views\Shared\UserInfoBasic.cshtml" />
     <Content Include="Views\Shared\UserInfoPassword.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

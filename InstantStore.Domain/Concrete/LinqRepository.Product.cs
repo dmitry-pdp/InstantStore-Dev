@@ -1,5 +1,6 @@
 ﻿using InstantStore.Domain.Entities;
 using InstantStore.Domain.Exceptions;
+using InstantStore.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace InstantStore.Domain.Concrete
 
                     context.Products.InsertOnSubmit(productToUpdate);
                                         
-                    while(parentId != Guid.Empty)
+                    while (parentId != Guid.Empty)
                     {
                         var parent = context.ContentPages.First(x => x.Id == parentId);
                         if (parent.CategoryId != null)
@@ -35,6 +36,9 @@ namespace InstantStore.Domain.Concrete
                                 ProductId = productToUpdate.VersionId,
                                 UpdateTime = DateTime.Now
                             });
+
+                            CategoryTreeBuilder.RebuidCategoryTreeGroups(context, parentId);
+                            break;
                         }
 
                         parentId = parent.ParentId ?? Guid.Empty;

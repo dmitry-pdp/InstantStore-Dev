@@ -102,9 +102,9 @@ namespace InstantStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportProducts(CategoryProductsViewModel data, Guid importCat)
+        public ActionResult ImportProducts(CategoryProductsViewModel data, Guid importPageId)
         {
-            if (importCat == data.ParentCategoryId)
+            if (importPageId == data.ParentCategoryId)
             {
                 return this.Json(new { status = "Error", message = StringResource.admin_ImportProductErrorSameCategory });
             }
@@ -114,7 +114,7 @@ namespace InstantStore.WebUI.Controllers
                 return this.Json(new { status = "Error", message = StringResource.admin_ImportProductErrorNoItemChecked });
             }
 
-            this.repository.AssignProductsToCategory(data.Products.Where(x => x.Checked).Select(x => x.Id).ToList(), importCat);
+            this.repository.AssignProductsToCategory(data.Products.Where(x => x.Checked).Select(x => x.Id).ToList(), importPageId);
 
             return this.Json(new { status = "success" });
         }

@@ -1,5 +1,3 @@
-- Filters -> ASP.NET authorization & filters.
-- Emailing.
-- User. Password reset. Send email,
 - Page impression log,
-- Product list view,
+- Import produts - table view with pagination,
+- Remove products from category,
