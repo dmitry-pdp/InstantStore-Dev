@@ -1,6 +1,7 @@
 ﻿
 namespace InstantStore.Domain.Entities
 {
+    /*
     public class ProductCategory
     {
         public int ProductCategoryID { get; set; }
@@ -25,6 +26,6 @@ namespace InstantStore.Domain.Entities
         Tiles,        
         TileAndPrice
     }
-
+    */
 
 }

@@ -8,7 +8,7 @@ namespace InstantStore.Domain.Entities
 
         public int ProductID { get; set; }
         public string Name { get; set; }
-        public ProductCategory Category { get; set; }
+        //public ProductCategory Category { get; set; }
         public string Description { get; set; }
         public decimal PriceCash { get; set; }
         public decimal PriceСashless { get; set; }

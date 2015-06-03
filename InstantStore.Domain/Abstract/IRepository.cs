@@ -67,7 +67,7 @@ namespace InstantStore.Domain.Abstract
 
         void UpdateCustomProperty(Guid id, string data);
 
-        IList<CustomProperty> CreateAttributesForProduct(Guid productId, Guid templateId);
+        IList<CustomProperty> CreateAttributesForProduct(Guid templateId);
 
         IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter);
 
@@ -97,7 +97,7 @@ namespace InstantStore.Domain.Abstract
 
         Product GetProductById(Guid id);
 
-        IList<Product> GetProductsForCategory(Guid categoryId, int offset, int count);
+        IList<KeyValuePair<string, Product>> GetProductsForCategory(Guid categoryId, int offset, int count);
 
         int GetProductsCountForCategory(Guid id);
 

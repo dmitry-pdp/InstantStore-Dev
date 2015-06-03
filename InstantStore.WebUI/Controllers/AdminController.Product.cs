@@ -77,13 +77,8 @@ namespace InstantStore.WebUI.Controllers
             return this.View("EditProductDetails", new CategoryProductsViewModel(this.repository, id, p, c));
         }
 
-        public ActionResult ProductAttributes(Guid id, Guid tid)
+        public ActionResult ProductAttributes(Guid tid)
         {
-            if (id == Guid.Empty)
-            {
-                return this.HttpNotFound();
-            }
-
             if (tid == Guid.Empty)
             {
                 return new EmptyResult();
@@ -91,7 +86,7 @@ namespace InstantStore.WebUI.Controllers
 
             var template = repository.GetTemplateById(tid);
 
-            return this.View(new TemplateViewModel(repository.CreateAttributesForProduct(id, tid).OrderBy(x => x.Name)) { Name = template.Name });
+            return this.View(new TemplateViewModel(repository.CreateAttributesForProduct(tid).OrderBy(x => x.Name)) { Name = template.Name });
         }
 
         public ActionResult ImportProducts(Guid parentId)

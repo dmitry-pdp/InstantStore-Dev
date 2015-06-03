@@ -30,8 +30,8 @@ namespace InstantStore.Domain.Helpers
                 throw new ModelValidationException("Page for updated category is not a category page.");
             }
 
-            var currentCategoryProducts = context.ProductToCategories.Where(x => x.CategoryId == currentPage.CategoryId);
-            if (!currentCategoryProducts.Any(x => string.IsNullOrWhiteSpace(x.GroupName)))
+            var currentCategoryProducts = context.ProductToCategories.Where(x => x.CategoryId == currentPage.Id);
+            if (!currentCategoryProducts.Any(x => x.GroupName == null))
             { 
                 throw new ModelValidationException("Updated category does not contains ungroupped products.");
             }
@@ -63,7 +63,7 @@ namespace InstantStore.Domain.Helpers
                 // Here we found a parent category, so extracting the current category product group.
 
                 var parentCategoryProductsForCurrentGroup = context.ProductToCategories
-                    .Where(x => x.CategoryId == parentPage.CategoryId.Value && x.GroupName == currentPage.Name)
+                    .Where(x => x.CategoryId == parentPage.Id && x.GroupName == currentPage.Name)
                     .ToList();
 
                 // Getting the products gropup in the current category and updating the parent category group.
@@ -83,7 +83,7 @@ namespace InstantStore.Domain.Helpers
                 context.ProductToCategories.InsertAllOnSubmit(productsToAdd.Select(x => new ProductToCategory
                 {
                     Id = Guid.NewGuid(),
-                    CategoryId = parentPage.CategoryId.Value,
+                    CategoryId = parentPage.Id,
                     GroupName = currentPage.Name,
                     ProductId = x.ProductId,
                     UpdateTime = DateTime.Now

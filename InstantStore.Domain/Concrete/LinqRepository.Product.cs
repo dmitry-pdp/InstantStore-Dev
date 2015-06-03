@@ -20,9 +20,11 @@ namespace InstantStore.Domain.Concrete
                 {
                     productToUpdate.Id = Guid.NewGuid();
                     productToUpdate.VersionId = Guid.NewGuid();
-                    productToUpdate.MainImageId = images.Any() ? images.First() : (Guid?)null;
+                    productToUpdate.MainImageId = images != null && images.Any() ? images.First() : (Guid?)null;
 
                     context.Products.InsertOnSubmit(productToUpdate);
+
+                    context.SubmitChanges();
                                         
                     while (parentId != Guid.Empty)
                     {
@@ -36,6 +38,8 @@ namespace InstantStore.Domain.Concrete
                                 ProductId = productToUpdate.VersionId,
                                 UpdateTime = DateTime.Now
                             });
+
+                            context.SubmitChanges();
 
                             CategoryTreeBuilder.RebuidCategoryTreeGroups(context, parentId);
                             break;
@@ -139,7 +143,7 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public IList<CustomProperty> CreateAttributesForProduct(Guid productId, Guid templateId)
+        public IList<CustomProperty> CreateAttributesForProduct(Guid templateId)
         {
             using (var context = new InstantStoreDataContext())
             {
@@ -229,12 +233,23 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public IList<Product> GetProductsForCategory(Guid categoryId, int offset, int count)
+        public IList<KeyValuePair<string, Product>> GetProductsForCategory(Guid categoryId, int offset, int count)
         {
             using (var context = new InstantStoreDataContext())
             {
-                var products = this.GetProducts(context, categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Skip(offset).Take(count).ToList();
+                return context.Products
+                    .Join(
+                        this.GetProducts(context, categoryId), 
+                        a => a.VersionId, 
+                        b => b.ProductId, 
+                        (Product x, ProductToCategory y) => new { Product = x, GroupName = y.GroupName })
+                    .OrderBy(x => x.GroupName)
+                    .OrderBy(x => x.Product.Name)
+                    .Skip(offset)
+                    .Take(count)
+                    .ToList()
+                    .Select(x => new KeyValuePair<string, Product>(x.GroupName, x.Product))
+                    .ToList();
             }
         }
 
@@ -243,7 +258,7 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 var products = this.GetProducts(context, categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y)).Count();
+                return context.Products.Where(x => products.Any(y => x.VersionId == y.ProductId)).Count();
             }
         }
 
@@ -256,9 +271,9 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        private IQueryable<Guid> GetProducts(InstantStoreDataContext context, Guid categoryId)
+        private IQueryable<ProductToCategory> GetProducts(InstantStoreDataContext context, Guid categoryId)
         {
-            return context.ProductToCategories.Where(x => x.CategoryId == categoryId).Select(x => x.ProductId);
+            return context.ProductToCategories.Where(x => x.CategoryId == categoryId);
         }
     }
 }

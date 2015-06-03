@@ -24,7 +24,15 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 return null;
             }
 
-            var tilesViewModel = new TilesViewModel() { Tiles = new List<TileViewModel>() };
+            var defaultGroup = new List<TileViewModel>();
+
+            var tilesViewModel = new TilesViewModel() 
+            { 
+                TileGroups = new List<KeyValuePair<string, IList<TileViewModel>>> 
+                { 
+                    new KeyValuePair<string, IList<TileViewModel>>(string.Empty, defaultGroup)
+                } 
+            };
 
             foreach(var categoryPage in topCategories)
             {
@@ -34,7 +42,8 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     throw new ApplicationException("Model.Inconsistent");
                 }
 
-                tilesViewModel.Tiles.Add(new TileViewModel {
+                defaultGroup.Add(new TileViewModel
+                {
                     Link = new NavigationLink { PageId = page.Id },
                     Name = categoryPage.Name,
                     ImageId = categoryPage.ImageId ?? Guid.Empty
@@ -124,15 +133,16 @@ namespace InstantStore.WebUI.ViewModels.Factories
 
             foreach(var product in products)
             {
-                this.AddItem(product, (user != null && currency != null && !user.IsAdmin)
-                    ? new CurrencyString(product.GetPriceForUser(user, repository.GetExchangeRates()), currency.Text)
-                    : null);
+                this.AddItem(product.Value, (user != null && currency != null && !user.IsAdmin)
+                    ? new CurrencyString(product.Value.GetPriceForUser(user, repository.GetExchangeRates()), currency.Text)
+                    : null,
+                    product.Key);
             }
 
             return this.CreateViewModel(pagination);
         }
 
-        protected abstract void AddItem(Product product, CurrencyString price);
+        protected abstract void AddItem(Product product, CurrencyString price, string groupName);
 
         protected abstract object CreateViewModel(PaginationViewModel pagination);
 
@@ -155,7 +165,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
 
     public class TileProductViewModelFactory : ProductViewModelFactoryBase
     {
-        private IList<TileViewModel> Items = new List<TileViewModel>();
+        private IList<KeyValuePair<string, IList<TileViewModel>>> Items = new List<KeyValuePair<string, IList<TileViewModel>>>();
 
         public TileProductViewModelFactory(IRepository repository, User user, Guid categoryId, int count, int offset)
             : base(repository, user, categoryId, count, offset)
@@ -164,10 +174,18 @@ namespace InstantStore.WebUI.ViewModels.Factories
 
         protected override object CreateViewModel(PaginationViewModel pagination)
         {
-            return new TilesViewModel { Pagination = pagination, Tiles = this.Items };
+            var defaultGroup = this.Items.FirstOrDefault(x => x.Key == null);
+            this.Items.Remove(defaultGroup);
+            this.Items.Insert(0, defaultGroup);
+
+            return new TilesViewModel 
+            { 
+                Pagination = pagination, 
+                TileGroups = this.Items
+            };
         }
 
-        protected override void AddItem(Product product, CurrencyString price)
+        protected override void AddItem(Product product, CurrencyString price, string groupName)
         {
             var tileViewModel = new TileViewModel
             {
@@ -194,13 +212,20 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 }
             }
 
-            this.Items.Add(tileViewModel);        
+            if (this.Items.Any(x => x.Key == groupName))
+            {
+                this.Items.First(x => x.Key == groupName).Value.Add(tileViewModel);
+            }
+            else
+            {
+                this.Items.Add(new KeyValuePair<string, IList<TileViewModel>>(groupName, new List<TileViewModel> { tileViewModel }));
+            }
         }
     }
 
     public class ListProductViewModelFactory : ProductViewModelFactoryBase, IProductViewModelFactory
     {
-        private IList<TableRowViewModel> Items = new List<TableRowViewModel>();
+        private IList<KeyValuePair<string, List<TableRowViewModel>>> Items = new List<KeyValuePair<string, List<TableRowViewModel>>>();
 
         public ListProductViewModelFactory(IRepository repository, User user, Guid categoryId, int count, int offset)
             : base(repository, user, categoryId, count, offset)
@@ -224,18 +249,29 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     new TableCellViewModel(StringResource.admin_Name)
                 };
 
+            var rowList = this.Items.Any(x => x.Key == null) ? this.Items.First(x => x.Key == null).Value : new List<TableRowViewModel>();
+            foreach(var group in this.Items.Where(x => x.Key != null))
+            {
+                rowList.Add(new TableRowViewModel
+                {
+                    GroupCell = new TableCellViewModel(group.Key)
+                });
+
+                rowList.AddRange(group.Value);
+            }
+
             return new TableViewModel 
             { 
                 Pagination = pagination,
                 Header = headers,
-                Rows = this.Items,
+                Rows = rowList,
                 RowClickAction = new NavigationLink("Page")
             };
         }
 
-        protected override void AddItem(Product product, CurrencyString price)
+        protected override void AddItem(Product product, CurrencyString price, string groupName)
         {
-            var row = user != null
+            var cells = user != null
                 ? new List<TableCellViewModel>
                 {
                     new TableCellViewModel(new ImageThumbnailViewModel{
@@ -256,11 +292,20 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     new TableCellViewModel(product.Name)
                 };
 
-            this.Items.Add(new TableRowViewModel
+            var row = new TableRowViewModel
             {
-                Cells = row,
+                Cells = cells,
                 Id = product.VersionId.ToString()
-            });        
+            };
+
+            if (this.Items.Any(x => x.Key == groupName))
+            {
+                this.Items.First(x => x.Key == groupName).Value.Add(row);
+            }
+            else
+            {
+                this.Items.Add(new KeyValuePair<string, List<TableRowViewModel>>(groupName, new List<TableRowViewModel> { row }));
+            }
         }
     }
 }

@@ -27,6 +27,8 @@ namespace InstantStore.WebUI.ViewModels
     {
         public string Id { get; set; }
 
+        public TableCellViewModel GroupCell { get; set; }
+
         public IList<TableCellViewModel> Cells { get; set; }
     }
 

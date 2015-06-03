@@ -43,7 +43,9 @@ else
             @foreach (var productInfo in this.Model.Products)
             {
                 <tr class="product-row" id="@productInfo.Id">
-                    <td><img src="@(productInfo.Image != null && productInfo.Image != Guid.Empty ? "/Main/Thumbnail?size=s&id=" + productInfo.Image.ToString() : "/Image/NoImage.png")" /></td>
+                    <td>
+                        @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = productInfo.Image, Width = 64, Height = 64 })
+                    </td>
                     <td>@productInfo.Name</td>
                     <td>@productInfo.IsAvailable</td>
                     <td>@productInfo.Currency</td>
