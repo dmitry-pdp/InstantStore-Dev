@@ -103,6 +103,8 @@ namespace InstantStore.Domain.Abstract
 
         IList<Product> GetProductsByPopularity(int count);
 
+        void RemoveProductFromCategory(Guid categoryId, IList<Guid> productIdsToRemove);
+
         Image GetImageById(Guid id);
 
         ImageThumbnail GetImageThumbnailById(Guid id);

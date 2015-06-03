@@ -1,0 +1,21 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
+    var categoryTilesViewModel = ViewBag.CategoryTilesViewModel as TilesViewModel;
+}
+
+<div class="container-fluid">
+    @if (categoryTilesViewModel != null)
+    {
+        Html.RenderPartial("TilesView", categoryTilesViewModel);
+    }
+    
+    @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.MainDocumentHtml))
+    {
+        <div>
+            @Html.Raw(settingsViewModel.MainDocumentHtml)
+        </div>
+    }
+</div>

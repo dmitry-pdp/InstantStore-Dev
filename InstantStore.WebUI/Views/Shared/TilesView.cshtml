@@ -6,6 +6,11 @@
 
 @foreach (var tilesGroup in this.Model.TileGroups)
 {
+    if (tilesGroup.Value == null || !tilesGroup.Value.Any())
+    {
+        continue; 
+    }
+    
     if (!string.IsNullOrEmpty(tilesGroup.Key))
     { 
         <h4>@tilesGroup.Key</h4>

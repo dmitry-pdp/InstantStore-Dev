@@ -22,9 +22,9 @@ namespace InstantStore.WebUI.Controllers
 
         protected User currentUser;
 
-        protected ControllerBase(IRepository repository)
+        protected ControllerBase()
         {
-            this.repository = repository;
+            this.repository = new LinqRepository();
             this.settingsViewModel = new SettingsViewModel(this.repository);
         }
 

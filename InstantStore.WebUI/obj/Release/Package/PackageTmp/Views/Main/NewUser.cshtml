@@ -1,0 +1,25 @@
+﻿@using InstantStore.WebUI.Resources;
+@model InstantStore.WebUI.ViewModels.UserViewModel
+@{
+    ViewBag.Title = StringResource.link_registration;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var availableCurrencies = this.ViewBag.AvailableCurrencies as IEnumerable<SelectListItem>;
+}
+
+<div class="container-fluid col-md-8 col-md-offset-2">
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("NewUser", "Main", FormMethod.Post, new { @class="form-horizontal" }))
+    {
+        <fieldset>
+            <p class="form-group col-sm-offset-1 col-sm-10">
+                @StringResource.form_Reg_Message
+            </p>
+            @Html.Partial("UserInfoBasic", this.Model);
+            @Html.Partial("UserInfoPassword", this.Model);
+        </fieldset>
+        <div class="form-group text-danger">
+            @Html.ValidationSummary(true);
+        </div>
+        <input type="submit" value="@StringResource.form_Reg_Submit" class="btn btn-primary btn-lg col-sm-offset-4"/>
+    }
+</div>

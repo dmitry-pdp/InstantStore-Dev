@@ -1,0 +1,35 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model PropertyListViewModel
+
+<h2>@this.Model.Title</h2>
+
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="t" value="PropertyListView" />
+    for(int index = 0; index < this.Model.Properties.Count; index++)
+    { 
+        <div class="form-group form-horizontal">
+            <label>@this.Model.Properties[index].Label</label>
+            @Html.HiddenFor(model => model.Properties[index].Key)
+            @if (this.Model.Properties[index].IsMultiLine)
+            {
+                @Html.TextAreaFor(model => model.Properties[index].Value, new { @class = "form-control", @readonly = "" })
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.Properties[index].Value, new { @class = "form-control" })
+            }
+        </div>
+    }
+    if (this.Model.CustomText != null)
+    { 
+        <div class="form-group">
+            <span>@this.Model.CustomText</span>
+        </div>
+    }
+    <div class="form-group">
+        <input type="submit" value="@StringResource.Settings_SubmitButtonText" class="btn btn-primary btn-lg" />
+    </div>
+}

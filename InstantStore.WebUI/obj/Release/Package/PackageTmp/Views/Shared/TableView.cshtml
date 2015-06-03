@@ -1,0 +1,87 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model TableViewModel
+@{
+    bool IsRowClickable = this.Model.RowClickAction != null;
+    string tableId =  "_c_" + this.Model.Id;
+    int columns = this.Model.Header.Count;   
+}
+
+@if (this.Model.Title != null)
+{
+    <h3>@this.Model.Title</h3>
+}
+
+<table class="table table-hover">
+    @if (this.Model.Header != null && this.Model.Header.Any())
+    {
+        <thead>
+            <tr>
+                @foreach (var header in this.Model.Header)
+                {
+                    <th>@header.Text</th>
+                }
+            </tr>
+        </thead>
+    }
+    @foreach (var row in this.Model.Rows)
+    {
+        <tr id="@(IsRowClickable ? row.Id : null)" class="@(IsRowClickable ? "c_pointer " + tableId : null)">
+            @if (row.GroupCell != null)
+            {
+                <td colspan="@columns">
+                    @if (row.GroupCell.Action != null)
+                    {
+                        <a href="@row.GroupCell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@row.GroupCell.Action.Text</a>
+                    }
+                    else if (row.GroupCell.Thumbnail != null)
+                    {
+                        @Html.Partial("ImageThumbnail", row.GroupCell.Thumbnail)
+                    }
+                    else
+                    {
+                        <h4>@row.GroupCell.Text</h4>
+                    }
+                </td>
+            }
+            else
+            {
+                foreach(var cell in row.Cells)
+                {
+                    <td>
+                        @if (cell.Action != null)
+                        {
+                            <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@cell.Action.Text</a>
+                        }
+                        else if (cell.Thumbnail != null)
+                        {
+                            @Html.Partial("ImageThumbnail", cell.Thumbnail)
+                        }
+                        else
+                        {
+                            @cell.Text
+                        }
+                    </td>
+                }                
+            }
+        </tr>
+    }
+</table>
+@if (this.Model.Pagination != null)
+{
+    @Html.Partial("Pager", this.Model.Pagination);
+}
+@if (IsRowClickable)
+{
+    <script>
+        $(function () {
+            $(".@tableId").click(function () {
+                if ($(this).attr("id"))
+                {
+                    location.href = "@this.Model.RowClickAction.GetUrl(this.Url)" + "?id=" + $(this).attr("id");
+                }
+            });
+        });
+    </script>
+}

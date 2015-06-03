@@ -1,0 +1,37 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model AttachmentViewModel
+
+@if (this.Model.AttachmentId != null && !string.IsNullOrEmpty(this.Model.AttachmentName))
+{
+    <p id="attachment-form">
+        @if (!this.Model.CanEdit)
+        {
+            if (this.Model.AttachmentIcon != null)
+            {
+                <img src="~/Image/@this.Model.AttachmentIcon" style="width:32px; height:32px" />
+            }
+            <a href="~/main/download?id=@this.Model.AttachmentId">@this.Model.AttachmentName</a>
+        }
+        else
+        {
+            <div class="col-sm-10">
+                @if (this.Model.AttachmentIcon != null)
+                {
+                    <img src="~/Image/@this.Model.AttachmentIcon" style="width:32px; height:32px" />
+                }
+                <a href="~/main/download?id=@this.Model.AttachmentId">@this.Model.AttachmentName</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="#" class="btn btn-default btn-sm" id="attachment-delete">@StringResource.admin_Delete</a>
+            </div>
+            @Html.HiddenFor(model => model.AttachmentId)
+            <script>
+                $("#attachment-delete").click(function (event) {
+                    $("#AttachmentId").val('');
+                    $("#attachment-container").empty();
+                });
+            </script>
+        }
+    </p>
+}

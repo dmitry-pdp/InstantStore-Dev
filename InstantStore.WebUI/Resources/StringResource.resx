@@ -1257,4 +1257,7 @@
   <data name="User_ChangePassword" xml:space="preserve">
     <value>Изменить пароль</value>
   </data>
+  <data name="admin_ProductDelete" xml:space="preserve">
+    <value>Удалить продукты</value>
+  </data>
 </root>

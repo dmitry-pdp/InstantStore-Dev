@@ -1,0 +1,23 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@model MediaListViewModel
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span>@this.Model.Title</span>
+    </div>
+    <div class="panel-body">
+        @foreach (var item in this.Model.Items)
+        {
+            <div class="media">
+                <a href="@item.Link.GetUrl(this.Url)">
+                    <div class="media-left">
+                        <img class="media-object" src="@Url.Action("Thumbnail", "Main", new { Id = item.ImageThumbnailId, size = "s" })" alt="@item.Name" width="64">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">@item.Name</h4>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

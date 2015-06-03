@@ -1,0 +1,134 @@
+﻿@using InstantStore.Domain.Concrete;
+@using InstantStore.WebUI.ViewModels;
+@{
+    var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
+    var categoryListViewModel = ViewBag.CategoryListViewModel;
+    var controlPanel = ViewBag.ControlPanelViewModel as ControlPanelViewModel;
+    var mainMenuViewModel = ViewBag.MainMenuViewModel as MainMenuViewModel;
+    var navigationBarViewModel = this.ViewBag.NavigationMenuViewModel as NavigationMenuViewModel;
+    var breadcrumbViewModel = this.ViewBag.BreadcrumbViewModel as BreadcrumbViewModel;
+    var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
+    var navigationListViewModel = this.ViewBag.NavigationListViewModel as ListViewModel;
+        
+    bool showLeftRailLogin = (bool?)this.ViewBag.ShowLeftRailLogin ?? false;
+
+    bool renderCustomLeftColumn = (bool?)this.ViewBag.RenderCustomLeftColumn ?? (
+        !showLeftRailLogin &&
+        navigationBarViewModel == null &&
+        mediaListViewModel == null &&
+        navigationListViewModel == null
+    );
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/common.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <header>
+        @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.HeaderHtml))
+        {
+            @Html.Raw(settingsViewModel.HeaderHtml);
+        }
+    </header>
+    @if (mainMenuViewModel != null)
+    {
+        Html.RenderPartial("MainMenu", mainMenuViewModel);
+    }
+    <div class="container-fluid">
+        <div class="row">
+            @if (categoryListViewModel != null) 
+            { 
+                <div id="sidebar" role="navigation" class="col-xs-3">
+                    @Html.Action("Menu", "NavCategory")
+                </div>
+                <div class="col-xs-9">
+                    @RenderBody()
+                </div>
+            }
+            else if(controlPanel != null)
+            {
+                <div class="border col-sm-3">
+                    @Html.Partial("ControlPanel", controlPanel)
+                </div>
+                <div class="border col-sm-9">
+                    @RenderBody()
+                </div>
+            }
+            else if (renderCustomLeftColumn)
+            {
+                 @RenderBody()
+            }
+            else
+            {
+                <div class="col-sm-3">
+                    @if (showLeftRailLogin)
+                    {
+                        @Html.Partial("LeftRailLogin")
+                    }
+                    @if (navigationBarViewModel != null)
+                    { 
+                        @Html.Partial("NavigationBar", navigationBarViewModel)
+                    }
+                    @if (mediaListViewModel != null)
+                    {
+                        @Html.Partial("MediaList", mediaListViewModel)
+                    }
+                    @if (navigationListViewModel != null)
+                    {
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="min-height:780px">
+                                @Html.Partial("ListView", navigationListViewModel)
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-sm-9">
+                    <div class="panel panel-default">
+                        <div class="panel-body" style="min-height:780px">
+                        @if (breadcrumbViewModel != null)
+                        {
+                            <ol class="breadcrumb">
+                                @foreach (var item in breadcrumbViewModel)
+                                    {
+                                    <li class="@(item.IsActive ? "active" : "")">
+                                        @if (item.Link != null)
+                                            {
+                                            <a href="@item.Link.GetUrl(this.Url)">
+                                                @item.Name
+                                            </a>
+                                            }
+                                            else
+                                            {
+                                            @item.Name
+                                            }
+                                    </li>
+                                    }
+                            </ol>
+                        }
+                        @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div> 
+    <footer class="footer">
+        @if (settingsViewModel != null && !string.IsNullOrEmpty(settingsViewModel.FooterHtml))
+        {
+            @Html.Raw(settingsViewModel.FooterHtml);
+        }
+    </footer>
+</body>
+</html>

@@ -1,0 +1,24 @@
+﻿@using InstantStore.Domain.Entities;
+@using InstantStore.WebUI.Resources;
+@model InstantStore.WebUI.Models.ProductListViewModel
+
+@{
+    ViewBag.Title = StringResource.Page_title_ProductsList;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@if (Model.Products != null && Model.Products.Count() > 0) { 
+    foreach (var p in Model.Products)
+    {
+        <div class="well"></div>
+        @Html.Partial("ProductThumbnail", p)
+    }
+}
+else
+{
+    <div><h3>@StringResource.ProductList_NoProducts</h3></div>
+}
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, category = Model.CurrentCategory }))
+</div>

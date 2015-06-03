@@ -1,0 +1,69 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model OrderDetailsViewModel
+@{
+    var culture = new System.Globalization.CultureInfo("ru-RU");
+    ViewBag.Title = string.Format(StringResource.user_OrderDetailsTitle, this.Model.SubmitDate.Value.ToString(culture));
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<link href="~/Content/Order.css" rel="stylesheet" />
+
+@if (this.Model.Products == null || !this.Model.Products.Any())
+{
+    <h2>@ViewBag.Title</h2>
+    @StringResource.user_OrdersEmpty
+}
+else
+{
+    <div class="list-group">
+        <div class="list-group-item order-header">
+            <div class="order-title-item">
+                <h3>@ViewBag.Title - <span>@(this.Model.ProcessedDate == null ? StringResource.orderStatus_Placed : StringResource.orderStatus_Processed)</span></h3>
+            </div>
+            <div class="order-title-quantity">
+                @StringResource.user_OrdersTitleQuantity
+            </div>
+            <div class="order-title-price">
+                @StringResource.user_OrdersPriceTitle
+            </div>
+        </div>
+        @for (int index = 0; index < this.Model.Products.Count; index++)
+        {
+            var orderProduct = this.Model.Products[index];
+            <div class="list-group-item" style="height:135px">
+                <a class="order-item-imagebox img-thumbnail" style="vertical-align:top;" href="@orderProduct.Title.GetUrl(this.Url)" title="@orderProduct.Title.Text">
+                    @Html.Partial("ImageThumbnail", new ViewDataDictionary(orderProduct.Thumbnail))
+                </a>
+                <div class="order-item-caption">
+                    <h4>@Html.Partial("NavigationLink", orderProduct.Title)</h4>
+                </div>
+                <div class="order-item-quantity">
+                    @orderProduct.Count
+                </div>
+                <div class="order-item-price">
+                    @(orderProduct.ItemPrice != null ? orderProduct.ItemPrice.ToString() : StringResource.user_OrdersProductNotAvaialbePrice)
+                </div>
+            </div>
+        }
+    </div>
+    if (!string.IsNullOrWhiteSpace(this.Model.Description))
+    {
+        <div class="order-line">
+            <div>@StringResource.user_OrderDetailsComment</div>
+            <div>
+                @this.Model.Description
+            </div>
+        </div>
+    }
+    <div class="order-line">
+        <div class="order-total">
+            <h3>@StringResource.user_OrdersTotal</h3>
+            <div>@this.Model.Total</div>
+        </div>
+    </div>
+    <div class="order-line" style="margin-top: 10px; margin-right: 20px;">
+        <a href="@Url.Action("CopyOrder", new { id = this.Model.Id })" class="btn btn-default btn-lg pull-right" style="margin-right:20px;" id="btn-duplicate">@StringResource.user_HIstoryDetails_CopyToCart</a>
+    </div>
+}
+

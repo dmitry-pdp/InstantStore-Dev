@@ -1,3 +1,6 @@
 - Page impression log,
 - Import produts - table view with pagination,
 - Remove products from category,
+
+Ftp:
+InstantStoreU

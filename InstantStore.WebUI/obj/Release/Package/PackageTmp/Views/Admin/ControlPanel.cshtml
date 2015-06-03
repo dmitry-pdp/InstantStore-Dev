@@ -1,0 +1,15 @@
+﻿@using InstantStore.WebUI.Resources;
+@model InstantStore.WebUI.ViewModels.ControlPanelViewModel
+<h3>@StringResource.admin_Dashboard</h3>
+<div class="list-group">
+    @foreach (var panelItem in this.Model.Items)
+{
+    <a href="@Url.Action(panelItem.ActionName)" class="list-group-item @(panelItem.IsActive ? "active" : "")">
+        @if (panelItem.Badge != null)
+        {
+            <span class="badge">@panelItem.Badge</span>
+        }
+        @panelItem.Title
+    </a>
+}
+</div>

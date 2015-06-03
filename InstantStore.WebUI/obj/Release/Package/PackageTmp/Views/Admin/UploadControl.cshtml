@@ -1,0 +1,36 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model UploadControlViewModel
+
+<script src="~/Scripts/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+
+<div class="hide">
+    @using (Html.BeginForm(this.Model.ActionName, this.Model.ControllerName))
+    {
+        <input type="file" id="upload-control" name="@this.Model.Name" />
+    }
+</div>
+
+<script>
+    $(function () {
+        $("#upload-control").fileupload({
+            dataType: 'json',
+            add: function (e, data) {
+                data.submit()
+                    .done(function (data) {
+                        $(document).trigger("upload-control:done", data);
+                    })
+                    .fail(function (jqXHR, result, textStatus) {
+                        alert("@StringResource.admin_UploadError:" + textStatus);
+                    });
+            }
+        })
+        .prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        $("#@this.Model.UploadButtonId").click(function () {
+            $("#upload-control").click();
+        })
+    });
+</script>

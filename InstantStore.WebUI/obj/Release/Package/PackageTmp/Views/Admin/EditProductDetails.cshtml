@@ -1,0 +1,65 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model CategoryProductsViewModel
+
+@if (this.Model.IsTiles)
+{
+    <div class="row">
+
+        @foreach(var productInfo in this.Model.Products)
+        {
+        <div class="thumbnail" style="width:245px;display:inline-block">
+            <a href="@Url.Action("Page", "Admin", new { id = productInfo.Id, c="p", parentId = this.Model.ParentCategoryId })" class="thumbnail">
+                <img src="@(productInfo.Image == Guid.Empty ? "/Image/NoImage.png" : "/Main/GetImage?id=" + productInfo.Image)" style="width:242px;height:200px" />
+                <div class="caption" style="height:120px">
+                    <div>
+                        <span class="title">@productInfo.Name</span>
+                    </div>
+                    <div>
+                        <label>@StringResource.Price</label>
+                        <span>@productInfo.PriceCash</span>
+                        <span>@productInfo.Currency</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        }
+    </div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@string.Empty</th>
+                <th>@StringResource.admin_Name</th>
+                <th>@StringResource.admin_ProductIsAvailable</th>
+                <th>@StringResource.admin_ProductPrice</th>
+                <th>@StringResource.admin_ProductPriceCashless</th>
+                <th>@StringResource.admin_ProductPriceCash</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productInfo in this.Model.Products)
+            {
+                <tr class="product-row" id="@productInfo.Id">
+                    <td>
+                        @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = productInfo.Image, Width = 64, Height = 64 })
+                    </td>
+                    <td>@productInfo.Name</td>
+                    <td>@productInfo.IsAvailable</td>
+                    <td>@productInfo.Currency</td>
+                    <td>@productInfo.PriceCash</td>
+                    <td>@productInfo.PriceCashless</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script>
+        $(function () {
+            $("tr.product-row").click(function () {
+                window.location.href = '/admin/product?id=' + this.getAttribute('id');
+            });
+        });
+    </script>
+}

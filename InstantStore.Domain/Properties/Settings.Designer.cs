@@ -55,5 +55,18 @@ namespace InstantStore.Domain.Properties {
                 return ((string)(this["InstantStoreConnectionString2"]));
             }
         }
+
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=OrionGalaxyData.db.12505678.hostedresource.com; Initial Catalog=OrionGalaxyData; User ID=OrionGalaxyData; Password='Password!1234';" +
+            "")]
+        public string InstantStoreConnectionProd
+        {
+            get
+            {
+                return ((string)(this["InstantStoreConnectionProd"]));
+            }
+        }
     }
 }

@@ -271,6 +271,24 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
+        public void RemoveProductFromCategory(Guid categoryId, IList<Guid> productIdsToRemove)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                if (productIdsToRemove != null && productIdsToRemove.Any())
+                {
+                    foreach (var productId in productIdsToRemove)
+                    {
+                        var productMappings = context.ProductToCategories.Where(x => x.CategoryId == categoryId && productId == x.ProductId);
+                        context.ProductToCategories.DeleteAllOnSubmit(productMappings);
+                    }
+
+                    context.SubmitChanges();
+                    CategoryTreeBuilder.RebuidCategoryTreeGroups(context, categoryId);
+                }
+            }
+        }
+
         private IQueryable<ProductToCategory> GetProducts(InstantStoreDataContext context, Guid categoryId)
         {
             return context.ProductToCategories.Where(x => x.CategoryId == categoryId);

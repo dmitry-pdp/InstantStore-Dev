@@ -1,0 +1,64 @@
+﻿.border
+{
+    border: 1px solid #ddd;
+}
+
+.error-label
+{
+    color:red;
+}
+
+.c_pointer:hover{
+    cursor:pointer;
+}
+
+.f_right
+{
+    float: right;
+}
+
+.form-group .f_right
+{
+    margin-right: 0;
+    float: right;
+}
+
+.delete-property
+{
+    margin-right:15px;
+}
+
+.full-width
+{
+    width: 100% !important;
+}
+
+.top-space
+{
+    margin-top: 10px;
+}
+
+.title
+{
+    font-size:150%;
+}
+
+.width90{
+    width: 90%;
+}
+
+a.carousel-nav.right,
+a.carousel-nav.left
+{
+    background-image: none;
+}
+
+a.tile-item
+{
+    text-decoration: none;
+}
+
+.left-space
+{
+    margin-left:15px;
+}

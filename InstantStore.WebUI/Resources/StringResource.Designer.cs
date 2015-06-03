@@ -952,6 +952,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Удалить продукты.
+        /// </summary>
+        public static string admin_ProductDelete {
+            get {
+                return ResourceManager.GetString("admin_ProductDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание продукта.
         /// </summary>
         public static string admin_ProductDescriptionLabel {

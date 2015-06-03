@@ -1,0 +1,25 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@{
+    ViewBag.Title = StringResource.admin_Users;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    var usersHeaderViewModel = this.ViewBag.UsersHeaderViewModel as TabControlViewModel;
+    var usersTableViewModel = this.ViewBag.UsersTableViewModel as TableViewModel;
+}
+<div class="col-sm-offset-1 col-sm-10">
+    <h2>@ViewBag.Title</h2>
+    @if (usersHeaderViewModel != null && usersHeaderViewModel.Tabs.Any())
+    {
+        @Html.Partial("TabControlView", usersHeaderViewModel)
+    }
+    @if (usersTableViewModel == null || !usersTableViewModel.Rows.Any())
+    {
+        <h4>@StringResource.admin_OffersListEmpty</h4>
+    }
+    else
+    {
+        @Html.Partial("TableView", usersTableViewModel)
+    }
+</div>
+

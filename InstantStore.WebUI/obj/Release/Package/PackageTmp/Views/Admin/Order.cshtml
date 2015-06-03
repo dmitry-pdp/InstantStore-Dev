@@ -1,0 +1,97 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model OrderDetailsViewModel
+@{
+    var culture = new System.Globalization.CultureInfo("ru-RU");
+    var statusMessage = this.Model.ProcessedDate == null ? StringResource.orderStatus_Placed : StringResource.orderStatus_Processed;
+    ViewBag.Title = string.Format("{0} - {1}", StringResource.admin_OrderDetailsTitle, statusMessage);
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var orderStatusList = this.ViewBag.OrderStatusList as List<SelectListItem>;
+}
+
+<link href="~/Content/Order.css" rel="stylesheet" />
+
+<div class="col-sm-offset-1 col-sm-10">
+    <h3>@ViewBag.Title</h3>
+    @using (Html.BeginForm("Order", "Admin", FormMethod.Post, new { id = "order-form" }))
+    {
+        <div class="form-group form-horizontal">
+            <label>@StringResource.admin_OrderDetailsUser</label>
+            <span>@this.Model.UserName</span>
+        </div>
+        <div class="form-group form-horizontal">
+            <label>@StringResource.admin_OrderDetailsStatus</label>
+            @Html.DropDownListFor(model => model.Status, orderStatusList, new { @class = "form-control" })
+        </div>
+        <div class="form-group form-horizontal">
+            <label>@StringResource.admin_OrderDetailsSubmitted</label>
+            <span>@(this.Model.SubmitDate != null ? this.Model.SubmitDate.Value.ToString("F", culture) : StringResource.NotAvailable)</span>
+        </div>
+        <div class="form-group form-horizontal">
+            <label>@StringResource.admin_OrderDetailsCompleted</label>
+            <span>@(this.Model.ProcessedDate != null ? this.Model.ProcessedDate.Value.ToString("F", culture) : StringResource.NotAvailable)</span>
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="list-group">
+            <div class="list-group-item order-header">
+                <div class="order-title-item">
+                    <h4>@StringResource.admin_OrderDetailsListTitle</h4>
+                </div>
+                <div class="order-title-quantity">
+                    @StringResource.user_OrdersTitleQuantity
+                </div>
+                <div class="order-title-price">
+                    @StringResource.user_OrdersPriceTitle
+                </div>
+            </div>
+            @for (int index = 0; index < this.Model.Products.Count; index++)
+            {
+                var orderProduct = this.Model.Products[index];
+                <div class="list-group-item" style="height:135px">
+                    <a class="order-item-imagebox img-thumbnail" style="vertical-align:top;" href="@orderProduct.Title.GetUrl(this.Url)" title="@orderProduct.Title.Text">
+                        @Html.Partial("ImageThumbnail", new ViewDataDictionary(orderProduct.Thumbnail))
+                    </a>
+                    <div class="order-item-caption">
+                        <h4>@Html.Partial("NavigationLink", orderProduct.Title)</h4>
+                    </div>
+                    <div class="order-item-quantity">
+                        @orderProduct.Count
+                    </div>
+                    <div class="order-item-price">
+                        @(orderProduct.ItemPrice != null ? orderProduct.ItemPrice.ToString() : StringResource.user_OrdersProductNotAvaialbePrice)
+                    </div>
+                </div>
+            }
+        </div>
+        if (this.Model.Offer != null)
+        {
+            <div class="form-group">
+                <label>@StringResource.admin_OrdersAppliedOffer</label>
+                <div class="list-group">
+                    <div class="list-group-item form-group">
+                        <h4>
+                            @this.Model.Offer.Name
+                        </h4>
+                        <div>
+                            @this.Model.GetOfferText()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <label>@StringResource.admin_OrderDetailsCommentary</label>
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+        </div>
+        <div class="order-line">
+            <div class="order-total">
+                <h3>@StringResource.user_OrdersTotal</h3>
+                <div>@this.Model.Total</div>
+            </div>
+        </div>
+        <div class="order-line" style="margin-top: 10px; margin-right: 20px;">
+            @Html.ActionLink(StringResource.admin_Back, "Orders", null, new { @class = "btn btn-default btn-lg" })
+            <input type="submit" value="@StringResource.admin_OrderDetailsSubmit" class="btn btn-primary btn-lg" id="btn-submit" />
+        </div>
+    }
+</div>

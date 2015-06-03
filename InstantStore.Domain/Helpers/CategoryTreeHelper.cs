@@ -97,7 +97,7 @@ namespace InstantStore.Domain.Helpers
                 // Parent page id is already assigned.
 
                 currentPage = parentPage;
-                currentPageId = parentPageId;
+                currentPageId = parentPage.Id;
             }
         }
     }

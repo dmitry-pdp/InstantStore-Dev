@@ -1,0 +1,49 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model PageViewModel
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var productTiles = this.ViewBag.ProductItemsViewModel as TilesViewModel;
+    var productTable = this.ViewBag.ProductItemsViewModel as TableViewModel;
+}
+
+<h2>@ViewBag.Title</h2>
+@Html.Raw(this.Model.Text)
+@if (this.Model.Attachment != null)
+{
+    <div>
+        <label>@StringResource.admin_PageAttachment</label>
+        @Html.Partial("Attachment", this.Model.Attachment);
+    </div>
+}
+@if (productTiles != null)
+{
+    Html.RenderPartial("TilesView", productTiles);
+}
+else if (productTable != null)
+{
+    Html.RenderPartial("TableView", productTable);
+}
+<script>
+    $(function () {
+        var addToCartAction = function () {
+            $.ajax({
+                url: this.href,
+                cached: false,
+                method: "post"
+            })
+            .done(function () {
+                alert("@StringResource.productTile_AddItemConfirmation");
+                location.reload();
+            })
+            .fail(function () {
+                alert("@StringResource.productTile_AddItemFailure");
+            });
+            return false;
+        };
+
+        $("a.tile-action").on("click", addToCartAction);
+        $("a.table-action").on("click", addToCartAction);
+    });
+</script>

@@ -1,0 +1,79 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model UserProfileViewModel
+@{
+    ViewBag.Title = StringResource.admin_editUser;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var userLists = ViewBag.UsersListViewModel as UsersListViewModel;
+}
+
+<div class="border col-sm-10 col-sm-offset-1 container-fluid">
+    <h3>@ViewBag.Title</h3>
+    @using (Html.BeginForm("User", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            <div class="pull-right" style="margin-right:15px">
+                <a href="/admin/orders?userid=@userLists.Current.Id" class="btn btn-default">@StringResource.admin_UsersOrdersAction</a>
+                @if (!userLists.Current.IsActivated)
+                {
+                    <a href="/admin/user?id=@userLists.Current.Id&activate=true" class="btn btn-default">@StringResource.admin_UserActivateAction</a>
+                }
+                else if (!userLists.Current.IsBlocked)
+                {
+                    <a href="/admin/user?id=@userLists.Current.Id&block=true" class="btn btn-default">@StringResource.user_ActionsBlock</a>
+                }
+                else 
+                {
+                    <a href="/admin/user?id=@userLists.Current.Id&unblock=true" class="btn btn-default">@StringResource.admin_UserUnblockAction</a>
+                }
+                <a href="@Url.Action("ResetPassword", new {id = this.Model.Id })" class="btn btn-default" id="reset-password">@StringResource.admin_UserResetPassword</a>
+            </div>
+        </div>
+        <fieldset>
+            @Html.Partial("UserInfoBasic", this.Model);
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.PaymentType, this.Model.PaymentTypes, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-8 col-sm-offset-4 error-label">
+                    @Html.ValidationMessageFor(model => model.PaymentType)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comments, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", style = "height:200px" })
+                </div>
+            </div>
+        </fieldset>
+        @Html.HiddenFor(model => model.Id);
+        <div class="form-group" style="margin-right:0px">
+            <input type="submit" value="@StringResource.Settings_SubmitButtonText" class="btn btn-primary btn-lg pull-right left-space" />
+            @Html.ActionLink(StringResource.admin_Back, "Users", null, new { @class = "btn btn-default btn-lg pull-right" })
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#reset-password").click(function()
+        {
+            $.ajax({
+                url: this.href,
+                cached: false,
+                method: 'post'
+            })
+            .done(function (data) {
+                if (data.status == "OK") {
+                    alert('@StringResource.admin_userPasswordReset');
+                } else {
+                    alert('@StringResource.admin_userPasswordResetError');
+                }
+            })
+            .fail(function (data) {
+                alert('@StringResource.Connection_Error');
+            });
+            return false;
+        });
+    });
+</script>

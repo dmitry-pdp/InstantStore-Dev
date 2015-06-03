@@ -12,10 +12,6 @@ namespace InstantStore.WebUI.Controllers
     [CustomAuthorization(false)]
     public partial class UserController : ControllerBase
     {
-        public UserController(IRepository repository) : base(repository)
-        {
-        }
-
         public ActionResult Profile()
         {
             this.Initialize(Guid.Empty, PageIdentity.UserProfile);

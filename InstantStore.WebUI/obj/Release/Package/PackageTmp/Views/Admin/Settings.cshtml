@@ -1,0 +1,39 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@{
+    ViewBag.Title = StringResource.admin_Settings;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    var settingsMenu = this.ViewBag.SettingsMenuViewModel as CategoryTreeItemViewModel;
+    var settingsMenuSelection = (Guid?)this.ViewBag.SettingsMenuSelection;
+    var pagesTreeViewModel = new TreeViewModel
+    {
+        TreeId = Guid.NewGuid().ToString(),
+        Root = settingsMenu
+    };
+}
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+
+<div class="col-sm-3">
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
+</div>
+<div class="col-sm-9">
+    <div id="content"></div>
+</div>
+<script>
+    $(function () {
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView("@(settingsMenuSelection ?? Guid.Empty)", pagesTreeId);
+
+        $(document).on("category-tree:selected", function (event, id) {
+            $.ajax({
+                url: "@Url.Action("Settings", "Admin")?i=" + id,
+                cached: false
+            })
+            .done(function (html) {
+                $("#content").html(html);
+            });
+        });
+    });
+</script>

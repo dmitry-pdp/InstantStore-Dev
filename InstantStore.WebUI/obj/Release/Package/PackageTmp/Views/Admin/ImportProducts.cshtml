@@ -1,0 +1,36 @@
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@{
+    var pagesTreeViewModel = new TreeViewModel
+    {
+        TreeId = Guid.NewGuid().ToString(),
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel
+    };
+
+    var parentCategory = (Guid)this.ViewData["ParentCategory"];
+}
+<div class="row">
+    <div class="col-sm-4">
+        @Html.Partial("CategoryTree", pagesTreeViewModel)
+    </div>
+    <div class="col-sm-8" id="dialog-content">
+    </div>
+</div>
+<script>
+    var pagesTreeId = '@pagesTreeViewModel.TreeId';
+    TreeView.InitializeTreeView('@Guid.Empty.ToString()', pagesTreeId);
+    $(document).on("category-tree:selected", function (event, id, treeId) {
+        if (treeId != pagesTreeId) {
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + id + "&import=true&importToCat=@parentCategory",
+            cached: false
+        })
+        .done(function (html) {
+            $("#dialog-content").html(html);
+        })
+    });
+</script>

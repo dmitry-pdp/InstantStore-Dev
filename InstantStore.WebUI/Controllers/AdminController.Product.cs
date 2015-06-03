@@ -113,5 +113,26 @@ namespace InstantStore.WebUI.Controllers
 
             return this.Json(new { status = "success" });
         }
+
+        public ActionResult DeleteProducts(Guid parentId, int p = 1, int c = 15)
+        {
+            return this.View(new CategoryProductsViewModel(this.repository, parentId, p, c) 
+            { 
+                IsTiles = false 
+            });
+        }
+
+        [HttpPost]
+        public ActionResult DeleteProducts(CategoryProductsViewModel data)
+        {
+            if (data.Products == null || data.Products.Count(x => x.Checked) == 0)
+            {
+                return this.Json(new { status = "Error", message = StringResource.admin_ImportProductErrorNoItemChecked });
+            }
+
+            this.repository.RemoveProductFromCategory(data.ParentCategoryId, data.Products.Where(x => x.Checked).Select(x => x.Id).ToList());
+
+            return this.Json(new { status = "success" });
+        }
     }
 }

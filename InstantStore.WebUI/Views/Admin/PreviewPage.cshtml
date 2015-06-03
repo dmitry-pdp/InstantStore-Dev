@@ -12,12 +12,13 @@
     <div class="row">
         <div class="col-sm-12" id="new-pages-row">
             <p>
-                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
-                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
+                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-withparentid" })
+                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-withparentid" })
                 @if (cateogoryProducts != null)
                 {
-                    @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-lg btn-withparentid" })
-                    @Html.ActionLink(StringResource.admin_ProductsFromOtherCategory, "Import", null, new { @class = "btn btn-default btn-lg", id = "btn-import-products"})
+                    @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-withparentid" })
+                    @Html.ActionLink(StringResource.admin_ProductDelete, "DeleteProducts", null, new { @class = "btn btn-default", id = "btn-deleteproducts" })
+                    @Html.ActionLink(StringResource.admin_ProductsFromOtherCategory, "Import", null, new { @class = "btn btn-default", id = "btn-import-products"})
                 }
             </p>
         </div>
@@ -58,6 +59,22 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="delete-products-dlg" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" style="width:90%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@StringResource.admin_ProductDelete</h4>
+                    </div>
+                    <div class="modal-body" id="delete-products-dlg-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
+                        <input type="button" class="btn btn-primary" id="btn-confirm-delete" value="@StringResource.admin_Delete" />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="import-error-dlg" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -94,6 +111,9 @@
             .done(function (html) {
                 $("#import-products-dlg-body").html(html);
                 $('#import-products-dlg').modal();
+            })
+            .fail(function (data) {
+                alert('Ошибка');
             });
             return false;
         });
@@ -121,5 +141,43 @@
                 alert('Ошибка');
             });
         });
+
+        $("#btn-deleteproducts").click(function () {
+            var selectedCat = $("#current-selection").val();
+            $.ajax({
+                url: '@Url.Action("DeleteProducts")' + "?parentId=" + selectedCat
+            })
+            .done(function (html) {
+                $("#delete-products-dlg-body").html(html);
+                $('#delete-products-dlg').modal();
+            })
+            .fail(function (data) {
+                alert('Ошибка');
+            });
+            return false;
+        });
+
+        $("#btn-confirm-delete").click(function () {
+            var frm = $('#delete-products-form');
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data: frm.serialize(),
+            })
+            .done(function (data) {
+                if (data.status == "success") {
+                    $('#delete-products-dlg').modal('hide');
+                    $(document).trigger("category-tree:refresh");
+                }
+                else {
+                    $("#error-holder").html(data.message);
+                    $("#import-error-dlg").modal('show');
+                }
+            })
+            .fail(function (data) {
+                alert('Ошибка');
+            });
+        });
+
     </script>
 }

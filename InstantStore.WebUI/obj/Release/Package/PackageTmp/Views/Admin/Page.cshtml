@@ -1,0 +1,96 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model PageViewModel
+@{
+    ViewBag.Title = this.Model.Id == Guid.Empty ? StringResource.admin_NewPage : StringResource.admin_UpdatePage;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var pagesTreeViewModel = new TreeViewModel
+    {
+        TreeId = Guid.NewGuid().ToString(),
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel
+    };
+}
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+
+<div class="border col-sm-3">
+    <h3>@StringResource.admin_AddToParent </h3>
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
+</div>
+<div class="border col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    <div class="col-sm-10 col-sm-offset-1">
+        @using (Html.BeginForm("Page", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="form-group">
+                <div class="form-inline checkbox-inline">
+                    @Html.CheckBoxFor(model => model.ShowInMenu)
+                    @Html.LabelFor(model => model.ShowInMenu)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Text, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Text, new { @class = "form-control parent-category-name" })
+            </div>
+            <div class="form-group">
+                <label>@StringResource.admin_PageAttachment</label>
+                <div id="attachment-container">
+                    @if (this.Model.Attachment != null)
+                    {
+                        @Html.Partial("Attachment", this.Model.Attachment)
+                    }
+                </div>
+            </div>
+            <div class ="form-group">
+                <a href="#" id="add-attachment" class="btn btn-default">@StringResource.admin_PageChooseFile</a>
+            </div>
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
+                <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
+            </div>
+        }
+    </div>
+
+    @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "AddAttachment", ControllerName = "Admin", UploadButtonId = "add-attachment", Name = "attachment" })
+</div>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars",
+            "insertdatetime nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
+    });
+
+    $(function () {
+
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView('@this.Model.ParentCategoryId', pagesTreeId);
+
+        $(document).on("category-tree:selected", function (event, id) {
+            $("#ParentCategoryId").val(id);
+        });
+
+        $(document).on("upload-control:done", function (event, data) {
+            $.ajax({
+                url: "/admin/attachmentview?id=" + data.Id,
+                cache: false,
+                success: function (html) {
+                    $("#attachment-container").empty();
+                    $("#attachment-container").append(html);
+                }
+            });
+
+            $("#Attachment.AttachmentId").val(data.Id);
+        });
+    });
+</script>

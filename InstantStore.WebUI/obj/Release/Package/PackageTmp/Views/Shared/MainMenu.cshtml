@@ -1,0 +1,27 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@model MainMenuViewModel
+
+<link href="~/Content/MultiLevelNavBar.css" rel="stylesheet" />
+<script src="~/Scripts/Menu.js"></script>
+
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div id="mynavbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @foreach (var menuItem in this.Model.Menu)
+                {
+                    Html.RenderPartial("MainMenuItem", menuItem);
+                }
+            </ul>
+            @if (this.Model.MetaMenu != null && this.Model.MetaMenu.Any())
+            { 
+                <ul class="nav navbar-nav navbar-right">
+                    @foreach (var menuItem in this.Model.MetaMenu)
+                    {
+                        Html.RenderPartial("MainMenuItem", menuItem);
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</nav>  

@@ -1,0 +1,184 @@
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model InstantStore.WebUI.ViewModels.ProductViewModel
+@{
+    ViewBag.Title = StringResource.admin_ProductNew;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    
+    var pagesTreeViewModel = new TreeViewModel
+    {
+        TreeId = Guid.NewGuid().ToString(),
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel
+    };
+}
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+
+<style>
+    .image-container img.img-thumbnail {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        float: left;
+    }
+
+    .image-container {
+        position: relative;
+        display: block;
+        float: left;
+    }
+
+    .image-delete-overlay {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 16px;
+        height: 16px;
+        filter: alpha(opacity=50);
+    }
+</style>
+
+<div class="border col-sm-3">
+    @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
+    <h3>@StringResource.admin_AddToParent</h3>
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
+</div>
+<div class="border col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    <div class="col-sm-10 col-sm-offset-1">
+        @using (Html.BeginForm("Product", "Admin", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="">
+                <div class="form-group">
+                    <div class="form-inline checkbox-inline">
+                        @Html.CheckBoxFor(model => model.IsAvailable)
+                        @Html.LabelFor(model => model.IsAvailable)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="">
+                    <div class="form-inline">
+                        <p>
+                            @Html.LabelFor(model => model.CurrencyId)
+                            @Html.DropDownListFor(model => model.CurrencyId, this.Model.Currencies, new { @class = "form-control" })
+                        </p>
+                        <p>
+                            @Html.LabelFor(model => model.PriceCash)
+                            @Html.TextBoxFor(model => model.PriceCash, new { @class = "form-control" })
+                        </p>
+                        <p>
+                            @Html.LabelFor(model => model.PriceCashless)
+                            @Html.TextBoxFor(model => model.PriceCashless, new { @class = "form-control" })
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Images)
+                <div style="height:120px" id="image_container">
+                    @if (!this.Model.Images.Any())
+                    {
+                        <span id="no-image">No images. Press add image button to add new image.</span>
+                    }
+                    else
+                    {
+                        foreach (var image in this.Model.Images)
+                        {
+                            @Html.Partial("ProductImage", image)
+                        }
+                    }
+                </div>
+                <a id="upload-image-btn" class="btn btn-default">@StringResource.admin_ProductAddImage</a>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control parent-category-name" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TemplateId, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TemplateId, this.Model.TemplatesList, new { @class = "form-control" })
+                <div id="template-content"></div>
+                @if (this.Model.Attributes != null && this.Model.Attributes.Count > 0)
+                {
+                    <div id="template-content-curr" class="top-space">
+                        @foreach (var attribute in this.Model.Attributes)
+                        {
+                            Html.RenderPartial("ProductAttribute", attribute);
+                        }
+                    </div>
+                }
+            </div>            
+            <div class="form-group">
+                @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
+                @Html.HiddenFor(model => model.Id)
+                <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
+            </div>
+        }
+        @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" });
+    </div>
+</div>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars",
+            "insertdatetime nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern"
+        ],
+        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons",
+    });
+
+    $(function () {
+
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView('@this.Model.ParentCategoryId', pagesTreeId);
+
+        var deleteImage = function(evt)
+        {
+            $(evt.currentTarget).parent().remove();
+        }
+
+        $(".image-delete-overlay").click(deleteImage);
+
+        $(document).on("upload-control:done", function (event, data) {
+            $.ajax({
+                url: "/admin/productimage?imageId=" + data.ImageId,
+                cache: false
+            })
+            .done(function (html) {
+                $("#no-image").remove();
+                $("#image_container").append(html);
+                $(".image-delete-overlay").click(deleteImage);
+            });
+        });
+
+        $(document).on("category-tree:selected", function (event, id) {
+            $("#ParentCategoryId").val(id);
+        });
+
+        $("#TemplateId").on("change", function () {
+            var options = (this.selectedOptions && this.selectedOptions[0]) || (this.selectedIndex && this.options[this.selectedIndex]);
+            var templateId = $(options).val();
+            if (templateId)
+            {
+                $.ajax({
+                    url: "/admin/ProductAttributes?id=" + $("#Id").val() + "&tid=" + templateId,
+                    cache: false
+                }).done(function (html) {
+                    $("#template-content-curr").remove();
+                    $("#template-content").html(html);
+                });
+            }
+        });
+    });
+</script>
+
+

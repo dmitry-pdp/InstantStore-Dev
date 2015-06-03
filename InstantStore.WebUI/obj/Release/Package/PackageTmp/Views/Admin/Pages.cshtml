@@ -1,0 +1,132 @@
+﻿@using System.Collections;
+@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@{
+    ViewBag.Title = StringResource.admin_Pages;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var treeViewItem = (Guid)(this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"]);
+    var isRoot = treeViewItem == Guid.Empty;
+    
+    var pagesTreeViewModel = new TreeViewModel { 
+        TreeId = Guid.NewGuid().ToString(), 
+        Root = this.ViewData["CategoryTreeRootViewModel"] as CategoryTreeItemViewModel 
+    };
+    
+    var treeSelectedId = this.ViewData["TreeSelection"] == null ? Guid.Empty : this.ViewData["TreeSelection"];
+}
+
+<script src="~/Scripts/bootstrap-treenav.js"></script>
+<link href="~/Content/bootstrap-treenav.css" rel="stylesheet" />
+<link href="~/Content/AdminPages.css" rel="stylesheet" />
+<link href="~/Content/Admin.css" rel="stylesheet" />
+
+<div class="border col-sm-3 admin-pages-tree">
+    <input type="hidden" value="@Guid.Empty" id="current-selection" />
+    <div class="btn-toolbar">
+        <div class="btn-group pull-right" id="tree-buttons">
+            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button" id="btn-item-edit">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-delete">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-moveup">
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            </a>
+            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-movedown">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+    @Html.Partial("CategoryTree", pagesTreeViewModel)
+</div>
+<div class="border col-sm-9 admin-pages-content">
+    <div id="content">
+    </div>
+</div>
+<div class="modal fade" id="delete-confirmation-dlg" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">@StringResource.ConfirmationTitle</h4>
+            </div>
+            <div class="modal-body">
+                <p>@StringResource.admin_PageDeleteConfirm</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="href-to-delete" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-confirm-delete">@StringResource.admin_Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var pagesTreeId = '@pagesTreeViewModel.TreeId';
+        TreeView.InitializeTreeView('@treeSelectedId', pagesTreeId);
+
+        $(document).on("category-tree:selected", function (event, id, treeId) {
+            if (treeId != pagesTreeId) {
+                return;
+            }
+
+            $("#current-selection").val(id);
+            if (id == '@Guid.Empty') {
+                $(".tree-btn").addClass("disabled");
+            }
+            else {
+                $(".tree-btn").removeClass("disabled");
+            }
+            $.ajax({
+                url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + id,
+                cached: false
+            })
+            .done(function (html) {
+                $("#content").html(html);
+            });
+        });
+
+        $("#tree-buttons a").click(function () {
+            var selectedCat = $("#current-selection").val();
+            var btn = $(this);
+            var href = btn.attr('href') + '&id=' + selectedCat;
+            var item = btn.attr('id');
+            if (item == 'btn-item-delete') {
+                $("#href-to-delete").val(href);
+                $('#delete-confirmation-dlg').modal();
+            }
+            else {
+                window.location.href = href;
+            }
+            return false;
+        });
+
+        $("#btn-confirm-delete").click(function () {
+            window.location.href = $("#href-to-delete").val();
+        });
+
+        function updatePreview(page)
+        {
+            var selectedCat = $("#current-selection").val();
+            $.ajax({
+                url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + selectedCat + (page != null ? "&p=" + page : ""),
+            })
+            .done(function (html) {
+                $("#content").html(html);
+            });
+        }
+
+        $(document).on("category-tree:refresh", function () {
+            updatePreview(0);
+        });
+
+        $(document).on("pagination:click", function (event, id, p) {
+            if (id == "0") {
+                updatePreview(p);
+            }
+        });
+
+    });
+</script>

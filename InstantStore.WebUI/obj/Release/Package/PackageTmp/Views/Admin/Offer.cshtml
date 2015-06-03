@@ -1,0 +1,76 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model OfferViewModel
+@{
+    ViewBag.Title = StringResource.admin_OfferTitle;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var currencyList = this.ViewBag.CurrencyList as IList<SelectListItem>;
+    var discountTypeList = this.ViewBag.DiscountTypeList as IList<SelectListItem>;
+}
+
+<div class="col-sm-offset-1 col-sm-10">
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("Offer", "Admin", FormMethod.Post, new { id = "order-form", @class="form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        @Html.EditorFor(m => m.IsActive, new { @class = "form-control" })
+                        @StringResource.OfferStatus_Active
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@StringResource.offerTableHeaderName</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-10 col-sm-offset-2 error-label">
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@StringResource.admin_UserPaymentCurrency</label>
+            <div class="col-sm-10">
+                @Html.DropDownListFor(m => m.CurrencyId, currencyList, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@StringResource.offerDetailsDiscountTypeLabel</label>
+            <div class="col-sm-10">
+                @Html.DropDownListFor(m => m.Type, discountTypeList, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@StringResource.offerTableHeaderThreshold</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.ThresholdPrice, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-10 col-sm-offset-2 error-label">
+                @Html.ValidationMessageFor(m => m.ThresholdPrice)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">@StringResource.offerTableHeaderDiscount</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Discount, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-10 col-sm-offset-2 error-label">
+                @Html.ValidationMessageFor(m => m.Discount)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2 error-label">
+                @Html.ValidationSummary(true)
+            </div>
+        </div>
+        <div class="col-sm-offset-2">
+            @Html.ActionLink(StringResource.admin_Back, "Offers", null, new { @class = "btn btn-default btn-lg" })
+            <input type="submit" class="btn btn-primary btn-lg" value="@(this.Model.Id == Guid.Empty ? StringResource.offerDetailsSubmitNew : StringResource.offerDetailsSubmitUpdate )" />
+        </div>
+        }
+    </div>
+

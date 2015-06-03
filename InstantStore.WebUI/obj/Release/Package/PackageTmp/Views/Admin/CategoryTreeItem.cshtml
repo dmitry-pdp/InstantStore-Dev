@@ -1,0 +1,11 @@
+﻿@model InstantStore.WebUI.ViewModels.CategoryTreeItemViewModel
+
+<li>
+    <a href="#" class="category-tree-item" item-id="@this.Model.Id">@this.Model.Name</a>
+    <ul class="nav nav-pills nav-stacked nav-tree">
+        @foreach (var subCategory in this.Model.Items)
+        {
+            @Html.Partial("CategoryTreeItem", subCategory)
+        }
+    </ul>
+</li>

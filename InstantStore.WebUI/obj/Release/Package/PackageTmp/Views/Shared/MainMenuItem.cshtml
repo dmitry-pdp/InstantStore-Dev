@@ -1,0 +1,45 @@
+﻿@model InstantStore.WebUI.ViewModels.MenuItemViewModel
+
+@if (this.Model.Items != null && this.Model.Items.Count > 0)
+{
+    <li class="@(this.Model.Level > 0 ? "dropdown-submenu" : "dropdown-parentmenu") @(this.Model.IsActive ? "active" : "")">
+        <a href="@this.Model.Link.GetUrl(this.Url)" class="dropdown-toggle" data-toggle="dropdown">
+            @if (this.Model.Glyph != null)
+            {
+                <span class="@this.Model.Glyph"></span>
+            }
+            @if (this.Model.Badge != null)
+            {
+                <span class="badge">@this.Model.Badge</span>
+            }
+            @this.Model.Name&nbsp;
+            @if (this.Model.Level == 0)
+            {
+                <b class="caret"></b>
+            }
+        </a>
+        <ul class="dropdown-menu @(this.Model.Level == 0 ? "multi-level" : "")">
+            @foreach (var item in this.Model.Items)
+            {
+                Html.RenderPartial("MainMenuItem", item);
+            }
+        </ul>
+    </li>
+}
+else
+{
+    <li class="@(this.Model.IsActive ? "active" : "")">
+        <a href="@this.Model.Link.GetUrl(this.Url)">
+            @if (this.Model.Glyph != null)
+            {
+                <span class="@this.Model.Glyph"></span>
+            }
+            <span>@this.Model.Name</span>
+            @if (this.Model.Badge != null)
+            {
+                <span class="badge">@this.Model.Badge</span>
+            }
+        </a>
+    </li>
+}
+

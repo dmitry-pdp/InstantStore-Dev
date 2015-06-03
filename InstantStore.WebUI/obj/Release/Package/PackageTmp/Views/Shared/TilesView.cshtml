@@ -1,0 +1,50 @@
+﻿@using System.Linq;
+@using InstantStore.WebUI.ViewModels;
+
+@model TilesViewModel
+<link href="~/Content/Tiles.css" rel="stylesheet" />
+
+@foreach (var tilesGroup in this.Model.TileGroups)
+{
+    if (tilesGroup.Value == null || !tilesGroup.Value.Any())
+    {
+        continue; 
+    }
+    
+    if (!string.IsNullOrEmpty(tilesGroup.Key))
+    { 
+        <h4>@tilesGroup.Key</h4>
+    }
+
+    foreach (var tileViewModel in tilesGroup.Value)
+    { 
+        var url = tileViewModel.Link.GetUrl(this.Url);
+    
+        <div class="thumbnail tile">
+            <a href="@url" class="">
+                <img src="@(tileViewModel.ImageId == Guid.Empty ? "/Image/NoImage.png" : "/Main/Thumbnail?size=l&id=" + tileViewModel.ImageId)" class="tile-image" />
+            </a>
+            <div class="caption tile-caption">
+                <a href="@url">
+                    <span class="title">@tileViewModel.Name</span>
+                </a>
+                @if (tileViewModel.Attributes != null && tileViewModel.Attributes.Any())
+                {
+                    foreach (var attribute in tileViewModel.Attributes)
+                    {
+                        <p>
+                            <label>@attribute.Key</label>
+                            <span>@attribute.Value</span>
+                        </p>
+                    }
+                }
+            
+                @if (tileViewModel.Action != null)
+                {
+                    <a href="@tileViewModel.Action.GetUrl(this.Url)" class="tile-action">@tileViewModel.Action.Text</a>
+                }
+            </div>
+        </div>
+    }
+}
+

@@ -1,0 +1,15 @@
+﻿.control-users
+{
+    background-image: url('/Image/Admin_ControlPanel_Users_Panel.png');
+    height: 32px;
+    width: 32px;
+    display:inline-block;
+}
+
+.img-delete 
+{
+    background: url('/Image/close-icon.png');
+    float:right;
+    display:inline-block;
+    position:relative;
+}

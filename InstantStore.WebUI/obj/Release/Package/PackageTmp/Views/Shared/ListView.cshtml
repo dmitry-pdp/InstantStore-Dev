@@ -1,0 +1,29 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model ListViewModel
+
+<div class="row">
+    <div class="pull-right" style="margin-right: 15px">
+        @Html.Partial("Pagination", this.Model.PageInfo)
+    </div>
+</div>
+
+@foreach (var group in this.Model.Groups)
+{ 
+    <h4>@group.Key</h4>
+    <div class="list-group">
+        @foreach(var item in group.Value)
+        {
+        <a href="@item.Link.GetUrl(this.Url)" class="list-group-item @(item.IsActive ? "active" : "")">
+            @item.Name
+        </a>
+        }
+</div>
+}
+
+<div class="row">
+    <div class="pull-right" style="margin-right: 15px">
+        @Html.Partial("Pagination", this.Model.PageInfo)
+    </div>
+</div>

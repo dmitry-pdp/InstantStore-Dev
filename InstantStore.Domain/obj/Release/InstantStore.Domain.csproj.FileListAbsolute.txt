@@ -1,0 +1,6 @@
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Release\InstantStore.Domain.dll.config
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Release\InstantStore.Domain.dll
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Release\InstantStore.Domain.pdb
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Release\InstantStore.Domain.csprojResolveAssemblyReference.cache
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Release\InstantStore.Domain.dll
+C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Release\InstantStore.Domain.pdb

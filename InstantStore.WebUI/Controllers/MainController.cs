@@ -18,10 +18,6 @@ namespace InstantStore.WebUI.Controllers
     // TODO: DDoS vulnerability. Throttling needs to be added here.
     public partial class MainController : ControllerBase
     {
-        public MainController(IRepository repository) : base(repository)
-        {
-        }
-
         public ActionResult Index()
         {
             this.Initialize(Guid.Empty);

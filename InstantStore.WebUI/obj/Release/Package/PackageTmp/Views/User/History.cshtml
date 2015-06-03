@@ -1,0 +1,46 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+@model OrderHistoryListViewModel
+@{
+    ViewBag.Title = StringResource.nav_History;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var culture = new System.Globalization.CultureInfo("ru-RU");
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (this.Model.Orders == null || !this.Model.Orders.Any())
+{
+    <span>@StringResource.user_HistoryEmpty</span>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>@StringResource.user_HistoryListHeaderTime</td>
+                <td>@StringResource.user_HistoryListHeaderItemCount</td>
+                <td>@StringResource.user_HistoryListHeaderTotalPrice</td>
+                <td>@StringResource.user_HistoryListHeaderIsProcessed</td>
+                <td>@StringResource.user_HistoryListHeaderProcessTime</td>
+            </tr>
+        </thead>
+        @foreach (var order in this.Model.Orders.Where(x => x.SubmitDate != null).OrderByDescending(x => x.SubmitDate))
+        {
+            <tr id="@order.Id" class="history-item c_pointer">
+                <td>@order.SubmitDate.Value.ToString(culture)</td>
+                <td>@order.ItemsCount</td>
+                <td>@order.Total</td>
+                <td>@(order.ProcessedDate != null ? StringResource.Yes : StringResource.No)</td>
+                <td>@(order.ProcessedDate != null ? order.ProcessedDate.Value.ToString(culture) : string.Empty)</td>
+            </tr>
+        }
+    </table>
+    <script>
+        $(function () {
+            $(".history-item").click(function () {
+                location.href = "@Url.Action("HistoryOrderDetails")" + "?id=" + $(this).attr("id");
+            });
+        });
+    </script>
+}

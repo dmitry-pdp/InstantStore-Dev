@@ -21,9 +21,9 @@ namespace InstantStore.WebUI.Controllers
         private readonly IRepository repository;
         private readonly SettingsViewModel settingsViewModel;
 
-        public AdminController(IRepository repository)
+        public AdminController()
         {
-            this.repository = repository;
+            this.repository = new LinqRepository();
             this.settingsViewModel = new SettingsViewModel(this.repository);
             this.ViewData["RenderCustomLeftColumn"] = true;
         }

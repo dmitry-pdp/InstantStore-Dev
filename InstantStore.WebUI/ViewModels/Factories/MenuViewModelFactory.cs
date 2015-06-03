@@ -215,7 +215,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             var siblingPages = repository.GetPages(parentId, null).Where(page => page.CategoryId != null).OrderBy(page => page.Position);
             if (siblingPages == null || !siblingPages.Any())
             {
-                throw new ApplicationException("Invalid.Database.State");
+                return viewModel;
             }
 
             List<NavigationItemViewModel> parentCategoryList = null;

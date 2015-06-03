@@ -1,0 +1,34 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@using InstantStore.WebUI.Resources;
+
+@model TreeViewModel
+@{
+    var treeId = this.Model.TreeId;
+    var treeData = Json.Encode(new [] { PageViewModel.CreateTreeNode(this.Model.Root, this.Model.UseIcons) } );
+}
+
+<script src="~/Scripts/bootstrap-treeview.js"></script>
+<script src="~/Scripts/treeview.js"></script>
+
+<link href="~/Content/bootstrap-treeview.min.css" rel="stylesheet" />
+
+<div id="@treeId"></div>
+<script>
+    (function () {
+        var categoryTree = function () {
+            return @Html.Raw(treeData)
+        }();
+
+        var tid = '@treeId';
+
+        $('#' + tid).treeview({
+            data: categoryTree,
+            onNodeSelected: function (event, node) {
+                if (node && node.id) {
+                    $(document).trigger("category-tree:selected", [ node.id, tid, node ]);
+                }
+            }
+        });
+    })();
+
+</script>
