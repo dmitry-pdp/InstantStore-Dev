@@ -60,7 +60,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             viewModel.Items = repository.GetProductsByPopularity(3).Select(product => new MediaItemViewModel
             {
                 Name = product.Name,
-                Link = new NavigationLink { PageId = product.VersionId },
+                Link = new NavigationLink { PageId = product.VersionId, ActionName = "Page", ControllerName = "Main" },
                 ImageThumbnailId = product.MainImageId
             })
             .ToList();
@@ -155,7 +155,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
         {
             return new NavigationLink 
             { 
-                ControllerName = "Main", 
+                ControllerName = "User", 
                 ActionName = "AddToCart", 
                 PageId = product.VersionId, 
                 Text = StringResource.productTile_AddToCart 
@@ -281,7 +281,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     new TableCellViewModel(product.Name),
                     new TableCellViewModel(this.GetProductAvailableString(product)),
                     new TableCellViewModel(price != null ? price.ToString() : StringResource.NotAvailable),
-                    new TableCellViewModel(this.CreateAddToCartLink(product))
+                    user.IsAdmin ? new TableCellViewModel(string.Empty) : new TableCellViewModel(this.CreateAddToCartLink(product))
                 }
                 : new List<TableCellViewModel>
                 {

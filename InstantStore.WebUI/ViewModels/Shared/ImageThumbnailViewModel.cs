@@ -14,5 +14,9 @@ namespace InstantStore.WebUI.ViewModels
         public Guid ThumbnailId { get; set; }
 
         public NavigationLink Click { get; set; }
+
+        public string Id { get; set; }
+
+        public string Class { get; set; }
     }
 }

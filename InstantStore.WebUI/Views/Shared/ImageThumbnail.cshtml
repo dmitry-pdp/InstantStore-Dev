@@ -2,8 +2,8 @@
 @model ImageThumbnailViewModel
 @{
     var isValid = this.Model.ThumbnailId != null && this.Model.ThumbnailId != Guid.Empty;
-    var thumbnailQuality = this.Model.Width > 64 ? "l" : "s";
-    var imagePath = isValid ? Url.Action("Thumbnail", "Main", new { Id = this.Model.ThumbnailId, size = thumbnailQuality }) : "/Image/NoImage.png";
+    var thumbnailQuality = this.Model.Width == 0 || this.Model.Width > 64 ? "l" : "s";
+    var imagePath = isValid ? Url.Action("Thumbnail", "Main", new { Id = this.Model.ThumbnailId, size = thumbnailQuality }) : this.Url.Content("~/Image/NoImage.png");
     var linkUrl = this.Model.Click != null ? this.Model.Click.GetUrl(this.Url) : null;
     
 }
@@ -11,11 +11,11 @@
 @if (linkUrl != null)
 {
     <a href="@linkUrl">
-        <img src="@imagePath" width="@this.Model.Width" />
+        <img src="@imagePath" width="@(this.Model.Width > 0 ? this.Model.Width.ToString() : null)" id="@this.Model.Id" class="@this.Model.Class" />
     </a>
 }
 else
 {
-    <img src="@imagePath" width="@this.Model.Width" />
+    <img src="@imagePath" width="@(this.Model.Width > 0 ? this.Model.Width.ToString() : null)" id="@this.Model.Id" class="@this.Model.Class" />
 }
 

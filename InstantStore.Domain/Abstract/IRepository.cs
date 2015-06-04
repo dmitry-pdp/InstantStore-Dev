@@ -8,6 +8,7 @@ namespace InstantStore.Domain.Abstract
     public interface IRepository
     {
         //IEnumerable<InstantStore.Domain.Entities.Product> Products { get; }
+        void LogError(Exception exception, DateTime time, string requestUrl, string clientIp, string userAgent, string sessionId, Guid? userId);
 
         string GetSettings(SettingsKey key);
 

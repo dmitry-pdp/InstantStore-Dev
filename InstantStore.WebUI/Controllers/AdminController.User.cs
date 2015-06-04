@@ -155,6 +155,8 @@ namespace InstantStore.WebUI.Controllers
                 user.DefaultCurrencyId = userProfileViewModel.Currency;
                 user.Comments = userProfileViewModel.Comments;
                 this.repository.UpdateUser(user);
+
+                return this.RedirectToAction("Users", "Admin");
             }
 
             this.ViewData["UsersListViewModel"] = new UsersListViewModel(this.repository, userProfileViewModel.Id);

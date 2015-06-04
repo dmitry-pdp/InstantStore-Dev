@@ -10,7 +10,7 @@
         {
         <div class="thumbnail" style="width:245px;display:inline-block">
             <a href="@Url.Action("Page", "Admin", new { id = productInfo.Id, c="p", parentId = this.Model.ParentCategoryId })" class="thumbnail">
-                <img src="@(productInfo.Image == Guid.Empty ? "/Image/NoImage.png" : "/Main/GetImage?id=" + productInfo.Image)" style="width:242px;height:200px" />
+                @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = productInfo.Image, Class = "tile-image" })
                 <div class="caption" style="height:120px">
                     <div>
                         <span class="title">@productInfo.Name</span>

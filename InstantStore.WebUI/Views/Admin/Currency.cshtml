@@ -114,7 +114,7 @@
             var rateDirect = $("#" + id + "-Direct").val();
             var rateReverse = $("#" + id + "-Reverse").val();
             $.ajax({
-                url: "/admin/ExchangeRateUpdate",
+                url: "@Url.Action("ExchangeRateUpdate", "Admin")",
                 method: "POST",
                 data: {
                     rate: rateDirect,

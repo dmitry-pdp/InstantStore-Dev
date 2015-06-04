@@ -1141,6 +1141,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Использовать SSL.
+        /// </summary>
+        public static string admin_Settings_EnableSSL {
+            get {
+                return ResourceManager.GetString("admin_Settings_EnableSSL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Основные настройки.
         /// </summary>
         public static string admin_Settings_GeneralSettingsLabel {

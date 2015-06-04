@@ -55,75 +55,86 @@ namespace InstantStore.WebUI.Models
             string smtpLogin,
             string smtpPassword,
             string subject, 
-            string body)
+            string body,
+            bool enableSSL)
         {
-            MailMessage mail = new MailMessage(from, to, subject, body);
-            SmtpClient client = new SmtpClient();
-            client.Port = smtpServerPort;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential(smtpLogin, smtpPassword);
-            client.Host = smtpServer;
-            client.Timeout = 5000;
-            client.Send(mail);
+                MailMessage mail = new MailMessage(from, to, subject, body);
+                SmtpClient client = new SmtpClient();
+                client.Port = smtpServerPort;
+                client.EnableSsl = enableSSL;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(smtpLogin, smtpPassword);
+                client.Host = smtpServer;
+                client.Timeout = 5000;
+                client.Send(mail);
         }
 
         public static void Send(User toUser, IRepository repository, EmailType emailType, IDictionary<string, string> emailProperties = null)
         {
-            var fromEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailFrom);
-            var adminEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin);
-            var smtpServer = repository.GetSettings(SettingsKey.EmailSettings_SmtpServer);
-            var smtpServerPort = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPort);
-            var smtpServerLogin = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerLogin);
-            var smtpServerPassword = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPassword);
-
-            if (!string.IsNullOrWhiteSpace(fromEmail) && !string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(adminEmail))
+            try
             {
-                var emailTypeString = emailType.ToString();
-                SettingsKey emailSubjectKey, emailBodyKey;
-                string emailSubject, emailBody;
+                var fromEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailFrom);
+                var adminEmail = repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin);
+                var smtpServer = repository.GetSettings(SettingsKey.EmailSettings_SmtpServer);
+                var smtpServerPort = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPort);
+                var smtpServerLogin = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerLogin);
+                var smtpServerPassword = repository.GetSettings(SettingsKey.EmailSettings_SmtpServerPassword);
+                var enableSSL = repository.GetSettings(SettingsKey.EmailSettings_EnableSSL) == "true";
 
-                if (Enum.TryParse<SettingsKey>(emailTypeString + "Subject", out emailSubjectKey) && 
-                    !string.IsNullOrWhiteSpace(emailSubject = repository.GetSettings(emailSubjectKey)) && 
-                    Enum.TryParse<SettingsKey>(emailTypeString + "Body", out emailBodyKey) && 
-                    !string.IsNullOrWhiteSpace(emailBody = repository.GetSettings(emailBodyKey)))
+                if (!string.IsNullOrWhiteSpace(fromEmail) && !string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(adminEmail))
                 {
-                    foreach(var replacement in emailReplacements)
-                    {
-                        var value = replacement.Value(toUser);
-                        emailSubject = emailSubject.Replace(replacement.Key, value);
-                        emailBody = emailBody.Replace(replacement.Key, value);
-                    }
+                    var emailTypeString = emailType.ToString();
+                    SettingsKey emailSubjectKey, emailBodyKey;
+                    string emailSubject, emailBody;
 
-                    if (emailProperties != null)
+                    if (Enum.TryParse<SettingsKey>(emailTypeString + "Subject", out emailSubjectKey) &&
+                        !string.IsNullOrWhiteSpace(emailSubject = repository.GetSettings(emailSubjectKey)) &&
+                        Enum.TryParse<SettingsKey>(emailTypeString + "Body", out emailBodyKey) &&
+                        !string.IsNullOrWhiteSpace(emailBody = repository.GetSettings(emailBodyKey)))
                     {
-                        foreach (var property in emailProperties)
+                        foreach (var replacement in emailReplacements)
                         {
-                            emailSubject = emailSubject.Replace(property.Key, property.Value);
-                            emailBody = emailBody.Replace(property.Key, property.Value);
+                            var value = replacement.Value(toUser);
+                            emailSubject = emailSubject.Replace(replacement.Key, value);
+                            emailBody = emailBody.Replace(replacement.Key, value);
                         }
+
+                        if (emailProperties != null)
+                        {
+                            foreach (var property in emailProperties)
+                            {
+                                emailSubject = emailSubject.Replace(property.Key, property.Value);
+                                emailBody = emailBody.Replace(property.Key, property.Value);
+                            }
+                        }
+
+                        string to = isAdminEmail.Contains(emailType)
+                            ? adminEmail
+                            : toUser.Email;
+
+                        if (string.IsNullOrWhiteSpace(to))
+                        {
+                            repository.LogError(null, DateTime.Now, "[code] email address of the recipient is null or empty.", null, null, null, null);
+                            return;
+                        }
+
+                        Send(
+                            to,
+                            fromEmail,
+                            smtpServer,
+                            int.Parse(smtpServerPort),
+                            smtpServerLogin,
+                            smtpServerPassword,
+                            emailSubject,
+                            emailBody,
+                            enableSSL);
                     }
-
-                    string to = isAdminEmail.Contains(emailType)
-                        ? adminEmail
-                        : toUser.Email;
-
-                    if (string.IsNullOrWhiteSpace(to))
-                    {
-                        // LOG error.
-                        return;
-                    }
-
-                    Send(
-                        to, 
-                        fromEmail, 
-                        smtpServer, 
-                        int.Parse(smtpServerPort), 
-                        smtpServerLogin, 
-                        smtpServerPassword, 
-                        emailSubject,
-                        emailBody);
                 }
+            }
+            catch (Exception exception)
+            {
+                repository.LogError(exception, DateTime.Now, "[code] EmailManager.Send", null, null, null, null);
             }
         }
     }

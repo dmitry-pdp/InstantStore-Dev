@@ -60,12 +60,14 @@ namespace InstantStore.WebUI.Controllers
             var user = UserIdentityManager.GetActiveUser(this.Request, this.repository);
             if (user == null)
             {
+                repository.LogError(new ApplicationException("Current user is null."), DateTime.Now, "[Code] Recalculate", null, null, null, null);
                 return this.HttpNotFound();
             }
 
             var order = this.repository.GetOrderById(viewModel.Id);
             if (order == null || order.Status != (int)OrderStatus.Active)
             {
+                repository.LogError(new ApplicationException("There are no order associated. Order id: " + viewModel.Id.ToString()), DateTime.Now, "[Code] Recalculate", null, null, null, null); 
                 return this.HttpNotFound();
             }
 
@@ -133,11 +135,11 @@ namespace InstantStore.WebUI.Controllers
                 EmailType.EmailOrderHasBeenPlaced,
                 new Dictionary<string, string> { 
                         { "%order.id%", order.Id.ToString() }, 
-                        { "%order.user%", order.User.Name }, 
+                        { "%order.user%", user.Name }, 
                         { "%order.date%", orderSubmitDate != null ? orderSubmitDate.DateTime.ToString("F", new CultureInfo("ru-RU")) : string.Empty } 
                     });
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction("Index", "Main");
         }
 
         [HttpPost]

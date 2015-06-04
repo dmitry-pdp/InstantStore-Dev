@@ -150,7 +150,7 @@
 
         $(document).on("upload-control:done", function (event, data) {
             $.ajax({
-                url: "/admin/productimage?imageId=" + data.ImageId,
+                url: "@Url.Action("ProductImage", "Admin")?imageId=" + data.ImageId,
                 cache: false
             })
             .done(function (html) {
@@ -170,7 +170,7 @@
             if (templateId)
             {
                 $.ajax({
-                    url: "/admin/ProductAttributes?id=" + $("#Id").val() + "&tid=" + templateId,
+                    url: "@Url.Action("ProductAttributes", "Admin")?id=" + $("#Id").val() + "&tid=" + templateId,
                     cache: false
                 }).done(function (html) {
                     $("#template-content-curr").remove();

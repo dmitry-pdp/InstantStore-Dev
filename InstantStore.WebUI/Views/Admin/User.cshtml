@@ -16,15 +16,15 @@
                 <a href="/admin/orders?userid=@userLists.Current.Id" class="btn btn-default">@StringResource.admin_UsersOrdersAction</a>
                 @if (!userLists.Current.IsActivated)
                 {
-                    <a href="/admin/user?id=@userLists.Current.Id&activate=true" class="btn btn-default">@StringResource.admin_UserActivateAction</a>
+                    @Html.ActionLink(StringResource.admin_UserActivateAction, "User", "Admin", new { id = userLists.Current.Id, activate = "true" }, new { @class = "btn btn-default" })
                 }
                 else if (!userLists.Current.IsBlocked)
                 {
-                    <a href="/admin/user?id=@userLists.Current.Id&block=true" class="btn btn-default">@StringResource.user_ActionsBlock</a>
+                    @Html.ActionLink(StringResource.user_ActionsBlock, "User", "Admin", new { id = userLists.Current.Id, block = "true" }, new { @class = "btn btn-default" })
                 }
                 else 
                 {
-                    <a href="/admin/user?id=@userLists.Current.Id&unblock=true" class="btn btn-default">@StringResource.admin_UserUnblockAction</a>
+                    @Html.ActionLink(StringResource.admin_UserUnblockAction, "User", "Admin", new { id = userLists.Current.Id, unblock = "true" }, new { @class = "btn btn-default" })
                 }
                 <a href="@Url.Action("ResetPassword", new {id = this.Model.Id })" class="btn btn-default" id="reset-password">@StringResource.admin_UserResetPassword</a>
             </div>

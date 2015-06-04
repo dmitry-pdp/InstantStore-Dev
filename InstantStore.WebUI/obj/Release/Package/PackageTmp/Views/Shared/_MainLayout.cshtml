@@ -46,7 +46,7 @@
     {
         Html.RenderPartial("MainMenu", mainMenuViewModel);
     }
-    <div class="container-fluid">
+    <div class="container-fluid main-row">
         <div class="row">
             @if (categoryListViewModel != null) 
             { 
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="panel panel-default">
-                        <div class="panel-body" style="min-height:780px">
+                        <div class="panel-body main-body">
                         @if (breadcrumbViewModel != null)
                         {
                             <ol class="breadcrumb">

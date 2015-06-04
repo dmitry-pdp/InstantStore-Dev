@@ -125,7 +125,7 @@ namespace InstantStore.WebUI.ViewModels
 
                 this.AddToCart = new NavigationLink
                 {
-                    ControllerName = "Main",
+                    ControllerName = "User",
                     ActionName = "AddToCart",
                     PageId = this.Id,
                     Text = StringResource.productTile_AddToCart

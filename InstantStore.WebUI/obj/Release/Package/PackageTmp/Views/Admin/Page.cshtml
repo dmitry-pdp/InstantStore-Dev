@@ -82,7 +82,7 @@
 
         $(document).on("upload-control:done", function (event, data) {
             $.ajax({
-                url: "/admin/attachmentview?id=" + data.Id,
+                url: "@Url.Action("Attachmentview", "Admin")?id=" + data.Id,
                 cache: false,
                 success: function (html) {
                     $("#attachment-container").empty();

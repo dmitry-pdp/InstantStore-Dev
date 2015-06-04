@@ -226,10 +226,11 @@ namespace InstantStore.WebUI.Controllers
                     var orderSubmitDate = order.OrderUpdates.FirstOrDefault(x => x.Status == (int)OrderStatus.Placed);
 
                     context.SubmitChanges();
+
                     EmailManager.Send(
-                        user,
+                        order.User,
                         this.repository,
-                        EmailType.EmailResetPassword,
+                        EmailType.EmailOrderHasBeenUpdated,
                         new Dictionary<string, string> { 
                         { "%order.id%", order.Id.ToString() }, 
                         { "%order.user%", order.User.Name }, 

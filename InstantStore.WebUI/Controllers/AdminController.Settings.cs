@@ -17,11 +17,11 @@ namespace InstantStore.WebUI.Controllers
     public partial class AdminController
     {
         private static string mappingRules = "Email properties:\n\r" +
-            "User name: %user.name%\r\n" +
-            "New password: %password%\r\n" +
-            "Order id: %order.id%\r\n" +
-            "Order date: %order.date%\r\n" +
-            "Order user name: %order.user%\r\n" +
+            "User name: %user.name%, " +
+            "New password: %password%, " +
+            "Order id: %order.id%, " +
+            "Order date: %order.date%, " +
+            "Order user name: %order.user%" +
             "";
 
         private static CategoryTreeItemViewModel settingsNavigationTree = new CategoryTreeItemViewModel
@@ -60,6 +60,7 @@ namespace InstantStore.WebUI.Controllers
         {
             if (i == null)
             {
+                this.ViewData["SettingsViewModel"] = this.settingsViewModel;
                 this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Settings);
                 this.ViewData["SettingsMenuViewModel"] = settingsNavigationTree;
                 this.ViewData["SettingsMenuSelection"] = id;
@@ -128,6 +129,10 @@ namespace InstantStore.WebUI.Controllers
                                         SettingsKey.EmailSettings_SmtpServer.ToString(), 
                                         StringResource.admin_Settings_EmailSettings_SmtpServer, 
                                         this.repository.GetSettings(SettingsKey.EmailSettings_SmtpServer)),
+                                    new PropertyInfo(
+                                        SettingsKey.EmailSettings_EnableSSL.ToString(), 
+                                        StringResource.admin_Settings_EnableSSL, 
+                                        this.repository.GetSettings(SettingsKey.EmailSettings_EnableSSL)),
                                     new PropertyInfo(
                                         SettingsKey.EmailSettings_SmtpServerPort.ToString(), 
                                         StringResource.admin_Settings_SmtpServerPort, 

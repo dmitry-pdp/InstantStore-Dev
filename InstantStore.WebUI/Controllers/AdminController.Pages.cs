@@ -165,6 +165,8 @@ namespace InstantStore.WebUI.Controllers
 
         public ActionResult Category(Guid? id, Guid? parentId)
         {
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             var categoryViewModel = id != null ? new CategoryViewModel(this.repository, id.Value) : new CategoryViewModel();
             categoryViewModel.Content.ParentCategoryId = parentId ?? Guid.Empty;

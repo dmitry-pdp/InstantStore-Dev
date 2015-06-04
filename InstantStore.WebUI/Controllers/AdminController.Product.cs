@@ -25,7 +25,7 @@ namespace InstantStore.WebUI.Controllers
                 : new ProductViewModel(this.repository, parentId);
 
             viewModel.InitializeRootCategory(this.repository);
-            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Offers);
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
             return this.View("Product", viewModel);

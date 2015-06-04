@@ -30,7 +30,8 @@ namespace InstantStore.Domain.Concrete
         EmailSettings_SmtpServerLogin,
         EmailSettings_SmtpServerPassword,
         EmailSettings_EmailFrom,
-        EmailSettings_EmailAdmin
+        EmailSettings_EmailAdmin,
+        EmailSettings_EnableSSL
     }
 
     public partial class LinqRepository

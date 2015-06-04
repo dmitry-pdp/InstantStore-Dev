@@ -17,7 +17,7 @@
 }
 else
 {
-    using (Html.BeginForm("PlaceOrder", "Main", FormMethod.Post, new { id = "order-form" }))
+    using (Html.BeginForm("PlaceOrder", "User", FormMethod.Post, new { id = "order-form" }))
     { 
         @Html.HiddenFor(model => model.Id)
     
@@ -46,7 +46,7 @@ else
                         <label>@StringResource.user_OrdersProductIsAvailable</label>
                         <span class="@(orderProduct.IsAvailable ? "text-success" : "text-danger")">@(orderProduct.IsAvailable ? StringResource.Yes : StringResource.No)</span>
                     </div>
-                    <a href="@Url.Action( "Orders", new { a = "delete", id = orderProduct.Id })">@StringResource.user_OrderProductDelete</a>
+                    <a href="@Url.Action("Orders", "User", new { a = "delete", id = orderProduct.Id })">@StringResource.user_OrderProductDelete</a>
                 </div>
                 <div class="order-item-quantity">
                     @Html.TextBoxFor(model => model.Products[index].Count, new { @class = "form-control input-count" })
@@ -96,7 +96,7 @@ else
                 $("#btn-recalculate").show();
             });
             $("#btn-recalculate").click(function () {
-                $("#order-form").attr("action", "@Url.Action("Recalculate")");
+                $("#order-form").attr("action", "@Url.Action("Recalculate", "User")");
                 $("#order-form").submit();
             });
 

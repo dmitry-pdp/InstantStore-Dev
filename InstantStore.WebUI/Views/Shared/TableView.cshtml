@@ -5,7 +5,7 @@
 @{
     bool IsRowClickable = this.Model.RowClickAction != null;
     string tableId =  "_c_" + this.Model.Id;
-    int columns = this.Model.Header.Count;   
+    int columns = this.Model.Header != null ? this.Model.Header.Count : 0;   
 }
 
 @if (this.Model.Title != null)

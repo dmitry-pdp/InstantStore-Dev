@@ -1260,4 +1260,7 @@
   <data name="admin_ProductDelete" xml:space="preserve">
     <value>Удалить продукты</value>
   </data>
+  <data name="admin_Settings_EnableSSL" xml:space="preserve">
+    <value>Использовать SSL</value>
+  </data>
 </root>

@@ -17,13 +17,11 @@
     }
 
     foreach (var tileViewModel in tilesGroup.Value)
-    { 
+    {
         var url = tileViewModel.Link.GetUrl(this.Url);
     
         <div class="thumbnail tile">
-            <a href="@url" class="">
-                <img src="@(tileViewModel.ImageId == Guid.Empty ? "/Image/NoImage.png" : "/Main/Thumbnail?size=l&id=" + tileViewModel.ImageId)" class="tile-image" />
-            </a>
+            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = tileViewModel.ImageId, Width=220, Click = tileViewModel.Link })
             <div class="caption tile-caption">
                 <a href="@url">
                     <span class="title">@tileViewModel.Name</span>

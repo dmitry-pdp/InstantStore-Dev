@@ -62,3 +62,23 @@ a.tile-item
 {
     margin-left:15px;
 }
+
+.main-row 
+{
+    min-height:700px;
+}
+
+.main-body 
+{
+    min-height: 650px;
+}
+
+.product-img 
+{
+    margin:11px;
+}
+
+.block 
+{
+    display:inline-block;
+}

@@ -14,7 +14,7 @@ namespace InstantStore.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                null,
+                "default",
                 "{controller}/{action}",
                 new { controller = "Main", action = "Index" }
             );

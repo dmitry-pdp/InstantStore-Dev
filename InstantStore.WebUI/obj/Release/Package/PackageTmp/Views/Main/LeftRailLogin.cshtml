@@ -5,7 +5,8 @@
         <span>@StringResource.login_LoginAsUser</span>
     </div>
     <div class="panel-body">
-        <form action="/main/loginuser" method="post" id="login-form">
+        @using (Html.BeginForm("LoginUser", "Main", FormMethod.Post, new { id = "login-form" }))
+        { 
             <div class="form-group">
                 <div>@StringResource.pge_Login_UserNameRequired</div>
                 <input type="text" name="name" id="name" class="form-control" />
@@ -21,7 +22,7 @@
                 <input type="submit" value="@StringResource.pge_Login_LogIn" class="btn btn-primary" style="float:right" />
                 <a class="btn btn-default" href="@Url.Action("NewUser", "Main")">@StringResource.Register</a>
             </div>
-        </form>
+        }
     </div>
 </div>
 <script>

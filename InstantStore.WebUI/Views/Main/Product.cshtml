@@ -7,10 +7,10 @@
 
 <div class="pull-right" style="min-width:266px">
     <div class="img-thumbnail" id="main-image" style="width:266px;">
-        <img src="@(this.Model.MainImage != null && this.Model.MainImage != Guid.Empty ? "/Main/Thumbnail?size=l&id=" + this.Model.MainImage.ToString() : "/Image/NoImage.png")" class="pull-left" style="margin:11px" width="235" />
+        @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = this.Model.MainImage ?? Guid.Empty, Class = "pull-left product-img", Width = 235 })
         @foreach (var thumbnailImage in this.Model.Images.Where(x => x != this.Model.MainImage).Take(4))
         {
-            <img src="/Main/Thumbnail?size=s&id=@thumbnailImage" class="pull-left" />
+            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = thumbnailImage, Class = "pull-left", Width = 64 })
         }
     </div>
 </div>
@@ -80,7 +80,8 @@
                             @foreach (var index in Enumerable.Range(0, this.Model.Images.Count))
                             {
                                 <div class="item @(index == 0 ? "active" : "")" style="text-align:center;">
-                                    <img src="@("/Main/GetImage?id=" + this.Model.Images[index].ToString())" style="display:inline-block" />
+
+                                    <img src="@( Url.Action("GetImage", "Main", new { id = this.Model.Images[index].ToString() }))" style="display:inline-block" />
                                 </div>
                             }
                         </div>

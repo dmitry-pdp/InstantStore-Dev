@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-sm-4">
                     <p class="">
-                        <img src="@(this.Model.CategoryImage == null ? "/Image/NoImage.png" : "/Main/GetImage?id=" + this.Model.CategoryImage.Value)" class="img-responsive img-thumbnail" id="category-image" />
+                        @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = this.Model.CategoryImage ?? Guid.Empty, Width = 200, Id = "category-image" })
                         @Html.HiddenFor(model => model.CategoryImage)
                     </p>
                     <p>
@@ -102,7 +102,7 @@
         TreeView.InitializeTreeView('@this.Model.Content.ParentCategoryId', pagesTreeId);
         
         $(document).on("upload-control:done", function (event, data) {
-            $("#category-image").attr("src", '/Main/GetImage?id=' + data.ImageId);
+            $("#category-image").attr("src", '@Url.Action("GetImage", "Main")?id=' + data.ImageId);
             $("#CategoryImage").val(data.ImageId);
         });
 
