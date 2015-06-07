@@ -181,34 +181,6 @@ IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
 
 
 GO
-PRINT N'Creating [dbo].[Settings]...';
-
-
-GO
-CREATE TABLE [dbo].[Settings] (
-    [MainDescription] NVARCHAR (MAX)   NULL,
-    [HeaderHtml]      NVARCHAR (MAX)   NULL,
-    [FooterHtml]      NVARCHAR (MAX)   NULL,
-    [Id]              UNIQUEIDENTIFIER NOT NULL,
-    CONSTRAINT [PK_Settings] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[Feedback]...';
-
-
-GO
-CREATE TABLE [dbo].[Feedback] (
-    [Id]      UNIQUEIDENTIFIER NOT NULL,
-    [Name]    NVARCHAR (50)    NOT NULL,
-    [Email]   NVARCHAR (50)    NOT NULL,
-    [Message] NVARCHAR (MAX)   NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[ExchangeRate]...';
 
 
@@ -404,37 +376,6 @@ CREATE TABLE [dbo].[ImageThumbnails] (
 
 
 GO
-PRINT N'Creating [dbo].[Order]...';
-
-
-GO
-CREATE TABLE [dbo].[Order] (
-    [Id]              UNIQUEIDENTIFIER NOT NULL,
-    [Status]          INT              NOT NULL,
-    [Comment]         NVARCHAR (MAX)   NULL,
-    [TotalPrice]      NUMERIC (18)     NULL,
-    [PriceCurrencyId] UNIQUEIDENTIFIER NULL,
-    [UserId]          UNIQUEIDENTIFIER NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[ProductToCategory]...';
-
-
-GO
-CREATE TABLE [dbo].[ProductToCategory] (
-    [Id]         UNIQUEIDENTIFIER NOT NULL,
-    [ProductId]  UNIQUEIDENTIFIER NOT NULL,
-    [CategoryId] UNIQUEIDENTIFIER NOT NULL,
-    [UpdateTime] DATETIME         NOT NULL,
-    [GroupName]  NVARCHAR (255)   NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-
-GO
 PRINT N'Creating [dbo].[Category]...';
 
 
@@ -471,6 +412,87 @@ CREATE TABLE [dbo].[OrderProducts] (
 
 
 GO
+PRINT N'Creating [dbo].[Order]...';
+
+
+GO
+CREATE TABLE [dbo].[Order] (
+    [Id]              UNIQUEIDENTIFIER NOT NULL,
+    [Status]          INT              NOT NULL,
+    [Comment]         NVARCHAR (MAX)   NULL,
+    [TotalPrice]      NUMERIC (18)     NULL,
+    [PriceCurrencyId] UNIQUEIDENTIFIER NULL,
+    [UserId]          UNIQUEIDENTIFIER NOT NULL,
+    [OfferId]         UNIQUEIDENTIFIER NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Offer]...';
+
+
+GO
+CREATE TABLE [dbo].[Offer] (
+    [Id]                     UNIQUEIDENTIFIER NOT NULL,
+    [Name]                   NVARCHAR (250)   NOT NULL,
+    [ThresholdPriceValue]    DECIMAL (18, 4)  NOT NULL,
+    [IsActive]               BIT              NOT NULL,
+    [DiscountValue]          DECIMAL (18, 4)  NOT NULL,
+    [CurrencyId]             UNIQUEIDENTIFIER NOT NULL,
+    [MultiApply]             BIT              NOT NULL,
+    [ThresholdMultiCurrency] BIT              NOT NULL,
+    [Priority]               INT              NOT NULL,
+    [Version]                INT              NOT NULL,
+    [VersionId]              UNIQUEIDENTIFIER NOT NULL,
+    [DiscountType]           INT              NOT NULL,
+    PRIMARY KEY CLUSTERED ([VersionId] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Settings]...';
+
+
+GO
+CREATE TABLE [dbo].[Settings] (
+    [Key]   NVARCHAR (250) NOT NULL,
+    [Value] NVARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_Settings] PRIMARY KEY CLUSTERED ([Key] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[Feedback]...';
+
+
+GO
+CREATE TABLE [dbo].[Feedback] (
+    [Id]        UNIQUEIDENTIFIER NOT NULL,
+    [Name]      NVARCHAR (50)    NOT NULL,
+    [Email]     NVARCHAR (50)    NOT NULL,
+    [Message]   NVARCHAR (MAX)   NOT NULL,
+    [Submitted] DATETIME         NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ProductToCategory]...';
+
+
+GO
+CREATE TABLE [dbo].[ProductToCategory] (
+    [Id]         UNIQUEIDENTIFIER NOT NULL,
+    [ProductId]  UNIQUEIDENTIFIER NOT NULL,
+    [CategoryId] UNIQUEIDENTIFIER NOT NULL,
+    [UpdateTime] DATETIME         NOT NULL,
+    [GroupId]    UNIQUEIDENTIFIER NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
 PRINT N'Creating Default Constraint on [dbo].[ContentPage]....';
 
 
@@ -480,21 +502,21 @@ ALTER TABLE [dbo].[ContentPage]
 
 
 GO
-PRINT N'Creating Default Constraint on [dbo].[ProductToCategory]....';
-
-
-GO
-ALTER TABLE [dbo].[ProductToCategory]
-    ADD DEFAULT (getdate()) FOR [UpdateTime];
-
-
-GO
 PRINT N'Creating Default Constraint on [dbo].[Category]....';
 
 
 GO
 ALTER TABLE [dbo].[Category]
     ADD DEFAULT 0 FOR [IsImportant];
+
+
+GO
+PRINT N'Creating Default Constraint on [dbo].[ProductToCategory]....';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD DEFAULT (getdate()) FOR [UpdateTime];
 
 
 GO
@@ -597,42 +619,6 @@ ALTER TABLE [dbo].[ImageThumbnails]
 
 
 GO
-PRINT N'Creating FK_Order_ToTableCurrency...';
-
-
-GO
-ALTER TABLE [dbo].[Order]
-    ADD CONSTRAINT [FK_Order_ToTableCurrency] FOREIGN KEY ([PriceCurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
-
-
-GO
-PRINT N'Creating FK_Order_ToTableUser...';
-
-
-GO
-ALTER TABLE [dbo].[Order]
-    ADD CONSTRAINT [FK_Order_ToTableUser] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]);
-
-
-GO
-PRINT N'Creating FK_ProductToCategory_ToCategory...';
-
-
-GO
-ALTER TABLE [dbo].[ProductToCategory]
-    ADD CONSTRAINT [FK_ProductToCategory_ToCategory] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[ContentPage] ([Id]);
-
-
-GO
-PRINT N'Creating FK_ProductToCategory_ToProduct...';
-
-
-GO
-ALTER TABLE [dbo].[ProductToCategory]
-    ADD CONSTRAINT [FK_ProductToCategory_ToProduct] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([VersionId]);
-
-
-GO
 PRINT N'Creating FK_OrderProducts_ToTableOrders...';
 
 
@@ -657,6 +643,69 @@ PRINT N'Creating FK_OrderProducts_ToTableCurrency...';
 GO
 ALTER TABLE [dbo].[OrderProducts]
     ADD CONSTRAINT [FK_OrderProducts_ToTableCurrency] FOREIGN KEY ([PriceCurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Order_ToTableCurrency...';
+
+
+GO
+ALTER TABLE [dbo].[Order]
+    ADD CONSTRAINT [FK_Order_ToTableCurrency] FOREIGN KEY ([PriceCurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Order_ToTableUser...';
+
+
+GO
+ALTER TABLE [dbo].[Order]
+    ADD CONSTRAINT [FK_Order_ToTableUser] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]);
+
+
+GO
+PRINT N'Creating FK_Order_ToTableOffer...';
+
+
+GO
+ALTER TABLE [dbo].[Order]
+    ADD CONSTRAINT [FK_Order_ToTableOffer] FOREIGN KEY ([OfferId]) REFERENCES [dbo].[Offer] ([VersionId]);
+
+
+GO
+PRINT N'Creating FK_Offer_ToTableCurrency...';
+
+
+GO
+ALTER TABLE [dbo].[Offer]
+    ADD CONSTRAINT [FK_Offer_ToTableCurrency] FOREIGN KEY ([CurrencyId]) REFERENCES [dbo].[Currency] ([Id]);
+
+
+GO
+PRINT N'Creating FK_ProductToCategory_ToCategory...';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD CONSTRAINT [FK_ProductToCategory_ToCategory] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[ContentPage] ([Id]);
+
+
+GO
+PRINT N'Creating FK_ProductToCategory_ToProduct...';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD CONSTRAINT [FK_ProductToCategory_ToProduct] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([VersionId]);
+
+
+GO
+PRINT N'Creating FK_ProductToCategory_ToGroup...';
+
+
+GO
+ALTER TABLE [dbo].[ProductToCategory]
+    ADD CONSTRAINT [FK_ProductToCategory_ToGroup] FOREIGN KEY ([GroupId]) REFERENCES [dbo].[ContentPage] ([Id]);
 
 
 GO

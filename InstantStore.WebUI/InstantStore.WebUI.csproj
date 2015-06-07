@@ -176,6 +176,7 @@
     <Compile Include="ViewModels\Helpers\CurrencyString.cs" />
     <Compile Include="ViewModels\OrderHistoryViewModel.cs" />
     <Compile Include="ViewModels\OrderListViewModel.cs" />
+    <Compile Include="ViewModels\Shared\DialogViewModel.cs" />
     <Compile Include="ViewModels\Shared\ImageThumbnailViewModel.cs" />
     <Compile Include="ViewModels\Shared\ItemListViewModel.cs" />
     <Compile Include="ViewModels\Shared\ListViewModel.cs" />
@@ -334,6 +335,7 @@
     <Content Include="Views\Shared\UserInfoPassword.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\DeleteProducts.cshtml" />
+    <Content Include="Views\Shared\Dialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

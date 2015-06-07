@@ -1263,4 +1263,7 @@
   <data name="admin_Settings_EnableSSL" xml:space="preserve">
     <value>Использовать SSL</value>
   </data>
+  <data name="admin_ProductUpdateTitle" xml:space="preserve">
+    <value>Редактировать продукт</value>
+  </data>
 </root>

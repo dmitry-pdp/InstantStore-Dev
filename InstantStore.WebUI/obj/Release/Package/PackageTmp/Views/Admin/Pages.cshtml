@@ -81,7 +81,7 @@
             }
             $.ajax({
                 url: '@Url.Action("PreviewPage", "Admin")' + "?id=" + id,
-                cached: false
+                cache: false
             })
             .done(function (html) {
                 $("#content").html(html);

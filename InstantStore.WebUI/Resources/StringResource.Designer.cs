@@ -1042,6 +1042,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Редактировать продукт.
+        /// </summary>
+        public static string admin_ProductUpdateTitle {
+            get {
+                return ResourceManager.GetString("admin_ProductUpdateTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Роль.
         /// </summary>
         public static string admin_Role {

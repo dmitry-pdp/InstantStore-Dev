@@ -6,7 +6,8 @@
 
 <div class="container-fluid col-md-6 col-md-offset-3 border">
     <h2>@ViewBag.Title</h2>
-    <form action="/main/submitfeedback" method="post">
+    @using (Html.BeginForm("SubmitFeedback", "Main"))
+    {
         <div class="form-group">
             <div>@StringResource.form_Contact_Name</div>
             <input type="text" name="name" id="name" class="form-control" />
@@ -22,5 +23,5 @@
         <div class="form-group">
             <input type="submit" value="@StringResource.Feedback_Submit" class="btn btn-primary btn-lg" />
         </div>
-    </form>
+    }
 </div>

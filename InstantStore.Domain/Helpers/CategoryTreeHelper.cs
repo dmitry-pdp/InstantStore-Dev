@@ -10,95 +10,70 @@ namespace InstantStore.Domain.Helpers
     {
         public static void RebuidCategoryTreeGroups(InstantStoreDataContext context, Guid updatedPageId)
         {
-            // Checkin input arguments.
-
-            if (updatedPageId == Guid.Empty)
-            {
-                return;
-            }
-            
-            // Here we are assuming that page is the category and already assigned the product with group set to null.
-
-            var currentPage = context.ContentPages.FirstOrDefault(x => x.Id == updatedPageId);
-            if (currentPage == null)
-            {
-                throw new ModelValidationException("No page found matching the id.");
-            }
-
-            if (!currentPage.IsCategory() || currentPage.Category == null)
-            {
-                throw new ModelValidationException("Page for updated category is not a category page.");
-            }
-
-            var currentCategoryProducts = context.ProductToCategories.Where(x => x.CategoryId == currentPage.Id);
-            if (!currentCategoryProducts.Any(x => x.GroupName == null))
-            { 
-                throw new ModelValidationException("Updated category does not contains ungroupped products.");
-            }
+            Guid parentPageId = updatedPageId;
 
             // Walking up the tree rebuilding the group we just came from.
-
-            Guid parentPageId = currentPage.ParentId ?? Guid.Empty;
-            Guid currentPageId = currentPage.Id;
-
             while (parentPageId != Guid.Empty)
             { 
-                // Get next parent category page in the tree.
+                parentPageId = UpdateCategoryGropus(parentPageId, context) ?? Guid.Empty;                
+            }
+        }
 
-                var parentPage = context.ContentPages.FirstOrDefault(x => x.Id == parentPageId);
-                if (parentPage == null)
-                {
-                    throw new ModelValidationException(string.Format("Category tree is invalid. Parent page is not found for id: {0}", parentPageId));
-                }
+        /// <summary>
+        /// Updates groups for the given category.
+        /// </summary>
+        /// <remarks>
+        /// Assumes that child groups are valid.
+        /// </remarks>
+        public static Guid? UpdateCategoryGropus(Guid categoryId, InstantStoreDataContext context)
+        { 
+            var categoryPage = context.ContentPages.FirstOrDefault(x => x.Id == categoryId);
+            if (categoryPage == null)
+            {
+                throw new ModelValidationException(string.Format("Category tree is invalid. Category is not found for id: {0}", categoryId));
+            }
 
-                parentPageId = parentPage.ParentId ?? Guid.Empty;
+            // If the page is not category then return.
+            if (!categoryPage.IsCategory())
+            {
+                return categoryPage.ParentId;
+            }
 
-                // If parent page is not category continue walking up in the tree.
-                
-                if (!parentPage.IsCategory())
-                {
-                    continue;
-                }
+            // Extract all existing groups
+            var categoryGroups = context.ProductToCategories.Where(x => x.CategoryId == categoryId).ToList();
+            var categoryChildren = context.ContentPages.Where(x => x.ParentId != null && x.ParentId == categoryId).ToList().Where(x => x.IsCategory());
+            
+            // Extracting the category children.
+            foreach (var childPage in categoryChildren)
+            {
+                var childProducts = context.ProductToCategories.Where(x => x.CategoryId == childPage.Id).ToList();
+                var childGroup = categoryGroups.Where(x => x.GroupId == childPage.Id);
 
-                // Here we found a parent category, so extracting the current category product group.
+                // Delete all products which are not exist in the child anymore.
+                var productsToDeleteInGroup = childGroup.Except(childProducts);
+                context.ProductToCategories.DeleteAllOnSubmit(productsToDeleteInGroup);
 
-                var parentCategoryProductsForCurrentGroup = context.ProductToCategories
-                    .Where(x => x.CategoryId == parentPage.Id && x.GroupName == currentPage.Name)
-                    .ToList();
-
-                // Getting the products gropup in the current category and updating the parent category group.
-
-                var currentCategoryProductGroups = context.ProductToCategories
-                    .Where(x => x.CategoryId == currentPageId)
-                    .ToList();
-
-                var productsToAdd = currentCategoryProductGroups
-                    .Where(x => !parentCategoryProductsForCurrentGroup.Any(y => y.ProductId == x.ProductId));
-
-                var productsToDelete = parentCategoryProductsForCurrentGroup
-                    .Where(x => !currentCategoryProductGroups.Any(y => y.ProductId == x.ProductId));
-
-                context.ProductToCategories.DeleteAllOnSubmit(productsToDelete);
-
-                context.ProductToCategories.InsertAllOnSubmit(productsToAdd.Select(x => new ProductToCategory
+                // Insert all products which are missing in the category group.
+                var productsToInsertInGroup = childProducts.Except(childGroup);
+                context.ProductToCategories.InsertAllOnSubmit(productsToInsertInGroup.Select(x => new ProductToCategory
                 {
                     Id = Guid.NewGuid(),
-                    CategoryId = parentPage.Id,
-                    GroupName = currentPage.Name,
+                    CategoryId = categoryId,
+                    GroupId = childPage.Id,
                     ProductId = x.ProductId,
                     UpdateTime = DateTime.Now
                 }));
+            }         
+       
+            // Removing groups which are no longer children
+            var noChildGroup = categoryGroups.Where(x => x.GroupId != null && !categoryChildren.Any(y => y.Id == x.GroupId));
+            context.ProductToCategories.DeleteAllOnSubmit(noChildGroup);
+            
+            // Update all the gropus.
+            context.SubmitChanges();
 
-                // Applying changes
-                
-                context.SubmitChanges();
-
-                // Move up to the next node
-                // Parent page id is already assigned.
-
-                currentPage = parentPage;
-                currentPageId = parentPage.Id;
-            }
+            // Return category's parent id.
+            return categoryPage.ParentId;
         }
     }
 }

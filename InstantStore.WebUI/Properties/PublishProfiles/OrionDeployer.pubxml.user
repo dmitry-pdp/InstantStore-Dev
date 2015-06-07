@@ -11,10 +11,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/InstantStore.Domain.dll">
-      <publishTime>06/03/2015 12:04:10</publishTime>
+      <publishTime>06/06/2015 22:41:26</publishTime>
     </File>
     <File Include="bin/InstantStore.WebUI.dll">
-      <publishTime>06/03/2015 16:56:10</publishTime>
+      <publishTime>06/06/2015 22:41:27</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>09/30/2014 12:40:56</publishTime>
@@ -233,7 +233,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2014 23:19:24</publishTime>
     </File>
     <File Include="Views/Admin/Category.cshtml">
-      <publishTime>06/03/2015 13:13:30</publishTime>
+      <publishTime>06/06/2015 11:05:37</publishTime>
     </File>
     <File Include="Views/Admin/CategoryTree.cshtml">
       <publishTime>05/25/2015 14:16:43</publishTime>
@@ -245,7 +245,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/19/2015 18:28:08</publishTime>
     </File>
     <File Include="Views/Admin/Currency.cshtml">
-      <publishTime>06/03/2015 12:18:31</publishTime>
+      <publishTime>06/05/2015 09:19:28</publishTime>
     </File>
     <File Include="Views/Admin/DeleteProducts.cshtml">
       <publishTime>06/02/2015 21:41:44</publishTime>
@@ -278,16 +278,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2015 09:21:47</publishTime>
     </File>
     <File Include="Views/Admin/Page.cshtml">
-      <publishTime>06/03/2015 15:19:15</publishTime>
+      <publishTime>06/06/2015 11:06:29</publishTime>
     </File>
     <File Include="Views/Admin/Pages.cshtml">
-      <publishTime>05/24/2015 12:00:39</publishTime>
+      <publishTime>06/06/2015 21:24:54</publishTime>
     </File>
     <File Include="Views/Admin/PreviewPage.cshtml">
-      <publishTime>06/02/2015 21:39:57</publishTime>
+      <publishTime>06/06/2015 21:38:46</publishTime>
     </File>
     <File Include="Views/Admin/Product.cshtml">
-      <publishTime>06/03/2015 14:24:43</publishTime>
+      <publishTime>06/06/2015 11:00:11</publishTime>
     </File>
     <File Include="Views/Admin/ProductAttribute.cshtml">
       <publishTime>04/26/2015 19:43:54</publishTime>
@@ -323,7 +323,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2015 14:12:52</publishTime>
     </File>
     <File Include="Views/Main/Feedback.cshtml">
-      <publishTime>05/12/2015 22:08:33</publishTime>
+      <publishTime>06/06/2015 17:09:51</publishTime>
     </File>
     <File Include="Views/Main/Index.cshtml">
       <publishTime>06/01/2015 20:33:11</publishTime>
@@ -354,6 +354,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Shared/Attachment.cshtml">
       <publishTime>04/17/2015 08:20:41</publishTime>
+    </File>
+    <File Include="Views/Shared/Dialog.cshtml">
+      <publishTime>06/06/2015 09:20:43</publishTime>
     </File>
     <File Include="Views/Shared/ImageThumbnail.cshtml">
       <publishTime>06/03/2015 14:35:54</publishTime>
@@ -389,7 +392,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2015 09:20:12</publishTime>
     </File>
     <File Include="Views/Shared/TableView.cshtml">
-      <publishTime>06/03/2015 11:06:33</publishTime>
+      <publishTime>06/06/2015 20:45:51</publishTime>
     </File>
     <File Include="Views/Shared/TilesView.cshtml">
       <publishTime>06/03/2015 13:22:02</publishTime>

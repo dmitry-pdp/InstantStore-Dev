@@ -38,6 +38,10 @@ namespace InstantStore.WebUI.ViewModels
             {
                 parameters = this.ParentId == null ? (object)new { id = this.PageId } : (object)new { id = PageId, parentId = this.ParentId };
             }
+            else if (this.ParentId != null)
+            {
+                parameters = (object)new { parentId = this.ParentId };
+            }
 
             string action = this.ActionName ?? "Page";
             

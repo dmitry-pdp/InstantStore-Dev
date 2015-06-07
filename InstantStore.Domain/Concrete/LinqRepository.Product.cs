@@ -1,11 +1,12 @@
-﻿using InstantStore.Domain.Entities;
-using InstantStore.Domain.Exceptions;
-using InstantStore.Domain.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using InstantStore.Domain.Entities;
+using InstantStore.Domain.Exceptions;
+using InstantStore.Domain.Helpers;
 
 namespace InstantStore.Domain.Concrete
 {
@@ -180,6 +181,8 @@ namespace InstantStore.Domain.Concrete
                 // assign to all parents
 
                 context.SubmitChanges();
+
+                CategoryTreeBuilder.RebuidCategoryTreeGroups(context, contentPageId);
             }
         }
 
@@ -237,29 +240,38 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
-                return context.Products
-                    .Join(
-                        this.GetProducts(context, categoryId), 
-                        a => a.VersionId, 
-                        b => b.ProductId, 
-                        (Product x, ProductToCategory y) => new { Product = x, GroupName = y.GroupName })
-                    .OrderBy(x => x.GroupName)
-                    .OrderBy(x => x.Product.Name)
-                    .Skip(offset)
-                    .Take(count)
-                    .ToList()
-                    .Select(x => new KeyValuePair<string, Product>(x.GroupName, x.Product))
-                    .ToList();
+                return GetProductsForCategory(context, categoryId, offset, count);
             }
+        }
+
+        public static IList<KeyValuePair<string, Product>> GetProductsForCategory(InstantStoreDataContext context, Guid categoryId, int offset, int count)
+        {
+            return context.Products
+                .Join(
+                    GetProducts(context, categoryId),
+                    a => a.VersionId,
+                    b => b.ProductId,
+                    (Product x, ProductToCategory y) => new { Product = x, GroupName = y.Group != null ? y.Group.Name : null, Position = y.Group.Position })
+                .OrderBy(x => x.Position)
+                .Skip(offset)
+                .Take(count)
+                .ToList()
+                .Select(x => new KeyValuePair<string, Product>(x.GroupName, x.Product))
+                .ToList();
         }
 
         public int GetProductsCountForCategory(Guid categoryId)
         {
             using (var context = new InstantStoreDataContext())
             {
-                var products = this.GetProducts(context, categoryId);
-                return context.Products.Where(x => products.Any(y => x.VersionId == y.ProductId)).Count();
+                return GetProductsCountForCategory(context, categoryId);
             }
+        }
+
+        public static int GetProductsCountForCategory(InstantStoreDataContext context, Guid categoryId)
+        {
+            var products = GetProducts(context, categoryId);
+            return context.Products.Where(x => products.Any(y => x.VersionId == y.ProductId)).Count();
         }
 
         public IList<Product> GetProductsByPopularity(int count)
@@ -279,19 +291,33 @@ namespace InstantStore.Domain.Concrete
                 {
                     foreach (var productId in productIdsToRemove)
                     {
-                        var productMappings = context.ProductToCategories.Where(x => x.CategoryId == categoryId && productId == x.ProductId);
+                        var productMappings = context.ProductToCategories.Where(x => x.CategoryId == categoryId && productId == x.ProductId && x.GroupId == null);
                         context.ProductToCategories.DeleteAllOnSubmit(productMappings);
                     }
 
                     context.SubmitChanges();
+
                     CategoryTreeBuilder.RebuidCategoryTreeGroups(context, categoryId);
                 }
             }
         }
 
-        private IQueryable<ProductToCategory> GetProducts(InstantStoreDataContext context, Guid categoryId)
+        private static IQueryable<ProductToCategory> GetProducts(InstantStoreDataContext context, Guid categoryId)
         {
             return context.ProductToCategories.Where(x => x.CategoryId == categoryId);
+        }
+    }
+
+    public static class LinqRepositoryExtensions
+    {
+        public static int GetProductsCountForCategory(this InstantStoreDataContext context, Guid categoryId)
+        {
+            return LinqRepository.GetProductsCountForCategory(context, categoryId);
+        }
+
+        public static IList<KeyValuePair<string, Product>> GetProductsForCategory(this InstantStoreDataContext context, Guid categoryId, int offset, int count)
+        {
+            return LinqRepository.GetProductsForCategory(context, categoryId, offset, count);
         }
     }
 }

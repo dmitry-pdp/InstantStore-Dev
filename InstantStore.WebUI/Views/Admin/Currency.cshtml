@@ -29,25 +29,25 @@
                 @foreach (var exchangeRateItem in this.Model.ExchangeRateItems)
                 {
                     <tr>
-                        <td class="">@exchangeRateItem.CurrencyFrom</td>
-                        <td><span class="glyphicon glyphicon-arrow-right"></span></td>
-                        <td>@exchangeRateItem.CurrencyTo</td>
+                        <td class="">@string.Format("1 {0} = ", exchangeRateItem.CurrencyTo)</td>
+                        <!--<td><span class="glyphicon glyphicon-arrow-right"></span></td>-->
                         <td class="col-sm-2">
                             <div class="has-feedback" id="@exchangeRateItem.Id-Direct-ValidationSuccessContainer">
                                 <input type="text" value="@exchangeRateItem.ConversionRate" class="form-control" id="@exchangeRateItem.Id-Direct" />
                                 <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Direct-ValidationSuccess"></span>
                             </div>
                         </td>
-                        <td>|</td>
-                        <td class="">@exchangeRateItem.CurrencyTo</td>
-                        <td><span class="glyphicon glyphicon-arrow-right"></span></td>
                         <td>@exchangeRateItem.CurrencyFrom</td>
+                        <td>|</td>
+                        <td class="">@string.Format("1 {0} = ", exchangeRateItem.CurrencyFrom)</td>
+                        <!--<td><span class="glyphicon glyphicon-arrow-right"></span></td>-->
                         <td class="col-sm-2">
                             <div class="has-feedback" id="@exchangeRateItem.Id-Reverse-ValidationSuccessContainer">
                                 <input type="text" value="@exchangeRateItem.ReverseConversionRate" class="form-control" id="@exchangeRateItem.Id-Reverse" />
                                 <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true" id="@exchangeRateItem.Id-Reverse-ValidationSuccess"></span>
                             </div>
                         </td>
+                        <td>@exchangeRateItem.CurrencyTo</td>
                         <td>
                             <a href="#" class="btn btn-default btn-sm" onclick="SubmitRateUpdate(event, '@exchangeRateItem.Id')">@StringResource.admin_Save</a>
                             <a href="@Url.Action("ExchangeRateUpdate", new { a="delete", id=exchangeRateItem.Id})" class="btn btn-default btn-sm">@StringResource.admin_Delete</a>

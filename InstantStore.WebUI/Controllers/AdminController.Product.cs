@@ -114,12 +114,37 @@ namespace InstantStore.WebUI.Controllers
             return this.Json(new { status = "success" });
         }
 
-        public ActionResult DeleteProducts(Guid parentId, int p = 1, int c = 15)
+        public ActionResult DeleteProducts(Guid parentId, int o = 0, int c = 200)
         {
-            return this.View(new CategoryProductsViewModel(this.repository, parentId, p, c) 
-            { 
-                IsTiles = false 
-            });
+            if (parentId == Guid.Empty)
+            {
+                return null;
+            }
+
+            using (var context = new InstantStoreDataContext())
+            {
+                return this.View(new CategoryProductsViewModel
+                {
+                    ParentCategoryId = parentId,
+                    Products = context
+                        .ProductToCategories
+                        .Where(x => x.CategoryId == parentId && x.GroupId == null)
+                        .Skip(o)
+                        .Take(c)
+                        .ToList()
+                        .Select(x => 
+                        {
+                            var product = x.Product;
+                            return new CategoryProductViewModel
+                            {
+                                Id = product.VersionId,
+                                Name = product.Name
+                            };
+                        })
+                        .ToList(),
+                    IsTiles = false
+                });
+            }
         }
 
         [HttpPost]

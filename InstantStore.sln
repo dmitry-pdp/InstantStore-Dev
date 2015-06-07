@@ -13,6 +13,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Databa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{010243AA-AAD6-4F48-B437-20945B531C51}"
 	ProjectSection(SolutionItems) = preProject
+		ReleaseNotes.txt = ReleaseNotes.txt
 		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject

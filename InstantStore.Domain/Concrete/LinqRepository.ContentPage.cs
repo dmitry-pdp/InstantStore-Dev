@@ -1,4 +1,5 @@
 ﻿using InstantStore.Domain.Exceptions;
+using InstantStore.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,11 @@ namespace InstantStore.Domain.Concrete
 
                     context.ContentPages.DeleteOnSubmit(page);
                     context.SubmitChanges();
+
+                    if (page.ParentId != null)
+                    {
+                        CategoryTreeBuilder.RebuidCategoryTreeGroups(context, page.ParentId.Value);
+                    }
                 }
             }
         }
@@ -71,6 +77,8 @@ namespace InstantStore.Domain.Concrete
                     throw new ModelValidationException("UpdateContentPage.OriginalPageDoesNotExists");
                 }
 
+                Guid? oldParentId = contentPageOriginal.ParentId;
+
                 contentPageOriginal.Name = contentPage.Name;
                 contentPageOriginal.Text = contentPage.Text;
                 contentPageOriginal.ParentId = contentPage.ParentId;
@@ -79,6 +87,23 @@ namespace InstantStore.Domain.Concrete
                 UpdateAttachmentName(contentPageOriginal, context);
 
                 context.SubmitChanges();
+
+                if (contentPageOriginal.IsCategory())
+                {
+                    if (oldParentId != contentPageOriginal.ParentId && oldParentId != null)
+                    {
+                        // Update the old parent category
+                        CategoryTreeBuilder.UpdateCategoryGropus(oldParentId.Value, context);
+
+                        // Update both tree nodes & up for old and new parents.
+                        CategoryTreeBuilder.RebuidCategoryTreeGroups(context, oldParentId.Value);
+                    }
+
+                    if (contentPageOriginal.ParentId != null)
+                    {
+                        CategoryTreeBuilder.RebuidCategoryTreeGroups(context, contentPageOriginal.Id);
+                    }
+                }
             }
         }
 

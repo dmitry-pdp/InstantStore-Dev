@@ -7,6 +7,7 @@ using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
 using InstantStore.WebUI.Resources;
 using System.ComponentModel.DataAnnotations;
+using InstantStore.WebUI.ViewModels.Factories;
 
 namespace InstantStore.WebUI.ViewModels
 {
@@ -19,17 +20,17 @@ namespace InstantStore.WebUI.ViewModels
 
         }
 
-        public CategoryProductsViewModel(IRepository repository, Guid id, int page, int count)
+        public CategoryProductsViewModel(IRepository repository, Guid id, int offset, int count)
         {
             this.repository = repository;
             this.ParentCategoryId = id;
             this.Pagination = new PaginationViewModel() {
                 MaxPages = (repository.GetProductsCountForCategory(id) / count) + 1,
-                CurrentPage = page,
+                CurrentPage = (offset / count) + 1,
                 Count = count,
                 Id = "0"
             };
-            this.Products = repository.GetProductsForCategory(id, (page - 1) * count, count).Select(x => CreateItemViewModel(x.Value)).ToList();
+            this.Products = repository.GetProductsForCategory(id, offset, count).Select(x => CreateItemViewModel(x.Value)).ToList();
         }
 
         public List<CategoryProductViewModel> Products { get; set; }

@@ -1,9 +1,11 @@
 ﻿@using System.Collections;
 @using InstantStore.WebUI.ViewModels;
 @using InstantStore.WebUI.Resources;
-@model InstantStore.WebUI.ViewModels.ProductViewModel
+
+@model ProductViewModel
+
 @{
-    ViewBag.Title = StringResource.admin_ProductNew;
+    ViewBag.Title = this.Model.Id == Guid.Empty ? StringResource.admin_ProductNew : StringResource.admin_ProductUpdateTitle;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     
     var pagesTreeViewModel = new TreeViewModel
@@ -40,7 +42,7 @@
 </style>
 
 <div class="border col-sm-3">
-    @Html.ActionLink(StringResource.admin_Back, "Pages", null, new { @class = "btn btn-block btn-primary" })
+    @Html.ActionLink(StringResource.admin_Back, "Pages", new { treeSelection = this.Model.ParentCategoryId }, new { @class = "btn btn-block btn-primary" })
     <h3>@StringResource.admin_AddToParent</h3>
     @Html.Partial("CategoryTree", pagesTreeViewModel)
 </div>

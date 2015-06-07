@@ -17,7 +17,7 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class MainController
     {
-        public ActionResult Page(Guid? id, Guid? parentCategoryId, int c = 100, int o = 0)
+        public ActionResult Page(Guid? id, Guid? parentId, int c = 200, int o = 0)
         {
             if (id == null || id == Guid.Empty)
             {
@@ -35,7 +35,8 @@ namespace InstantStore.WebUI.Controllers
             {
                 // Page/Category view
                 this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, id);
-                this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, id);
+                this.ViewData["NavigationMenuViewModel"] = 
+                    MenuViewModelFactory.CreateNavigationMenu(repository, id);
 
                 var viewModel = new PageViewModel(contentPage);
                 if (viewModel.Attachment != null)
@@ -43,28 +44,23 @@ namespace InstantStore.WebUI.Controllers
                     viewModel.Attachment.CanEdit = false;
                 }
 
-                if (contentPage.IsCategory())
-                {
-                    var category = this.repository.GetCategoryById(contentPage.CategoryId.Value);
-                    var factory = category != null && category.ListType == 1
-                        ? (IProductViewModelFactory)new ListProductViewModelFactory(repository, user, id.Value, c, o)
-                        : (IProductViewModelFactory)new TileProductViewModelFactory(repository, user, id.Value, c, o);
-
-                    this.ViewData["ProductItemsViewModel"] = factory.CreateProductViewModel();
-                }
+                this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, contentPage, c, o, user != null ? ListingViewProductSettings.User : ListingViewProductSettings.User);
 
                 return this.View(viewModel);
             }
             else if ((product = repository.GetProductById(id.Value)) != null)
             {
-                if (parentCategoryId != null)
+                if (parentId != null)
                 {
-                    this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, parentCategoryId);
+                    this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, parentId);
                 }
 
-                this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreateSimilarProducts(repository, parentCategoryId);
+                this.ViewData["NavigationMenuViewModel"] =
+                    MenuViewModelFactory.CreateNavigationMenu(repository, parentId);
 
-                var productViewModel = new ProductViewModel(this.repository, id.Value, parentCategoryId, user);
+                this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreateSimilarProducts(repository, parentId);
+
+                var productViewModel = new ProductViewModel(this.repository, id.Value, parentId, user);
                 return this.View("Product", productViewModel);
             }
             else

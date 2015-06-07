@@ -66,9 +66,6 @@ namespace InstantStore.Domain.Concrete
     partial void InsertOrderUpdate(OrderUpdate instance);
     partial void UpdateOrderUpdate(OrderUpdate instance);
     partial void DeleteOrderUpdate(OrderUpdate instance);
-    partial void InsertProductToCategory(ProductToCategory instance);
-    partial void UpdateProductToCategory(ProductToCategory instance);
-    partial void DeleteProductToCategory(ProductToCategory instance);
     partial void InsertCategory(Category instance);
     partial void UpdateCategory(Category instance);
     partial void DeleteCategory(Category instance);
@@ -87,6 +84,9 @@ namespace InstantStore.Domain.Concrete
     partial void InsertFeedback(Feedback instance);
     partial void UpdateFeedback(Feedback instance);
     partial void DeleteFeedback(Feedback instance);
+    partial void InsertProductToCategory(ProductToCategory instance);
+    partial void UpdateProductToCategory(ProductToCategory instance);
+    partial void DeleteProductToCategory(ProductToCategory instance);
     #endregion
 		
 		public InstantStoreDataContext() : 
@@ -215,14 +215,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductToCategory> ProductToCategories
-		{
-			get
-			{
-				return this.GetTable<ProductToCategory>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Category> Categories
 		{
 			get
@@ -268,6 +260,14 @@ namespace InstantStore.Domain.Concrete
 			get
 			{
 				return this.GetTable<Feedback>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProductToCategory> ProductToCategories
+		{
+			get
+			{
+				return this.GetTable<ProductToCategory>();
 			}
 		}
 	}
@@ -1705,6 +1705,8 @@ namespace InstantStore.Domain.Concrete
 		
 		private EntitySet<ProductToCategory> _ProductToCategories;
 		
+		private EntitySet<ProductToCategory> _ProductToCategories1;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<ContentPage> _ContentPage1;
@@ -1739,6 +1741,7 @@ namespace InstantStore.Domain.Concrete
 		{
 			this._ContentPages = new EntitySet<ContentPage>(new Action<ContentPage>(this.attach_ContentPages), new Action<ContentPage>(this.detach_ContentPages));
 			this._ProductToCategories = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories), new Action<ProductToCategory>(this.detach_ProductToCategories));
+			this._ProductToCategories1 = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories1), new Action<ProductToCategory>(this.detach_ProductToCategories1));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._ContentPage1 = default(EntityRef<ContentPage>);
 			this._Category = default(EntityRef<Category>);
@@ -1938,7 +1941,7 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ContentPage", Storage="_ContentPages", ThisKey="Id", OtherKey="ParentId")]
-		public EntitySet<ContentPage> ContentPages
+		public EntitySet<ContentPage> Children
 		{
 			get
 			{
@@ -1960,6 +1963,19 @@ namespace InstantStore.Domain.Concrete
 			set
 			{
 				this._ProductToCategories.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ProductToCategory1", Storage="_ProductToCategories1", ThisKey="Id", OtherKey="GroupId")]
+		public EntitySet<ProductToCategory> ProductToCategories1
+		{
+			get
+			{
+				return this._ProductToCategories1;
+			}
+			set
+			{
+				this._ProductToCategories1.Assign(value);
 			}
 		}
 		
@@ -1998,7 +2014,7 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ContentPage", Storage="_ContentPage1", ThisKey="ParentId", OtherKey="Id", IsForeignKey=true)]
-		public ContentPage ContentPage1
+		public ContentPage Parent
 		{
 			get
 			{
@@ -2014,19 +2030,19 @@ namespace InstantStore.Domain.Concrete
 					if ((previousValue != null))
 					{
 						this._ContentPage1.Entity = null;
-						previousValue.ContentPages.Remove(this);
+						previousValue.Children.Remove(this);
 					}
 					this._ContentPage1.Entity = value;
 					if ((value != null))
 					{
-						value.ContentPages.Add(this);
+						value.Children.Add(this);
 						this._ParentId = value.Id;
 					}
 					else
 					{
 						this._ParentId = default(Nullable<System.Guid>);
 					}
-					this.SendPropertyChanged("ContentPage1");
+					this.SendPropertyChanged("Parent");
 				}
 			}
 		}
@@ -2088,25 +2104,37 @@ namespace InstantStore.Domain.Concrete
 		private void attach_ContentPages(ContentPage entity)
 		{
 			this.SendPropertyChanging();
-			entity.ContentPage1 = this;
+			entity.Parent = this;
 		}
 		
 		private void detach_ContentPages(ContentPage entity)
 		{
 			this.SendPropertyChanging();
-			entity.ContentPage1 = null;
+			entity.Parent = null;
 		}
 		
 		private void attach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.ContentPage = this;
+			entity.Category = this;
 		}
 		
 		private void detach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.ContentPage = null;
+			entity.Category = null;
+		}
+		
+		private void attach_ProductToCategories1(ProductToCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Group = this;
+		}
+		
+		private void detach_ProductToCategories1(ProductToCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Group = null;
 		}
 	}
 	
@@ -2140,9 +2168,9 @@ namespace InstantStore.Domain.Concrete
 		
 		private int _Version;
 		
-		private EntitySet<ProductToCategory> _ProductToCategories;
-		
 		private EntitySet<OrderProduct> _OrderProducts;
+		
+		private EntitySet<ProductToCategory> _ProductToCategories;
 		
 		private EntityRef<Currency> _Currency;
 		
@@ -2182,8 +2210,8 @@ namespace InstantStore.Domain.Concrete
 		
 		public Product()
 		{
-			this._ProductToCategories = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories), new Action<ProductToCategory>(this.detach_ProductToCategories));
 			this._OrderProducts = new EntitySet<OrderProduct>(new Action<OrderProduct>(this.attach_OrderProducts), new Action<OrderProduct>(this.detach_OrderProducts));
+			this._ProductToCategories = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories), new Action<ProductToCategory>(this.detach_ProductToCategories));
 			this._Currency = default(EntityRef<Currency>);
 			this._Image = default(EntityRef<Image>);
 			this._PropertyTemplate = default(EntityRef<PropertyTemplate>);
@@ -2442,19 +2470,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToCategory", Storage="_ProductToCategories", ThisKey="VersionId", OtherKey="ProductId")]
-		public EntitySet<ProductToCategory> ProductToCategories
-		{
-			get
-			{
-				return this._ProductToCategories;
-			}
-			set
-			{
-				this._ProductToCategories.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_OrderProduct", Storage="_OrderProducts", ThisKey="VersionId", OtherKey="ProductId")]
 		public EntitySet<OrderProduct> OrderProducts
 		{
@@ -2465,6 +2480,19 @@ namespace InstantStore.Domain.Concrete
 			set
 			{
 				this._OrderProducts.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToCategory", Storage="_ProductToCategories", ThisKey="VersionId", OtherKey="ProductId")]
+		public EntitySet<ProductToCategory> ProductToCategories
+		{
+			get
+			{
+				return this._ProductToCategories;
+			}
+			set
+			{
+				this._ProductToCategories.Assign(value);
 			}
 		}
 		
@@ -2590,18 +2618,6 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		private void attach_ProductToCategories(ProductToCategory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Product = this;
-		}
-		
-		private void detach_ProductToCategories(ProductToCategory entity)
-		{
-			this.SendPropertyChanging();
-			entity.Product = null;
-		}
-		
 		private void attach_OrderProducts(OrderProduct entity)
 		{
 			this.SendPropertyChanging();
@@ -2609,6 +2625,18 @@ namespace InstantStore.Domain.Concrete
 		}
 		
 		private void detach_OrderProducts(OrderProduct entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = null;
+		}
+		
+		private void attach_ProductToCategories(ProductToCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Product = this;
+		}
+		
+		private void detach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
@@ -3343,246 +3371,6 @@ namespace InstantStore.Domain.Concrete
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductToCategory")]
-	public partial class ProductToCategory : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _Id;
-		
-		private System.Guid _ProductId;
-		
-		private System.Guid _CategoryId;
-		
-		private System.DateTime _UpdateTime;
-		
-		private string _GroupName;
-		
-		private EntityRef<ContentPage> _ContentPage;
-		
-		private EntityRef<Product> _Product;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(System.Guid value);
-    partial void OnIdChanged();
-    partial void OnProductIdChanging(System.Guid value);
-    partial void OnProductIdChanged();
-    partial void OnCategoryIdChanging(System.Guid value);
-    partial void OnCategoryIdChanged();
-    partial void OnUpdateTimeChanging(System.DateTime value);
-    partial void OnUpdateTimeChanged();
-    partial void OnGroupNameChanging(string value);
-    partial void OnGroupNameChanged();
-    #endregion
-		
-		public ProductToCategory()
-		{
-			this._ContentPage = default(EntityRef<ContentPage>);
-			this._Product = default(EntityRef<Product>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid ProductId
-		{
-			get
-			{
-				return this._ProductId;
-			}
-			set
-			{
-				if ((this._ProductId != value))
-				{
-					if (this._Product.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnProductIdChanging(value);
-					this.SendPropertyChanging();
-					this._ProductId = value;
-					this.SendPropertyChanged("ProductId");
-					this.OnProductIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid CategoryId
-		{
-			get
-			{
-				return this._CategoryId;
-			}
-			set
-			{
-				if ((this._CategoryId != value))
-				{
-					if (this._ContentPage.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCategoryIdChanging(value);
-					this.SendPropertyChanging();
-					this._CategoryId = value;
-					this.SendPropertyChanged("CategoryId");
-					this.OnCategoryIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime UpdateTime
-		{
-			get
-			{
-				return this._UpdateTime;
-			}
-			set
-			{
-				if ((this._UpdateTime != value))
-				{
-					this.OnUpdateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._UpdateTime = value;
-					this.SendPropertyChanged("UpdateTime");
-					this.OnUpdateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupName", DbType="NVarChar(255)")]
-		public string GroupName
-		{
-			get
-			{
-				return this._GroupName;
-			}
-			set
-			{
-				if ((this._GroupName != value))
-				{
-					this.OnGroupNameChanging(value);
-					this.SendPropertyChanging();
-					this._GroupName = value;
-					this.SendPropertyChanged("GroupName");
-					this.OnGroupNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ProductToCategory", Storage="_ContentPage", ThisKey="CategoryId", OtherKey="Id", IsForeignKey=true)]
-		public ContentPage ContentPage
-		{
-			get
-			{
-				return this._ContentPage.Entity;
-			}
-			set
-			{
-				ContentPage previousValue = this._ContentPage.Entity;
-				if (((previousValue != value) 
-							|| (this._ContentPage.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ContentPage.Entity = null;
-						previousValue.ProductToCategories.Remove(this);
-					}
-					this._ContentPage.Entity = value;
-					if ((value != null))
-					{
-						value.ProductToCategories.Add(this);
-						this._CategoryId = value.Id;
-					}
-					else
-					{
-						this._CategoryId = default(System.Guid);
-					}
-					this.SendPropertyChanged("ContentPage");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToCategory", Storage="_Product", ThisKey="ProductId", OtherKey="VersionId", IsForeignKey=true)]
-		public Product Product
-		{
-			get
-			{
-				return this._Product.Entity;
-			}
-			set
-			{
-				Product previousValue = this._Product.Entity;
-				if (((previousValue != value) 
-							|| (this._Product.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Product.Entity = null;
-						previousValue.ProductToCategories.Remove(this);
-					}
-					this._Product.Entity = value;
-					if ((value != null))
-					{
-						value.ProductToCategories.Add(this);
-						this._ProductId = value.VersionId;
-					}
-					else
-					{
-						this._ProductId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Product");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Category")]
 	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3703,7 +3491,7 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Image", DbType="Image", CanBeNull=true, UpdateCheck=UpdateCheck.Never)]
 		public System.Data.Linq.Binary Image
 		{
 			get
@@ -5193,6 +4981,287 @@ namespace InstantStore.Domain.Concrete
 					this._Submitted = value;
 					this.SendPropertyChanged("Submitted");
 					this.OnSubmittedChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductToCategory")]
+	public partial class ProductToCategory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _Id;
+		
+		private System.Guid _ProductId;
+		
+		private System.Guid _CategoryId;
+		
+		private System.DateTime _UpdateTime;
+		
+		private System.Nullable<System.Guid> _GroupId;
+		
+		private EntityRef<ContentPage> _ContentPage;
+		
+		private EntityRef<ContentPage> _ContentPage1;
+		
+		private EntityRef<Product> _Product;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(System.Guid value);
+    partial void OnIdChanged();
+    partial void OnProductIdChanging(System.Guid value);
+    partial void OnProductIdChanged();
+    partial void OnCategoryIdChanging(System.Guid value);
+    partial void OnCategoryIdChanged();
+    partial void OnUpdateTimeChanging(System.DateTime value);
+    partial void OnUpdateTimeChanged();
+    partial void OnGroupIdChanging(System.Nullable<System.Guid> value);
+    partial void OnGroupIdChanged();
+    #endregion
+		
+		public ProductToCategory()
+		{
+			this._ContentPage = default(EntityRef<ContentPage>);
+			this._ContentPage1 = default(EntityRef<ContentPage>);
+			this._Product = default(EntityRef<Product>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid ProductId
+		{
+			get
+			{
+				return this._ProductId;
+			}
+			set
+			{
+				if ((this._ProductId != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProductId = value;
+					this.SendPropertyChanged("ProductId");
+					this.OnProductIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid CategoryId
+		{
+			get
+			{
+				return this._CategoryId;
+			}
+			set
+			{
+				if ((this._CategoryId != value))
+				{
+					if (this._ContentPage.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCategoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryId = value;
+					this.SendPropertyChanged("CategoryId");
+					this.OnCategoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime UpdateTime
+		{
+			get
+			{
+				return this._UpdateTime;
+			}
+			set
+			{
+				if ((this._UpdateTime != value))
+				{
+					this.OnUpdateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._UpdateTime = value;
+					this.SendPropertyChanged("UpdateTime");
+					this.OnUpdateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> GroupId
+		{
+			get
+			{
+				return this._GroupId;
+			}
+			set
+			{
+				if ((this._GroupId != value))
+				{
+					if (this._ContentPage1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._GroupId = value;
+					this.SendPropertyChanged("GroupId");
+					this.OnGroupIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ProductToCategory", Storage="_ContentPage", ThisKey="CategoryId", OtherKey="Id", IsForeignKey=true)]
+		public ContentPage Category
+		{
+			get
+			{
+				return this._ContentPage.Entity;
+			}
+			set
+			{
+				ContentPage previousValue = this._ContentPage.Entity;
+				if (((previousValue != value) 
+							|| (this._ContentPage.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ContentPage.Entity = null;
+						previousValue.ProductToCategories.Remove(this);
+					}
+					this._ContentPage.Entity = value;
+					if ((value != null))
+					{
+						value.ProductToCategories.Add(this);
+						this._CategoryId = value.Id;
+					}
+					else
+					{
+						this._CategoryId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Category");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ProductToCategory1", Storage="_ContentPage1", ThisKey="GroupId", OtherKey="Id", IsForeignKey=true)]
+		public ContentPage Group
+		{
+			get
+			{
+				return this._ContentPage1.Entity;
+			}
+			set
+			{
+				ContentPage previousValue = this._ContentPage1.Entity;
+				if (((previousValue != value) 
+							|| (this._ContentPage1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ContentPage1.Entity = null;
+						previousValue.ProductToCategories1.Remove(this);
+					}
+					this._ContentPage1.Entity = value;
+					if ((value != null))
+					{
+						value.ProductToCategories1.Add(this);
+						this._GroupId = value.Id;
+					}
+					else
+					{
+						this._GroupId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Group");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductToCategory", Storage="_Product", ThisKey="ProductId", OtherKey="VersionId", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.ProductToCategories.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.ProductToCategories.Add(this);
+						this._ProductId = value.VersionId;
+					}
+					else
+					{
+						this._ProductId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Product");
 				}
 			}
 		}

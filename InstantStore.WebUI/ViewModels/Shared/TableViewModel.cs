@@ -21,11 +21,15 @@ namespace InstantStore.WebUI.ViewModels
         public string Id { get; private set; }
 
         public NavigationLink RowClickAction { get; set; }
+
+        public bool HasCheckboxes { get; set; }
     }
 
     public class TableRowViewModel
     {
         public string Id { get; set; }
+
+        public string ParentId { get; set; }
 
         public TableCellViewModel GroupCell { get; set; }
 

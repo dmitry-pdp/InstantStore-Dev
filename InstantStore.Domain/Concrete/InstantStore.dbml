@@ -84,10 +84,11 @@
       <Column Name="AttachmentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="AttachmentName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
       <Column Name="ShowInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="ContentPage_ContentPage" Member="ContentPages" ThisKey="Id" OtherKey="ParentId" Type="ContentPage" />
+      <Association Name="ContentPage_ContentPage" Member="Children" Storage="_ContentPages" ThisKey="Id" OtherKey="ParentId" Type="ContentPage" />
       <Association Name="ContentPage_ProductToCategory" Member="ProductToCategories" ThisKey="Id" OtherKey="CategoryId" Type="ProductToCategory" />
+      <Association Name="ContentPage_ProductToCategory1" Member="ProductToCategories1" ThisKey="Id" OtherKey="GroupId" Type="ProductToCategory" />
       <Association Name="Attachment_ContentPage" Member="Attachment" ThisKey="AttachmentId" OtherKey="Id" Type="Attachment" IsForeignKey="true" />
-      <Association Name="ContentPage_ContentPage" Member="ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="ContentPage_ContentPage" Member="Parent" Storage="_ContentPage1" ThisKey="ParentId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
       <Association Name="Category_ContentPage" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
     </Type>
   </Table>
@@ -105,8 +106,8 @@
       <Column Name="PriceValueCashless" Type="System.Decimal" DbType="Decimal(19,4)" CanBeNull="true" />
       <Column Name="CustomAttributesTemplateId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_ProductToCategory" Member="ProductToCategories" ThisKey="VersionId" OtherKey="ProductId" Type="ProductToCategory" />
       <Association Name="Product_OrderProduct" Member="OrderProducts" ThisKey="VersionId" OtherKey="ProductId" Type="OrderProduct" />
+      <Association Name="Product_ProductToCategory" Member="ProductToCategories" ThisKey="VersionId" OtherKey="ProductId" Type="ProductToCategory" />
       <Association Name="Currency_Product" Member="Currency" ThisKey="PriceCurrencyId" OtherKey="Id" Type="Currency" IsForeignKey="true" />
       <Association Name="Image_Product" Member="Image" ThisKey="MainImageId" OtherKey="Id" Type="Image" IsForeignKey="true" />
       <Association Name="PropertyTemplate_Product" Member="PropertyTemplate" ThisKey="CustomAttributesTemplateId" OtherKey="Id" Type="PropertyTemplate" IsForeignKey="true" />
@@ -146,17 +147,6 @@
       <Column Name="DateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Order_OrderUpdate" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ProductToCategory" Member="ProductToCategories">
-    <Type Name="ProductToCategory">
-      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="UpdateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="GroupName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="ContentPage_ProductToCategory" Member="ContentPage" ThisKey="CategoryId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
-      <Association Name="Product_ProductToCategory" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Category" Member="Categories">
@@ -234,6 +224,18 @@
       <Column Name="Email" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Message" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Submitted" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductToCategory" Member="ProductToCategories">
+    <Type Name="ProductToCategory">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UpdateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="GroupId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="ContentPage_ProductToCategory" Member="Category" Storage="_ContentPage" ThisKey="CategoryId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="ContentPage_ProductToCategory1" Member="Group" Storage="_ContentPage1" ThisKey="GroupId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="Product_ProductToCategory" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

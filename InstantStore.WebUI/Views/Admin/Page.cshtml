@@ -14,6 +14,7 @@
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 
 <div class="border col-sm-3">
+    @Html.ActionLink(StringResource.admin_Back, "Pages", new { treeSelection = this.Model.Id }, new { @class = "btn btn-block btn-primary" })
     <h3>@StringResource.admin_AddToParent </h3>
     @Html.Partial("CategoryTree", pagesTreeViewModel)
 </div>

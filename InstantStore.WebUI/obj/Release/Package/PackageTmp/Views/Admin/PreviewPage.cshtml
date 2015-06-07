@@ -5,6 +5,8 @@
     ViewBag.Title = Model.Name;
     var cateogoryProducts = this.ViewData["CategoryProducts"] as CategoryProductsViewModel;
     bool isImportMode = (bool)this.ViewData["IsImportMode"];
+    var productTiles = this.ViewBag.ProductItemsViewModel as TilesViewModel;
+    var productTable = this.ViewBag.ProductItemsViewModel as TableViewModel;
 }
 
 @if (!isImportMode)
@@ -42,55 +44,46 @@
         </div>
     </div>
     <div>
-        @Html.Partial(isImportMode ? "EditProductDetailsImport" : "EditProductDetails", cateogoryProducts);
-        <div class="modal fade" id="import-products-dlg" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" style="width:90%">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">@StringResource.admin_ProductsFromOtherCategory</h4>
-                    </div>
-                    <div class="modal-body" id="import-products-dlg-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
-                        <input type="button" class="btn btn-primary" id="btn-confirm-import" value="@StringResource.Import" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="delete-products-dlg" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" style="width:90%">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">@StringResource.admin_ProductDelete</h4>
-                    </div>
-                    <div class="modal-body" id="delete-products-dlg-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">@StringResource.Cancel</button>
-                        <input type="button" class="btn btn-primary" id="btn-confirm-delete" value="@StringResource.admin_Delete" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="import-error-dlg" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">@StringResource.Error</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p id="error-holder"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">@StringResource.Ok</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @if (isImportMode)
+        {
+            @Html.Partial("EditProductDetailsImport", cateogoryProducts);
+        }
+        else if (productTiles != null)
+        {
+            Html.RenderPartial("TilesView", productTiles);
+        }
+        else if (productTable != null)
+        {
+            Html.RenderPartial("TableView", productTable);
+        }
+        else 
+        {
+            @Html.Partial("EditProductDetails", cateogoryProducts);
+        }
+
+        @Html.Partial("Dialog", new DialogViewModel { 
+            DialogId = "import-products-dlg", 
+            DialogBodyId = "import-products-dlg-body",
+            DialogSubmitId = "btn-confirm-import",
+            Title = StringResource.admin_ProductsFromOtherCategory, 
+            ButtonText = StringResource.Import,
+            ShowCancelButton = true
+        })
+        @Html.Partial("Dialog", new DialogViewModel {
+            DialogId = "delete-products-dlg",
+            DialogBodyId = "delete-products-dlg-body",
+            DialogSubmitId = "btn-confirm-delete",
+            Title = StringResource.admin_ProductDelete,
+            ButtonText = StringResource.admin_Delete,
+            ShowCancelButton = true
+        })
+        @Html.Partial("Dialog", new DialogViewModel {
+           DialogId = "import-error-dlg",
+           DialogBodyId = "error-holder",
+           Title = StringResource.Error,
+           ButtonText = StringResource.Ok,
+           ShowCancelButton = false
+       })
     </div> 
 }
 @if (!isImportMode)
@@ -106,7 +99,8 @@
         $("#btn-import-products").on("click", function () {
             var selectedCat = $("#current-selection").val();
             $.ajax({
-                url: '@Url.Action("ImportProducts")' + "?parentId=" + selectedCat
+                url: '@Url.Action("ImportProducts")' + "?parentId=" + selectedCat,
+                cache: false
             })
             .done(function (html) {
                 $("#import-products-dlg-body").html(html);
@@ -123,6 +117,7 @@
             $.ajax({
                 type: frm.attr('method'),
                 url: frm.attr('action'),
+                cache: false,
                 data: frm.serialize(),
             })
             .done(function (data) {
@@ -133,7 +128,7 @@
                 }
                 else 
                 {
-                    $("#error-holder").html(data.message);
+                    $("#error-holder").html('<p>' + data.message + '</p>');
                     $("#import-error-dlg").modal('show');
                 }
             })
@@ -145,7 +140,8 @@
         $("#btn-deleteproducts").click(function () {
             var selectedCat = $("#current-selection").val();
             $.ajax({
-                url: '@Url.Action("DeleteProducts")' + "?parentId=" + selectedCat
+                url: '@Url.Action("DeleteProducts")' + "?parentId=" + selectedCat,
+                cache: false
             })
             .done(function (html) {
                 $("#delete-products-dlg-body").html(html);
@@ -163,6 +159,7 @@
                 type: frm.attr('method'),
                 url: frm.attr('action'),
                 data: frm.serialize(),
+                cache: false
             })
             .done(function (data) {
                 if (data.status == "success") {

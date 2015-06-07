@@ -27,7 +27,7 @@ namespace InstantStore.WebUI.Controllers
             return this.View(new PageViewModel());
         }
 
-        public ActionResult PreviewPage(Guid id, bool import = false, Guid? importToCat = null, int p = 1, int c = 15)
+        public ActionResult PreviewPage(Guid id, bool import = false, Guid? importToCat = null, int o = 0, int c = 200)
         {
             PageViewModel viewModel = null;
             
@@ -41,10 +41,14 @@ namespace InstantStore.WebUI.Controllers
             else
             {
                 var page = this.repository.GetPageById(id);
+
+                this.ViewData["ProductItemsViewModel"] =
+                    CategoryViewModelFactory.CreateCategoryViewModel(this.HttpContext.CurrentUser(), page, c, o, ListingViewProductSettings.AdminSettings);
+
                 if (page.IsCategory())
                 {
                     var category = repository.GetCategoryById(page.CategoryId.Value);
-                    this.ViewData["CategoryProducts"] = new CategoryProductsViewModel(this.repository, page.Id, p, c) { IsTiles = category.ListType == 2 };
+                    this.ViewData["CategoryProducts"] = new CategoryProductsViewModel(this.repository, page.Id, o, c) { IsTiles = category.ListType == 2 };
                 }
 
                 viewModel = new PageViewModel(page, false);
@@ -154,7 +158,7 @@ namespace InstantStore.WebUI.Controllers
                     this.repository.UpdateContentPage(contentPage);
                 }
 
-                return this.RedirectToAction("Pages");
+                return this.RedirectToAction("Pages", new { treeSelection = contentPage.Id });
             }
             else
             {
@@ -180,6 +184,7 @@ namespace InstantStore.WebUI.Controllers
             if (this.ModelState.IsValid)
             {
                 Guid? parentId = categoryViewModel.Content.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.Content.ParentCategoryId;
+                Guid pageId = categoryViewModel.Content.Id;
 
                 if (categoryViewModel.Content.Id != Guid.Empty)
                 {
@@ -213,7 +218,7 @@ namespace InstantStore.WebUI.Controllers
                         ImageId = categoryViewModel.CategoryImage,
                     });
 
-                    repository.NewPage(new ContentPage
+                    pageId = repository.NewPage(new ContentPage
                     {
                         Name = categoryViewModel.Content.Name,
                         Text = categoryViewModel.Content.Text,
@@ -224,7 +229,7 @@ namespace InstantStore.WebUI.Controllers
                     });
                 }
 
-                return this.RedirectToAction("Pages");
+                return this.RedirectToAction("Pages", new { treeSelection = pageId });
             }
             else
             {

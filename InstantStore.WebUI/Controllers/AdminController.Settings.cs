@@ -7,8 +7,8 @@ using System.Web.Mvc;
 
 using InstantStore.Domain.Abstract;
 using InstantStore.Domain.Concrete;
-using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.Models;
+using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.ViewModels.Factories;
 using InstantStore.WebUI.Resources;
 
@@ -102,7 +102,7 @@ namespace InstantStore.WebUI.Controllers
                                     {
                                         Title = StringResource.admin_SettingsNode_FeedbackGroup,
                                         Rows = context.Feedbacks
-                                            .OrderBy(feedback => feedback.Submitted)
+                                            .OrderByDescending(feedback => feedback.Submitted)
                                             .Skip(o)
                                             .Take(c)
                                             .ToList()
