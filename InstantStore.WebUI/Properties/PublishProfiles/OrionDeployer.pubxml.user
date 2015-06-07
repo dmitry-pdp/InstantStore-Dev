@@ -11,10 +11,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/InstantStore.Domain.dll">
-      <publishTime>06/06/2015 22:41:26</publishTime>
+      <publishTime>06/06/2015 22:45:22</publishTime>
     </File>
     <File Include="bin/InstantStore.WebUI.dll">
-      <publishTime>06/06/2015 22:41:27</publishTime>
+      <publishTime>06/06/2015 22:45:23</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>09/30/2014 12:40:56</publishTime>

@@ -251,7 +251,7 @@ namespace InstantStore.Domain.Concrete
                     GetProducts(context, categoryId),
                     a => a.VersionId,
                     b => b.ProductId,
-                    (Product x, ProductToCategory y) => new { Product = x, GroupName = y.Group != null ? y.Group.Name : null, Position = y.Group.Position })
+                    (Product x, ProductToCategory y) => new { Product = x, GroupName = y.Group != null ? y.Group.Name : null, Position = y.Group != null ? y.Group.Position : 1 })
                 .OrderBy(x => x.Position)
                 .Skip(offset)
                 .Take(count)
