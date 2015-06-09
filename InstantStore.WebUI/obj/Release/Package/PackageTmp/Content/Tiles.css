@@ -11,3 +11,16 @@
     max-height:200px;
     min-height:200px;
 }
+
+.tile-caption .title 
+{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.tile img.thumbnail-image 
+{
+    width:200px;
+    height:187px;
+}

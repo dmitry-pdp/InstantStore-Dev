@@ -3,6 +3,8 @@
 @model ProductViewModel
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var isAdmin = this.ViewBag.IsAdmin as bool? ?? false;
+    var id = this.ViewBag.Id as Guid? ?? Guid.Empty;
 }
 
 <div class="pull-right" style="min-width:266px">
@@ -15,7 +17,15 @@
     </div>
 </div>
 
+@if (isAdmin)
+{
+    <div class="pull-right" style="margin-right:15px">
+        @Html.ActionLink(StringResource.admin_ProductUpdateTitle, "Product", "Admin", new { id = id }, new { @class = "btn btn-default" })
+    </div>
+}
+
 <h3>@this.Model.Name</h3>
+
 @if (this.Model.Attributes != null && this.Model.Attributes.Any())
 {
     <p>

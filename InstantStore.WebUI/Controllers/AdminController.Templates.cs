@@ -106,6 +106,9 @@ namespace InstantStore.WebUI.Controllers
                 this.repository.UpdateTemplate(propertyTemplate, templateViewModel.Properties, false);
             }
 
+            this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+            this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Templates);
+
             this.ViewData["TemplatesList"] = this.repository.GetTemplates().Select(x => new TemplateViewModel() { Id = x.Id, Name = x.Name }).ToList();
             return this.View(templateViewModel);
         }

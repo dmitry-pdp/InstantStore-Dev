@@ -6,6 +6,16 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     var productTiles = this.ViewBag.ProductItemsViewModel as TilesViewModel;
     var productTable = this.ViewBag.ProductItemsViewModel as TableViewModel;
+    var isAdmin = this.ViewBag.IsAdmin as bool? ?? false;
+    var id = this.ViewBag.Id as Guid? ?? Guid.Empty;
+    var isPage = this.ViewBag.IsPage as bool? ?? true;
+}
+
+@if (isAdmin)
+{
+    <div class="pull-right" style="margin-right:15px">
+        @Html.ActionLink(isPage ? StringResource.admin_EditPage : StringResource.admin_EditCategory, "Page", "Admin", new { id = id }, new { @class = "btn btn-default" })
+    </div>
 }
 
 <h2>@ViewBag.Title</h2>

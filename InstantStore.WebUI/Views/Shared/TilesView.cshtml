@@ -21,10 +21,10 @@
         var url = tileViewModel.Link.GetUrl(this.Url);
     
         <div class="thumbnail tile">
-            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = tileViewModel.ImageId, Width=220, Click = tileViewModel.Link })
+            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = tileViewModel.ImageId, Width=220, Click = tileViewModel.Link, Class = "thumbnail-image" })
             <div class="caption tile-caption">
                 <a href="@url">
-                    <span class="title">@tileViewModel.Name</span>
+                    <div class="title">@tileViewModel.Name</div>
                 </a>
                 @if (tileViewModel.Attributes != null && tileViewModel.Attributes.Any())
                 {

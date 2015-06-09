@@ -30,6 +30,9 @@ namespace InstantStore.WebUI.Controllers
 
             var user = UserIdentityManager.GetActiveUser(this.Request, repository);
 
+            this.ViewData["Id"] = id.Value;
+            this.ViewData["IsAdmin"] = user != null && user.IsAdmin;
+
             var contentPage = this.repository.GetPageById(id.Value);
             if (contentPage != null)
             {
@@ -45,7 +48,7 @@ namespace InstantStore.WebUI.Controllers
                 }
 
                 this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, contentPage, c, o, user != null ? ListingViewProductSettings.User : ListingViewProductSettings.User);
-
+                this.ViewData["IsPage"] = !viewModel.ContentPage.IsCategory();
                 return this.View(viewModel);
             }
             else if ((product = repository.GetProductById(id.Value)) != null)

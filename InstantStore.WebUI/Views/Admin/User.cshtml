@@ -13,7 +13,7 @@
     {
         <div class="form-group">
             <div class="pull-right" style="margin-right:15px">
-                <a href="/admin/orders?userid=@userLists.Current.Id" class="btn btn-default">@StringResource.admin_UsersOrdersAction</a>
+                @Html.ActionLink(StringResource.admin_UsersOrdersAction, "Orders", "Admin", new { userid = userLists.Current.Id }, new { @class = "btn btn-default" })
                 @if (!userLists.Current.IsActivated)
                 {
                     @Html.ActionLink(StringResource.admin_UserActivateAction, "User", "Admin", new { id = userLists.Current.Id, activate = "true" }, new { @class = "btn btn-default" })
