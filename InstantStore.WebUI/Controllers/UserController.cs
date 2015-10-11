@@ -40,7 +40,6 @@ namespace InstantStore.WebUI.Controllers
                 this.currentUser.Email = userViewModel.Email;
                 this.currentUser.Phonenumber = userViewModel.Phonenumber;
                 this.repository.UpdateUser(this.currentUser);
-
                 return this.RedirectToAction("Index", "Main");
             }
 

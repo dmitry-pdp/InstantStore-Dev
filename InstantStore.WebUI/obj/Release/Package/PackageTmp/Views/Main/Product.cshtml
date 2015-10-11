@@ -6,114 +6,117 @@
     var isAdmin = this.ViewBag.IsAdmin as bool? ?? false;
     var id = this.ViewBag.Id as Guid? ?? Guid.Empty;
 }
-
-<div class="pull-right" style="min-width:266px">
-    <div class="img-thumbnail" id="main-image" style="width:266px;">
-        @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = this.Model.MainImage ?? Guid.Empty, Class = "pull-left product-img", Width = 235 })
-        @foreach (var thumbnailImage in this.Model.Images.Where(x => x != this.Model.MainImage).Take(4))
-        {
-            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = thumbnailImage, Class = "pull-left", Width = 64 })
-        }
+<div class="container-fluid">
+    <div class="pull-right" style="min-width:266px">
+        <div class="img-thumbnail" id="main-image" style="width:266px;">
+            @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = this.Model.MainImage ?? Guid.Empty, Class = "pull-left product-img", Width = 235 })
+            @foreach (var thumbnailImage in this.Model.Images.Where(x => x != this.Model.MainImage).Take(4))
+            {
+                @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = thumbnailImage, Class = "pull-left", Width = 64 })
+            }
+        </div>
     </div>
-</div>
 
-@if (isAdmin)
-{
-    <div class="pull-right" style="margin-right:15px">
-        @Html.ActionLink(StringResource.admin_ProductUpdateTitle, "Product", "Admin", new { id = id }, new { @class = "btn btn-default" })
-    </div>
-}
+    @if (isAdmin)
+    {
+        <div class="pull-right" style="margin-right:15px">
+            @Html.ActionLink(StringResource.admin_ProductUpdateTitle, "Product", "Admin", new { id = id, parentId = this.Model.ParentCategoryId }, new { @class = "btn btn-default" })
+        </div>
+    }
 
-<h3>@this.Model.Name</h3>
+    <h3>@this.Model.Name</h3>
 
-@if (this.Model.Attributes != null && this.Model.Attributes.Any())
-{
+    @if (this.Model.Attributes != null && this.Model.Attributes.Any())
+    {
+        <p>
+            @foreach (var attribute in this.Model.Attributes)
+            {
+                <div>
+                    <label>@attribute.Name:&nbsp;</label>
+                    <span>@attribute.Value</span>
+                </div>
+            }
+        </p>
+    }
+
     <p>
-        @foreach (var attribute in this.Model.Attributes)
-        {
-            <div>
-                <label>@attribute.Name:&nbsp;</label>
-                <span>@attribute.Value</span>
-            </div>
-        }
+        @this.Html.Raw(this.Model.Description)
     </p>
-}
-    
-<p>
-    @this.Html.Raw(this.Model.Description)
-</p>
-@if (this.Model.AddToCart != null)
-{
-    <a href="@this.Model.AddToCart.GetUrl(this.Url)" class="btn btn-default" id="add-to-cart">@this.Model.AddToCart.Text</a>
-    <script>
-        $(function () {
-            $("#add-to-cart").on("click", function () {
-                $.ajax({
-                    url: this.href,
-                    cached: false,
-                    method: "post"
-                })
-                .done(function () {
-                    alert("@StringResource.productTile_AddItemConfirmation");
-                    location.reload();
-                })
-                .fail(function () {
-                    alert("@StringResource.productTile_AddItemFailure");
+    <!--
+    @if (this.Model.AddToCart != null)
+    {
+        <a href="@this.Model.AddToCart.GetUrl(this.Url)" class="btn btn-default" id="add-to-cart">@this.Model.AddToCart.Text</a>
+        <script>
+            $(function () {
+                $("#add-to-cart").on("click", function () {
+                    $.ajax({
+                        url: this.href,
+                        cached: false,
+                        method: "post"
+                    })
+                    .done(function () {
+                        alert("@StringResource.productTile_AddItemConfirmation");
+                        location.reload();
+                    })
+                    .fail(function () {
+                        alert("@StringResource.productTile_AddItemFailure");
+                    });
+                    return false;
                 });
-                return false;
             });
-        });
-    </script>
-}
+        </script>
+    }
+    -->
 
-@if (this.Model.Images != null && this.Model.Images.Any())
-{
-    <div class="modal fade" id="images-dlg" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">@StringResource.admin_ProductImagesLabel</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            @foreach (var index in Enumerable.Range(0, this.Model.Images.Count))
-                            {
-                                <li data-target="#carousel-example-generic" data-slide-to="@index" class="@(index == 0 ? "active" : null)"></li>
-                            }
-                        </ol>
-
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-                            @foreach (var index in Enumerable.Range(0, this.Model.Images.Count))
-                            {
-                                <div class="item @(index == 0 ? "active" : "")" style="text-align:center;">
-
-                                    <img src="@( Url.Action("GetImage", "Main", new { id = this.Model.Images[index].ToString() }))" style="display:inline-block" />
-                                </div>
-                            }
-                        </div>
-
-                        <!-- Controls -->
-                        <a class="left carousel-control carousel-nav" href="#carousel-example-generic" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control carousel-nav" href="#carousel-example-generic" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+    @if (this.Model.Images != null && this.Model.Images.Any())
+    {
+        <div class="modal fade" id="images-dlg" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@StringResource.admin_ProductImagesLabel</h4>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">@StringResource.Ok</button>
+                    <div class="modal-body">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                @foreach (var index in Enumerable.Range(0, this.Model.Images.Count))
+                                {
+                                    <li data-target="#carousel-example-generic" data-slide-to="@index" class="@(index == 0 ? "active" : null)"></li>
+                                }
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                                @foreach (var index in Enumerable.Range(0, this.Model.Images.Count))
+                                {
+                                    <div class="item @(index == 0 ? "active" : "")" style="text-align:center;">
+
+                                        <img src="@( Url.Action("GetImage", "Main", new { id = this.Model.Images[index].ToString() }))" style="display:inline-block" />
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control carousel-nav" href="#carousel-example-generic" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control carousel-nav" href="#carousel-example-generic" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">@StringResource.Ok</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 <script>
     $(function () {

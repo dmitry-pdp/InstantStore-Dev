@@ -10,31 +10,32 @@
     var id = this.ViewBag.Id as Guid? ?? Guid.Empty;
     var isPage = this.ViewBag.IsPage as bool? ?? true;
 }
-
-@if (isAdmin)
-{
-    <div class="pull-right" style="margin-right:15px">
-        @Html.ActionLink(isPage ? StringResource.admin_EditPage : StringResource.admin_EditCategory, "Page", "Admin", new { id = id }, new { @class = "btn btn-default" })
-    </div>
-}
-
-<h2>@ViewBag.Title</h2>
-@Html.Raw(this.Model.Text)
-@if (this.Model.Attachment != null)
-{
-    <div>
-        <label>@StringResource.admin_PageAttachment</label>
-        @Html.Partial("Attachment", this.Model.Attachment);
-    </div>
-}
-@if (productTiles != null)
-{
-    Html.RenderPartial("TilesView", productTiles);
-}
-else if (productTable != null)
-{
-    Html.RenderPartial("TableView", productTable);
-}
+<div class="container-fluid">
+    @if (isAdmin)
+    {
+        <div class="pull-right" style="margin-right:15px">
+            @Html.ActionLink(isPage ? StringResource.admin_EditPage : StringResource.admin_EditCategory, "Page", "Admin", new { id = id }, new { @class = "btn btn-default" })
+        </div>
+    }
+    <h2>@ViewBag.Title</h2>
+    @Html.Raw(this.Model.Text)
+    @if (this.Model.Attachment != null)
+    {
+        <div>
+            <label>@StringResource.admin_PageAttachment</label>
+            @Html.Partial("Attachment", this.Model.Attachment);
+        </div>
+    }
+    @if (productTiles != null)
+    {
+        Html.RenderPartial("TilesView", productTiles);
+    }
+    else if (productTable != null)
+    {
+        Html.RenderPartial("TableView", productTable);
+    }
+</div>
+<!--
 <script>
     $(function () {
         var addToCartAction = function () {
@@ -57,3 +58,4 @@ else if (productTable != null)
         $("a.table-action").on("click", addToCartAction);
     });
 </script>
+-->

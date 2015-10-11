@@ -52,7 +52,8 @@ namespace InstantStore.WebUI.Controllers
                         new CategoryTreeItemViewModel("EmailOrderHasBeenPlaced", StringResource.admin_SettingsNode_EmailNewOrder)
                     }
                 },
-                new CategoryTreeItemViewModel("Feedback", StringResource.admin_SettingsNode_FeedbackGroup)
+                new CategoryTreeItemViewModel("Feedback", StringResource.admin_SettingsNode_FeedbackGroup),
+                new CategoryTreeItemViewModel("LostPages", StringResource.admin_LostPages)
             }
         };
 
@@ -155,6 +156,10 @@ namespace InstantStore.WebUI.Controllers
                                         this.repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin)),
                                 });
                                 break;
+
+                            case "LostPages":
+                                settingsViewModel = this.CreatePageRecoveryViewModel(this.repository, c, o, i.Value);
+                                break;
                         }
                     }
                 }
@@ -210,6 +215,45 @@ namespace InstantStore.WebUI.Controllers
                 Title = title,
                 Content = this.repository.GetSettings(key)
             };
+        }
+
+        private CustomViewModel CreatePageRecoveryViewModel(IRepository repository, int count, int offset, Guid i)
+        {
+            var pagesInGraph = GetChildrenPages(repository, null);
+            var pagesNotInGraph = repository.GetAllPages().Where(x => x.ParentId == LinqRepository.TrashParentId || !pagesInGraph.Any(y => y.Id == x.Id));
+
+            return new TableViewModel()
+            {
+                Title = StringResource.admin_LostPages,
+                ViewName = "TableView",
+                RowClickAction = new NavigationLink("Page", "Admin"),
+                Header = new List<TableCellViewModel>
+                {
+                    //new TableCellViewModel(StringResource.pg_PwdRecovery_Submit),
+                    new TableCellViewModel(StringResource.admin_Name)
+                },
+                Rows = pagesNotInGraph.Select(p => new TableRowViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Cells = new List<TableCellViewModel> 
+                    { 
+                        //new TableCellViewModel(new NavigationLink("RecoverPage", "Admin") { PageId = p.Id }),
+                        new TableCellViewModel(p.Name)
+                    }
+                }).ToList()
+            };
+        }
+
+        private IList<ContentPage> GetChildrenPages(IRepository repository, Guid? parentId)
+        {
+            var children = repository.GetPages(parentId, null);
+            var result = new List<ContentPage>(children);
+            foreach (var child in children)
+            {
+                result.AddRange(GetChildrenPages(repository, child.Id));
+            }
+
+            return result;
         }
 
         private CategoryTreeItemViewModel GetItemById(Guid id, CategoryTreeItemViewModel item)

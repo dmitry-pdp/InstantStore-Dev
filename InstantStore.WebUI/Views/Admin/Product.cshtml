@@ -121,9 +121,10 @@
                 @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
                 @Html.HiddenFor(model => model.Id)
                 <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
+                @Html.ActionLink(StringResource.admin_PageClone, "ProductClone", new { pageId = this.Model.Id, parentId = this.Model.ParentCategoryId }, new { @class = "btn btn-lg btn-default" })
             </div>
         }
-        @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" });
+        @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" })
     </div>
 </div>
 <script>

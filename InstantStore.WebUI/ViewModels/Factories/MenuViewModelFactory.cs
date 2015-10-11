@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 
 using InstantStore.Domain.Abstract;
-using InstantStore.WebUI.Resources;
 using InstantStore.Domain.Concrete;
+using InstantStore.WebUI.Resources;
+using InstantStore.WebUI.Models.Helpers;
 
 namespace InstantStore.WebUI.ViewModels.Factories
 {
@@ -44,6 +45,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 }
                 else
                 {
+                    /*
                     mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
                     {
                         Glyph = "glyphicon glyphicon-briefcase",
@@ -63,6 +65,8 @@ namespace InstantStore.WebUI.ViewModels.Factories
                         IsActive = page == PageIdentity.Cart
                     });
 
+                    */
+
                     mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
                     {
                         Glyph = "glyphicon glyphicon-user",
@@ -73,13 +77,16 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 }
             }
 
-            mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+            if (user == null || !user.IsAdmin)
             {
-                Glyph = "glyphicon glyphicon-paperclip",
-                Name = StringResource.form_Contact_us,
-                Link = new NavigationLink { ActionName = "Feedback", ControllerName = "Main" },
-                IsActive = page == PageIdentity.Feedback
-            });
+                mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                {
+                    Glyph = "glyphicon glyphicon-paperclip",
+                    Name = StringResource.form_Contact_us,
+                    Link = new NavigationLink { ActionName = "Feedback", ControllerName = "Main" },
+                    IsActive = page == PageIdentity.Feedback
+                });
+            }
 
             if (user != null)
             {
@@ -88,6 +95,15 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     Glyph = "glyphicon glyphicon-log-out",
                     Name = StringResource.Logout,
                     Link = new NavigationLink { ActionName = "Logoff", ControllerName = "Main" }
+                });
+            }
+            else
+            {
+                mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel
+                {
+                    Glyph = "glyphicon glyphicon-log-in",
+                    Name = StringResource.login_LoginAsUser,
+                    Link = new NavigationLink { ActionName = "Login", ControllerName = "Main" }
                 });
             }
 
@@ -198,20 +214,52 @@ namespace InstantStore.WebUI.ViewModels.Factories
             return viewModel;
         }
 
-        public static NavigationMenuViewModel CreateNavigationMenu(this IRepository repository, Guid? pageId)
+        public static NavigationMenuViewModel CreateNavigationMenu(this IRepository repository, Guid? pageId, HttpRequestBase httpRequest)
         {
-            var contentPage = pageId != null ? repository.GetPageById(pageId.Value) : new ContentPage();
-            if (contentPage == null)
+            var viewModel = new NavigationMenuViewModel 
+            { 
+                Title = StringResource.navbar_CategoriesTitle,
+                Items = new List<NavigationItemViewModel>()
+            };
+
+            var catalogTree = repository.GetCatalogTree();
+            if (catalogTree == null || catalogTree.Root == null || catalogTree.Root.Children == null)
             {
-                throw new ApplicationException("Invalid.Database.State");
+                repository.LogErrorMessage("[CreateNavigationMenu] Catalog tree is null or its root is null or empty.", httpRequest);
+                return viewModel;
             }
 
-            var viewModel = new NavigationMenuViewModel { Title = StringResource.navbar_CategoriesTitle };
-            var parentId = contentPage.ParentId;
+            var catalogItems = catalogTree.Root.Children
+                .Where(page => page != null && page.Page != null)
+                .OrderBy(page => page.Page.Position);
 
-            viewModel.BackLink = new NavigationLink { ActionName = "Page", PageId = parentId ?? Guid.Empty };
-            viewModel.Items = new List<NavigationItemViewModel>();
+            foreach (var catalogItem in catalogItems)
+            { 
+                bool isCurrentPage = catalogItem.Page.Id == pageId;
 
+                viewModel.Items.Add(new NavigationItemViewModel
+                {
+                    Name = catalogItem.Page.Name,
+                    IsActive = isCurrentPage,
+                    Link = new NavigationLink { PageId = catalogItem.Page.Id }
+                });
+
+                if (isCurrentPage || catalogTree.LookupPage(pageId ?? Guid.Empty, catalogItem) != null)
+                {
+                    foreach(var catalogChildItem in catalogItem.Children.OrderBy(page => page.Page.Position))
+                    {
+                        viewModel.Items.Add(new NavigationItemViewModel
+                        {
+                            Name = catalogChildItem.Page.Name,
+                            Glyph = "glyphicon glyphicon-chevron-right",
+                            IsActive = catalogTree.LookupPage(pageId ?? Guid.Empty, catalogChildItem) != null,
+                            Link = new NavigationLink { PageId = catalogChildItem.Page.Id }
+                        });
+                    }
+                }
+            }
+
+            /*
             var siblingPages = repository.GetPages(parentId, null).Where(page => page.CategoryId != null).OrderBy(page => page.Position);
             if (siblingPages == null || !siblingPages.Any())
             {
@@ -288,7 +336,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     }
                 }
             }
-
+            */
             return viewModel;
         }
 

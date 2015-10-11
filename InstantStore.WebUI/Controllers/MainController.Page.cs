@@ -36,32 +36,14 @@ namespace InstantStore.WebUI.Controllers
             var contentPage = this.repository.GetPageById(id.Value);
             if (contentPage != null)
             {
-                // Page/Category view
-                this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, id);
-                this.ViewData["NavigationMenuViewModel"] = 
-                    MenuViewModelFactory.CreateNavigationMenu(repository, id);
-
-                var viewModel = new PageViewModel(contentPage);
-                if (viewModel.Attachment != null)
-                {
-                    viewModel.Attachment.CanEdit = false;
-                }
-
-                this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, contentPage, c, o, user != null ? ListingViewProductSettings.User : ListingViewProductSettings.User);
-                this.ViewData["IsPage"] = !viewModel.ContentPage.IsCategory();
-                return this.View(viewModel);
+                return this.ContentPage(contentPage, id.Value, user, c, o);
             }
             else if ((product = repository.GetProductById(id.Value)) != null)
             {
-                if (parentId != null)
-                {
-                    this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, parentId);
-                }
+                this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, parentId);
+                this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, parentId, this.Request);
 
-                this.ViewData["NavigationMenuViewModel"] =
-                    MenuViewModelFactory.CreateNavigationMenu(repository, parentId);
-
-                this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreateSimilarProducts(repository, parentId);
+                //this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreateSimilarProducts(repository, parentId);
 
                 var productViewModel = new ProductViewModel(this.repository, id.Value, parentId, user);
                 return this.View("Product", productViewModel);
@@ -70,6 +52,24 @@ namespace InstantStore.WebUI.Controllers
             {
                 return this.HttpNotFound();
             }
+        }
+
+        private ActionResult ContentPage(ContentPage page, Guid id, User user, int c, int o)
+        {
+            // Page/Category view
+            this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, id);
+            this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, id, this.Request);
+
+            var viewModel = new PageViewModel(page);
+            if (viewModel.Attachment != null)
+            {
+                viewModel.Attachment.CanEdit = false;
+            }
+
+            this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, page, c, o, ListingViewProductSettings.User);
+
+            this.ViewData["IsPage"] = !viewModel.ContentPage.IsCategory();
+            return this.View(viewModel);
         }
 
         public ActionResult Download(Guid id)

@@ -448,7 +448,7 @@
   <data name="user_Edit" xml:space="preserve">
     <value>Изменить мои данные</value>
   </data>
-  <data name="user_EditAd" xml:space="preserve">
+  <data name="admin_Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
   <data name="User_exists" xml:space="preserve">
@@ -916,7 +916,7 @@
     <value>Авторизироваться</value>
   </data>
   <data name="navbar_CategoriesTitle" xml:space="preserve">
-    <value>Категории</value>
+    <value>Каталог товаров</value>
   </data>
   <data name="admin_CategoryIsImportant" xml:space="preserve">
     <value>Показывать на заглавной</value>
@@ -1265,5 +1265,20 @@
   </data>
   <data name="admin_ProductUpdateTitle" xml:space="preserve">
     <value>Редактировать продукт</value>
+  </data>
+  <data name="admin_PageClone" xml:space="preserve">
+    <value>Клонировать</value>
+  </data>
+  <data name="admin_CantAddPageToItselfParent" xml:space="preserve">
+    <value>Нельзя в иерархии выбрать эту страницу или её подстраницу.</value>
+  </data>
+  <data name="admin_ErrorValidationSummary" xml:space="preserve">
+    <value>Не удалость сохранить данные, исправьте следующие ошибки для успешного продолжения:</value>
+  </data>
+  <data name="admin_LostPages" xml:space="preserve">
+    <value>Восстановить страницы</value>
+  </data>
+  <data name="admin_PageNameRequiredErrorMessage" xml:space="preserve">
+    <value>Имя страницы должно быть заполнено</value>
   </data>
 </root>

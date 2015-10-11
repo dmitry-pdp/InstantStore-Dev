@@ -1,4 +1,5 @@
 ﻿using InstantStore.Domain.Concrete;
+using InstantStore.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -9,6 +10,8 @@ namespace InstantStore.Domain.Abstract
     {
         //IEnumerable<InstantStore.Domain.Entities.Product> Products { get; }
         void LogError(Exception exception, DateTime time, string requestUrl, string clientIp, string userAgent, string sessionId, Guid? userId);
+
+        void LogError(string message, DateTime time, string requestUrl, string clientIp, string userAgent, string sessionId, Guid? userId);
 
         string GetSettings(SettingsKey key);
 
@@ -70,6 +73,8 @@ namespace InstantStore.Domain.Abstract
 
         IList<CustomProperty> CreateAttributesForProduct(Guid templateId);
 
+        IList<ContentPage> GetAllPages();
+
         IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter);
 
         ContentPage GetPageById(Guid id);
@@ -77,6 +82,8 @@ namespace InstantStore.Domain.Abstract
         ContentPage GetPageByCategoryId(Guid id);
 
         ContentPage GetPageByProductId(Guid id);
+
+        ContentPageTree GetCatalogTree();
 
         void DeletePage(Guid id);
 
@@ -98,7 +105,7 @@ namespace InstantStore.Domain.Abstract
 
         Product GetProductById(Guid id);
 
-        IList<KeyValuePair<string, Product>> GetProductsForCategory(Guid categoryId, int offset, int count);
+        IList<Tuple<string, Guid?, Product>> GetProductsForCategory(Guid categoryId, int offset, int count);
 
         int GetProductsCountForCategory(Guid id);
 
@@ -149,6 +156,10 @@ namespace InstantStore.Domain.Abstract
         IList<OrderUpdate> GetStatusesForOrder(Guid orderId);
 
         void AddProductsFromOrder(Guid orderId, User user);
+
+        Guid CloneProduct(Guid productId, Guid parentId);
+
+        void TrashPage(Guid id);
     }
     public struct OrdersQueryResult
     {

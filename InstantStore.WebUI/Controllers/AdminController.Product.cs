@@ -159,5 +159,16 @@ namespace InstantStore.WebUI.Controllers
 
             return this.Json(new { status = "success" });
         }
+
+        public ActionResult ProductClone(Guid pageId, Guid parentId)
+        {
+            if (pageId == Guid.Empty || parentId == Guid.Empty)
+            {
+                return this.RedirectToAction("Information", new { id = pageId });
+            }
+
+            var newProductId = this.repository.CloneProduct(pageId, parentId);
+            return this.RedirectToAction("Product", new { id = newProductId, parentId = parentId });
+        }
     }
 }

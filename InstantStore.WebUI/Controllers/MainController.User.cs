@@ -66,6 +66,12 @@ namespace InstantStore.WebUI.Controllers
             return this.RedirectToAction("NewUserConfirmation");
         }
 
+        public ActionResult Login()
+        {
+            this.Initialize(Guid.Empty, PageIdentity.Unknown);
+            return this.View();
+        }
+
         public ActionResult NewUserConfirmation()
         {
             this.Initialize(Guid.Empty, PageIdentity.Unknown);

@@ -1,12 +1,14 @@
 ﻿@using InstantStore.WebUI.Resources;
+@using InstantStore.WebUI.ViewModels;
 @{
-    ViewBag.Title = StringResource.login_title;
+    ViewBag.Title = StringResource.login_LoginAsUser;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
 <div class="container-fluid col-md-6 col-md-offset-3 border">
     <h2>@ViewBag.Title</h2>
-    <form action="/main/loginuser" method="post">
+    @using (Html.BeginForm("LoginUser", "Main", FormMethod.Post, new { id = "login-form" }))
+    { 
         <div class="form-group">
             <div>@StringResource.pge_Login_UserNameRequired</div>
             <input type="text" name="name" id="name" class="form-control" />
@@ -15,9 +17,39 @@
             <div>@StringResource.pge_Login_Pass</div>
             <input type="password" name="password" id="password" class="form-control" />
         </div>
-        <div class="form-group">
-            <input type="submit" value="@StringResource.pge_Login_LogIn" class="btn btn-primary btn-lg" />
-            <a class="btn btn-default btn-lg" style="float:right" href="/main/newuser">@StringResource.Register</a>
+        <div class="form-group" id="error-container">
+            <span id="error-message"></span>
         </div>
-    </form>
+        <div class="form-group">
+            @Html.Partial("ReferrerButton", new ReferrerButtonViewModel(this.ViewBag.HttpReferrer as string))
+            <input type="submit" value="@StringResource.pge_Login_LogIn" class="btn btn-primary btn-lg" />
+            @Html.ActionLink(StringResource.Register, "NewUser", null, new { @class = "btn btn-default btn-lg pull-right" })
+        </div>        
+    }
 </div>
+<script>
+    $(function () {
+        $("#error-container").hide();
+        $("#login-form").ajaxForm({
+            dataType: "json",
+            beforeSubmit: function () {
+                $("#error-container").hide();
+            },
+            error: function () {
+                alert("@StringResource.login_ErrorLoginExchangeError");
+            },
+            success: function (response) {
+                if (!response || !response.result) {
+                    alert("@StringResource.login_ErrorLoginMessageError");
+                }
+                else if (response.result == "success") {
+                    location.href = '@(this.ViewBag.HttpReferrer != null ? this.ViewBag.HttpReferrer : Url.Action("Index"))';
+                }
+                else {
+                    $("#error-message").text(response.message);
+                    $("#error-container").show();
+                }
+            }
+        });
+    });
+</script>

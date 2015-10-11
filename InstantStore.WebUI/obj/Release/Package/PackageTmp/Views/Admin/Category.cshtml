@@ -15,6 +15,16 @@
 
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 
+@if (!this.ViewData.ModelState.IsValid)
+{ 
+<style>
+    .field-validation-error {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+}
+
 <div class="border col-sm-3">
     @Html.ActionLink(StringResource.admin_Back, "Pages", new { treeSelection = this.Model.Content != null ? this.Model.Content.Id : (Guid?)null }, new { @class = "btn btn-block btn-primary" })
     <h3>@StringResource.admin_AddToParent </h3>
@@ -27,6 +37,14 @@
         {
             <div class="row">
                 <div class="col-sm-8">
+                    @if (!this.ViewData.ModelState.IsValid)
+                    { 
+                        <div class="form-group text-danger">
+                            <span>@StringResource.admin_ErrorValidationSummary</span>
+                            @Html.ValidationSummary()
+                        </div>
+                    }
+                    
                     <div class="form-group">
                         @Html.LabelFor(model => model.Content.Name, new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.Content.Name, new { @class = "form-control" })

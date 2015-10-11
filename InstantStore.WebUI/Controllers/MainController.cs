@@ -21,9 +21,7 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult Index()
         {
             this.Initialize(Guid.Empty);
-            this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, null);
-            this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, null);
-            this.ViewData["CategoryTilesViewModel"] = CategoryViewModelFactory.GetPriorityCategories(repository);
+            this.ViewData["CategoryTilesViewModel"] = CategoryViewModelFactory.GetPriorityCategories(repository, this.Request);
             return View();
         }
 
@@ -73,6 +71,13 @@ namespace InstantStore.WebUI.Controllers
 
             var stream = new MemoryStream((size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray());
             return new FileStreamResult(stream, "image/png");
+        }
+
+        protected override void Initialize(Guid pageId, PageIdentity pageIdentity = PageIdentity.Unknown, bool promoteProducts = true)
+        {
+            base.Initialize(pageId);
+            this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, null, this.Request);
+            this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, null);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace InstantStore.Domain.Helpers
             var categoryPage = context.ContentPages.FirstOrDefault(x => x.Id == categoryId);
             if (categoryPage == null)
             {
-                throw new ModelValidationException(string.Format("Category tree is invalid. Category is not found for id: {0}", categoryId));
+                return categoryId;
             }
 
             // If the page is not category then return.
@@ -46,15 +46,18 @@ namespace InstantStore.Domain.Helpers
             // Extracting the category children.
             foreach (var childPage in categoryChildren)
             {
+                // All products from the real child category
                 var childProducts = context.ProductToCategories.Where(x => x.CategoryId == childPage.Id).ToList();
-                var childGroup = categoryGroups.Where(x => x.GroupId == childPage.Id);
+                
+                // Products of the child group of the current category.
+                var childGroup = categoryGroups.Where(x => x.GroupId == childPage.Id).ToList();
 
                 // Delete all products which are not exist in the child anymore.
-                var productsToDeleteInGroup = childGroup.Except(childProducts);
+                var productsToDeleteInGroup = childGroup.Where(x => !childProducts.Any(y => y.ProductId == x.ProductId)).ToList();
                 context.ProductToCategories.DeleteAllOnSubmit(productsToDeleteInGroup);
 
                 // Insert all products which are missing in the category group.
-                var productsToInsertInGroup = childProducts.Except(childGroup);
+                var productsToInsertInGroup = childProducts.Where(x => !childGroup.Any(y => y.ProductId == x.ProductId)).ToList();
                 context.ProductToCategories.InsertAllOnSubmit(productsToInsertInGroup.Select(x => new ProductToCategory
                 {
                     Id = Guid.NewGuid(),

@@ -115,7 +115,7 @@ namespace InstantStore.WebUI.Models
 
                         if (string.IsNullOrWhiteSpace(to))
                         {
-                            repository.LogError(null, DateTime.Now, "[code] email address of the recipient is null or empty.", null, null, null, null);
+                            repository.LogError("[code] email address of the recipient is null or empty.", DateTime.Now, null, null, null, null, null);
                             return;
                         }
 

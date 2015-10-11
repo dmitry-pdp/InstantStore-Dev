@@ -29,9 +29,10 @@ namespace InstantStore.Domain.Helpers
             }
 
             bool sameCurrency = 
-                product.PriceCurrencyId != null && 
+                user.IsAdmin ||
+                (product.PriceCurrencyId != null && 
                 user.DefaultCurrencyId != null && 
-                product.PriceCurrencyId == user.DefaultCurrencyId;
+                product.PriceCurrencyId == user.DefaultCurrencyId);
 
             double conversionRate = 1.0;
 

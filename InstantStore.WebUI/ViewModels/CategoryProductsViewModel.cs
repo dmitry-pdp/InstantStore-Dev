@@ -30,7 +30,7 @@ namespace InstantStore.WebUI.ViewModels
                 Count = count,
                 Id = "0"
             };
-            this.Products = repository.GetProductsForCategory(id, offset, count).Select(x => CreateItemViewModel(x.Value)).ToList();
+            this.Products = repository.GetProductsForCategory(id, offset, count).Select(x => CreateItemViewModel(x.Item3)).ToList();
         }
 
         public List<CategoryProductViewModel> Products { get; set; }

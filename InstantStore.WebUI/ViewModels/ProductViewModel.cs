@@ -112,24 +112,38 @@ namespace InstantStore.WebUI.ViewModels
 
             this.Attributes = attributesTemplate != null ? repository.GetPropertiesForTemplate(attributesTemplate.Id).OrderBy(x => x.Name).ToList() : new List<CustomProperty>();
       
-            if (user != null && !user.IsAdmin && user.DefaultCurrencyId != null)
+            if (user != null)
             {
-                var userCurrency = repository.GetCurrencies().FirstOrDefault(x => x.Id == user.DefaultCurrencyId.Value);
-                var price = product.GetPriceForUser(user, repository.GetExchangeRates());
-                
-                this.Attributes.Add(new CustomProperty
+                if (!user.IsAdmin && user.DefaultCurrencyId != null)
                 {
-                    Name = StringResource.Price,
-                    Value = userCurrency != null ? new CurrencyString(price, userCurrency.Text).ToString() : null
-                });
+                    var userCurrency = repository.GetCurrencies().FirstOrDefault(x => x.Id == user.DefaultCurrencyId.Value);
+                    var price = product.GetPriceForUser(user, repository.GetExchangeRates());
 
-                this.AddToCart = new NavigationLink
+                    this.Attributes.Add(new CustomProperty
+                    {
+                        Name = StringResource.Price,
+                        Value = userCurrency != null ? new CurrencyString(price, userCurrency.Text).ToString() : null
+                    });
+                    /*
+                    this.AddToCart = new NavigationLink
+                    {
+                        ControllerName = "User",
+                        ActionName = "AddToCart",
+                        PageId = this.Id,
+                        Text = StringResource.productTile_AddToCart
+                    };
+                    */
+                }
+                else if (user.IsAdmin && product.PriceCurrencyId != null && product.PriceValueCash != null)
                 {
-                    ControllerName = "User",
-                    ActionName = "AddToCart",
-                    PageId = this.Id,
-                    Text = StringResource.productTile_AddToCart
-                };
+                    var currency = repository.GetCurrencies().FirstOrDefault(x => x.Id == product.PriceCurrencyId.Value);
+
+                    this.Attributes.Add(new CustomProperty
+                    {
+                        Name = StringResource.Price,
+                        Value = currency != null ? new CurrencyString(product.PriceValueCash.Value, currency.Text).ToString() : null
+                    });
+                }
             }
         }
 

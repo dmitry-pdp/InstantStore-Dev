@@ -6,11 +6,14 @@
     var controlPanel = ViewBag.ControlPanelViewModel as ControlPanelViewModel;
     var mainMenuViewModel = ViewBag.MainMenuViewModel as MainMenuViewModel;
     var navigationBarViewModel = this.ViewBag.NavigationMenuViewModel as NavigationMenuViewModel;
+    //var navigationBarViewModel = null as NavigationMenuViewModel;
     var breadcrumbViewModel = this.ViewBag.BreadcrumbViewModel as BreadcrumbViewModel;
-    var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
+    //var mediaListViewModel = this.ViewBag.MediaListViewModel as MediaListViewModel;
+    var mediaListViewModel = null as MediaListViewModel;
     var navigationListViewModel = this.ViewBag.NavigationListViewModel as ListViewModel;
-        
+
     bool showLeftRailLogin = (bool?)this.ViewBag.ShowLeftRailLogin ?? false;
+    //bool showLeftRailLogin = false;
 
     bool renderCustomLeftColumn = (bool?)this.ViewBag.RenderCustomLeftColumn ?? (
         !showLeftRailLogin &&
@@ -73,10 +76,12 @@
             else
             {
                 <div class="col-sm-3">
+                    <!--
                     @if (showLeftRailLogin)
                     {
                         @Html.Partial("LeftRailLogin")
                     }
+                    -->
                     @if (navigationBarViewModel != null)
                     { 
                         @Html.Partial("NavigationBar", navigationBarViewModel)

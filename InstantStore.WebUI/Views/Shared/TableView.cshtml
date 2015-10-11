@@ -25,47 +25,50 @@
             </tr>
         </thead>
     }
-    @foreach (var row in this.Model.Rows)
-{
-    <tr id="@(IsRowClickable ? row.Id : null)" parentId="@(IsRowClickable ? row.ParentId : null)" class="@(IsRowClickable ? "c_pointer " + tableId : null)">
-        @if (row.GroupCell != null)
+    @if (this.Model.Rows != null)
+    { 
+        foreach (var row in this.Model.Rows)
         {
-            <td colspan="@columns">
-                @if (row.GroupCell.Action != null)
-                {
-                    <a href="@row.GroupCell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@row.GroupCell.Action.Text</a>
-                }
-                else if (row.GroupCell.Thumbnail != null)
-                {
-                    @Html.Partial("ImageThumbnail", row.GroupCell.Thumbnail)
-                }
-                else
-                {
-                    <h4>@row.GroupCell.Text</h4>
-                }
-            </td>
-        }
-        else
-        {            
-            foreach (var cell in row.Cells)
+        <tr id="@(IsRowClickable ? row.Id : null)" parentId="@(IsRowClickable ? row.ParentId : null)" class="@(IsRowClickable ? "c_pointer " + tableId : null)">
+            @if (row.GroupCell != null)
             {
-                <td>
-                    @if (cell.Action != null)
+                <td colspan="@columns">
+                    @if (row.GroupCell.Action != null)
                     {
-                        <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@cell.Action.Text</a>
+                        <a href="@row.GroupCell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@row.GroupCell.Action.Text</a>
                     }
-                    else if (cell.Thumbnail != null)
+                    else if (row.GroupCell.Thumbnail != null)
                     {
-                        @Html.Partial("ImageThumbnail", cell.Thumbnail)
+                        @Html.Partial("ImageThumbnail", row.GroupCell.Thumbnail)
                     }
                     else
                     {
-                        @cell.Text
+                        <h4>@row.GroupCell.Text</h4>
                     }
                 </td>
             }
-        }
-    </tr>
+            else
+            {            
+                foreach (var cell in row.Cells)
+                {
+                    <td>
+                        @if (cell.Action != null)
+                        {
+                            <a href="@cell.Action.GetUrl(this.Url)" class="btn btn-default table-action">@cell.Action.Text</a>
+                        }
+                        else if (cell.Thumbnail != null)
+                        {
+                            @Html.Partial("ImageThumbnail", cell.Thumbnail)
+                        }
+                        else
+                        {
+                            @cell.Text
+                        }
+                    </td>
+                }
+            }
+        </tr>
+    }
 }
 </table>
 @if (this.Model.Pagination != null)
@@ -83,7 +86,8 @@
                         var rowActionUrl = this.Model.RowClickAction.GetUrl(this.Url);
                         var hasQuestion = rowActionUrl.Contains('?');
                     }
-                    location.href = "@Html.Raw(rowActionUrl + (hasQuestion ? "&" : "?"))" + "id=" + $(this).attr("id") + "&parentId=" + $(this).attr("parentId");
+                    location.href = "@Html.Raw(rowActionUrl + (hasQuestion ? "&" : "?"))" + "id=" + $(this).attr("id") + 
+                        ($(this).attr("parentId") !== undefined ? ("&parentId=" + $(this).attr("parentId")) : "");
                 }
             });
         });

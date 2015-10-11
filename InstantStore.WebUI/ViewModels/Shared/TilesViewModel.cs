@@ -8,9 +8,29 @@ namespace InstantStore.WebUI.ViewModels
 {
     public class TilesViewModel
     {
-        public IList<KeyValuePair<string, IList<TileViewModel>>> TileGroups { get; set; }
+        public IList<TilesViewModelGroup> TileGroups { get; set; }
 
         public PaginationViewModel Pagination { get; set; }
+    }
+
+    public class TilesViewModelGroup
+    {
+        public TilesViewModelGroup(TileGroupKey key, IEnumerable<TileViewModel> value)
+        { 
+            this.Key = key;
+            this.Value = value;
+        }
+
+        public TileGroupKey Key { get; private set; }
+
+        public IEnumerable<TileViewModel> Value { get; private set; }
+    }
+   
+    public class TileGroupKey
+    {
+        public NavigationLink Link { get; set; }
+
+        public string Title { get; set; }
     }
 
     public class AttributeList : List<KeyValuePair<string, string>>

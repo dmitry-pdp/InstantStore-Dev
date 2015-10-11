@@ -149,6 +149,7 @@
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\EmailManager.cs" />
+    <Compile Include="Models\Helpers\Logging.cs" />
     <Compile Include="Models\Security\CustomAuthorizationAttribute.cs" />
     <Compile Include="Models\Helpers\HtmlPrefixScopeExtensions.cs" />
     <Compile Include="Models\Helpers\HttpContextHelper.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Shared\ReferrerButtonViewModel.cs" />
     <Compile Include="ViewModels\Shared\TabControlViewModel.cs" />
     <Compile Include="ViewModels\Shared\TableViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
@@ -336,6 +338,8 @@
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\Admin\DeleteProducts.cshtml" />
     <Content Include="Views\Shared\Dialog.cshtml" />
+    <Content Include="Views\Shared\ReferrerButton.cshtml" />
+    <Content Include="Views\Main\Hello.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

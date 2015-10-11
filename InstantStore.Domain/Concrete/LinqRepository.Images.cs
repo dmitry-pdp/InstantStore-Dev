@@ -62,48 +62,61 @@ namespace InstantStore.Domain.Concrete
                         Graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
                         Graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                        float srcImageRatio = (float)image.Width / (float)image.Height;
-                        float dstImageRatio = (float)width / (float)height;
-
                         SD.Rectangle srcRect = new SD.Rectangle(0, 0, image.Width, image.Height);
                         SD.Rectangle dstRect = new SD.Rectangle(0, 0, width, height);
 
-                        bool useWidthConst =
-                            (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio) ||
-                            (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio);
-                        bool useHeightConst =
-                            (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio) ||
-                            (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio);
-
-                        // Crop 
-                        if (!advancedCrop)
+                        if (width > image.Width && height > image.Height)
                         {
-                            if (useWidthConst)
-                            {
-                                int newSrcHeight = (int)(width / srcImageRatio);
-                                int srcTopOffset = (height - newSrcHeight) / 2;
-                                dstRect = new SD.Rectangle(0, srcTopOffset, width, newSrcHeight);
-                            }
-                            else if (useHeightConst)
-                            {
-                                int newSrcWidth = (int)(height * srcImageRatio);
-                                int srcLeftOffset = (width - newSrcWidth) / 2;
-                                dstRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, height);
-                            }
+                            // image smaller than a thumbnail
+                            // place in center
+
+                            var xOffset = (width - image.Width) / 2;
+                            var yOffset = (height - image.Height) / 2;
+                            dstRect = new SD.Rectangle(xOffset, yOffset, image.Width, image.Height);
                         }
                         else
-                        {
-                            if (useWidthConst)
+                        { 
+                            // Rescale image
+                            float srcImageRatio = (float)image.Width / (float)image.Height;
+                            float dstImageRatio = (float)width / (float)height;
+
+                            bool useWidthConst =
+                                (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio) ||
+                                (srcImageRatio > 1.0f && srcImageRatio > dstImageRatio);
+                            bool useHeightConst =
+                                (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio) ||
+                                (srcImageRatio < 1.0f && dstImageRatio > srcImageRatio);
+
+                            // Crop 
+                            if (!advancedCrop)
                             {
-                                int newSrcWidth = (int)(image.Height * dstImageRatio);
-                                int srcLeftOffset = (image.Width - newSrcWidth) / 2;
-                                srcRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, image.Height);
+                                if (useWidthConst)
+                                {
+                                    int newSrcHeight = (int)(width / srcImageRatio);
+                                    int srcTopOffset = (height - newSrcHeight) / 2;
+                                    dstRect = new SD.Rectangle(0, srcTopOffset, width, newSrcHeight);
+                                }
+                                else // if (useHeightConst)
+                                {
+                                    int newSrcWidth = (int)(height * srcImageRatio);
+                                    int srcLeftOffset = (width - newSrcWidth) / 2;
+                                    dstRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, height);
+                                }
                             }
-                            else if (useHeightConst)
+                            else
                             {
-                                int newSrcHeight = (int)(image.Width / dstImageRatio);
-                                int srcTopOffset = (image.Height - newSrcHeight) / 2;
-                                srcRect = new SD.Rectangle(0, srcTopOffset, image.Width, newSrcHeight);
+                                if (useWidthConst)
+                                {
+                                    int newSrcWidth = (int)(image.Height * dstImageRatio);
+                                    int srcLeftOffset = (image.Width - newSrcWidth) / 2;
+                                    srcRect = new SD.Rectangle(srcLeftOffset, 0, newSrcWidth, image.Height);
+                                }
+                                else // if (useHeightConst)
+                                {
+                                    int newSrcHeight = (int)(image.Width / dstImageRatio);
+                                    int srcTopOffset = (image.Height - newSrcHeight) / 2;
+                                    srcRect = new SD.Rectangle(0, srcTopOffset, image.Width, newSrcHeight);
+                                }
                             }
                         }
 

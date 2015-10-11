@@ -14,8 +14,6 @@
     <div class="row">
         <div class="col-sm-12" id="new-pages-row">
             <p>
-                @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-withparentid" })
-                @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-withparentid" })
                 @if (cateogoryProducts != null)
                 {
                     @Html.ActionLink(StringResource.admin_ProductNew, "Product", null, new { @class = "btn btn-default btn-withparentid" })

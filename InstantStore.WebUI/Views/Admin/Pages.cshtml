@@ -24,16 +24,18 @@
     <input type="hidden" value="@Guid.Empty" id="current-selection" />
     <div class="btn-toolbar">
         <div class="btn-group pull-right" id="tree-buttons">
-            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default" role="button" id="btn-item-edit">
+            @Html.ActionLink(StringResource.admin_NewPage, "Page", null, new { @class = "btn btn-default btn-withparentid" })
+            @Html.ActionLink(StringResource.admin_PageNewCategory, "Category", null, new { @class = "btn btn-default btn-withparentid" })
+            <a href="@Url.Action("Page", "Admin", new { a = "edit" })" class="btn btn-default btn-withid" role="button" id="btn-item-edit" title="@StringResource.admin_Edit">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-delete">
+            <a href="@Url.Action("Page", "Admin", new { a = "delete" })" class="tree-btn btn btn-default btn-withid @(isRoot ? "disabled" : null)" role="button" id="btn-item-delete" title="@StringResource.admin_Delete">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-moveup">
+            <a href="@Url.Action("Page", "Admin", new { a = "moveup" })" class="tree-btn btn btn-default btn-withid @(isRoot ? "disabled" : null)" role="button" id="btn-item-moveup" title="@StringResource.admin_MoveUP">
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
             </a>
-            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default @(isRoot ? "disabled" : null)" role="button" id="btn-item-movedown">
+            <a href="@Url.Action("Page", "Admin", new { a = "movedown" })" class="tree-btn btn btn-default btn-withid @(isRoot ? "disabled" : null)" role="button" id="btn-item-movedown" title="@StringResource.admin_MoveDown">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
             </a>
         </div>
@@ -67,6 +69,13 @@
         var pagesTreeId = '@pagesTreeViewModel.TreeId';
         TreeView.InitializeTreeView('@treeSelectedId', pagesTreeId);
 
+        $("#tree-buttons").find(".btn-withparentid").on("click", function () {
+            var href = $(this).attr('href');
+            var selectedCat = $("#current-selection").val();
+            window.location.href = href + '?parentId=' + selectedCat;
+            return false;
+        });
+
         $(document).on("category-tree:selected", function (event, id, treeId) {
             if (treeId != pagesTreeId) {
                 return;
@@ -88,7 +97,7 @@
             });
         });
 
-        $("#tree-buttons a").click(function () {
+        $("#tree-buttons a.btn-withid").click(function () {
             var selectedCat = $("#current-selection").val();
             var btn = $(this);
             var href = btn.attr('href') + '&id=' + selectedCat;

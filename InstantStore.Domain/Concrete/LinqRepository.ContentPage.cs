@@ -10,6 +10,16 @@ namespace InstantStore.Domain.Concrete
 {
     public partial class LinqRepository
     {
+        public static Guid TrashParentId = new Guid("ffffffffffffffffffffffffffffffff");
+
+        public IList<ContentPage> GetAllPages()
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.ContentPages.ToList();
+            }
+        }
+
         public IList<ContentPage> GetPages(Guid? parentId, Func<ContentPage, bool> filter)
         {
             using (var context = new InstantStoreDataContext())
@@ -211,6 +221,79 @@ namespace InstantStore.Domain.Concrete
             using (var context = new InstantStoreDataContext())
             {
                 return context.Categories.Where(x => x.IsImportant).ToList();
+            }
+        }
+
+        public void TrashPage(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var trashPage = context.ContentPages.FirstOrDefault(x => x.Id == TrashParentId);
+                if (trashPage == null)
+                {
+                    context.ContentPages.InsertOnSubmit(new ContentPage()
+                    {
+                        Id = TrashParentId,
+                        Name = "TRASH",
+                        Position = -1
+                    });
+                }
+
+                var page = context.ContentPages.FirstOrDefault(x => x.Id == id);
+                if (page == null)
+                {
+                    throw new ModelValidationException("UpdateContentPage.OriginalPageDoesNotExists");
+                }
+
+                page.ParentId = TrashParentId;
+                context.SubmitChanges();
+            }
+        }
+
+        public ContentPageTree GetCatalogTree()
+        {
+            IList<ContentPage> categoryPages = null;
+            using (var context = new InstantStoreDataContext())
+            {
+                categoryPages = context.ContentPages.Where(x => x.CategoryId != null).ToList();
+            }
+            
+            var categoryDictioary = categoryPages.ToDictionary(x => x.Id);
+            var categoryParentMapping = new Dictionary<Guid, IEnumerable<ContentPage>>();
+            foreach(var group in categoryPages.GroupBy(x => x.ParentId))
+            {
+                categoryParentMapping.Add(group.Key ?? Guid.Empty, group);
+            }
+
+            return new ContentPageTree(null, new DictionaryPageContentProvider(categoryDictioary, categoryParentMapping));
+        }
+
+        public class DictionaryPageContentProvider : IPageContentProvider
+        {
+            private IDictionary<Guid, ContentPage> pages;
+            private IDictionary<Guid, IEnumerable<ContentPage>> dictionary;
+
+            public DictionaryPageContentProvider(IDictionary<Guid, ContentPage> pages, IDictionary<Guid, IEnumerable<ContentPage>> dictionary)
+            {
+                this.pages = pages;
+                this.dictionary = dictionary;
+            }
+            
+            public List<ContentPage> GetChildren(Guid parentId)
+            {
+                IEnumerable<ContentPage> pages = null;
+                return this.dictionary.TryGetValue(parentId, out pages) ? pages.ToList() : new List<ContentPage>();
+            }
+
+            public ContentPage GetPage(Guid id)
+            {
+                ContentPage page;
+                return this.pages.TryGetValue(id, out page) ? page : null;
+            }
+
+            public void TrashPage(Guid id)
+            {
+                this.pages.Remove(id);
             }
         }
     }

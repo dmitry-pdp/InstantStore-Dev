@@ -51,7 +51,7 @@ namespace InstantStore.WebUI.ViewModels
         public Guid Id { get; set; } 
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_Name")]
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "admin_PageNameRequiredErrorMessage")]
         public string Name { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]

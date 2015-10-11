@@ -11,9 +11,16 @@
         continue; 
     }
     
-    if (!string.IsNullOrEmpty(tilesGroup.Key))
-    { 
-        <h4>@tilesGroup.Key</h4>
+    if (tilesGroup.Key != null)
+    {
+        if (tilesGroup.Key.Link != null)
+        { 
+            <h3><a href="@tilesGroup.Key.Link.GetUrl(this.Url)">@tilesGroup.Key.Link.Text</a></h3>
+        }
+        else if (!string.IsNullOrWhiteSpace(tilesGroup.Key.Title))
+        { 
+            <h3>@tilesGroup.Key.Title</h3>
+        }
     }
 
     foreach (var tileViewModel in tilesGroup.Value)

@@ -13,6 +13,8 @@ using System.Data.Linq;
 using InstantStore.WebUI.Resources;
 using InstantStore.Domain.Entities;
 using InstantStore.WebUI.ViewModels.Factories;
+using InstantStore.Domain.Helpers;
+using System.Diagnostics;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -131,13 +133,18 @@ namespace InstantStore.WebUI.Controllers
         [ValidateInput(false)]
         public ActionResult Page(PageViewModel pageViewModel, Guid? attachmentId)
         {
+            Guid? parentId = pageViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : pageViewModel.ParentCategoryId;
+            if (parentId != null && pageViewModel.Id != null && pageViewModel.Id != Guid.Empty && ValidateParentId(parentId.Value, pageViewModel.Id))
+            {
+                this.ModelState.AddModelError("ParentCategoryId", StringResource.admin_CantAddPageToItselfParent);
+            }
+
             if (this.ModelState.IsValid)
             {
-                Guid? parentId = pageViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : pageViewModel.ParentCategoryId;
                 var contentPage = pageViewModel.Id != Guid.Empty ? this.repository.GetPageById(pageViewModel.Id) : null;
                 if (contentPage == null)
                 {
-                    repository.NewPage(new ContentPage
+                    contentPage = new ContentPage
                     {
                         Name = pageViewModel.Name,
                         Text = pageViewModel.Text,
@@ -145,7 +152,9 @@ namespace InstantStore.WebUI.Controllers
                         ShowInMenu = pageViewModel.ShowInMenu,
                         Position = repository.GetPages(parentId, null).Count,
                         AttachmentId = attachmentId,
-                    });
+                    };
+
+                    repository.NewPage(contentPage);
                 }
                 else
                 {
@@ -162,9 +171,21 @@ namespace InstantStore.WebUI.Controllers
             }
             else
             {
+                this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+                this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
                 return this.View(pageViewModel ?? new PageViewModel());
             }
+        }
+
+        private bool ValidateParentId(Guid parentId, Guid id)
+        {
+            var startTime = DateTime.Now;
+            var pageTree = new ContentPageTree(id, new RepositoryPageContentProvider(this.repository));
+            var endTime = DateTime.Now;
+            Trace.TraceInformation("ContentPageTree build time {0} ms.", (endTime - startTime).TotalMilliseconds);
+            
+            return pageTree.LookupPage(parentId, pageTree.Root) != null;
         }
 
         public ActionResult Category(Guid? id, Guid? parentId)
@@ -181,9 +202,14 @@ namespace InstantStore.WebUI.Controllers
         [ValidateInput(false)]
         public ActionResult Category(CategoryViewModel categoryViewModel)
         {
+            Guid? parentId = categoryViewModel.Content.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.Content.ParentCategoryId;
+            if (parentId != null && categoryViewModel.Content.Id != null && categoryViewModel.Content.Id != Guid.Empty && ValidateParentId(parentId.Value, categoryViewModel.Content.Id))
+            {
+                this.ModelState.AddModelError("ParentCategoryId", StringResource.admin_CantAddPageToItselfParent);
+            }
+
             if (this.ModelState.IsValid)
             {
-                Guid? parentId = categoryViewModel.Content.ParentCategoryId == Guid.Empty ? (Guid?)null : categoryViewModel.Content.ParentCategoryId;
                 Guid pageId = categoryViewModel.Content.Id;
 
                 if (categoryViewModel.Content.Id != Guid.Empty)
@@ -233,6 +259,8 @@ namespace InstantStore.WebUI.Controllers
             }
             else
             {
+                this.ViewData["SettingsViewModel"] = this.settingsViewModel;
+                this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
                 return this.View(categoryViewModel ?? new CategoryViewModel());
             }

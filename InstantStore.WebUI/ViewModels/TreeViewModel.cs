@@ -61,7 +61,12 @@ namespace InstantStore.WebUI.ViewModels
 
         private static List<CategoryTreeItemViewModel> GetPages(IRepository repository, Guid? parentId)
         {
-            return repository.GetPages(parentId, null).Select(p => new CategoryTreeItemViewModel(p)).OrderBy(y => y.Position).ToList();
+            return repository
+                .GetPages(parentId, null)
+                .Where(p => p.Id != LinqRepository.TrashParentId)
+                .Select(p => new CategoryTreeItemViewModel(p))
+                .OrderBy(y => y.Position)
+                .ToList();
         }
 
         public string Name { get; set; }

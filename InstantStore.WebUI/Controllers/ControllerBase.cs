@@ -28,13 +28,14 @@ namespace InstantStore.WebUI.Controllers
             this.settingsViewModel = new SettingsViewModel(this.repository);
         }
 
-        protected void Initialize(Guid pageId, PageIdentity pageIdentity = PageIdentity.Unknown, bool promoteProducts = true)
+        protected virtual void Initialize(Guid pageId, PageIdentity pageIdentity = PageIdentity.Unknown, bool promoteProducts = true)
         {
             this.currentUser = this.HttpContext.CurrentUser() ?? UserIdentityManager.GetActiveUser(this.Request, this.repository);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateDefaultMenu(this.repository, pageId, currentUser, pageIdentity);
             this.ViewData["ShowLeftRailLogin"] = currentUser == null;
-            this.ViewData["MediaListViewModel"] = promoteProducts ? CategoryViewModelFactory.CreatePopularProducts(this.repository, null) : null;
+            //this.ViewData["MediaListViewModel"] = promoteProducts ? CategoryViewModelFactory.CreatePopularProducts(this.repository, null) : null;
+            this.ViewData["HttpReferrer"] = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : null;
         }
 
         protected IList<SelectListItem> GetAvailableCurrencyList()

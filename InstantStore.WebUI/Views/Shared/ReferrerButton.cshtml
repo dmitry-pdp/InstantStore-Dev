@@ -1,0 +1,7 @@
+﻿@using InstantStore.WebUI.ViewModels;
+@model ReferrerButtonViewModel
+
+@if (!string.IsNullOrEmpty(this.Model.Url))
+{
+    <a href="@this.Model.Url" class="@this.Model.Classes">@this.Model.Title</a>
+}

@@ -28,7 +28,7 @@
 
         $(document).on("category-tree:selected", function (event, id) {
             $.ajax({
-                url: "@Url.Action("Settings", "Admin")?i=" + id,
+                url: "@Url.Action("Settings", "Admin")?i=" + id + "&r=" + new Date().getMilliseconds(),
                 cached: false
             })
             .done(function (html) {
