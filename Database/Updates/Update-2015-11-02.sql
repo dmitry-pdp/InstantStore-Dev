@@ -1,0 +1,1 @@
+﻿ALTER TABLE [ProductToCategory] ADD [Index] INT NOT NULL DEFAULT -1;

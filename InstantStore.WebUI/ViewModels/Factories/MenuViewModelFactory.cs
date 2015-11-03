@@ -40,7 +40,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     {
                         Glyph = "glyphicon glyphicon-cog",
                         Name = StringResource.admin_Dashboard,
-                        Link = new NavigationLink { ActionName = "Orders", ControllerName = "Admin" }
+                        Link = new NavigationLink { ActionName = "Pages", ControllerName = "Admin" }
                     });
                 }
                 else
@@ -129,6 +129,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 IsActive = page == ControlPanelPage.Users
             });
 
+            /*
             mainMenuViewModel.Menu.Add(new MenuItemViewModel
             {
                 Name = StringResource.admin_UsersOrdersAction,
@@ -137,6 +138,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 Glyph = "glyphicon glyphicon-shopping-cart",
                 IsActive = page == ControlPanelPage.Orders
             });
+            */
 
             mainMenuViewModel.Menu.Add(new MenuItemViewModel
             {

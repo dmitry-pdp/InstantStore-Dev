@@ -2116,13 +2116,13 @@ namespace InstantStore.Domain.Concrete
 		private void attach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = this;
+			entity.ContentPage = this;
 		}
 		
 		private void detach_ProductToCategories(ProductToCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = null;
+			entity.ContentPage = null;
 		}
 		
 		private void attach_ProductToCategories1(ProductToCategory entity)
@@ -5022,6 +5022,8 @@ namespace InstantStore.Domain.Concrete
 		
 		private System.Nullable<System.Guid> _GroupId;
 		
+		private int _Index;
+		
 		private EntityRef<ContentPage> _ContentPage;
 		
 		private EntityRef<ContentPage> _ContentPage1;
@@ -5042,6 +5044,8 @@ namespace InstantStore.Domain.Concrete
     partial void OnUpdateTimeChanged();
     partial void OnGroupIdChanging(System.Nullable<System.Guid> value);
     partial void OnGroupIdChanged();
+    partial void OnIndexChanging(int value);
+    partial void OnIndexChanged();
     #endregion
 		
 		public ProductToCategory()
@@ -5164,8 +5168,28 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Index]", Storage="_Index", DbType="Int NOT NULL")]
+		public int Index
+		{
+			get
+			{
+				return this._Index;
+			}
+			set
+			{
+				if ((this._Index != value))
+				{
+					this.OnIndexChanging(value);
+					this.SendPropertyChanging();
+					this._Index = value;
+					this.SendPropertyChanged("Index");
+					this.OnIndexChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage_ProductToCategory", Storage="_ContentPage", ThisKey="CategoryId", OtherKey="Id", IsForeignKey=true)]
-		public ContentPage Category
+		public ContentPage ContentPage
 		{
 			get
 			{
@@ -5193,7 +5217,7 @@ namespace InstantStore.Domain.Concrete
 					{
 						this._CategoryId = default(System.Guid);
 					}
-					this.SendPropertyChanged("Category");
+					this.SendPropertyChanged("ContentPage");
 				}
 			}
 		}

@@ -25,6 +25,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Images = new List<Guid>();
             this.CreateTemplatesList(repository);
             this.ParentCategoryId = parentId ?? Guid.Empty;
+            this.Position = -1;
         }
 
         public ProductViewModel(IRepository repository, Guid id, Guid? parentId, User user)
@@ -76,6 +77,9 @@ namespace InstantStore.WebUI.ViewModels
 
         public NavigationLink AddToCart { get; set; }
 
+        [Display(ResourceType = typeof(StringResource), Name = "admin_ProductIndex")]
+        public int Position { get; set; }
+
         public void InitializeRootCategory(IRepository repository)
         {
             this.Currencies = repository.GetCurrencies().Select(currency => new SelectListItem() 
@@ -102,6 +106,7 @@ namespace InstantStore.WebUI.ViewModels
             this.Images = repository.GetImagesForProduct(product.Id);
             this.AttributesId = product.CustomAttributesTemplateId;
             this.MainImage = product.MainImageId ?? (this.Images != null ? this.Images.FirstOrDefault() : (Guid?)null);
+            this.Position = repository.GetProductPosition(id);
 
             var attributesTemplate = product.CustomAttributesTemplateId != null && product.CustomAttributesTemplateId != Guid.Empty 
                 ? repository.GetTemplateById(product.CustomAttributesTemplateId.Value) : null;

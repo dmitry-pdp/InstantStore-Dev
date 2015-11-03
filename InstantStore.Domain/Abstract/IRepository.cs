@@ -127,9 +127,11 @@ namespace InstantStore.Domain.Abstract
 
         IList<Guid> GetImagesForProduct(Guid productId);
 
-        void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes);
+        void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes, int position);
 
         void AssignProductsToCategory(IList<Guid> products, Guid categoryId);
+
+        int GetProductPosition(Guid id);
 
         // Orders
 

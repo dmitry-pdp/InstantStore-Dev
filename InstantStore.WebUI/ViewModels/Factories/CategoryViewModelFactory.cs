@@ -181,7 +181,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
                 {
                     foreach (var candidate in categoryCandidates)
                     {
-                        var categoryPage = candidate.Category;
+                        var categoryPage = candidate.ContentPage;
                         while(categoryPage != null && categoryPage.Id != this.parentId)
                         {
                             categoryPage = categoryPage.Parent;
@@ -262,7 +262,7 @@ namespace InstantStore.WebUI.ViewModels.Factories
             foreach (var group in products.GroupBy(x => string.Concat((x.Item2 ?? Guid.Empty).ToString(), "|", x.Item1), y => y.Item3))
             {
                 var productList = group.ToList();
-                productList.Sort(this.Compare);
+                //productList.Sort(this.Compare);
 
                 var dataList = new List<Tuple<Product, CurrencyString>>();
 

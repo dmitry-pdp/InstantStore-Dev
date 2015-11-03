@@ -55,7 +55,8 @@ namespace InstantStore.WebUI.Controllers
                     productViewModel.ParentCategoryId,
                     productViewModel.Images,
                     productViewModel.TemplateId,
-                    productViewModel.Attributes);
+                    productViewModel.Attributes,
+                    productViewModel.Position);
 
                 return this.RedirectToAction("Pages", new { treeSelection = productViewModel.ParentCategoryId });
             }

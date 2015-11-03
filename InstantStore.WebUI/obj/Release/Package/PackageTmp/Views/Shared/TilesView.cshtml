@@ -15,7 +15,7 @@
     {
         if (tilesGroup.Key.Link != null)
         { 
-            <h3><a href="@tilesGroup.Key.Link.GetUrl(this.Url)">@tilesGroup.Key.Link.Text</a></h3>
+            <h3 class="tile-group-title"><a href="@tilesGroup.Key.Link.GetUrl(this.Url)">@tilesGroup.Key.Link.Text</a></h3>
         }
         else if (!string.IsNullOrWhiteSpace(tilesGroup.Key.Title))
         { 
@@ -27,11 +27,11 @@
     {
         var url = tileViewModel.Link.GetUrl(this.Url);
     
-        <div class="thumbnail tile">
+        <div class="tile">
             @Html.Partial("ImageThumbnail", new ImageThumbnailViewModel { ThumbnailId = tileViewModel.ImageId, Width=220, Click = tileViewModel.Link, Class = "thumbnail-image" })
             <div class="caption tile-caption">
                 <a href="@url">
-                    <div class="title">@tileViewModel.Name</div>
+                    <div>@tileViewModel.Name</div>
                 </a>
                 @if (tileViewModel.Attributes != null && tileViewModel.Attributes.Any())
                 {

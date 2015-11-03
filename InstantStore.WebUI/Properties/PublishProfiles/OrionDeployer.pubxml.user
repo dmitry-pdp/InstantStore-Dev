@@ -11,10 +11,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/InstantStore.Domain.dll">
-      <publishTime>10/11/2015 15:58:13</publishTime>
+      <publishTime>11/02/2015 23:55:31</publishTime>
     </File>
     <File Include="bin/InstantStore.WebUI.dll">
-      <publishTime>10/11/2015 15:58:14</publishTime>
+      <publishTime>11/02/2015 23:55:32</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>09/30/2014 12:40:56</publishTime>
@@ -116,7 +116,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2015 11:23:35</publishTime>
     </File>
     <File Include="Content/Tiles.css">
-      <publishTime>06/09/2015 14:50:15</publishTime>
+      <publishTime>10/27/2015 23:12:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>11/26/2014 21:02:06</publishTime>
@@ -287,7 +287,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/11/2015 14:48:58</publishTime>
     </File>
     <File Include="Views/Admin/Product.cshtml">
-      <publishTime>10/07/2015 11:16:20</publishTime>
+      <publishTime>11/02/2015 23:19:11</publishTime>
     </File>
     <File Include="Views/Admin/ProductAttribute.cshtml">
       <publishTime>04/26/2015 19:43:54</publishTime>
@@ -401,7 +401,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/10/2015 22:11:05</publishTime>
     </File>
     <File Include="Views/Shared/TilesView.cshtml">
-      <publishTime>10/11/2015 12:56:30</publishTime>
+      <publishTime>10/27/2015 23:12:12</publishTime>
     </File>
     <File Include="Views/Shared/UserInfoBasic.cshtml">
       <publishTime>05/29/2015 12:31:04</publishTime>

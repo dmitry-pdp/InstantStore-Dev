@@ -1033,6 +1033,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Индекс.
+        /// </summary>
+        public static string admin_ProductIndex {
+            get {
+                return ResourceManager.GetString("admin_ProductIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to В наличии.
         /// </summary>
         public static string admin_ProductIsAvailable {

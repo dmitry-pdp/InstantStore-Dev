@@ -1281,4 +1281,7 @@
   <data name="admin_PageNameRequiredErrorMessage" xml:space="preserve">
     <value>Имя страницы должно быть заполнено</value>
   </data>
+  <data name="admin_ProductIndex" xml:space="preserve">
+    <value>Индекс</value>
+  </data>
 </root>

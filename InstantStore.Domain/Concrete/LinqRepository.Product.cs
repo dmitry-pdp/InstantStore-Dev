@@ -12,7 +12,7 @@ namespace InstantStore.Domain.Concrete
 {
     public partial class LinqRepository
     {
-        public void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes)
+        public void UpdateOrCreateNewProduct(Product productToUpdate, Guid parentId, IList<Guid> images, Guid? prototypeTemplateId, IList<CustomProperty> attributes, int position)
         {
             using(var context = new InstantStoreDataContext())
             {
@@ -104,6 +104,12 @@ namespace InstantStore.Domain.Concrete
                     }
 
                     AddAttributes(product, prototypeTemplateId, attributes, context);
+                }
+
+                var productPrimaryCategories = context.ProductToCategories.Where(x => x.Product.Id == product.Id);
+                foreach (var productPrimaryCategory in productPrimaryCategories)
+                {
+                    productPrimaryCategory.Index = position;
                 }
                 
                 context.SubmitChanges();
@@ -256,9 +262,10 @@ namespace InstantStore.Domain.Concrete
                         Product = x, 
                         GroupName = y.Group != null ? y.Group.Name : null, 
                         GroupId = y.GroupId,
-                        Position = y.Group != null ? y.Group.Position : 1 
+                        Position = y.Group != null ? y.Group.Position : 1,
+                        Index = y.Index
                     })
-                .OrderBy(x => x.Position)
+                .OrderBy(x => x.Position * 100000 + x.Index)
                 .Skip(offset)
                 .Take(count)
                 .ToList()
@@ -429,6 +436,15 @@ namespace InstantStore.Domain.Concrete
                 context.SubmitChanges();
 
                 return clone.VersionId;
+            }
+        }
+
+        public int GetProductPosition(Guid id)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                var productCategory = context.ProductToCategories.Where(x => x.Product.VersionId == id).FirstOrDefault();
+                return productCategory == null ? -1 : productCategory.Index;
             }
         }
     }
