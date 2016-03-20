@@ -115,6 +115,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить файл.
+        /// </summary>
+        public static string admin_AddAttachment {
+            get {
+                return ResourceManager.GetString("admin_AddAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добавить в .
         /// </summary>
         public static string admin_AddToParent {

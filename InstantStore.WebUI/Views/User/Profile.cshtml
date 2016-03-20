@@ -1,10 +1,9 @@
 ﻿@using InstantStore.WebUI.Resources;
 @using InstantStore.WebUI.ViewModels;
-@model UserViewModelBase
+@model UserViewModel
 @{
     ViewBag.Title = StringResource.UserProfile_Title;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    var availableCurrencies = this.ViewBag.AvailableCurrencies as IEnumerable<SelectListItem>;
 }
 
 <div class="container-fluid col-md-8 col-md-offset-2">

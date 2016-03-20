@@ -15,47 +15,82 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class MainController
     {
+        private const string newUserSessionId = "User.NewUserId";
+
         public ActionResult NewUser()
         {
             this.Initialize(Guid.Empty, PageIdentity.Unknown);
-            return View(new UserViewModel { AvailableCurrencies = this.GetAvailableCurrencyList() });
+            return View("NewUserStep1", new UserAuthViewModel());
         }
 
         [HttpPost]
-        public ActionResult NewUser(UserViewModel userViewModel)
+        public ActionResult NewUser(UserAuthViewModel userViewModel)
         {
-            // TODO: DDoS vulnerability. Throttling needs to be added here.
+            // TODO: DDoS vulnerability. Throttling by ip needs to be added here.
+
+            if (userViewModel == null)
+            {
+                return this.NewUser();
+            }
+
+            bool userExists = false;
+
             using (var context = new InstantStoreDataContext())
             {
                 if (context.Users.ToList().Any(
                     user =>
-                        string.Equals(user.Name, userViewModel.Name, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(user.Email, userViewModel.Email, StringComparison.OrdinalIgnoreCase)))
+                        string.Equals(user.Name, userViewModel.Name, StringComparison.OrdinalIgnoreCase) /* ||
+                        string.Equals(user.Email, userViewModelBasic.Email, StringComparison.OrdinalIgnoreCase) */))
                 {
+                    userExists = true;
                     this.ModelState.AddModelError(string.Empty, StringResource.UserAlreadyExists);
                 }
             }
 
+            this.Initialize(Guid.Empty, PageIdentity.Unknown);
+
             if (!this.ModelState.IsValid)
             {
-                this.Initialize(Guid.Empty, PageIdentity.Unknown);
-                userViewModel.AvailableCurrencies = this.GetAvailableCurrencyList();
-                return this.View(userViewModel);
+                userViewModel.Password = "";
+                userViewModel.ConfirmPassword = "";
+                return this.View("NewUserStep1", userViewModel);
             }
+
+            userViewModel.UserId = Guid.NewGuid();
+
+            this.Session[newUserSessionId] = userViewModel;
+            return this.View("NewUserStep2", new UserViewModel { NewUserId = userViewModel.UserId, Name = userViewModel.Name });
+        }
+
+        [HttpPost]
+        public ActionResult NewUser2(UserViewModel userViewModel)
+        {
+            if (userViewModel == null)
+            {
+                return this.NewUser();
+            }
+
+            var userAuthViewModel = this.Session[newUserSessionId] as UserAuthViewModel;
+            if (userAuthViewModel == null || userAuthViewModel.UserId != userViewModel.NewUserId)
+            {
+                return this.NewUser();
+            }
+            
+            var availableCurrencies = this.GetAvailableCurrencyList();
 
             var newUser = new User
             {
-                Name = userViewModel.Name,
+                Name = userAuthViewModel.Name,
                 Email = userViewModel.Email,
                 Company = userViewModel.Company,
                 Phonenumber = userViewModel.Phonenumber,
                 City = userViewModel.City,
-                Password = userViewModel.Password,
+                Password = userAuthViewModel.Password,
                 IsAdmin = false,
                 IsActivated = false,
                 IsBlocked = false,
                 IsPaymentCash = true,
-                DefaultCurrencyId = userViewModel.Currency
+                DefaultCurrencyId = availableCurrencies != null && availableCurrencies.Any() ? new Guid(availableCurrencies.First().Value) : (Guid?)null
             };
 
             this.repository.AddUser(newUser);

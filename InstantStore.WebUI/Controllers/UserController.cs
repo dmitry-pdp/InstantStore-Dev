@@ -16,25 +16,24 @@ namespace InstantStore.WebUI.Controllers
         {
             this.Initialize(Guid.Empty, PageIdentity.UserProfile);
 
-            return this.View(new UserViewModelBase
+            return this.View(new UserViewModel
             {
                 Name = this.currentUser.Name,
                 City = this.currentUser.City,
                 Company = this.currentUser.Company,
                 Email = this.currentUser.Email,
-                Phonenumber = this.currentUser.Phonenumber,
-                Currency = this.currentUser.DefaultCurrencyId ?? Guid.Empty,
-                AvailableCurrencies = this.GetAvailableCurrencyList()
+                Phonenumber = this.currentUser.Phonenumber
             });
         }
 
         [HttpPost]
-        public ActionResult Profile(UserViewModelBase userViewModel)
+        public ActionResult Profile(UserViewModel userViewModel)
         {
             this.Initialize(Guid.Empty, PageIdentity.UserProfile);
 
             if (this.ModelState.IsValid)
             {
+                this.currentUser.Name = userViewModel.Name;
                 this.currentUser.City = userViewModel.City;
                 this.currentUser.Company = userViewModel.Company;
                 this.currentUser.Email = userViewModel.Email;
@@ -49,11 +48,11 @@ namespace InstantStore.WebUI.Controllers
         public ActionResult ChangePassword()
         {
             this.Initialize(Guid.Empty, PageIdentity.Unknown);
-            return this.View(new UserViewModel());
+            return this.View(new UserAuthViewModel());
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(UserViewModel userViewModel)
+        public ActionResult ChangePassword(UserAuthViewModel userViewModel)
         {
             this.Initialize(Guid.Empty, PageIdentity.Unknown);
             if (this.ModelState.IsValidField("Password") && this.ModelState.IsValidField("ConfirmPassword"))

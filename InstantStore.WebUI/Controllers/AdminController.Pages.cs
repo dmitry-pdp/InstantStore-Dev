@@ -53,7 +53,7 @@ namespace InstantStore.WebUI.Controllers
                     this.ViewData["CategoryProducts"] = new CategoryProductsViewModel(this.repository, page.Id, o, c) { IsTiles = category.ListType == 2 };
                 }
 
-                viewModel = new PageViewModel(page, false);
+                viewModel = new PageViewModel(page, this.repository);
             }
 
             this.ViewData["IsImportMode"] = import;
@@ -131,13 +131,15 @@ namespace InstantStore.WebUI.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Page(PageViewModel pageViewModel, Guid? attachmentId)
+        public ActionResult Page(PageViewModel pageViewModel)
         {
             Guid? parentId = pageViewModel.ParentCategoryId == Guid.Empty ? (Guid?)null : pageViewModel.ParentCategoryId;
             if (parentId != null && pageViewModel.Id != null && pageViewModel.Id != Guid.Empty && ValidateParentId(parentId.Value, pageViewModel.Id))
             {
                 this.ModelState.AddModelError("ParentCategoryId", StringResource.admin_CantAddPageToItselfParent);
             }
+
+            var attachmentIds = pageViewModel.Attachments != null && pageViewModel.Attachments.Any() ? pageViewModel.Attachments.Select(x => x.AttachmentId.Value).ToList() : null;
 
             if (this.ModelState.IsValid)
             {
@@ -151,10 +153,9 @@ namespace InstantStore.WebUI.Controllers
                         ParentId = parentId,
                         ShowInMenu = pageViewModel.ShowInMenu,
                         Position = repository.GetPages(parentId, null).Count,
-                        AttachmentId = attachmentId,
                     };
 
-                    repository.NewPage(contentPage);
+                    repository.NewPage(contentPage, attachmentIds);
                 }
                 else
                 {
@@ -162,9 +163,8 @@ namespace InstantStore.WebUI.Controllers
                     contentPage.Text = pageViewModel.Text;
                     contentPage.ParentId = parentId;
                     contentPage.ShowInMenu = pageViewModel.ShowInMenu;
-                    contentPage.AttachmentId = attachmentId;
 
-                    this.repository.UpdateContentPage(contentPage);
+                    this.repository.UpdateContentPage(contentPage, attachmentIds);
                 }
 
                 return this.RedirectToAction("Pages", new { treeSelection = contentPage.Id });
@@ -224,7 +224,7 @@ namespace InstantStore.WebUI.Controllers
                     contentPage.Text = categoryViewModel.Content.Text;
                     contentPage.ShowInMenu = categoryViewModel.Content.ShowInMenu;
                     contentPage.ParentId = parentId;
-                    repository.UpdateContentPage(contentPage);
+                    repository.UpdateContentPage(contentPage, null);
 
                     var category = repository.GetCategoryById(contentPage.CategoryId.Value);
                     category.Name = categoryViewModel.Content.Name;
@@ -252,7 +252,7 @@ namespace InstantStore.WebUI.Controllers
                         ParentId = parentId,
                         Position = repository.GetPages(parentId, null).Count + 1,
                         CategoryId = categoryId,
-                    });
+                    }, null);
                 }
 
                 return this.RedirectToAction("Pages", new { treeSelection = pageId });
@@ -274,7 +274,7 @@ namespace InstantStore.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            return this.View("Attachment", new AttachmentViewModel(attachment));
+            return this.View("AttachmentEdit", new AttachmentViewModel(attachment));
         }
     }
 }

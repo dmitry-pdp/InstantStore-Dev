@@ -29,12 +29,12 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public Guid NewPage(ContentPage contentPage)
+        public Guid NewPage(ContentPage contentPage, IList<Guid> attachmentIds)
         {
             using (var context = new InstantStoreDataContext())
             {
                 contentPage.Id = Guid.NewGuid();
-                UpdateAttachmentName(contentPage, context);
+                UpdateAttachmentName(contentPage, attachmentIds, context);
 
                 context.ContentPages.InsertOnSubmit(contentPage);
                 context.SubmitChanges();
@@ -49,11 +49,9 @@ namespace InstantStore.Domain.Concrete
                 var page = context.ContentPages.FirstOrDefault(x => x.Id == id);
                 if (page != null)
                 {
-                    if (page.AttachmentId != null)
-                    {
-                        context.Attachments.DeleteAllOnSubmit(context.Attachments.Where(a => a.Id == page.AttachmentId));
-                    }
-
+                    var attachmentLinks = context.ContentPageAttachments.Where(x => x.PageId == id);
+                    context.ContentPageAttachments.DeleteAllOnSubmit(attachmentLinks);
+                    context.Attachments.DeleteAllOnSubmit(attachmentLinks.Select(x => x.Attachment));
                     context.ContentPages.DeleteOnSubmit(page);
                     context.SubmitChanges();
 
@@ -65,19 +63,53 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        private static void UpdateAttachmentName(ContentPage contentPage, InstantStoreDataContext context)
+        private static void UpdateAttachmentName(ContentPage contentPage, IList<Guid> attachmentIds, InstantStoreDataContext context)
         {
-            if (contentPage.AttachmentId != null)
+            if (contentPage != null && attachmentIds != null)
             {
-                contentPage.AttachmentName = context.Attachments
-                    .Where(x => x.Id == contentPage.AttachmentId)
-                    .Select(x => x.Name)
-                    .First();
-            }
+                var currentAttachments = context.ContentPageAttachments.Where(x => x.PageId == contentPage.Id);
+                var currentAttachmentLinks = currentAttachments.Select(x => x.AttachmentId).ToList();
+                foreach(var attachmentsIdToDelete in currentAttachmentLinks.Except(attachmentIds))
+                {
+                    var pageAttachmentsToDelete = context.ContentPageAttachments.FirstOrDefault(x => x.AttachmentId == attachmentsIdToDelete);
+                    if (pageAttachmentsToDelete != null)
+                    {
+                        context.ContentPageAttachments.DeleteOnSubmit(pageAttachmentsToDelete);
+                    }
 
+                    var attachmentsToDelete = context.Attachments.Where(x => x.Id == attachmentsIdToDelete);
+                    if (attachmentsToDelete != null)
+                    {
+                        context.Attachments.DeleteAllOnSubmit(attachmentsToDelete);
+                    }
+                }
+
+                var newAttachments = attachmentIds.Except(currentAttachmentLinks);
+                int index = currentAttachments.Any() ? currentAttachments.Max(x => x.Order) + 1 : 1;
+                foreach (var attachment in newAttachments.Join(context.Attachments, x => x, y => y.Id, (x, y) => y))
+                {
+                    context.ContentPageAttachments.InsertOnSubmit(new ContentPageAttachment
+                    {
+                        AttachmentId = attachment.Id,
+                        PageId = contentPage.Id,
+                        ContentType = attachment.ContentType,
+                        Size = attachment.ContentLength,
+                        Name = attachment.Name,
+                        Order = index++
+                    });
+                }
+            }
         }
 
-        public void UpdateContentPage(ContentPage contentPage)
+        public IList<ContentPageAttachment> GetPageAttachments(Guid pageId)
+        {
+            using (var context = new InstantStoreDataContext())
+            {
+                return context.ContentPageAttachments.Where(x => x.PageId == pageId).OrderBy(x => x.Order).ToList();
+            }
+        }
+
+        public void UpdateContentPage(ContentPage contentPage, IList<Guid> attachmentIds)
         {
             using (var context = new InstantStoreDataContext())
             {
@@ -92,9 +124,8 @@ namespace InstantStore.Domain.Concrete
                 contentPageOriginal.Name = contentPage.Name;
                 contentPageOriginal.Text = contentPage.Text;
                 contentPageOriginal.ParentId = contentPage.ParentId;
-                contentPageOriginal.AttachmentId = contentPage.AttachmentId;
                 contentPageOriginal.ShowInMenu = contentPage.ShowInMenu;
-                UpdateAttachmentName(contentPageOriginal, context);
+                UpdateAttachmentName(contentPageOriginal, attachmentIds, context);
 
                 context.SubmitChanges();
 

@@ -1,4 +1,4 @@
-﻿@using InstantStore.WebUI.Models;
+﻿ @using InstantStore.WebUI.Models;
 @using InstantStore.WebUI.Resources;
 
 @model InstantStore.Domain.Concrete.CustomProperty
@@ -12,7 +12,6 @@
         <label class="col-sm-2 control-label">@StringResource.Properties</label>
     }
     <div class="col-sm-8 @(propertyIndex > 0 ? "col-sm-offset-2" : string.Empty) ">
-
         <div class="template-property row">
             <div class="col-sm-8">
                 @using (Html.BeginCollectionItem("Properties"))

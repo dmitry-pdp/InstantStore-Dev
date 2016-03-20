@@ -9,8 +9,15 @@ using InstantStore.WebUI.Resources;
 
 namespace InstantStore.WebUI.ViewModels
 {
-    public class UserViewModel : UserViewModelBase
+    public class UserAuthViewModel
     {
+        public Guid UserId;
+
+        [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorRequired")]
+        [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
+        public string Name { get; set; }
+
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Pwd")]
         [DataType(DataType.Password)]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_PasswordErrorRequired")]
@@ -25,8 +32,10 @@ namespace InstantStore.WebUI.ViewModels
         public string ConfirmPassword { get; set; }
     }
 
-    public class UserViewModelBase
+    public class UserViewModel
     {
+        public Guid NewUserId { get; set; }
+
         [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorRequired")]
         [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
@@ -51,11 +60,5 @@ namespace InstantStore.WebUI.ViewModels
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorRequired")]
         [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
         public string City { get; set; }
-
-        [Display(ResourceType = typeof(StringResource), Name = "admin_UserPaymentCurrency")]
-        [Required(ErrorMessage = "Currency is not set")]
-        public Guid Currency { get; set; }
-
-        public IEnumerable<SelectListItem> AvailableCurrencies { get; set; }
     }
 }

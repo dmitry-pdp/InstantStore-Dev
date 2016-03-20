@@ -19,20 +19,11 @@ namespace InstantStore.WebUI.ViewModels
         }
 
         public PageViewModel(IRepository repository, Guid id)
-            : this(repository.GetPageById(id), true)
+            : this(repository.GetPageById(id), repository)
         {
         }
 
-        public PageViewModel(ContentPage contentPage, bool canEdit)
-            : this(contentPage)
-        {
-            if (this.Attachment != null)
-            {
-                this.Attachment.CanEdit = canEdit;
-            }            
-        }
-
-        public PageViewModel(ContentPage contentPage)
+        public PageViewModel(ContentPage contentPage, IRepository repository)
         {
             if (contentPage == null)
             {
@@ -43,9 +34,9 @@ namespace InstantStore.WebUI.ViewModels
             this.Name = contentPage.Name;
             this.Text = contentPage.Text;
             this.ParentCategoryId = contentPage.ParentId ?? Guid.Empty;
-            this.Attachment = contentPage.AttachmentId != null ? new AttachmentViewModel(contentPage) : null;
             this.ShowInMenu = contentPage.ShowInMenu;
             this.ContentPage = contentPage;
+            this.Attachments = repository.GetPageAttachments(contentPage.Id).Select(x => new AttachmentViewModel(x)).ToList();
         }
 
         public Guid Id { get; set; } 
@@ -63,8 +54,9 @@ namespace InstantStore.WebUI.ViewModels
         [Required]
         public Guid ParentCategoryId { get; set; }
 
-        [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
-        public AttachmentViewModel Attachment { get; set; }
+//        [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
+  
+        public List<AttachmentViewModel> Attachments { get; set; }
 
         public CategoryTreeItemViewModel RootCategory { get; private set; }
 

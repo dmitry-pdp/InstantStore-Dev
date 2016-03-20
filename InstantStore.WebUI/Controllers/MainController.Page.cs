@@ -60,11 +60,7 @@ namespace InstantStore.WebUI.Controllers
             this.ViewData["BreadcrumbViewModel"] = MenuViewModelFactory.CreateBreadcrumb(repository, id);
             this.ViewData["NavigationMenuViewModel"] = MenuViewModelFactory.CreateNavigationMenu(repository, id, this.Request);
 
-            var viewModel = new PageViewModel(page);
-            if (viewModel.Attachment != null)
-            {
-                viewModel.Attachment.CanEdit = false;
-            }
+            var viewModel = new PageViewModel(page, this.repository);
 
             this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, page, c, o, ListingViewProductSettings.User);
 

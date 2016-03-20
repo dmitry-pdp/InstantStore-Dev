@@ -5,5 +5,5 @@
     [Content] VARBINARY(MAX) NOT NULL, 
     [ContentType] NVARCHAR(250) NOT NULL, 
     [ContentLength] INT NOT NULL, 
-    [UploadedAt] DATETIME NOT NULL
+    [UploadedAt] DATETIME NOT NULL 
 )

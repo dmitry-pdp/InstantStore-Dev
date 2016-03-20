@@ -13,7 +13,7 @@ namespace InstantStore.WebUI.ViewModels
     /// <summary>
     /// Admin settings user profile.
     /// </summary>
-    public class UserProfileViewModel : UserViewModelBase
+    public class UserProfileViewModel : UserViewModel
     {
         public UserProfileViewModel()
         {
@@ -72,6 +72,12 @@ namespace InstantStore.WebUI.ViewModels
         [Display(ResourceType = typeof(StringResource), Name = "admin_Comment")]
         public string Comments { get; set; }
 
+        [Display(ResourceType = typeof(StringResource), Name = "admin_UserPaymentCurrency")]
+        [Required(ErrorMessage = "Currency is not set")]
+        public Guid Currency { get; set; }
+
         public IList<SelectListItem> PaymentTypes { get; private set; }
+
+        public IEnumerable<SelectListItem> AvailableCurrencies { get; set; }
     }
 }

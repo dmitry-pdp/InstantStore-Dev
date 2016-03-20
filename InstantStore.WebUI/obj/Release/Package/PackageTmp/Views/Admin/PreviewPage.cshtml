@@ -26,11 +26,14 @@
 
     <h2>@ViewBag.Title</h2>
     @Html.Raw(this.Model.Text)
-    if (this.Model.Attachment != null)
+    if (this.Model.Attachments != null && this.Model.Attachments.Any())
     {
         <div>
             <label>@StringResource.admin_PageAttachment</label>
-                @Html.Partial("Attachment", this.Model.Attachment)
+            @foreach(var attachment in this.Model.Attachments)
+            {
+                @Html.Partial("Attachment", attachment)
+            }
         </div>
     }
 }

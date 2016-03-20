@@ -41,14 +41,17 @@
             <div class="form-group">
                 <label>@StringResource.admin_PageAttachment</label>
                 <div id="attachment-container">
-                    @if (this.Model.Attachment != null)
+                    @if (this.Model.Attachments != null && this.Model.Attachments.Any())
                     {
-                        @Html.Partial("Attachment", this.Model.Attachment)
+                        foreach (var attachment in this.Model.Attachments)
+                        {
+                            @Html.Partial("AttachmentEdit", attachment)
+                        }
                     }
                 </div>
             </div>
             <div class ="form-group">
-                <a href="#" id="add-attachment" class="btn btn-default">@StringResource.admin_PageChooseFile</a>
+                <a href="#" id="add-attachment" class="btn btn-default">@StringResource.admin_AddAttachment</a>
             </div>
             <div class="form-group">
                 @Html.HiddenFor(model => model.Id)
@@ -86,7 +89,6 @@
                 url: "@Url.Action("Attachmentview", "Admin")?id=" + data.Id,
                 cache: false,
                 success: function (html) {
-                    $("#attachment-container").empty();
                     $("#attachment-container").append(html);
                 }
             });

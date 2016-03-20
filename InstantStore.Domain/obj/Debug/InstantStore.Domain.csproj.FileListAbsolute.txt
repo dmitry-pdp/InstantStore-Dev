@@ -8,4 +8,3 @@ C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.d
 C:\Work\src\InstantStore-Dev\InstantStore.Domain\bin\Debug\InstantStore.Domain.pdb
 C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.dll
 C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.pdb
-C:\Work\src\InstantStore-Dev\InstantStore.Domain\obj\Debug\InstantStore.Domain.csprojResolveAssemblyReference.cache

@@ -1284,4 +1284,7 @@
   <data name="admin_ProductIndex" xml:space="preserve">
     <value>Индекс</value>
   </data>
+  <data name="admin_AddAttachment" xml:space="preserve">
+    <value>Добавить файл</value>
+  </data>
 </root>

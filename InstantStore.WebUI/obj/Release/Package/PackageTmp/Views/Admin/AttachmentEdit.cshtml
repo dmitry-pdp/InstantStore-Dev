@@ -1,0 +1,30 @@
+﻿@using InstantStore.WebUI.Models;
+@using InstantStore.WebUI.Resources;
+@using InstantStore.WebUI.ViewModels;
+@model AttachmentViewModel
+
+@if (this.Model.AttachmentId != null && !string.IsNullOrEmpty(this.Model.AttachmentName))
+{
+    <div id="@this.Model.AttachmentId" class="attachment-block">
+        @using (Html.BeginCollectionItem("Attachments"))
+        {
+            <div class="col-sm-10">
+                @if (this.Model.AttachmentIcon != null)
+                {
+                    <img src="~/Image/@this.Model.AttachmentIcon" style="width:32px; height:32px" />
+                }
+                <a href="~/main/download?id=@this.Model.AttachmentId">@this.Model.AttachmentName</a>
+            </div>
+            <div class="col-sm-2">
+                <a class="btn btn-default btn-sm attachment-delete" id="@this.Model.AttachmentId">@StringResource.admin_Delete</a>
+            </div>
+            @Html.HiddenFor(model => model.AttachmentId)
+            <script>
+                $("#@this.Model.AttachmentId" + ".attachment-delete").click(function (event) {
+                    $("#@this.Model.AttachmentId" + ".attachment-block").remove();
+                });
+            </script>
+        }
+    </div>
+}
+

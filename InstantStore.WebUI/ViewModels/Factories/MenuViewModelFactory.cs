@@ -64,7 +64,6 @@ namespace InstantStore.WebUI.ViewModels.Factories
                         Badge = ordersCount > 0 ? ordersCount.ToString() : null,
                         IsActive = page == PageIdentity.Cart
                     });
-
                     */
 
                     mainMenuViewModel.MetaMenu.Add(new MenuItemViewModel

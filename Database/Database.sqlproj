@@ -87,6 +87,7 @@
     <Build Include="Tables\ImageThumbnails.sql" />
     <Build Include="Tables\Offer.sql" />
     <Build Include="Updates\Update-2015-11-02.sql" />
+    <Build Include="Tables\ContentPageAttachment.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Database.refactorlog" />
@@ -97,5 +98,6 @@
   <ItemGroup>
     <None Include="Security\CreateServerLogin.sql" />
     <None Include="Snapshots\Database_20150516_14-02-56.dacpac" />
+    <None Include="Updates\Update_2015-11-07_UpdateAttachmentsTable.sql" />
   </ItemGroup>
 </Project>

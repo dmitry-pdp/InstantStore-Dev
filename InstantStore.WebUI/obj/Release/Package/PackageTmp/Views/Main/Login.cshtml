@@ -23,7 +23,7 @@
         <div class="form-group">
             @Html.Partial("ReferrerButton", new ReferrerButtonViewModel(this.ViewBag.HttpReferrer as string))
             <input type="submit" value="@StringResource.pge_Login_LogIn" class="btn btn-primary btn-lg" />
-            @Html.ActionLink(StringResource.Register, "NewUser", null, new { @class = "btn btn-default btn-lg pull-right" })
+            @Html.ActionLink(StringResource.Register, "NewUser", null, new { @class = "btn btn-default btn-lg pull-right new_user" })
         </div>        
     }
 </div>

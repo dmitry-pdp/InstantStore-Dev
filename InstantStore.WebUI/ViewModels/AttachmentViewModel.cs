@@ -15,7 +15,9 @@ namespace InstantStore.WebUI.ViewModels
             { "xls", "FileExtension-Excel.png" },
             { "xlsx", "FileExtension-Excel.png" },
             { "pdf", "FileExtension-pdf.png" },
-            { "txt", "FileExtension-Txt.png" }
+            { "txt", "FileExtension-Txt.png" },
+            { "jpg", "FileExtension-Jpg.png" },
+            { "jpeg", "FileExtension-Jpg.png" }
         };
 
         public AttachmentViewModel()
@@ -23,19 +25,23 @@ namespace InstantStore.WebUI.ViewModels
             this.CanEdit = true;
         }
 
-        public AttachmentViewModel(ContentPage page)
-        {
-            this.AttachmentId = page.AttachmentId;
-            this.AttachmentName = page.AttachmentName;
-            string extension = this.AttachmentName != null ? this.AttachmentName.Substring(this.AttachmentName.LastIndexOf('.') + 1) : null;
-            this.AttachmentIcon = extension != null && attachmentExtensionToIconMap.ContainsKey(extension) ? attachmentExtensionToIconMap[extension] : null;
-        }
-
         public AttachmentViewModel(Attachment attachment)
         {
             if (attachment != null && !string.IsNullOrEmpty(attachment.Name))
             {
                 this.AttachmentId = attachment.Id;
+                this.AttachmentName = attachment != null ? attachment.Name : null;
+                string extension = this.AttachmentName != null ? this.AttachmentName.Substring(this.AttachmentName.LastIndexOf('.') + 1) : null;
+                this.AttachmentIcon = extension != null && attachmentExtensionToIconMap.ContainsKey(extension) ? attachmentExtensionToIconMap[extension] : null;
+                this.CanEdit = true;
+            }
+        }
+
+        public AttachmentViewModel(ContentPageAttachment attachment)
+        {
+            if (attachment != null && !string.IsNullOrEmpty(attachment.Name))
+            {
+                this.AttachmentId = attachment.AttachmentId;
                 this.AttachmentName = attachment != null ? attachment.Name : null;
                 string extension = this.AttachmentName != null ? this.AttachmentName.Substring(this.AttachmentName.LastIndexOf('.') + 1) : null;
                 this.AttachmentIcon = extension != null && attachmentExtensionToIconMap.ContainsKey(extension) ? attachmentExtensionToIconMap[extension] : null;

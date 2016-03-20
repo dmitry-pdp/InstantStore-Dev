@@ -246,6 +246,7 @@
     <Content Include="Image\Admin_ControlPanel_Users_Panel.png" />
     <Content Include="Image\close-icon.png" />
     <Content Include="Image\FileExtension-Excel.png" />
+    <Content Include="Image\FileExtension-Jpg.png" />
     <Content Include="Image\FileExtension-pdf.png" />
     <Content Include="Image\FileExtension-Txt.png" />
     <Content Include="Image\FileExtension-Word.png" />
@@ -340,6 +341,9 @@
     <Content Include="Views\Shared\Dialog.cshtml" />
     <Content Include="Views\Shared\ReferrerButton.cshtml" />
     <Content Include="Views\Main\Hello.cshtml" />
+    <Content Include="Views\Admin\AttachmentEdit.cshtml" />
+    <Content Include="Views\Main\NewUserStep1.cshtml" />
+    <Content Include="Views\Main\NewUserStep2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

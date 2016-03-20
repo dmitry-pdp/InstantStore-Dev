@@ -89,10 +89,12 @@ namespace InstantStore.Domain.Abstract
 
         void ChangePagePosition(Guid id, bool movedown);
 
-        Guid NewPage(ContentPage contentPage);
+        Guid NewPage(ContentPage contentPage, IList<Guid> attachmentIds);
 
-        void UpdateContentPage(ContentPage contentPage);
+        void UpdateContentPage(ContentPage contentPage, IList<Guid> attachmentIds);
 
+        IList<ContentPageAttachment> GetPageAttachments(Guid pageId);
+        
         Guid NewCategory(Category category);
 
         Category GetCategoryById(Guid id);

@@ -32,6 +32,15 @@
         <fieldset>
             @Html.Partial("UserInfoBasic", this.Model);
             <div class="form-group">
+                @Html.LabelFor(model => model.Currency, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.Currency, this.Model.AvailableCurrencies, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-8 col-sm-offset-4 error-label">
+                    @Html.ValidationMessageFor(model => model.Currency)
+                </div>
+            </div>
+            <div class="form-group">
                 @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-8">
                     @Html.DropDownListFor(model => model.PaymentType, this.Model.PaymentTypes, new { @class = "form-control" })
