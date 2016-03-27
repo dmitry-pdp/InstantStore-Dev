@@ -1951,7 +1951,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя.
+        ///   Looks up a localized string similar to Фамилия, имя, отчество.
         /// </summary>
         public static string form_Contact_Name {
             get {
@@ -2104,7 +2104,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Город.
+        ///   Looks up a localized string similar to Почтовый адрес.
         /// </summary>
         public static string form_Reg_Region {
             get {
@@ -2154,6 +2154,15 @@ namespace InstantStore.WebUI.Resources {
         public static string form_Reg_Title {
             get {
                 return ResourceManager.GetString("form_Reg_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Оборудование для прокола ушей.
+        /// </summary>
+        public static string global_WebSiteName {
+            get {
+                return ResourceManager.GetString("global_WebSiteName", resourceCulture);
             }
         }
         
@@ -2752,7 +2761,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Введите имя пользователя.
+        ///   Looks up a localized string similar to Введите адрес электронной почты.
         /// </summary>
         public static string pge_Login_UserNameRequired {
             get {
@@ -3103,7 +3112,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя города должно быть от 3 до 100 символов.
+        ///   Looks up a localized string similar to Почтовый адрес должен быть от 3 до 250 символов.
         /// </summary>
         public static string user_CityErrorLength {
             get {
@@ -3112,7 +3121,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя города должно быть заполнено.
+        ///   Looks up a localized string similar to Почтовый адрес должен быть заполнено.
         /// </summary>
         public static string user_CityErrorRequired {
             get {
@@ -3238,7 +3247,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя должно быть от 3 до 100 символов.
+        ///   Looks up a localized string similar to Фамилия, имя, отчество должно быть от 3 до 100 символов.
         /// </summary>
         public static string user_NameErrorLength {
             get {
@@ -3247,7 +3256,7 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя пользователя должно быть заполнено.
+        ///   Looks up a localized string similar to Фамилия, имя, отчество должно быть заполнено.
         /// </summary>
         public static string user_NameErrorRequired {
             get {

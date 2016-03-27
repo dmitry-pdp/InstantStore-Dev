@@ -301,7 +301,7 @@
     <value>Сообщение</value>
   </data>
   <data name="form_Contact_Name" xml:space="preserve">
-    <value>Имя</value>
+    <value>Фамилия, имя, отчество</value>
   </data>
   <data name="form_Contact_Send" xml:space="preserve">
     <value>Послать</value>
@@ -322,7 +322,7 @@
     <value>Полное имя</value>
   </data>
   <data name="form_Reg_Region" xml:space="preserve">
-    <value>Город</value>
+    <value>Почтовый адрес</value>
   </data>
   <data name="form_Reg_TelNum" xml:space="preserve">
     <value>Номер телефона</value>
@@ -380,7 +380,7 @@
     <value>Почта</value>
   </data>
   <data name="pge_Login_UserNameRequired" xml:space="preserve">
-    <value>Введите имя пользователя</value>
+    <value>Введите адрес электронной почты</value>
   </data>
   <data name="Place" xml:space="preserve">
     <value>Разместить</value>
@@ -605,10 +605,10 @@
     <value>Контрольная панель</value>
   </data>
   <data name="user_CityErrorLength" xml:space="preserve">
-    <value>Имя города должно быть от 3 до 100 символов</value>
+    <value>Почтовый адрес должен быть от 3 до 250 символов</value>
   </data>
   <data name="user_CityErrorRequired" xml:space="preserve">
-    <value>Имя города должно быть заполнено</value>
+    <value>Почтовый адрес должен быть заполнено</value>
   </data>
   <data name="user_CompanyErrorLength" xml:space="preserve">
     <value>Имя компании должно быть от 1 до 250 символов</value>
@@ -617,10 +617,10 @@
     <value>Имя компании должно быть заполнено</value>
   </data>
   <data name="user_NameErrorLength" xml:space="preserve">
-    <value>Имя должно быть от 3 до 100 символов</value>
+    <value>Фамилия, имя, отчество должно быть от 3 до 100 символов</value>
   </data>
   <data name="user_NameErrorRequired" xml:space="preserve">
-    <value>Имя пользователя должно быть заполнено</value>
+    <value>Фамилия, имя, отчество должно быть заполнено</value>
   </data>
   <data name="user_PasswordErrorLength" xml:space="preserve">
     <value>Имя города должно быть больше 3-х символов</value>
@@ -1286,5 +1286,8 @@
   </data>
   <data name="admin_AddAttachment" xml:space="preserve">
     <value>Добавить файл</value>
+  </data>
+  <data name="global_WebSiteName" xml:space="preserve">
+    <value>Оборудование для прокола ушей</value>
   </data>
 </root>

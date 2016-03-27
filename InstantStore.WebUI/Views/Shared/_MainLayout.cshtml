@@ -1,4 +1,5 @@
-﻿@using InstantStore.Domain.Concrete;
+﻿@using InstantStore.WebUI.Resources;
+@using InstantStore.Domain.Concrete;
 @using InstantStore.WebUI.ViewModels;
 @{
     var settingsViewModel = ViewBag.SettingsViewModel as SettingsViewModel;
@@ -36,7 +37,7 @@
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/jquery.form.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
-    <title>@ViewBag.Title</title>
+    <title>@string.Concat(StringResource.global_WebSiteName, " - ", ViewBag.Title)</title>
 </head>
 <body>
     <header>
@@ -51,7 +52,7 @@
     }
     <div class="container-fluid main-row">
         <div class="row">
-            @if (categoryListViewModel != null) 
+            @if (categoryListViewModel != null)
             { 
                 <div id="sidebar" role="navigation" class="col-xs-3">
                     @Html.Action("Menu", "NavCategory")
@@ -60,7 +61,7 @@
                     @RenderBody()
                 </div>
             }
-            else if(controlPanel != null)
+            else if (controlPanel != null)
             {
                 <div class="border col-sm-3">
                     @Html.Partial("ControlPanel", controlPanel)
@@ -106,20 +107,20 @@
                         {
                             <ol class="breadcrumb">
                                 @foreach (var item in breadcrumbViewModel)
-                                    {
+                                {
                                     <li class="@(item.IsActive ? "active" : "")">
                                         @if (item.Link != null)
-                                            {
+                                        {
                                             <a href="@item.Link.GetUrl(this.Url)">
                                                 @item.Name
                                             </a>
-                                            }
-                                            else
-                                            {
+                                        }
+                                        else
+                                        {
                                             @item.Name
-                                            }
+                                        }
                                     </li>
-                                    }
+                                }
                             </ol>
                         }
                         @RenderBody()

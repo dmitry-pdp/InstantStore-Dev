@@ -44,7 +44,7 @@
 </div>
     <script>
         $("tr.c_pointer").click(function () {
-            window.location.href = '/admin/template?id=' + this.getAttribute('id');
+            window.location.href = '@Url.Action("Template", "Admin")'+ '?id=' + this.getAttribute('id');
         });
     </script>
 

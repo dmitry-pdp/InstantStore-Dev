@@ -76,6 +76,11 @@ namespace InstantStore.WebUI.ViewModels
         [Required(ErrorMessage = "Currency is not set")]
         public Guid Currency { get; set; }
 
+        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Email")]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage = null)]
+        [EmailAddress(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage = null)]
+        public string Email { get; set; }
+
         public IList<SelectListItem> PaymentTypes { get; private set; }
 
         public IEnumerable<SelectListItem> AvailableCurrencies { get; set; }

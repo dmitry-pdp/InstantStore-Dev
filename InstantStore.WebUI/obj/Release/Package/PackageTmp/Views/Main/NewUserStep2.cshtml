@@ -16,12 +16,21 @@
                 @StringResource.form_Reg_Message
             </p>
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, new { @class = "col-sm-4 control-label" })
+                @Html.LabelFor(model => model.Name, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                 </div>
                 <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.City, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-8 col-sm-offset-4 error-label">
+                    @Html.ValidationMessageFor(model => model.City)
                 </div>
             </div>
             <div class="form-group">
@@ -42,17 +51,7 @@
                     @Html.ValidationMessageFor(model => model.Phonenumber)
                 </div>
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.City, new { @class = "col-sm-4 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
-                </div>
-                <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.City)
-                </div>
-            </div>
             @Html.HiddenFor(model => model.NewUserId);
-            @Html.HiddenFor(model => model.Name);
         </fieldset>
         <div class="form-group text-danger">
             @Html.ValidationSummary(true);

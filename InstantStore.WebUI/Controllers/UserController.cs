@@ -12,7 +12,7 @@ namespace InstantStore.WebUI.Controllers
     [CustomAuthorization(false)]
     public partial class UserController : ControllerBase
     {
-        public ActionResult Profile()
+        public new ActionResult Profile()
         {
             this.Initialize(Guid.Empty, PageIdentity.UserProfile);
 
@@ -21,13 +21,12 @@ namespace InstantStore.WebUI.Controllers
                 Name = this.currentUser.Name,
                 City = this.currentUser.City,
                 Company = this.currentUser.Company,
-                Email = this.currentUser.Email,
                 Phonenumber = this.currentUser.Phonenumber
             });
         }
 
         [HttpPost]
-        public ActionResult Profile(UserViewModel userViewModel)
+        public new ActionResult Profile(UserViewModel userViewModel)
         {
             this.Initialize(Guid.Empty, PageIdentity.UserProfile);
 
@@ -36,7 +35,6 @@ namespace InstantStore.WebUI.Controllers
                 this.currentUser.Name = userViewModel.Name;
                 this.currentUser.City = userViewModel.City;
                 this.currentUser.Company = userViewModel.Company;
-                this.currentUser.Email = userViewModel.Email;
                 this.currentUser.Phonenumber = userViewModel.Phonenumber;
                 this.repository.UpdateUser(this.currentUser);
                 return this.RedirectToAction("Index", "Main");

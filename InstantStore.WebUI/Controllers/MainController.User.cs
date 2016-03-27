@@ -33,16 +33,10 @@ namespace InstantStore.WebUI.Controllers
                 return this.NewUser();
             }
 
-            bool userExists = false;
-
             using (var context = new InstantStoreDataContext())
             {
-                if (context.Users.ToList().Any(
-                    user =>
-                        string.Equals(user.Name, userViewModel.Name, StringComparison.OrdinalIgnoreCase) /* ||
-                        string.Equals(user.Email, userViewModelBasic.Email, StringComparison.OrdinalIgnoreCase) */))
+                if (context.Users.ToList().Any(user => string.Equals(user.Email, userViewModel.Email, StringComparison.OrdinalIgnoreCase)))
                 {
-                    userExists = true;
                     this.ModelState.AddModelError(string.Empty, StringResource.UserAlreadyExists);
                 }
             }
@@ -59,7 +53,7 @@ namespace InstantStore.WebUI.Controllers
             userViewModel.UserId = Guid.NewGuid();
 
             this.Session[newUserSessionId] = userViewModel;
-            return this.View("NewUserStep2", new UserViewModel { NewUserId = userViewModel.UserId, Name = userViewModel.Name });
+            return this.View("NewUserStep2", new UserViewModel { NewUserId = userViewModel.UserId });
         }
 
         [HttpPost]
@@ -80,8 +74,9 @@ namespace InstantStore.WebUI.Controllers
 
             var newUser = new User
             {
-                Name = userAuthViewModel.Name,
-                Email = userViewModel.Email,
+                Id = userAuthViewModel.UserId,
+                Name = userViewModel.Name,
+                Email = userAuthViewModel.Email,
                 Company = userViewModel.Company,
                 Phonenumber = userViewModel.Phonenumber,
                 City = userViewModel.City,

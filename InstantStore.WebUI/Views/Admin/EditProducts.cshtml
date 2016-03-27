@@ -22,12 +22,12 @@
         InitializeTreeView('@this.Model.ParentCategoryId');
 
         var clickFunc = function () {
-            window.location.href = '/admin/product?id=' + this.getAttribute('id');
+            window.location.href = @Url.Action("Product", "Admin") + '?id=' + this.getAttribute('id');
         };
 
         $(document).on("category-tree:selected", function (event, id) {
             $.ajax({
-                url: "/admin/EditProductsPartial?id=" + id,
+                url: @Url.Action("EditProductsPartial", "Admin") + "?id=" + id,
                 cached : false
             })
             .done(function (html) {

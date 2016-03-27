@@ -13,10 +13,10 @@ namespace InstantStore.WebUI.ViewModels
     {
         public Guid UserId;
 
-        [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
-        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorRequired")]
-        [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
-        public string Name { get; set; }
+        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Email")]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage = null)]
+        [EmailAddress(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage = null)]
+        public string Email { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Pwd")]
         [DataType(DataType.Password)]
@@ -41,11 +41,6 @@ namespace InstantStore.WebUI.ViewModels
         [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_NameErrorLength")]
         public string Name { get; set; }
 
-        [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Email")]
-        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage=null)]
-        [EmailAddress(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "form_Reg_EmailInvalid", ErrorMessage=null)]
-        public string Email { get; set; }
-
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_CompanyName")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CompanyErrorRequired")]
         [StringLength(250, MinimumLength = 1, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CompanyErrorLength")]
@@ -58,7 +53,7 @@ namespace InstantStore.WebUI.ViewModels
 
         [Display(ResourceType = typeof(StringResource), Name = "form_Reg_Region")]
         [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorRequired")]
-        [StringLength(300, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
+        [StringLength(250, MinimumLength = 3, ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "user_CityErrorLength")]
         public string City { get; set; }
     }
 }

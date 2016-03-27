@@ -105,7 +105,7 @@ namespace InstantStore.WebUI.Controllers
             };
         }
 
-        public ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
+        public new ActionResult User(Guid id, bool? activate, bool? unblock, bool? block)
         {
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Users);
@@ -141,15 +141,15 @@ namespace InstantStore.WebUI.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult User(UserProfileViewModel userProfileViewModel)
+        public new ActionResult User(UserProfileViewModel userProfileViewModel)
         {
             if (this.ModelState.IsValid)
             {
                 var user = this.repository.GetUser(userProfileViewModel.Id);
                 user.Name = userProfileViewModel.Name;
-                user.Email = userProfileViewModel.Email;
                 user.Company = userProfileViewModel.Company;
                 user.City = userProfileViewModel.City;
+                user.Email = userProfileViewModel.Email;
                 user.Phonenumber = userProfileViewModel.Phonenumber;
                 user.IsPaymentCash = string.Equals(userProfileViewModel.PaymentType, "cash", StringComparison.OrdinalIgnoreCase);
                 user.DefaultCurrencyId = userProfileViewModel.Currency;

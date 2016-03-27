@@ -16,12 +16,12 @@
                 @StringResource.form_Reg_Message
             </p>
             <div class="form-group">
-                @Html.LabelFor(model => model.Name, new { @class = "col-sm-4 control-label" })
+                @Html.LabelFor(model => model.Email, new { @class = "col-sm-4 control-label" })
                 <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                 </div>
                 <div class="col-sm-8 col-sm-offset-4 error-label">
-                    @Html.ValidationMessageFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Email)
                 </div>
             </div>
             @Html.Partial("UserInfoPassword", this.Model);

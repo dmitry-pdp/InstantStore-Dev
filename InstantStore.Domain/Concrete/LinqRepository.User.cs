@@ -24,10 +24,7 @@ namespace InstantStore.Domain.Concrete
         {
             using (var context = new InstantStoreDataContext())
             {
-                var query = userName.Contains('@') 
-                    ? (Func<User, bool>)((User u) => string.Equals(u.Email, userName, StringComparison.OrdinalIgnoreCase))
-                    : (Func<User, bool>)((User u) => string.Equals(u.Name, userName, StringComparison.OrdinalIgnoreCase));
-
+                var query = (Func<User, bool>)((User u) => string.Equals(u.Email, userName, StringComparison.OrdinalIgnoreCase));
                 var user = context.Users.FirstOrDefault(query);
                 if (user == null)
                 {
