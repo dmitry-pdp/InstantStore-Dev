@@ -13,7 +13,7 @@
     };
 }
 
-<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script src="//cdn.tinymce.com/4/tinymce.js"></script>
 
 <div class="col-sm-3">
     @Html.Partial("CategoryTree", pagesTreeViewModel)
@@ -27,12 +27,30 @@
         TreeView.InitializeTreeView("@(settingsMenuSelection ?? Guid.Empty)", pagesTreeId);
 
         $(document).on("category-tree:selected", function (event, id) {
+            try {
+                tinyMCE.triggerSave();
+                tinymce.remove();
+            }
+            catch (err) {
+                console.warn(err.message);
+            }
             $.ajax({
                 url: "@Url.Action("Settings", "Admin")?i=" + id + "&r=" + new Date().getMilliseconds(),
                 cached: false
             })
             .done(function (html) {
                 $("#content").html(html);
+                tinymce.init(
+                {
+                    selector: "textarea",
+                    plugins: [
+                        "advlist autolink lists link image charmap print preview hr anchor pagebreak code",
+                        "searchreplace wordcount visualblocks visualchars",
+                        "insertdatetime nonbreaking table contextmenu directionality",
+                        "emoticons paste textcolor colorpicker textpattern"
+                    ],
+                    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor backcolor emoticons | code",
+                });
             });
         });
     });
