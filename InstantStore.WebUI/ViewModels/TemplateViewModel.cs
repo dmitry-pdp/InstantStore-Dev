@@ -30,7 +30,7 @@ namespace InstantStore.WebUI.ViewModels
 
         public Guid Id { get; set; }
 
-        [Display(ResourceType = typeof(StringResource), Name = "form_Contact_Name")]
+        [Display(ResourceType = typeof(StringResource), Name = "template_Name")]
         public string Name { get; set; }
 
         public IList<CustomProperty> Properties { get; private set; }

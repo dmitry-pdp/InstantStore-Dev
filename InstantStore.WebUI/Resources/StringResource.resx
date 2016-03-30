@@ -1290,4 +1290,7 @@
   <data name="global_WebSiteName" xml:space="preserve">
     <value>Оборудование для прокола ушей</value>
   </data>
+  <data name="template_Name" xml:space="preserve">
+    <value>Имя шаблона</value>
+  </data>
 </root>

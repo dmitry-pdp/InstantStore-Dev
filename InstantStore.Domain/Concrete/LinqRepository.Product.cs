@@ -72,12 +72,12 @@ namespace InstantStore.Domain.Concrete
                     product.PriceValueCash = productToUpdate.PriceValueCash;
                     product.PriceValueCashless = productToUpdate.PriceValueCashless;
 
+                    var productImages = context.Images.Where(x => x.ProductId == product.Id).ToList();
+                    var productImageIds = productImages.Select(x => x.Id);
+                    var productThumbnails = context.ImageThumbnails.Where(x => productImageIds.Contains(x.Id)).ToList();
+
                     if (images != null)
                     {
-                        var productImages = context.Images.Where(x => x.ProductId == product.Id).ToList();
-                        var productImageIds = productImages.Select(x => x.Id);
-                        var productThumbnails = context.ImageThumbnails.Where(x => productImageIds.Contains(x.Id)).ToList();
-
                         var imageIdsToDelete = productImageIds.Except(images);
                         var imagesToDelete = productImages.Where(x => imageIdsToDelete.Contains(x.Id));
                         var thumbnailsToDelete = productThumbnails.Where(x => imageIdsToDelete.Contains(x.Id));
@@ -97,6 +97,17 @@ namespace InstantStore.Domain.Concrete
                             product.MainImageId = imageIdsToInsert.Any() ? imageIdsToInsert.First() : (Guid?)null;
                         }
                     }
+                    else
+                    {
+                        var imageIdsToDelete = productImageIds;
+                        var imagesToDelete = productImages.Where(x => imageIdsToDelete.Contains(x.Id));
+                        var thumbnailsToDelete = productThumbnails.Where(x => imageIdsToDelete.Contains(x.Id));
+
+                        context.Images.DeleteAllOnSubmit(imagesToDelete);
+                        context.ImageThumbnails.DeleteAllOnSubmit(thumbnailsToDelete);
+
+                        product.MainImageId = null;
+                    }
 
                     if (product.CustomAttributesTemplateId != null && (prototypeTemplateId == null || prototypeTemplateId == Guid.Empty))
                     {
@@ -106,7 +117,7 @@ namespace InstantStore.Domain.Concrete
                     AddAttributes(product, prototypeTemplateId, attributes, context);
                 }
 
-                var productPrimaryCategories = context.ProductToCategories.Where(x => x.Product.Id == product.Id);
+                var productPrimaryCategories = context.ProductToCategories.Where(x => x.Product != null && x.Product.Id == product.Id);
                 foreach (var productPrimaryCategory in productPrimaryCategories)
                 {
                     productPrimaryCategory.Index = position;

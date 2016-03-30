@@ -3040,6 +3040,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Имя шаблона.
+        /// </summary>
+        public static string template_Name {
+            get {
+                return ResourceManager.GetString("template_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя нового шаблона.
         /// </summary>
         public static string Template_New {
