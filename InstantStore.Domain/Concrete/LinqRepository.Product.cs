@@ -26,7 +26,9 @@ namespace InstantStore.Domain.Concrete
                     context.Products.InsertOnSubmit(productToUpdate);
 
                     context.SubmitChanges();
-                                        
+
+                    product = productToUpdate;
+                 
                     while (parentId != Guid.Empty)
                     {
                         var parent = context.ContentPages.First(x => x.Id == parentId);
@@ -117,7 +119,7 @@ namespace InstantStore.Domain.Concrete
                     AddAttributes(product, prototypeTemplateId, attributes, context);
                 }
 
-                var productPrimaryCategories = context.ProductToCategories.Where(x => x.Product != null && x.Product.Id == product.Id);
+                var productPrimaryCategories = context.ProductToCategories.Where(x => x.ProductId == product.Id);
                 foreach (var productPrimaryCategory in productPrimaryCategories)
                 {
                     productPrimaryCategory.Index = position;

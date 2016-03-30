@@ -18,6 +18,8 @@ namespace InstantStore.WebUI.Controllers
     // TODO: DDoS vulnerability. Throttling needs to be added here.
     public partial class MainController : ControllerBase
     {
+        private static Dictionary<string, byte[]> thumbnailCache = new Dictionary<string, byte[]>();
+
         public ActionResult Index()
         {
             this.Initialize(Guid.Empty);
@@ -63,13 +65,22 @@ namespace InstantStore.WebUI.Controllers
                 return this.HttpNotFound();
             }
 
-            var thumbnail = this.repository.GetImageThumbnailById(id);
-            if (thumbnail == null)
+            var key = id.ToString() + "_" + size;
+
+            byte[] image;
+            if (!thumbnailCache.TryGetValue(key, out image))
             {
-                return this.HttpNotFound();
+                var thumbnail = this.repository.GetImageThumbnailById(id);
+                if (thumbnail == null)
+                {
+                    return this.HttpNotFound();
+                }
+                
+                image = (size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray();
+                thumbnailCache.Add(key, image);
             }
 
-            var stream = new MemoryStream((size == "l" ? thumbnail.LargeThumbnail : thumbnail.SmallThumbnail).ToArray());
+            var stream = new MemoryStream(image);
             return new FileStreamResult(stream, "image/png");
         }
 
