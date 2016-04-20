@@ -33,6 +33,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
     @foreach (var metaTagData in settingsViewModel.MetaTags)
     {
+        if (!string.IsNullOrWhiteSpace(metaTagData.Value))
         {
             <meta http-equiv="@metaTagData.Key" content="@metaTagData.Value" />
         }

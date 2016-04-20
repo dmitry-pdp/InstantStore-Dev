@@ -96,6 +96,7 @@ namespace InstantStore.Domain.Concrete
     #endregion
 		
 		public InstantStoreDataContext() : 
+				base(global::InstantStore.Domain.Properties.Settings.Default.InstantStoreConnectionStaging, mappingSource)
 		{
 			OnCreated();
 		}
@@ -5732,7 +5733,9 @@ namespace InstantStore.Domain.Concrete
 		
 		private EntitySet<ProductToCategory> _ProductToCategories1;
 		
+		private EntitySet<ContentPageAttachment> _ContentPageAttachments;
 		
+		private EntitySet<ContentPage1> _ContentPage1s;
 		
 		private EntityRef<Category> _Category;
 		
@@ -5768,6 +5771,8 @@ namespace InstantStore.Domain.Concrete
 		{
 			this._ProductToCategories = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories), new Action<ProductToCategory>(this.detach_ProductToCategories));
 			this._ProductToCategories1 = new EntitySet<ProductToCategory>(new Action<ProductToCategory>(this.attach_ProductToCategories1), new Action<ProductToCategory>(this.detach_ProductToCategories1));
+			this._ContentPageAttachments = new EntitySet<ContentPageAttachment>(new Action<ContentPageAttachment>(this.attach_ContentPageAttachments), new Action<ContentPageAttachment>(this.detach_ContentPageAttachments));
+			this._ContentPage1s = new EntitySet<ContentPage1>(new Action<ContentPage1>(this.attach_ContentPage1s), new Action<ContentPage1>(this.detach_ContentPage1s));
 			this._Category = default(EntityRef<Category>);
 			this._ContentPage11 = default(EntityRef<ContentPage1>);
 			OnCreated();
@@ -6007,21 +6012,29 @@ namespace InstantStore.Domain.Concrete
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage1_ContentPageAttachment", Storage="_ContentPageAttachments", ThisKey="Id", OtherKey="PageId")]
+		public EntitySet<ContentPageAttachment> ContentPageAttachments
 		{
 			get
 			{
+				return this._ContentPageAttachments;
 			}
 			set
 			{
+				this._ContentPageAttachments.Assign(value);
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ContentPage1_ContentPage1", Storage="_ContentPage1s", ThisKey="Id", OtherKey="ParentId")]
+		public EntitySet<ContentPage1> ContentPage1s
 		{
 			get
 			{
+				return this._ContentPage1s;
 			}
 			set
 			{
+				this._ContentPage1s.Assign(value);
 			}
 		}
 		
@@ -6137,20 +6150,28 @@ namespace InstantStore.Domain.Concrete
 			entity.ContentPage11 = null;
 		}
 		
+		private void attach_ContentPageAttachments(ContentPageAttachment entity)
 		{
 			this.SendPropertyChanging();
+			entity.ContentPage1 = this;
 		}
 		
+		private void detach_ContentPageAttachments(ContentPageAttachment entity)
 		{
 			this.SendPropertyChanging();
+			entity.ContentPage1 = null;
 		}
 		
+		private void attach_ContentPage1s(ContentPage1 entity)
 		{
 			this.SendPropertyChanging();
+			entity.ContentPage11 = this;
 		}
 		
+		private void detach_ContentPage1s(ContentPage1 entity)
 		{
 			this.SendPropertyChanging();
+			entity.ContentPage11 = null;
 		}
 	}
 }

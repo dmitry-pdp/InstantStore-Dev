@@ -1293,4 +1293,22 @@
   <data name="template_Name" xml:space="preserve">
     <value>Имя шаблона</value>
   </data>
+  <data name="admin_SettingsNode_MetatagsGlobal" xml:space="preserve">
+    <value>Мета тэги для всех страниц</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Copyright" xml:space="preserve">
+    <value>Авторские права</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Keywords" xml:space="preserve">
+    <value>Ключевые слова</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Robots" xml:space="preserve">
+    <value>Робот</value>
+  </data>
+  <data name="login_ErrorUserBlocked" xml:space="preserve">
+    <value>Пользователь заблокирован.</value>
+  </data>
 </root>

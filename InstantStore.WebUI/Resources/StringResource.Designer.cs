@@ -1240,6 +1240,42 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Авторские права.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Copyright {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Copyright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описание.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Description {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ключевые слова.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Keywords {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Keywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Робот.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Robots {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Robots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Логин SMTP сервера.
         /// </summary>
         public static string admin_Settings_SmtpLogin {
@@ -1344,6 +1380,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_SettingsNode_FeedbackGroup {
             get {
                 return ResourceManager.GetString("admin_SettingsNode_FeedbackGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мета тэги для всех страниц.
+        /// </summary>
+        public static string admin_SettingsNode_MetatagsGlobal {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_MetatagsGlobal", resourceCulture);
             }
         }
         
@@ -2226,6 +2271,15 @@ namespace InstantStore.WebUI.Resources {
         public static string login_ErrorLoginMessageError {
             get {
                 return ResourceManager.GetString("login_ErrorLoginMessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь заблокирован..
+        /// </summary>
+        public static string login_ErrorUserBlocked {
+            get {
+                return ResourceManager.GetString("login_ErrorUserBlocked", resourceCulture);
             }
         }
         
