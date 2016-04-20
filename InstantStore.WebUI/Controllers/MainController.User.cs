@@ -131,6 +131,11 @@ namespace InstantStore.WebUI.Controllers
                 return this.Json(new { result = "error", message = StringResource.login_ErrorUserNotActivated });
             }
 
+            if (user.IsBlocked)
+            {
+                return this.Json(new { result = "error", message = StringResource.login_ErrorUserBlocked });
+            }
+
             UserIdentityManager.AddUserSession(this.Response, user);
 
             return this.Json(new { result = "success" });

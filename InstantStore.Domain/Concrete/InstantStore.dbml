@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Database Name="InstantStore" Class="InstantStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=OrionGalaxyData.db.12505678.hostedresource.com;Initial Catalog=OrionGalaxyData;User ID=OrionGalaxyData" SettingsObjectName="InstantStore.Domain.Properties.Settings" SettingsPropertyName="InstantStoreConnectionProd" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="InstantStore" Class="InstantStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.ErrorLog" Member="ErrorLogs">
     <Type Name="ErrorLog">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -133,6 +131,7 @@
       <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsImportant" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Category_ContentPage" Member="ContentPages" ThisKey="VersionId" OtherKey="CategoryId" Type="ContentPage" />
+      <Association Name="Category_ContentPage1" Member="ContentPage1s" ThisKey="VersionId" OtherKey="CategoryId" Type="ContentPage1" />
     </Type>
   </Table>
   <Table Name="dbo.OrderProducts" Member="OrderProducts">
@@ -208,6 +207,8 @@
       <Association Name="Product_ProductToCategory" Member="Product" ThisKey="ProductId" OtherKey="VersionId" Type="Product" IsForeignKey="true" />
       <Association Name="ContentPage_ProductToCategory" Member="ContentPage" ThisKey="CategoryId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
       <Association Name="ContentPage_ProductToCategory1" Member="Group" ThisKey="GroupId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="ContentPage1_ProductToCategory" Member="ContentPage1" ThisKey="CategoryId" OtherKey="Id" Type="ContentPage1" IsForeignKey="true" />
+      <Association Name="ContentPage1_ProductToCategory1" Member="ContentPage11" ThisKey="GroupId" OtherKey="Id" Type="ContentPage1" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.ContentPage" Member="ContentPages">
@@ -249,6 +250,25 @@
       <Column Name="[Order]" Member="Order" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Attachment_ContentPageAttachment" Member="Attachment" ThisKey="AttachmentId" OtherKey="Id" Type="Attachment" IsForeignKey="true" />
       <Association Name="ContentPage_ContentPageAttachment" Member="ContentPage" ThisKey="PageId" OtherKey="Id" Type="ContentPage" IsForeignKey="true" />
+      <Association Name="ContentPage1_ContentPageAttachment" Member="ContentPage1" ThisKey="PageId" OtherKey="Id" Type="ContentPage1" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ContentPage" Member="ContentPage1s">
+    <Type Name="ContentPage1">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ParentId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AttachmentName" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="ShowInMenu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="ContentPage1_ProductToCategory" Member="ProductToCategories" ThisKey="Id" OtherKey="CategoryId" Type="ProductToCategory" />
+      <Association Name="ContentPage1_ProductToCategory1" Member="ProductToCategories1" ThisKey="Id" OtherKey="GroupId" Type="ProductToCategory" />
+      <Association Name="Category_ContentPage1" Member="Category" ThisKey="CategoryId" OtherKey="VersionId" Type="Category" IsForeignKey="true" />
+      <Association Name="ContentPage1_ContentPage1" Member="ContentPage11" ThisKey="ParentId" OtherKey="Id" Type="ContentPage1" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

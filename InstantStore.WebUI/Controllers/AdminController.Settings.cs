@@ -36,7 +36,8 @@ namespace InstantStore.WebUI.Controllers
                     {
                         new CategoryTreeItemViewModel("PagesHeader", StringResource.admin_SettingsNode_PagesHeader),
                         new CategoryTreeItemViewModel("PagesFooter", StringResource.admin_SettingsNode_PagesFooter),
-                        new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent)
+                        new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent),
+                        new CategoryTreeItemViewModel("MetaTags", StringResource.admin_SettingsNode_MetatagsGlobal)
                     }
                 },
                 new CategoryTreeItemViewModel("GroupEmail", StringResource.admin_SettingsNode_EmailGroup)
@@ -95,6 +96,29 @@ namespace InstantStore.WebUI.Controllers
                             case "MainContent":
                                 settingsViewModel = this.CreateContentSettingsViewModel(
                                     StringResource.Settings_MainTextLabel, SettingsKey.MainPageHtml);
+                                break;
+                            case "MetaTags":
+                                settingsViewModel = this.CreatePropertyListViewModel(
+                                    StringResource.admin_SettingsNode_MetatagsGlobal,
+                                    new List<PropertyInfo> 
+                                { 
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Copyright.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Copyright, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Copyright)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Robots.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Robots, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Robots)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Description.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Description, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Description)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Keywords.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Keywords, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Keywords))
+                                });
                                 break;
                             case "Feedback":
                                 using (var context = new InstantStoreDataContext())
@@ -338,7 +362,7 @@ namespace InstantStore.WebUI.Controllers
 
                 return this.RedirectToAction("Settings", new { id = i });
             }
-            else if (t == "PropertyListView" && item.Key == "GroupEmail")
+            else if (t == "PropertyListView" && (item.Key == "GroupEmail" || item.Key == "MetaTags"))
             {
                 foreach(var property in propertyList.Properties)
                 {

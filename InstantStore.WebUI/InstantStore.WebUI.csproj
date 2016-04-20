@@ -234,6 +234,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\OrionDeployer.pubxml" />
+    <None Include="Properties\PublishProfiles\Studsby.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Image\Admin_ControlPanel_Currency.png" />
     <Content Include="Image\Admin_ControlPanel_Offers.png" />

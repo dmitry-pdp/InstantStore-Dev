@@ -31,7 +31,11 @@ namespace InstantStore.Domain.Concrete
         EmailSettings_SmtpServerPassword,
         EmailSettings_EmailFrom,
         EmailSettings_EmailAdmin,
-        EmailSettings_EnableSSL
+        EmailSettings_EnableSSL,
+        MetaTags_Description,
+        MetaTags_Keywords,
+        MetaTags_Copyright,
+        MetaTags_Robots
     }
 
     public partial class LinqRepository
