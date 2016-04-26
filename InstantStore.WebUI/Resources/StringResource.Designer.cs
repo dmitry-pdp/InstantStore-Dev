@@ -1033,6 +1033,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нету картинок. Нажмите кнопку &quot;добавить картинку&quot; чтобы загрузить новую картинку..
+        /// </summary>
+        public static string admin_ProductImageNoImages {
+            get {
+                return ResourceManager.GetString("admin_ProductImageNoImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Картинки.
         /// </summary>
         public static string admin_ProductImagesLabel {
@@ -1056,6 +1065,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_ProductIsAvailable {
             get {
                 return ResourceManager.GetString("admin_ProductIsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя продукта должно быть заполнено.
+        /// </summary>
+        public static string admin_ProductNameRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("admin_ProductNameRequiredErrorMessage", resourceCulture);
             }
         }
         
@@ -1276,6 +1294,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Подстановки в электронном письме. Имя пользователя: %user.name%, Новый пароль: %password%..
+        /// </summary>
+        public static string admin_Settings_Page_EmailSubstitutions {
+            get {
+                return ResourceManager.GetString("admin_Settings_Page_EmailSubstitutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Логин SMTP сервера.
         /// </summary>
         public static string admin_Settings_SmtpLogin {
@@ -1479,6 +1506,24 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Template_New {
             get {
                 return ResourceManager.GetString("admin_Template_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя шаблона должно быть заполнено..
+        /// </summary>
+        public static string admin_TemplateNewNameIsMissing {
+            get {
+                return ResourceManager.GetString("admin_TemplateNewNameIsMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Завершить.
+        /// </summary>
+        public static string admin_TemplatePropertiesComplete {
+            get {
+                return ResourceManager.GetString("admin_TemplatePropertiesComplete", resourceCulture);
             }
         }
         
@@ -3207,6 +3252,15 @@ namespace InstantStore.WebUI.Resources {
         public static string user_CompanyErrorRequired {
             get {
                 return ResourceManager.GetString("user_CompanyErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string user_CurrencyIsNotDefined {
+            get {
+                return ResourceManager.GetString("user_CurrencyIsNotDefined", resourceCulture);
             }
         }
         

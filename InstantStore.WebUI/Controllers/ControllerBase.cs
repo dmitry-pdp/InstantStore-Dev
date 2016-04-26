@@ -12,6 +12,7 @@ using InstantStore.WebUI.Models;
 using InstantStore.WebUI.Resources;
 using InstantStore.WebUI.ViewModels;
 using InstantStore.WebUI.ViewModels.Factories;
+using System.Text;
 
 namespace InstantStore.WebUI.Controllers
 {
@@ -50,6 +51,19 @@ namespace InstantStore.WebUI.Controllers
                 };
             })
             .ToList();
+        }
+
+        protected void AppendTag(string name)
+        {
+            var metaTags = this.settingsViewModel.MetaTags;
+            if (metaTags != null)
+            {
+                string keywords;
+                metaTags.TryGetValue("keywords", out keywords);
+                keywords = string.IsNullOrEmpty(keywords) ? string.Empty : keywords;
+                keywords += "," + name;
+                metaTags["keywords"] = keywords;
+            }
         }
     }
 }

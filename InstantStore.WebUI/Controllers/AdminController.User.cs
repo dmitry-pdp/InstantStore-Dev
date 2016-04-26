@@ -145,6 +145,21 @@ namespace InstantStore.WebUI.Controllers
         {
             if (this.ModelState.IsValid)
             {
+                using (var context = new InstantStoreDataContext())
+                {
+                    var exchangeRates = context.ExchangeRates.Where(
+                        x => 
+                            x.FromCurrencyId == userProfileViewModel.Currency || 
+                            x.ToCurrencyId == userProfileViewModel.Currency);
+
+                    if (exchangeRates.Count() != 2) 
+                    {
+                        this.ModelState.AddModelError("DefaultCurrencyId", "");
+                    }
+                }
+
+                // validate the price setting.
+
                 var user = this.repository.GetUser(userProfileViewModel.Id);
                 user.Name = userProfileViewModel.Name;
                 user.Company = userProfileViewModel.Company;

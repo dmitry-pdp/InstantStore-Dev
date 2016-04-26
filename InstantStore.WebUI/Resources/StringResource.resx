@@ -1311,4 +1311,22 @@
   <data name="login_ErrorUserBlocked" xml:space="preserve">
     <value>Пользователь заблокирован.</value>
   </data>
+  <data name="user_CurrencyIsNotDefined" xml:space="preserve">
+    <value />
+  </data>
+  <data name="admin_Settings_Page_EmailSubstitutions" xml:space="preserve">
+    <value>Подстановки в электронном письме. Имя пользователя: %user.name%, Новый пароль: %password%.</value>
+  </data>
+  <data name="admin_ProductImageNoImages" xml:space="preserve">
+    <value>Нету картинок. Нажмите кнопку "добавить картинку" чтобы загрузить новую картинку.</value>
+  </data>
+  <data name="admin_ProductNameRequiredErrorMessage" xml:space="preserve">
+    <value>Имя продукта должно быть заполнено</value>
+  </data>
+  <data name="admin_TemplateNewNameIsMissing" xml:space="preserve">
+    <value>Имя шаблона должно быть заполнено.</value>
+  </data>
+  <data name="admin_TemplatePropertiesComplete" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
 </root>

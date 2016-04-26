@@ -1,44 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using InstantStore.Domain.Abstract;
-using InstantStore.Domain.Concrete;
-using InstantStore.Domain.Helpers;
-using InstantStore.WebUI.Resources;
-using System.ComponentModel.DataAnnotations;
-using InstantStore.Domain.Entities;
-using InstantStore.WebUI.ViewModels.Helpers;
-
-namespace InstantStore.WebUI.ViewModels
+﻿namespace InstantStore.WebUI.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using InstantStore.Domain.Abstract;
+    using InstantStore.Domain.Concrete;
+    using InstantStore.Domain.Helpers;
+    using InstantStore.WebUI.Resources;
+    using System.ComponentModel.DataAnnotations;
+    using InstantStore.Domain.Entities;
+    using InstantStore.WebUI.ViewModels.Helpers;
+
     public class ProductViewModel
     {
         public ProductViewModel()
         {
-        }
-
-        public ProductViewModel(IRepository repository, Guid? parentId)
-        {
             this.Images = new List<Guid>();
-            this.CreateTemplatesList(repository);
-            this.ParentCategoryId = parentId ?? Guid.Empty;
-            this.Position = -1;
-        }
-
-        public ProductViewModel(IRepository repository, Guid id, Guid? parentId, User user)
-        {
-            this.Initialize(repository, id, parentId, user);
         }
 
         public Guid Id { get; set; }
 
         public Guid ParentCategoryId { get; set; }
 
+        public bool IsCloneable { get; set; }
+
         [Display(ResourceType = typeof(StringResource), Name = "admin_Name")]
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(StringResource), ErrorMessageResourceName = "admin_ProductNameRequiredErrorMessage")]
         public string Name { get; set; }
 
         [Display(ResourceType = typeof(StringResource), Name = "admin_PageContent")]
@@ -91,12 +81,26 @@ namespace InstantStore.WebUI.ViewModels
             .ToList();
         }
 
-        private void Initialize(IRepository repository, Guid id, Guid? parentId, User user)
+        public void Initialize(IRepository repository)
         {
-            this.Id = id;
-            var product = repository.GetProductById(id);
-            this.Name = product.Name;
+            this.CreateTemplatesList(repository);
+        }
+
+        public void Initialize(IRepository repository, Guid? parentId)
+        {
+            this.Initialize(repository);
             this.ParentCategoryId = parentId ?? Guid.Empty;
+            this.Position = -1;
+        }
+
+        public void Initialize(IRepository repository, Guid id, Guid? parentId, User user)
+        {
+            this.Initialize(repository, parentId);
+            
+            var product = repository.GetProductById(id);
+
+            this.Id = product.VersionId;
+            this.Name = product.Name;
             this.Text = product.Description;
             this.IsAvailable = product.IsAvailable;
             this.PriceCash = product.PriceValueCash != null ? (float)product.PriceValueCash : 0.0f;
@@ -107,13 +111,12 @@ namespace InstantStore.WebUI.ViewModels
             this.AttributesId = product.CustomAttributesTemplateId;
             this.MainImage = product.MainImageId ?? (this.Images != null ? this.Images.FirstOrDefault() : (Guid?)null);
             this.Position = repository.GetProductPosition(id);
+            this.IsCloneable = true;
 
             var attributesTemplate = product.CustomAttributesTemplateId != null && product.CustomAttributesTemplateId != Guid.Empty 
                 ? repository.GetTemplateById(product.CustomAttributesTemplateId.Value) : null;
 
             this.TemplateId = attributesTemplate != null ? attributesTemplate.PrototypeId : null;
-
-            this.CreateTemplatesList(repository);
 
             this.Attributes = attributesTemplate != null ? repository.GetPropertiesForTemplate(attributesTemplate.Id).OrderBy(x => x.Name).ToList() : new List<CustomProperty>();
       

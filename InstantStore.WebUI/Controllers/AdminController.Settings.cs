@@ -16,13 +16,7 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        private static string mappingRules = "Email properties:\n\r" +
-            "User name: %user.name%, " +
-            "New password: %password%, " +
-            "Order id: %order.id%, " +
-            "Order date: %order.date%, " +
-            "Order user name: %order.user%" +
-            "";
+        private static string mappingRules = "Email properties: User name: %user.name%, New password: %password%, Order id: %order.id%, Order date: %order.date%, Order user name: %order.user%";
 
         private static CategoryTreeItemViewModel settingsNavigationTree = new CategoryTreeItemViewModel
         {
@@ -178,7 +172,8 @@ namespace InstantStore.WebUI.Controllers
                                         SettingsKey.EmailSettings_EmailAdmin.ToString(), 
                                         StringResource.admin_Settings_EmailAdmin, 
                                         this.repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin)),
-                                });
+                                },
+                                false);
                                 break;
 
                             case "LostPages":
@@ -200,14 +195,14 @@ namespace InstantStore.WebUI.Controllers
             }
         }
 
-        private CustomViewModel CreatePropertyListViewModel(string title, IList<PropertyInfo> properties)
+        private CustomViewModel CreatePropertyListViewModel(string title, IList<PropertyInfo> properties, bool showEmailFooter = true)
         {
             return new PropertyListViewModel
             {
                 Title = title,
                 Properties = properties,
                 ViewName = "PropertyListView",
-                CustomText = mappingRules
+                CustomText = showEmailFooter ? StringResource.admin_Settings_Page_EmailSubstitutions : null
             };
         }
 
