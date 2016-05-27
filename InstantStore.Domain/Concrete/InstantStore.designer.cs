@@ -96,7 +96,7 @@ namespace InstantStore.Domain.Concrete
     #endregion
 		
 		public InstantStoreDataContext() : 
-				base(global::InstantStore.Domain.Properties.Settings.Default.InstantStoreConnectionStaging, mappingSource)
+				base(global::InstantStore.Domain.Properties.Settings.Default.InstantStoreConnectionProd, mappingSource)
 		{
 			OnCreated();
 		}

@@ -133,7 +133,7 @@ namespace InstantStore.Domain.Abstract
 
         void AssignProductsToCategory(IList<Guid> products, Guid categoryId);
 
-        int GetProductPosition(Guid id);
+        int GetProductPosition(Guid id, Guid parentId);
 
         // Orders
 

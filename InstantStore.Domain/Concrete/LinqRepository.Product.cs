@@ -39,7 +39,8 @@ namespace InstantStore.Domain.Concrete
                                 Id = Guid.NewGuid(),
                                 CategoryId = parentId,
                                 ProductId = productToUpdate.VersionId,
-                                UpdateTime = DateTime.Now
+                                UpdateTime = DateTime.Now,
+                                Index = position
                             });
 
                             context.SubmitChanges();
@@ -119,7 +120,7 @@ namespace InstantStore.Domain.Concrete
                     AddAttributes(product, prototypeTemplateId, attributes, context);
                 }
 
-                var productPrimaryCategories = context.ProductToCategories.Where(x => x.ProductId == product.Id);
+                var productPrimaryCategories = context.ProductToCategories.Where(x => x.ProductId == product.VersionId && x.CategoryId == parentId);
                 foreach (var productPrimaryCategory in productPrimaryCategories)
                 {
                     productPrimaryCategory.Index = position;
@@ -452,11 +453,11 @@ namespace InstantStore.Domain.Concrete
             }
         }
 
-        public int GetProductPosition(Guid id)
+        public int GetProductPosition(Guid id, Guid parentId)
         {
             using (var context = new InstantStoreDataContext())
             {
-                var productCategory = context.ProductToCategories.Where(x => x.Product.VersionId == id).FirstOrDefault();
+                var productCategory = context.ProductToCategories.Where(x => x.Product.VersionId == id && x.CategoryId == parentId).FirstOrDefault();
                 return productCategory == null ? -1 : productCategory.Index;
             }
         }

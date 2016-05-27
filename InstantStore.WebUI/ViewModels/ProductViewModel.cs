@@ -110,8 +110,12 @@
             this.Images = repository.GetImagesForProduct(product.Id);
             this.AttributesId = product.CustomAttributesTemplateId;
             this.MainImage = product.MainImageId ?? (this.Images != null ? this.Images.FirstOrDefault() : (Guid?)null);
-            this.Position = repository.GetProductPosition(id);
             this.IsCloneable = true;
+
+            if (parentId != null)
+            {
+                this.Position = repository.GetProductPosition(id, parentId.Value);
+            }
 
             var attributesTemplate = product.CustomAttributesTemplateId != null && product.CustomAttributesTemplateId != Guid.Empty 
                 ? repository.GetTemplateById(product.CustomAttributesTemplateId.Value) : null;

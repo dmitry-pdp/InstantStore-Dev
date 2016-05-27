@@ -11,10 +11,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/InstantStore.Domain.dll">
-      <publishTime>04/01/2016 22:46:46</publishTime>
+      <publishTime>05/26/2016 22:59:55</publishTime>
     </File>
     <File Include="bin/InstantStore.WebUI.dll">
-      <publishTime>04/01/2016 22:46:46</publishTime>
+      <publishTime>05/26/2016 22:59:56</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>09/30/2014 12:40:56</publishTime>
@@ -284,7 +284,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/21/2015 09:21:47</publishTime>
     </File>
     <File Include="Views/Admin/Page.cshtml">
-      <publishTime>11/07/2015 23:30:12</publishTime>
+      <publishTime>04/25/2016 22:30:54</publishTime>
     </File>
     <File Include="Views/Admin/Pages.cshtml">
       <publishTime>10/11/2015 14:59:19</publishTime>
@@ -293,7 +293,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/07/2015 23:30:19</publishTime>
     </File>
     <File Include="Views/Admin/Product.cshtml">
-      <publishTime>03/29/2016 22:55:18</publishTime>
+      <publishTime>04/25/2016 22:39:04</publishTime>
     </File>
     <File Include="Views/Admin/ProductAttribute.cshtml">
       <publishTime>04/26/2015 19:43:54</publishTime>
@@ -311,10 +311,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/29/2016 22:40:11</publishTime>
     </File>
     <File Include="Views/Admin/Template.cshtml">
-      <publishTime>05/21/2015 21:14:18</publishTime>
+      <publishTime>04/26/2016 00:16:38</publishTime>
     </File>
     <File Include="Views/Admin/Templates.cshtml">
-      <publishTime>03/26/2016 13:12:10</publishTime>
+      <publishTime>04/26/2016 00:05:07</publishTime>
     </File>
     <File Include="Views/Admin/TextView.cshtml">
       <publishTime>03/29/2016 22:37:06</publishTime>
@@ -341,7 +341,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/03/2015 08:46:58</publishTime>
     </File>
     <File Include="Views/Main/Login.cshtml">
-      <publishTime>03/19/2016 11:16:27</publishTime>
+      <publishTime>04/23/2016 22:05:12</publishTime>
     </File>
     <File Include="Views/Main/NewUser.cshtml">
       <publishTime>03/19/2016 09:13:34</publishTime>
@@ -422,7 +422,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/19/2016 10:30:41</publishTime>
     </File>
     <File Include="Views/Shared/_MainLayout.cshtml">
-      <publishTime>03/26/2016 13:53:00</publishTime>
+      <publishTime>05/24/2016 20:41:42</publishTime>
     </File>
     <File Include="Views/User/ChangePassword.cshtml">
       <publishTime>03/19/2016 10:52:55</publishTime>
@@ -443,7 +443,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/14/2014 10:57:34</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/01/2016 22:46:52</publishTime>
+      <publishTime>05/24/2016 20:46:45</publishTime>
     </File>
   </ItemGroup>
 </Project>

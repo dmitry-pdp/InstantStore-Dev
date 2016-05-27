@@ -31,11 +31,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
-    @foreach (var metaTagData in settingsViewModel.MetaTags)
+    @if (settingsViewModel != null)
     {
-        if (!string.IsNullOrWhiteSpace(metaTagData.Value))
+        foreach (var metaTagData in settingsViewModel.MetaTags)
         {
-            <meta http-equiv="@metaTagData.Key" content="@metaTagData.Value" />
+            if (!string.IsNullOrWhiteSpace(metaTagData.Value))
+            {
+                <meta http-equiv="@metaTagData.Key" content="@metaTagData.Value" />
+            }
         }
     }
     <link href="~/Content/bootstrap.css" rel="stylesheet" />

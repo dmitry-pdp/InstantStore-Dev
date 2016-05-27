@@ -8,12 +8,19 @@ namespace InstantStore.Domain.Concrete
 {
     public partial class LinqRepository
     {
+        private static List<Currency> cachedCurrencies = null;
+
         public IList<Currency> GetCurrencies()
         {
-            using (var context = new InstantStoreDataContext())
+            if (cachedCurrencies == null)
             {
-                return context.Currencies.ToList();
+                using (var context = new InstantStoreDataContext())
+                {
+                    cachedCurrencies = context.Currencies.ToList();
+                }
             }
+
+            return cachedCurrencies;
         }
 
         public void AddCurrency(string text)
@@ -28,6 +35,7 @@ namespace InstantStore.Domain.Concrete
 
                 context.Currencies.InsertOnSubmit(currency);
                 context.SubmitChanges();
+                cachedCurrencies = null;
             }
         }
 
@@ -40,6 +48,7 @@ namespace InstantStore.Domain.Concrete
                 {
                     context.Currencies.DeleteOnSubmit(currency);
                     context.SubmitChanges();
+                    cachedCurrencies = null;
                 }
             }
         }

@@ -52,15 +52,15 @@ namespace InstantStore.WebUI.Controllers
             if (this.ModelState.IsValid)
             {
                 repository.UpdateOrCreateNewProduct(new Product()
-                {
-                    Id = productViewModel.Id,
-                    Name = productViewModel.Name,
-                    Description = productViewModel.Description,
-                    IsAvailable = productViewModel.IsAvailable,
-                    PriceCurrencyId = productViewModel.CurrencyId,
-                    PriceValueCash = new Decimal(productViewModel.PriceCash),
-                    PriceValueCashless = new Decimal(productViewModel.PriceCashless)
-                },
+                    {
+                        Id = productViewModel.Id,
+                        Name = productViewModel.Name,
+                        Description = productViewModel.Description,
+                        IsAvailable = productViewModel.IsAvailable,
+                        PriceCurrencyId = productViewModel.CurrencyId,
+                        PriceValueCash = new Decimal(productViewModel.PriceCash),
+                        PriceValueCashless = new Decimal(productViewModel.PriceCashless)
+                    },
                     productViewModel.ParentCategoryId,
                     productViewModel.Images,
                     productViewModel.TemplateId,
