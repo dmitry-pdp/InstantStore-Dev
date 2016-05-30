@@ -1,8 +1,180 @@
-﻿.border
+﻿body, html {
+    font-family: Calibri, "Open Sans", sans-serif;
+    font-size: 14px;
+}
+a, a:hover, a:focus {
+    color: #1c1c1c;
+}
+header {
+    border-top: #677e52 6px solid;
+}
+header h1, header h1 a, header h1 a:hover, header h1 a:focus
+{   
+    color: #677e52;
+}
+header h1 a, header h1 a:hover, header h1 a:focus
+{
+    text-decoration: none;
+}
+.navbar-inverse {
+    background: none;
+    border: none;
+    border-top: #e8e8e8 1px solid;    
+    font-size: 14px;
+}
+.navbar-nav
+{
+    margin: -1px 0 0 0;
+}
+.navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover
+{
+    color: #424242;
+    text-shadow: none;
+    border-left: #e8e8e8  1px solid;
+}
+.navbar-inverse .navbar-nav > li:last-child a
+{
+    border-right: #e8e8e8  1px solid;
+}
+.navbar-inverse .navbar-nav > li
+{
+    border-top: transparent 3px solid;       
+}
+.navbar-inverse .navbar-nav > li > a
+{
+    margin: 10px 0 10px 0;
+    padding: 0 10px 0 10px;
+}
+.navbar-inverse .navbar-nav > li:focus, .navbar-inverse .navbar-nav > li:hover, .navbar-inverse .navbar-nav > .active
+{
+    border-top: #677e52 3px solid;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus
+{
+    color: #424242;
+    text-shadow: none;
+    background: none;
+    box-shadow: none;
+}
+.dropdown-menu {
+    width:100%;
+    left: auto;
+    right:0px;
+    border-radius: 0px;
+    padding: 0px;
+    box-shadow: 0px 6px 6px 0px rgba(0,0,0,0.175);
+    -webkit-box-shadow: 0px 6px 6px 0px rgba(0,0,0,0.175);
+}
+.dropdown-submenu > .dropdown-menu {
+    width: auto;
+    border-radius: 0px !important;
+    padding: 0px;
+    margin-top: -1px !important;
+    box-shadow: 0px 6px 6px 0px rgba(0,0,0,0.175);
+    -webkit-box-shadow: 0px 6px 6px 0px rgba(0,0,0,0.175);
+}
+.dropdown-menu > li a:hover, .dropdown-menu > li > a:focus {
+    background-image: none;
+    background-color: #677e52 !important;
+    color: #fff;
+}
+.navbar-inverse .navbar-nav > li:last-child a {
+    border-right: 0px;
+}
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus
+{
+    background-image: none;
+    background-color: #677e52 !important;
+    color: #fff;
+}
+.border
 {
     border: 1px solid #ddd;
 }
-
+.panel{
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.panel-body
+{
+    padding: 0px;
+}
+div.panel-heading, .panel-default > .panel-heading {
+    background: none;
+    background-color: inherit;
+    border: none;
+    border-left: 3px solid #677e52;
+    font-size: 20px;
+    padding-top: 0px;
+}
+.list-group {
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid #e8e8e8;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.list-group-item 
+{
+    border: none;
+    border-radius: 0px;    
+}
+:first-child.list-group-item
+{
+    border-radius: 0px;
+}
+:last-child.list-group-item
+{
+    border-radius: 0px;
+}
+a.list-group-item:hover, a.list-group-item:focus {
+    color: #fff;
+    background-color: #677e52 !important;
+    text-decoration: none;
+}
+a.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus{
+    color: #fff;
+    background-color: #677e52;
+    background-image: none;
+    text-shadow: none;
+}
+.breadcrumb{
+    font-size: 12px;
+    background-color: inherit;
+    border-radius: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+}
+.breadcrumb + .container-fluid
+{
+    margin-top: -10px;
+}
+h2, h3{
+    border-left: 3px solid #677e52;
+    padding: 12px 0 12px 15px;
+}
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background-color: #677e52;
+    background-image: none;
+    border-color: #677e52;
+    border-radius: 0px;
+    font-size: inherit;
+}
+.btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .open > .dropdown-toggle.btn-default {
+    background-image: none;
+    border-color: #677e52;
+    border-radius: 0px;
+    font-size: inherit;
+    color: #677e52;
+    text-shadow: none;
+}
+.btn-default:hover, .btn-default:focus
+{
+    background-color: #677e52;
+    background-position: initial;
+    color: #fff;
+}
 .error-label
 {
     color:red;
@@ -82,3 +254,4 @@ a.tile-item
 {
     display:inline-block;
 }
+
