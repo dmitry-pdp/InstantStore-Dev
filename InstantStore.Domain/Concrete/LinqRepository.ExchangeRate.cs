@@ -9,12 +9,19 @@ namespace InstantStore.Domain.Concrete
 {
     public partial class LinqRepository
     {
+        public static List<ExchangeRate> ExchangeRatesCache = null;
+
         public IList<ExchangeRate> GetExchangeRates()
         {
-            using (var context = new InstantStoreDataContext())
+            if (ExchangeRatesCache == null)
             {
-                return context.ExchangeRates.ToList();
+                using (var context = new InstantStoreDataContext())
+                {
+                    ExchangeRatesCache = context.ExchangeRates.ToList();
+                }
             }
+
+            return ExchangeRatesCache;
         }
 
         public void AddExchangeRate(ExchangeRate exchangeRate)
@@ -39,6 +46,8 @@ namespace InstantStore.Domain.Concrete
                 exchangeRate.Id = Guid.NewGuid();
                 context.ExchangeRates.InsertOnSubmit(exchangeRate);
                 context.SubmitChanges();
+
+                ExchangeRatesCache = null;
             }
         }
 
@@ -51,6 +60,8 @@ namespace InstantStore.Domain.Concrete
                 {
                     context.ExchangeRates.DeleteOnSubmit(exchangeRate);
                     context.SubmitChanges();
+
+                    ExchangeRatesCache = null;
                 }
             }
         }
@@ -65,6 +76,8 @@ namespace InstantStore.Domain.Concrete
                     exchangeRate.ConversionRate = rate.ConversionRate;
                     exchangeRate.ReverseConversionRate = rate.ReverseConversionRate;
                     context.SubmitChanges();
+
+                    ExchangeRatesCache = null;
                 }
             }
         }

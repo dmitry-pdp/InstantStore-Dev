@@ -1033,6 +1033,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нету картинок. Нажмите кнопку &quot;добавить картинку&quot; чтобы загрузить новую картинку..
+        /// </summary>
+        public static string admin_ProductImageNoImages {
+            get {
+                return ResourceManager.GetString("admin_ProductImageNoImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Картинки.
         /// </summary>
         public static string admin_ProductImagesLabel {
@@ -1056,6 +1065,15 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_ProductIsAvailable {
             get {
                 return ResourceManager.GetString("admin_ProductIsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя продукта должно быть заполнено.
+        /// </summary>
+        public static string admin_ProductNameRequiredErrorMessage {
+            get {
+                return ResourceManager.GetString("admin_ProductNameRequiredErrorMessage", resourceCulture);
             }
         }
         
@@ -1240,6 +1258,51 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Авторские права.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Copyright {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Copyright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описание.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Description {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ключевые слова.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Keywords {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Keywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Робот.
+        /// </summary>
+        public static string admin_Settings_MetaTags_Robots {
+            get {
+                return ResourceManager.GetString("admin_Settings_MetaTags_Robots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Подстановки в электронном письме. Имя пользователя: %user.name%, Новый пароль: %password%..
+        /// </summary>
+        public static string admin_Settings_Page_EmailSubstitutions {
+            get {
+                return ResourceManager.GetString("admin_Settings_Page_EmailSubstitutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Логин SMTP сервера.
         /// </summary>
         public static string admin_Settings_SmtpLogin {
@@ -1348,6 +1411,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Мета тэги для всех страниц.
+        /// </summary>
+        public static string admin_SettingsNode_MetatagsGlobal {
+            get {
+                return ResourceManager.GetString("admin_SettingsNode_MetatagsGlobal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нижний заголовок.
         /// </summary>
         public static string admin_SettingsNode_PagesFooter {
@@ -1434,6 +1506,24 @@ namespace InstantStore.WebUI.Resources {
         public static string admin_Template_New {
             get {
                 return ResourceManager.GetString("admin_Template_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя шаблона должно быть заполнено..
+        /// </summary>
+        public static string admin_TemplateNewNameIsMissing {
+            get {
+                return ResourceManager.GetString("admin_TemplateNewNameIsMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Завершить.
+        /// </summary>
+        public static string admin_TemplatePropertiesComplete {
+            get {
+                return ResourceManager.GetString("admin_TemplatePropertiesComplete", resourceCulture);
             }
         }
         
@@ -2226,6 +2316,15 @@ namespace InstantStore.WebUI.Resources {
         public static string login_ErrorLoginMessageError {
             get {
                 return ResourceManager.GetString("login_ErrorLoginMessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пользователь заблокирован..
+        /// </summary>
+        public static string login_ErrorUserBlocked {
+            get {
+                return ResourceManager.GetString("login_ErrorUserBlocked", resourceCulture);
             }
         }
         
@@ -3040,6 +3139,15 @@ namespace InstantStore.WebUI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Имя шаблона.
+        /// </summary>
+        public static string template_Name {
+            get {
+                return ResourceManager.GetString("template_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя нового шаблона.
         /// </summary>
         public static string Template_New {
@@ -3144,6 +3252,15 @@ namespace InstantStore.WebUI.Resources {
         public static string user_CompanyErrorRequired {
             get {
                 return ResourceManager.GetString("user_CompanyErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string user_CurrencyIsNotDefined {
+            get {
+                return ResourceManager.GetString("user_CurrencyIsNotDefined", resourceCulture);
             }
         }
         

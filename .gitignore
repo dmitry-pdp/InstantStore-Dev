@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 InstantStore.WebUI/obj/
 InstantStore.WebUI/bin/
+InstantStore.Domain/obj/Debug/

@@ -45,7 +45,10 @@ namespace InstantStore.WebUI.Controllers
 
                 //this.ViewData["MediaListViewModel"] = CategoryViewModelFactory.CreateSimilarProducts(repository, parentId);
 
-                var productViewModel = new ProductViewModel(this.repository, id.Value, parentId, user);
+                var productViewModel = new ProductViewModel();
+                productViewModel.Initialize(this.repository, id.Value, parentId, user);
+
+                this.AppendTag(productViewModel.Name);
                 return this.View("Product", productViewModel);
             }
             else
@@ -62,7 +65,9 @@ namespace InstantStore.WebUI.Controllers
 
             var viewModel = new PageViewModel(page, this.repository);
 
-            this.ViewData["ProductItemsViewModel"] = CategoryViewModelFactory.CreateCategoryViewModel(user, page, c, o, ListingViewProductSettings.User);
+            var category = CategoryViewModelFactory.CreateCategoryViewModel(user, page, c, o, ListingViewProductSettings.User);
+            this.ViewData["ProductItemsViewModel"] = category;
+            this.AppendTag(viewModel.Name);
 
             this.ViewData["IsPage"] = !viewModel.ContentPage.IsCategory();
             return this.View(viewModel);

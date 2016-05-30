@@ -15,7 +15,7 @@
     };
 }
 
-<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script src="//cdn.tinymce.com/4/tinymce.js"></script>
 
 <style>
     .image-container img.img-thumbnail {
@@ -54,7 +54,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, new { @class = "control-label" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name)
+                <div class="text-danger">@Html.ValidationMessageFor(model => model.Name)</div>
             </div>
             <div class="">
                 <div class="form-group">
@@ -94,7 +94,7 @@
                 <div style="height:120px" id="image_container">
                     @if (!this.Model.Images.Any())
                     {
-                        <span id="no-image">No images. Press add image button to add new image.</span>
+                        <span id="no-image">@StringResource.admin_ProductImageNoImages</span>
                     }
                     else
                     {
@@ -128,7 +128,10 @@
                 @Html.HiddenFor(model => model.ParentCategoryId, new { @class = "parent-category-id" })
                 @Html.HiddenFor(model => model.Id)
                 <input type="submit" value="@StringResource.admin_Save" class="btn btn-lg btn-primary" />
-                @Html.ActionLink(StringResource.admin_PageClone, "ProductClone", new { pageId = this.Model.Id, parentId = this.Model.ParentCategoryId }, new { @class = "btn btn-lg btn-default" })
+                @if (this.Model.IsCloneable)
+                {
+                    @Html.ActionLink(StringResource.admin_PageClone, "ProductClone", new { pageId = this.Model.Id, parentId = this.Model.ParentCategoryId }, new { @class = "btn btn-lg btn-default" })
+                }
             </div>
         }
         @Html.Partial("UploadControl", new UploadControlViewModel { ActionName = "SaveImage", ControllerName = "Admin", UploadButtonId = "upload-image-btn", Name = "image" })

@@ -26,7 +26,7 @@
         </table>
     </div>
     <div class="table-responsive">
-        @using (Html.BeginForm("Template", "Admin", FormMethod.Post))
+        @using (Html.BeginForm("Template", "Admin", FormMethod.Post, new { id = "NewTemplate" }))
         {
             <table class="table table-hover">
                 <tr>
@@ -42,9 +42,20 @@
     </div>
 
 </div>
-    <script>
+<script>
+    $(function () {
         $("tr.c_pointer").click(function () {
-            window.location.href = '@Url.Action("Template", "Admin")'+ '?id=' + this.getAttribute('id');
+            window.location.href = '@Url.Action("Template", "Admin")' + '?id=' + this.getAttribute('id');
         });
-    </script>
+
+        $("#NewTemplate").submit(function (e) {
+            var v = $("input:first").val();
+            if (v == "") {
+                alert('@StringResource.admin_TemplateNewNameIsMissing');
+                return false;
+            }
+            return true;
+        });
+    });
+</script>
 

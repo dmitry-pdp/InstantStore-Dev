@@ -15,6 +15,7 @@ namespace InstantStore.WebUI.ViewModels
         private string headerHtml;
         private string footerHtml;
         private string mainDocumentHtml;
+        private Dictionary<string, string> metaTags;
 
         public SettingsViewModel(IRepository repository)
         {
@@ -39,12 +40,22 @@ namespace InstantStore.WebUI.ViewModels
             set { this.mainDocumentHtml = value; }
         }
 
+        public Dictionary<string, string> MetaTags
+        {
+            get { return this.metaTags ?? (this.metaTags = this.CreateMetaTags()); }
+        }
+
         public void ValidateAndSave()
         {
             // TODO: XSS and header consistency validation.
             this.repository.SetSettings(SettingsKey.HeaderHtml, this.headerHtml);
             this.repository.SetSettings(SettingsKey.FooterHtml, this.footerHtml);
             this.repository.SetSettings(SettingsKey.MainPageHtml, this.mainDocumentHtml);
+
+            SaveMetaTag(SettingsKey.MetaTags_Description, "description");
+            SaveMetaTag(SettingsKey.MetaTags_Keywords, "keywords");
+            SaveMetaTag(SettingsKey.MetaTags_Copyright, "copyright");
+            SaveMetaTag(SettingsKey.MetaTags_Robots, "robots");
         }
 
         private string CreateHeaderHtml()
@@ -60,6 +71,25 @@ namespace InstantStore.WebUI.ViewModels
         private string CreateMainDocumentHtml()
         {
             return this.repository.GetSettings(SettingsKey.MainPageHtml) ?? string.Empty;
+        }
+
+        private Dictionary<string, string> CreateMetaTags()
+        {
+            return new Dictionary<string, string>
+            {
+                { "copyright", this.repository.GetSettings(SettingsKey.MetaTags_Copyright) ?? string.Empty },
+                { "description", this.repository.GetSettings(SettingsKey.MetaTags_Description) ?? string.Empty },
+                { "robots", this.repository.GetSettings(SettingsKey.MetaTags_Robots) ?? string.Empty },
+                { "keywords", this.repository.GetSettings(SettingsKey.MetaTags_Keywords) ?? string.Empty }
+            };
+        }
+
+        private void SaveMetaTag(SettingsKey key, string dictionaryKey)
+        {
+            if (this.metaTags != null && this.metaTags.ContainsKey(dictionaryKey))
+            {
+                this.repository.SetSettings(key, this.metaTags[dictionaryKey]);
+            }
         }
     }
 }

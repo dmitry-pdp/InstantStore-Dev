@@ -26,7 +26,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, new { @class = "control-label" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name)
+                <div class="text-danger">@Html.ValidationMessageFor(model => model.Name)</div>
             </div>
             <div class="form-group">
                 <div class="form-inline checkbox-inline">

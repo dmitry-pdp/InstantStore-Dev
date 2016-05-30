@@ -20,14 +20,23 @@ namespace InstantStore.WebUI.Controllers
     {
         public ActionResult Product(Guid? id, Guid? parentId)
         {
-            var viewModel = id != null && id != Guid.Empty 
-                ? new ProductViewModel(this.repository, id.Value, parentId, null) 
-                : new ProductViewModel(this.repository, parentId);
+            var viewModel = new ProductViewModel();
+
+            if (id != null && id != Guid.Empty)
+            {
+                viewModel.Initialize(repository, id.Value, parentId, null);
+            }
+            else
+            {
+                viewModel.Initialize(repository, parentId);
+            }
 
             viewModel.InitializeRootCategory(this.repository);
+            
             this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
             this.ViewData["SettingsViewModel"] = this.settingsViewModel;
             this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+
             return this.View("Product", viewModel);
         }
 
@@ -37,21 +46,21 @@ namespace InstantStore.WebUI.Controllers
         {
             if (productViewModel == null)
             {
-                return this.HttpNotFound();
+                return this.Product(null, null);
             }
 
             if (this.ModelState.IsValid)
             {
                 repository.UpdateOrCreateNewProduct(new Product()
-                {
-                    Id = productViewModel.Id,
-                    Name = productViewModel.Name,
-                    Description = productViewModel.Description,
-                    IsAvailable = productViewModel.IsAvailable,
-                    PriceCurrencyId = productViewModel.CurrencyId,
-                    PriceValueCash = new Decimal(productViewModel.PriceCash),
-                    PriceValueCashless = new Decimal(productViewModel.PriceCashless)
-                },
+                    {
+                        Id = productViewModel.Id,
+                        Name = productViewModel.Name,
+                        Description = productViewModel.Description,
+                        IsAvailable = productViewModel.IsAvailable,
+                        PriceCurrencyId = productViewModel.CurrencyId,
+                        PriceValueCash = new Decimal(productViewModel.PriceCash),
+                        PriceValueCashless = new Decimal(productViewModel.PriceCashless)
+                    },
                     productViewModel.ParentCategoryId,
                     productViewModel.Images,
                     productViewModel.TemplateId,
@@ -62,7 +71,12 @@ namespace InstantStore.WebUI.Controllers
             }
             else
             {
+                productViewModel.Initialize(repository);
+
+                productViewModel.InitializeRootCategory(this.repository);
                 this.ViewData["CategoryTreeRootViewModel"] = CategoryTreeItemViewModel.CreateNavigationTree(repository);
+                this.ViewData["MainMenuViewModel"] = MenuViewModelFactory.CreateAdminMenu(repository, ControlPanelPage.Pages);
+                this.ViewData["SettingsViewModel"] = this.settingsViewModel;
                 return this.View(productViewModel);
             }
         }

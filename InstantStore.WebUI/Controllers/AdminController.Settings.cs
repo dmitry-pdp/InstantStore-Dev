@@ -16,13 +16,7 @@ namespace InstantStore.WebUI.Controllers
 {
     public partial class AdminController
     {
-        private static string mappingRules = "Email properties:\n\r" +
-            "User name: %user.name%, " +
-            "New password: %password%, " +
-            "Order id: %order.id%, " +
-            "Order date: %order.date%, " +
-            "Order user name: %order.user%" +
-            "";
+        private static string mappingRules = "Email properties: User name: %user.name%, New password: %password%, Order id: %order.id%, Order date: %order.date%, Order user name: %order.user%";
 
         private static CategoryTreeItemViewModel settingsNavigationTree = new CategoryTreeItemViewModel
         {
@@ -36,7 +30,8 @@ namespace InstantStore.WebUI.Controllers
                     {
                         new CategoryTreeItemViewModel("PagesHeader", StringResource.admin_SettingsNode_PagesHeader),
                         new CategoryTreeItemViewModel("PagesFooter", StringResource.admin_SettingsNode_PagesFooter),
-                        new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent)
+                        new CategoryTreeItemViewModel("MainContent", StringResource.admin_SettingsNode_PagesMainContent),
+                        new CategoryTreeItemViewModel("MetaTags", StringResource.admin_SettingsNode_MetatagsGlobal)
                     }
                 },
                 new CategoryTreeItemViewModel("GroupEmail", StringResource.admin_SettingsNode_EmailGroup)
@@ -96,6 +91,29 @@ namespace InstantStore.WebUI.Controllers
                                 settingsViewModel = this.CreateContentSettingsViewModel(
                                     StringResource.Settings_MainTextLabel, SettingsKey.MainPageHtml);
                                 break;
+                            case "MetaTags":
+                                settingsViewModel = this.CreatePropertyListViewModel(
+                                    StringResource.admin_SettingsNode_MetatagsGlobal,
+                                    new List<PropertyInfo> 
+                                { 
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Copyright.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Copyright, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Copyright)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Robots.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Robots, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Robots)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Description.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Description, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Description)),
+                                    new PropertyInfo(
+                                        SettingsKey.MetaTags_Keywords.ToString(), 
+                                        StringResource.admin_Settings_MetaTags_Keywords, 
+                                        this.repository.GetSettings(SettingsKey.MetaTags_Keywords))
+                                });
+                                break;
                             case "Feedback":
                                 using (var context = new InstantStoreDataContext())
                                 {
@@ -154,7 +172,8 @@ namespace InstantStore.WebUI.Controllers
                                         SettingsKey.EmailSettings_EmailAdmin.ToString(), 
                                         StringResource.admin_Settings_EmailAdmin, 
                                         this.repository.GetSettings(SettingsKey.EmailSettings_EmailAdmin)),
-                                });
+                                },
+                                false);
                                 break;
 
                             case "LostPages":
@@ -176,14 +195,14 @@ namespace InstantStore.WebUI.Controllers
             }
         }
 
-        private CustomViewModel CreatePropertyListViewModel(string title, IList<PropertyInfo> properties)
+        private CustomViewModel CreatePropertyListViewModel(string title, IList<PropertyInfo> properties, bool showEmailFooter = true)
         {
             return new PropertyListViewModel
             {
                 Title = title,
                 Properties = properties,
                 ViewName = "PropertyListView",
-                CustomText = mappingRules
+                CustomText = showEmailFooter ? StringResource.admin_Settings_Page_EmailSubstitutions : null
             };
         }
 
@@ -338,7 +357,7 @@ namespace InstantStore.WebUI.Controllers
 
                 return this.RedirectToAction("Settings", new { id = i });
             }
-            else if (t == "PropertyListView" && item.Key == "GroupEmail")
+            else if (t == "PropertyListView" && (item.Key == "GroupEmail" || item.Key == "MetaTags"))
             {
                 foreach(var property in propertyList.Properties)
                 {

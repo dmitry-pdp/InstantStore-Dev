@@ -167,6 +167,8 @@ namespace InstantStore.WebUI.Controllers
                     this.repository.UpdateContentPage(contentPage, attachmentIds);
                 }
 
+                MenuViewModelFactory.ResetCache();
+
                 return this.RedirectToAction("Pages", new { treeSelection = contentPage.Id });
             }
             else
@@ -254,6 +256,8 @@ namespace InstantStore.WebUI.Controllers
                         CategoryId = categoryId,
                     }, null);
                 }
+
+                MenuViewModelFactory.ResetCache();
 
                 return this.RedirectToAction("Pages", new { treeSelection = pageId });
             }

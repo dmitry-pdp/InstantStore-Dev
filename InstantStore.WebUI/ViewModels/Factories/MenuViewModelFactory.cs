@@ -21,10 +21,14 @@ namespace InstantStore.WebUI.ViewModels.Factories
     
     public static class MenuViewModelFactory
     {
+        private static List<MenuItemViewModel> menuItemsCache = null;
+
         public static MainMenuViewModel CreateDefaultMenu(IRepository repository, Guid current, User user, PageIdentity page = PageIdentity.Unknown)
         {
             var mainMenuViewModel = new MainMenuViewModel { MetaMenu = new List<MenuItemViewModel>() };
-            mainMenuViewModel.Menu = CreateItems(repository, null, 0, current);
+            mainMenuViewModel.Menu = menuItemsCache ?? CreateItems(repository, null, 0);
+            SelectActiveMenuItem(mainMenuViewModel.Menu, current);
+
             mainMenuViewModel.Menu.Insert(0, new MenuItemViewModel 
             { 
                 Name = StringResource.admin_HomeShort, 
@@ -341,7 +345,31 @@ namespace InstantStore.WebUI.ViewModels.Factories
             return viewModel;
         }
 
-        private static List<MenuItemViewModel> CreateItems(IRepository repository, Guid? parentId, int level, Guid current)
+        public static void ResetCache()
+        {
+            menuItemsCache = null;
+        }
+
+        private static void SelectActiveMenuItem(IList<MenuItemViewModel> items, Guid current)
+        { 
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach(var item in items)
+            {
+                if (item.Link.PageId == current)
+                {
+                    item.IsActive = true;
+                    break;
+                }
+
+                SelectActiveMenuItem(item.Items, current);
+            }
+        }
+
+        private static List<MenuItemViewModel> CreateItems(IRepository repository, Guid? parentId, int level/*, Guid current*/)
         {
             var items = repository
                 .GetPages(parentId, page => page.ShowInMenu)
@@ -351,10 +379,10 @@ namespace InstantStore.WebUI.ViewModels.Factories
                     Link = new NavigationLink("Page", "Main") { PageId = p.Id },
                     Name = p.Name,
                     Level = level,
-                    IsActive = p.Id == current
+                    //IsActive = p.Id == current
                 }).ToList();
 
-            items.ForEach(item => item.Items = CreateItems(repository, item.Link.PageId, level + 1, current));
+            items.ForEach(item => item.Items = CreateItems(repository, item.Link.PageId, level + 1/*, current*/));
             return items;
         }
     }

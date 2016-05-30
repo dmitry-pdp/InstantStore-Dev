@@ -58,7 +58,7 @@ namespace InstantStore.Domain.Helpers
                     }
                     else
                     {
-                        throw new ModelValidationException("InconsistentModel");
+                        return (decimal)0.0;
                     }
                 }
 

@@ -1290,4 +1290,43 @@
   <data name="global_WebSiteName" xml:space="preserve">
     <value>Оборудование для прокола ушей</value>
   </data>
+  <data name="template_Name" xml:space="preserve">
+    <value>Имя шаблона</value>
+  </data>
+  <data name="admin_SettingsNode_MetatagsGlobal" xml:space="preserve">
+    <value>Мета тэги для всех страниц</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Copyright" xml:space="preserve">
+    <value>Авторские права</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Keywords" xml:space="preserve">
+    <value>Ключевые слова</value>
+  </data>
+  <data name="admin_Settings_MetaTags_Robots" xml:space="preserve">
+    <value>Робот</value>
+  </data>
+  <data name="login_ErrorUserBlocked" xml:space="preserve">
+    <value>Пользователь заблокирован.</value>
+  </data>
+  <data name="user_CurrencyIsNotDefined" xml:space="preserve">
+    <value />
+  </data>
+  <data name="admin_Settings_Page_EmailSubstitutions" xml:space="preserve">
+    <value>Подстановки в электронном письме. Имя пользователя: %user.name%, Новый пароль: %password%.</value>
+  </data>
+  <data name="admin_ProductImageNoImages" xml:space="preserve">
+    <value>Нету картинок. Нажмите кнопку "добавить картинку" чтобы загрузить новую картинку.</value>
+  </data>
+  <data name="admin_ProductNameRequiredErrorMessage" xml:space="preserve">
+    <value>Имя продукта должно быть заполнено</value>
+  </data>
+  <data name="admin_TemplateNewNameIsMissing" xml:space="preserve">
+    <value>Имя шаблона должно быть заполнено.</value>
+  </data>
+  <data name="admin_TemplatePropertiesComplete" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
 </root>

@@ -2,30 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="InstantStore.Domain.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="InstantStoreConnectionString1" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Persist Security Info=True;User ID=InstantStoreAppLogin;Password=629A74D9-BE58-4EEB-8406-BAABDF8C5A47;Connect Timeout=30&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Persist Security Info=True;User ID=InstantStoreAppLogin;Password=629A74D9-BE58-4EEB-8406-BAABDF8C5A47;Connect Timeout=30</Value>
-    </Setting>
-    <Setting Name="InstantStoreConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=(localdb);Initial Catalog=InstantStore;&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=(localdb);Initial Catalog=InstantStore;</Value>
-    </Setting>
-    <Setting Name="InstantStoreConnectionString2" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Integrated Security=True&lt;/ConnectionString&gt;
-  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
-&lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Integrated Security=True</Value>
-    </Setting>
     <Setting Name="InstantStoreConnectionLocal" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
@@ -34,13 +10,21 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=(localdb)\v11.0;Initial Catalog=InstantStore;Integrated Security=True</Value>
     </Setting>
-    <Setting Name="InstantStoreConnectionProd" Type="(Connection string)" Scope="Application">
+    <Setting Name="InstantStoreConnectionStaging" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;ConnectionString&gt;Data Source=OrionGalaxyData.db.12505678.hostedresource.com;Initial Catalog=OrionGalaxyData;User ID=OrionGalaxyData;Password=Password!1234&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=OrionGalaxyData.db.12505678.hostedresource.com;Initial Catalog=OrionGalaxyData;User ID=OrionGalaxyData;Password=Password!1234</Value>
+    </Setting>
+    <Setting Name="InstantStoreConnectionProd" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=w07.hoster.by;Initial Catalog=studsby_db;User ID=studsby_user;Password=studsby!pass1243&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=w07.hoster.by;Initial Catalog=studsby_db;User ID=studsby_user;Password=studsby!pass1243</Value>
     </Setting>
   </Settings>
 </SettingsFile>
